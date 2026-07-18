@@ -8,11 +8,11 @@
   /* ---------- بيانات الجلسات (تُستخدم في الشريط الجانبي والصفحة الرئيسية) ---------- */
   const SESSIONS = [
     { id: '09', emoji: '⚡', title: 'مقدمة إلى JavaScript', href: 'lesson-09.html', ready: true },
-    { id: '10', emoji: '🌳', title: 'JavaScript والـ DOM', href: 'lesson-10.html', ready: false },
-    { id: '11', emoji: '🔢', title: 'المصفوفات والكائنات المتقدمة', href: 'lesson-11.html', ready: false },
-    { id: '12', emoji: '⏳', title: 'البرمجة غير المتزامنة', href: 'lesson-12.html', ready: false },
-    { id: '13', emoji: '💾', title: 'التخزين المحلي في المتصفح', href: 'lesson-13.html', ready: false },
-    { id: '14', emoji: '🏛️', title: 'البرمجة الكائنية OOP', href: 'lesson-14.html', ready: false },
+    { id: '10', emoji: '🌳', title: 'JavaScript والـ DOM', href: 'lesson-10.html', ready: true },
+    { id: '11', emoji: '🔢', title: 'المصفوفات والكائنات المتقدمة', href: 'lesson-11.html', ready: true },
+    { id: '12', emoji: '⏳', title: 'البرمجة غير المتزامنة', href: 'lesson-12.html', ready: true },
+    { id: '13', emoji: '💾', title: 'التخزين المحلي في المتصفح', href: 'lesson-13.html', ready: true },
+    { id: '14', emoji: '🏛️', title: 'البرمجة الكائنية OOP', href: 'lesson-14.html', ready: true },
   ];
   window.FEMB_SESSIONS = SESSIONS;
 

@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 12 — البرمجة غير المتزامنة | Front-End Master Book</title>
+<meta name="description" content="البرمجة غير المتزامنة — Callbacks • Promises • async/await • Fetch API • Error Handling">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="12">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>مسار JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">⏳</span>
+    <div>
+      <div class="session-tag">Session 12 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة الثانية عشرة — البرمجة غير المتزامنة</h1>
+  <p class="tags-line">Callbacks • Promises • async/await • Fetch API • Error Handling</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة الثانية عشرة</h2>
+  <ul class="goal-list"><li>فهم مفهوم البرمجة غير المتزامنة (Asynchronous) وسبب الحاجة إليها</li><li>شرح كيف يعمل JavaScript Event Loop والـ Call Stack</li><li>استخدام setTimeout وsetInterval وclearTimeout وclearInterval</li><li>فهم مشكلة Callback Hell وكيفية تجنبها</li><li>إنشاء Promise وفهم حالاتها الثلاث: Pending وFulfilled وRejected</li><li>تسلسل الـ Promises باستخدام then وcatch وfinally</li><li>استخدام Promise.all وPromise.race وPromise.allSettled وPromise.any</li><li>كتابة كود غير متزامن بأسلوب متزامن نظيف باستخدام async/await</li><li>معالجة الأخطاء بـ try/catch مع async/await</li><li>جلب البيانات من API حقيقي باستخدام Fetch API وعرضها في DOM</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة الحادية عشرة</span><p>✔ map(): تحويل كل عنصر — filter(): تصفية — reduce(): تجميع</p><p>✔ find/findIndex() — some/every() — flat/flatMap()</p><p>✔ sort() تُعدّل الأصل — استخدم [...arr].sort() للأمان</p><p>✔ Array/Object Destructuring — Spread — Rest</p><p>✔ Optional Chaining (?.) — Nullish Coalescing (??)</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">⏳</span><h2>الجزء الأول: لماذا نحتاج البرمجة غير المتزامنة؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>JavaScript أحادي الخيط (Single-Threaded)</h3></div><p class="blk-para">JavaScript ينفّذ تعليمة واحدة في كل مرة — لا يستطيع تنفيذ كودَيْن في آنٍ واحد. هذا يعني أن أي عملية بطيئة (جلب بيانات، قراءة ملف) ستُجمّد الصفحة كلها إذا كانت متزامنة!</p><div class="callout info"><span class="callout-title">🔄 مشكلة الكود المتزامن (Synchronous)</span><pre class="ascii-diagram">  // تخيّل أن fetchData() تستغرق 3 ثوانٍ
+  const data = fetchData();   // ← الصفحة تتجمد 3 ثوانٍ!
+  console.log(data);
+  updateUI(data);
+  // خلال هذه الثلاث ثوانٍ:
+  // ❌ لا يمكن النقر على أي زر
+  // ❌ لا يمكن التمرير
+  // ❌ الأنيميشن يتوقف
+  // ❌ المتصفح يُعلم 'الصفحة لا تستجيب'</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>Event Loop — كيف يحل JavaScript المشكلة</h3></div><p class="blk-para">JavaScript يستخدم Event Loop ومجموعة من الطوابير لتنفيذ العمليات غير المتزامنة دون تجميد الصفحة:</p><div class="callout info"><span class="callout-title">⚙️ كيف يعمل Event Loop</span><pre class="ascii-diagram">  ┌─────────────────────────────────────────────┐
+  │              JavaScript Engine               │
+  │                                             │
+  │  Call Stack        Web APIs (المتصفح)       │
+  │  ┌──────────┐      ┌──────────────────┐     │
+  │  │ main()   │  ──► │ setTimeout       │     │
+  │  │ func1()  │      │ fetch()          │     │
+  │  │ func2()  │      │ addEventListener  │     │
+  │  └──────────┘      └────────┬─────────┘     │
+  │                             │ انتهت المهمة  │
+  │  Event Loop                 ▼               │
+  │  ┌──────────────────────────────────────┐   │
+  │  │ Callback/Task Queue                  │   │
+  │  │ [callback1] [callback2] [callback3]  │   │
+  │  └──────────────────────────────────────┘   │
+  │  ← Event Loop ينقل للـ Call Stack إذا فارغ  │
+  └─────────────────────────────────────────────┘
+  1. الكود يُنفَّذ في Call Stack
+  2. العمليات الطويلة تُحال للـ Web APIs
+  3. عند الانتهاء تُضاف للـ Callback Queue
+  4. Event Loop ينقلها للـ Call Stack عندما يفرغ</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>المتزامن مقابل غير المتزامن</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المتزامن (Synchronous)</th><th>غير المتزامن (Asynchronous)</th></tr></thead><tbody><tr><td>يُنفَّذ سطراً بسطر بالترتيب</td><td>لا ينتظر — يُكمل بقية الكود</td></tr><tr><td>سهل القراءة والفهم</td><td>أصعب قليلاً لكن ضروري</td></tr><tr><td>يُجمّد الصفحة عند الانتظار</td><td>الصفحة تبقى تفاعلية</td></tr><tr><td>مناسب للعمليات السريعة</td><td>ضروري للشبكة وقواعد البيانات</td></tr><tr><td>console.log(), Math, Array</td><td>fetch(), setTimeout, addEventListener</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">⏱️</span><h2>الجزء الثاني: setTimeout وsetInterval</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>setTimeout</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// setTimeout(callback, delay, ...args)
+// ينفّذ الدالة مرة واحدة بعد التأخير المحدد (بالمللي ثانية)
+
+// مثال بسيط
+console.log('قبل');
+setTimeout(() =&gt; {
+  console.log('بعد ثانيتين');
+}, 2000);
+console.log('بعد فوراً');
+// الناتج: 'قبل' → 'بعد فوراً' → (انتظار 2 ثانية) → 'بعد ثانيتين'
+
+// مع معاملات
+setTimeout((name, age) =&gt; {
+  console.log(`مرحباً ${name}، عمرك ${age}`);
+}, 1000, 'أحمد', 25);
+
+// إلغاء setTimeout
+const timerId = setTimeout(() =&gt; {
+  console.log('هذا لن يُنفَّذ!');
+}, 3000);
+clearTimeout(timerId); // إلغاء قبل التنفيذ
+
+// تأخير صفري — ينفّذ بعد انتهاء الكود الحالي
+setTimeout(() =&gt; console.log('آخر من يُنفَّذ'), 0);
+console.log('أول من يُنفَّذ');
+// 'أول من يُنفَّذ' → 'آخر من يُنفَّذ'
+
+// مثال عملي: إخفاء رسالة بعد 3 ثوانٍ
+function showNotification(message, duration = 3000) {
+  const notif = document.createElement('div');
+  notif.className = 'notification';
+  notif.textContent = message;
+  document.body.appendChild(notif);
+
+  setTimeout(() =&gt; notif.remove(), duration);
+}
+showNotification('تم الحفظ بنجاح ✅');</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>setInterval</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// setInterval(callback, interval) — ينفّذ كل interval مللي ثانية
+
+// عداد تصاعدي
+let count = 0;
+const counter = setInterval(() =&gt; {
+  count++;
+  console.log(`العدد: ${count}`);
+  if (count &gt;= 10) {
+    clearInterval(counter); // إيقاف بعد 10
+  }
+}, 1000);
+
+// ساعة حية
+function startClock() {
+  const clockEl = document.querySelector('#clock');
+
+  const updateClock = () =&gt; {
+    const now = new Date();
+    clockEl.textContent = now.toLocaleTimeString('ar-SA');
+  };
+
+  updateClock(); // تشغيل فوري
+  return setInterval(updateClock, 1000);
+}
+
+const clockId = startClock();
+// لإيقاف الساعة: clearInterval(clockId)
+
+// عداد تنازلي
+function countdown(seconds, onTick, onDone) {
+  let remaining = seconds;
+  onTick(remaining);
+
+  const timer = setInterval(() =&gt; {
+    remaining--;
+    onTick(remaining);
+    if (remaining &lt;= 0) {
+      clearInterval(timer);
+      onDone();
+    }
+  }, 1000);
+
+  return timer; // لإمكانية الإلغاء من الخارج
+}
+
+countdown(
+  10,
+  (t) =&gt; console.log(`الوقت المتبقي: ${t}s`),
+  () =&gt; console.log('انتهى الوقت! ⏰')
+);</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">📞</span><h2>الجزء الثالث: Callbacks ومشكلة Callback Hell</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>ما هو Callback؟</h3></div><p class="blk-para">Callback هي دالة تُمرَّر كمعامل لدالة أخرى لتُنفَّذ لاحقاً (عند انتهاء عملية ما):</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// Callback بسيط
+function doWork(task, onDone) {
+  console.log(`أبدأ: ${task}`);
+  setTimeout(() =&gt; {
+    const result = `نتيجة: ${task}`;
+    onDone(result); // استدعاء الـ callback عند الانتهاء
+  }, 1000);
+}
+
+doWork('تحميل البيانات', (result) =&gt; {
+  console.log(result); // 'نتيجة: تحميل البيانات'
+});
+
+// Callbacks في أمثلة حقيقية
+// addEventListener — يأخذ callback
+btn.addEventListener('click', () =&gt; console.log('نُقر!'));
+
+// Array methods — تأخذ callback
+[1,2,3].forEach(n =&gt; console.log(n));
+
+// setTimeout — يأخذ callback
+setTimeout(() =&gt; console.log('بعد ثانية'), 1000);</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>مشكلة Callback Hell (جحيم الـ Callbacks)</h3></div><p class="blk-para">عند تداخل العمليات غير المتزامنة، يتحول الكود لهرم من الـ Callbacks يصعب قراءته وصيانته:</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ❌ Callback Hell — صعب القراءة والصيانة
+getUser(userId, (user) =&gt; {
+  if (user.error) {
+    handleError(user.error);
+  } else {
+    getUserPosts(user.id, (posts) =&gt; {
+      if (posts.error) {
+        handleError(posts.error);
+      } else {
+        getPostComments(posts[0].id, (comments) =&gt; {
+          if (comments.error) {
+            handleError(comments.error);
+          } else {
+            getLikes(comments[0].id, (likes) =&gt; {
+              // هرم يميل لليمين — 'Pyramid of Doom'
+              console.log(likes);
+            });
+          }
+        });
+      }
+    });
+  }
+});
+
+// المشاكل:
+// 1. قراءة صعبة ← تداخل عميق
+// 2. معالجة الأخطاء متكررة
+// 3. صيانة كابوسية
+// 4. لا يمكن استخدام try/catch
+// الحل: Promises ثم async/await ✅</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🤝</span><h2>الجزء الرابع: الوعود (Promises)</h2></div><p class="blk-para">Promise هو كائن يمثّل نتيجة عملية غير متزامنة ستكتمل في المستقبل. مثل: طلب طعام من المطعم — تستلم رقم الطلب (Promise) وتواصل حياتك حتى يُنادى عليك.</p><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>حالات Promise الثلاث</h3></div><div class="callout info"><span class="callout-title">🔄 حالات Promise</span><pre class="ascii-diagram">  ┌─────────────────────────────────────────────────┐
+  │                                                 │
+  │   Pending (معلّقة)                              │
+  │   الحالة الابتدائية — العملية قيد التنفيذ       │
+  │                    │                            │
+  │         ┌──────────┴──────────┐                 │
+  │         ▼                     ▼                 │
+  │   Fulfilled (منجزة)    Rejected (مرفوضة)        │
+  │   العملية نجحت         العملية فشلت              │
+  │   → then() يُستدعى     → catch() يُستدعى        │
+  │                                                 │
+  │   ملاحظة: Settled = Fulfilled OR Rejected       │
+  └─────────────────────────────────────────────────┘</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>إنشاء Promise</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// new Promise((resolve, reject) =&gt; { ... })
+
+// Promise بسيطة
+const myPromise = new Promise((resolve, reject) =&gt; {
+  const success = true;
+
+  setTimeout(() =&gt; {
+    if (success) {
+      resolve('تمت العملية بنجاح! ✅'); // Fulfilled
+    } else {
+      reject(new Error('فشلت العملية ❌')); // Rejected
+    }
+  }, 2000);
+});
+
+// محاكاة جلب بيانات مستخدم
+function fetchUser(id) {
+  return new Promise((resolve, reject) =&gt; {
+    setTimeout(() =&gt; {
+      const users = {
+        1: { id:1, name:'أحمد', email:'ahmed@ex.com' },
+        2: { id:2, name:'سارة', email:'sara@ex.com'  },
+      };
+
+      const user = users[id];
+      if (user) {
+        resolve(user);
+      } else {
+        reject(new Error(`المستخدم ${id} غير موجود`));
+      }
+    }, 1000);
+  });
+}
+
+// محاكاة جلب منشورات
+function fetchPosts(userId) {
+  return new Promise((resolve, reject) =&gt; {
+    setTimeout(() =&gt; {
+      if (userId) {
+        resolve([
+          { id:1, title:'منشور أول', userId },
+          { id:2, title:'منشور ثاني', userId },
+        ]);
+      } else {
+        reject(new Error('userId مطلوب'));
+      }
+    }, 800);
+  });
+}</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.3</span><h3>then / catch / finally</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ══ الاستخدام الأساسي ══
+fetchUser(1)
+  .then(user =&gt; {
+    console.log('المستخدم:', user.name);
+    return user; // تمرير للـ then التالي
+  })
+  .catch(error =&gt; {
+    console.error('خطأ:', error.message);
+  })
+  .finally(() =&gt; {
+    console.log('انتهت العملية (نجاح أو فشل)');
+    hideLoader(); // إخفاء مؤشر التحميل دائماً
+  });
+
+// ══ Promise Chaining — البديل عن Callback Hell ✅ ══
+fetchUser(1)
+  .then(user =&gt; {
+    console.log('المستخدم:', user.name);
+    return fetchPosts(user.id); // يُعيد Promise جديدة
+  })
+  .then(posts =&gt; {
+    console.log('المنشورات:', posts.length);
+    return fetchComments(posts[0].id);
+  })
+  .then(comments =&gt; {
+    console.log('التعليقات:', comments.length);
+  })
+  .catch(error =&gt; {
+    // catch واحد يصطاد أخطاء جميع الـ then السابقة
+    console.error('خطأ في أي مرحلة:', error.message);
+  })
+  .finally(() =&gt; {
+    hideLoader();
+  });
+
+// ══ Promise.resolve() وPromise.reject() ══
+// Promise جاهزة النتيجة فوراً
+Promise.resolve('قيمة فورية')
+  .then(val =&gt; console.log(val)); // 'قيمة فورية'
+
+Promise.reject(new Error('خطأ فوري'))
+  .catch(err =&gt; console.error(err.message));</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.4</span><h3>Promise المتقدمة: all وrace وallSettled وany</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const p1 = fetchUser(1);    // 1 ثانية
+const p2 = fetchPosts(1);   // 0.8 ثانية
+const p3 = fetchComments(1); // 1.2 ثانية
+
+// ══ Promise.all — انتظر الجميع (يفشل إذا فشل أي منها) ══
+Promise.all([p1, p2, p3])
+  .then(([user, posts, comments]) =&gt; {
+    // ينتظر أطول واحد (1.2 ثانية)
+    console.log(user.name, posts.length, comments.length);
+  })
+  .catch(err =&gt; {
+    // إذا فشلت أي Promise → catch يُستدعى فوراً
+    console.error('فشل أحدها:', err.message);
+  });
+
+// ══ Promise.race — أول من ينتهي يفوز ══
+const timeout = new Promise((_, reject) =&gt; {
+  setTimeout(() =&gt; reject(new Error('انتهت المهلة')), 5000);
+});
+
+Promise.race([fetchUser(1), timeout])
+  .then(user =&gt; console.log('وصلنا في الوقت:', user.name))
+  .catch(err =&gt; console.error('تأخر:', err.message));
+
+// ══ Promise.allSettled — انتظر الجميع بغض النظر ✅ ══
+// لا يفشل — يُعيد نتيجة كل Promise
+Promise.allSettled([p1, p2, Promise.reject(new Error('خطأ'))])
+  .then(results =&gt; {
+    results.forEach((result, i) =&gt; {
+      if (result.status === 'fulfilled') {
+        console.log(`P${i+1} نجح:`, result.value);
+      } else {
+        console.log(`P${i+1} فشل:`, result.reason.message);
+      }
+    });
+  });
+
+// ══ Promise.any — أول من ينجح يفوز ══
+// يفشل فقط إذا فشلت الجميع (AggregateError)
+Promise.any([
+  Promise.reject(new Error('فشل 1')),
+  fetchUser(1),
+  Promise.reject(new Error('فشل 2')),
+])
+  .then(first =&gt; console.log('أول من نجح:', first.name));</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الطريقة</th><th>السلوك والاستخدام</th></tr></thead><tbody><tr><td>Promise.all([...])</td><td>ينتظر الجميع | يفشل إذا فشل أي — لطلبات متوازية مترابطة</td></tr><tr><td>Promise.race([...])</td><td>أول من ينتهي (نجاح أو فشل) — للـ timeout</td></tr><tr><td>Promise.allSettled([...])</td><td>ينتظر الجميع بغض النظر ✅ — للتقارير الشاملة</td></tr><tr><td>Promise.any([...])</td><td>أول من ينجح — للبحث في مصادر متعددة</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✨</span><h2>الجزء الخامس: async / await</h2></div><p class="blk-para">async/await هي صياغة حديثة تجعل كتابة كود غير متزامن يبدو ويُقرأ كأنه كود متزامن عادي — أنيق، واضح، وسهل التصحيح.</p><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>الأساسيات</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// async — تجعل الدالة تُعيد Promise دائماً
+async function sayHello() {
+  return 'مرحباً!';
+}
+// مكافئ لـ: function sayHello() { return Promise.resolve('مرحباً!'); }
+
+sayHello().then(msg =&gt; console.log(msg)); // 'مرحباً!'
+
+// await — ينتظر حتى تنتهي Promise (داخل async فقط)
+async function getUser() {
+  console.log('جار الجلب...');
+  const user = await fetchUser(1);  // ينتظر هنا
+  console.log('المستخدم:', user.name); // يُنفَّذ بعد الانتهاء
+  return user;
+}
+
+getUser().then(user =&gt; console.log('تم:', user));
+
+// مقارنة: Promise Chaining مقابل async/await
+// ══ بـ Promises ══
+function getDataWithPromises() {
+  return fetchUser(1)
+    .then(user =&gt; fetchPosts(user.id))
+    .then(posts =&gt; posts[0])
+    .then(post =&gt; fetchComments(post.id));
+}
+
+// ══ بـ async/await ✅ ══
+async function getDataWithAsync() {
+  const user    = await fetchUser(1);
+  const posts   = await fetchPosts(user.id);
+  const post    = posts[0];
+  const comments = await fetchComments(post.id);
+  return comments;
+}
+
+// Arrow async function
+const loadProfile = async (id) =&gt; {
+  const user = await fetchUser(id);
+  return user;
+};</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>معالجة الأخطاء مع try/catch</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// try/catch مع async/await — نفس مبدأ الكود المتزامن
+async function loadUserProfile(userId) {
+  try {
+    // كل هذا داخل try
+    const user     = await fetchUser(userId);
+    const posts    = await fetchPosts(user.id);
+    const comments = await fetchComments(posts[0]?.id);
+
+    return { user, posts, comments };
+
+  } catch (error) {
+    // يصطاد أي خطأ في أي await أعلاه
+    console.error('خطأ في تحميل البروفايل:', error.message);
+    return null;
+
+  } finally {
+    // يُنفَّذ دائماً (نجاح أو فشل)
+    hideLoadingSpinner();
+  }
+}
+
+// معالجة أخطاء منفصلة لكل await
+async function robustLoader() {
+  let user, posts;
+
+  try {
+    user = await fetchUser(1);
+  } catch (e) {
+    console.error('فشل جلب المستخدم:', e.message);
+    return; // إيقاف التنفيذ
+  }
+
+  try {
+    posts = await fetchPosts(user.id);
+  } catch (e) {
+    // فشل جلب المنشورات لكن المستخدم جُلب بنجاح
+    posts = []; // قيمة افتراضية
+    console.warn('تعذّر جلب المنشورات');
+  }
+
+  return { user, posts };
+}
+
+// نمط: async مع .catch() خارجي
+loadUserProfile(1)
+  .then(profile =&gt; displayProfile(profile))
+  .catch(err =&gt; showErrorMessage(err.message));</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.3</span><h3>تنفيذ Promises بالتوازي مع async/await</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ❌ بطيء — تسلسلي (كل طلب ينتظر السابق)
+async function loadSequential() {
+  const user    = await fetchUser(1);     // 1s
+  const posts   = await fetchPosts(1);    // 0.8s
+  const friends = await fetchFriends(1);  // 1.2s
+  // المجموع: 3 ثوانٍ ❌
+  return { user, posts, friends };
+}
+
+// ✅ أسرع — متوازٍ بـ Promise.all
+async function loadParallel() {
+  const [user, posts, friends] = await Promise.all([
+    fetchUser(1),
+    fetchPosts(1),
+    fetchFriends(1),
+  ]);
+  // المجموع: 1.2 ثانية فقط (أطول واحد) ✅
+  return { user, posts, friends };
+}
+
+// ✅ allSettled مع async/await
+async function loadSafely() {
+  const results = await Promise.allSettled([
+    fetchUser(1),
+    fetchPosts(1),
+    fetchMaybeFailingData(),
+  ]);
+
+  const [userResult, postsResult, dataResult] = results;
+
+  const user  = userResult.status  === 'fulfilled' ? userResult.value  : null;
+  const posts = postsResult.status === 'fulfilled' ? postsResult.value : [];
+
+  return { user, posts };
+}
+
+// for...of مع await — حين يجب الترتيب
+async function processSequentially(items) {
+  const results = [];
+  for (const item of items) {
+    const result = await processItem(item); // ترتيب مضمون
+    results.push(result);
+  }
+  return results;
+}</code></pre>
+  <div class="output-box" id="out-10"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🌐</span><h2>الجزء السادس: Fetch API — جلب البيانات من الإنترنت</h2></div><p class="blk-para">Fetch API هي الطريقة الحديثة المُدمَجة في المتصفح لإرسال طلبات HTTP واستقبال البيانات من الخوادم والـ APIs.</p><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>الطلب الأساسي GET</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// fetch(url) — يُعيد Promise
+// يحتاج خطوتين: أولاً response ثم البيانات
+
+// ══ مع .then() ══
+fetch('https://jsonplaceholder.typicode.com/users/1')
+  .then(response =&gt; {
+    console.log(response.status);   // 200
+    console.log(response.ok);       // true (200-299)
+    return response.json();         // تحويل JSON لـ Object
+  })
+  .then(user =&gt; {
+    console.log(user.name);
+  })
+  .catch(err =&gt; {
+    console.error('خطأ في الاتصال:', err.message);
+  });
+
+// ══ مع async/await ✅ ══
+async function getUser(id) {
+  try {
+    const response = await fetch(
+      `https://jsonplaceholder.typicode.com/users/${id}`
+    );
+
+    // التحقق من نجاح الطلب
+    if (!response.ok) {
+      throw new Error(`HTTP Error: ${response.status}`);
+    }
+
+    const user = await response.json();
+    return user;
+
+  } catch (error) {
+    console.error('فشل جلب المستخدم:', error.message);
+    throw error; // إعادة رمي للـ caller
+  }
+}
+
+getUser(1).then(user =&gt; console.log(user.name));</code></pre>
+  <div class="output-box" id="out-11"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.2</span><h3>أنواع البيانات في Response</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// response.json()    ← JSON (الأكثر شيوعاً) ✅
+// response.text()    ← نص عادي أو HTML
+// response.blob()    ← ملفات ثنائية (صور، PDF)
+// response.formData()← بيانات نموذج
+// response.arrayBuffer() ← بيانات ثنائية خام
+
+// مثال: جلب JSON
+async function fetchJSON(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+  return res.json();
+}
+
+// مثال: جلب نص
+async function fetchHTML(url) {
+  const res = await fetch(url);
+  return res.text();
+}
+
+// خصائص Response Object
+const res = await fetch(url);
+console.log(res.ok);          // true إذا 200-299
+console.log(res.status);      // رمز HTTP: 200, 404, 500...
+console.log(res.statusText);  // 'OK', 'Not Found'...
+console.log(res.headers.get('Content-Type')); // 'application/json'
+console.log(res.url);         // الرابط الفعلي (بعد redirect)</code></pre>
+  <div class="output-box" id="out-12"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.3</span><h3>طلبات POST وPUT وDELETE</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ══ POST — إرسال بيانات جديدة ══
+async function createPost(data) {
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`, // إذا كان الـ API يتطلب مصادقة
+    },
+    body: JSON.stringify(data), // تحويل Object لـ JSON string
+  });
+
+  if (!response.ok) {
+    throw new Error(`فشل الإرسال: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+const newPost = await createPost({
+  title: 'مقالة جديدة',
+  body:  'محتوى المقالة...',
+  userId: 1,
+});
+console.log('تم الإنشاء:', newPost.id);
+
+// ══ PUT — تحديث كامل ══
+async function updatePost(id, data) {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
+
+// ══ PATCH — تحديث جزئي ══
+async function patchPost(id, updates) {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updates),
+  });
+  return res.json();
+}
+
+// ══ DELETE — حذف ══
+async function deletePost(id) {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+    method: 'DELETE',
+  });
+  return res.ok; // true إذا نجح
+}</code></pre>
+  <div class="output-box" id="out-13"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.4</span><h3>معالجة أخطاء Fetch بشكل شامل</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// Fetch لا يُلقي خطأً لأكواد HTTP الخاطئة (404, 500)!
+// يُلقي خطأً فقط لمشاكل الشبكة (لا إنترنت، CORS)
+
+// دالة fetch شاملة مع معالجة أخطاء كاملة
+async function apiFetch(url, options = {}) {
+  try {
+    const response = await fetch(url, {
+      headers: { 'Content-Type': 'application/json' },
+      ...options,
+    });
+
+    // التحقق من HTTP Status
+    if (!response.ok) {
+      const errorData = await response.json().catch(() =&gt; ({}));
+      throw new Error(
+        errorData.message || `HTTP ${response.status}: ${response.statusText}`
+      );
+    }
+
+    // التحقق من نوع المحتوى
+    const contentType = response.headers.get('content-type');
+    if (contentType?.includes('application/json')) {
+      return response.json();
+    }
+    return response.text();
+
+  } catch (error) {
+    // مشكلة شبكة (لا إنترنت، CORS)
+    if (error.name === 'TypeError') {
+      throw new Error('تحقق من اتصالك بالإنترنت');
+    }
+    throw error;
+  }
+}
+
+// مثال استخدام مع timeout
+async function fetchWithTimeout(url, ms = 5000) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() =&gt; controller.abort(), ms);
+
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
+    return res.json();
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      throw new Error('انتهت مهلة الطلب');
+    }
+    throw error;
+  }
+}</code></pre>
+  <div class="output-box" id="out-14"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السابع: المشروع التطبيقي — تطبيق جلب الأخبار</h2></div><div class="project-box"><p class="blk-para">سنبني تطبيقاً يجلب بيانات مستخدمين ومنشورات من API حقيقي (JSONPlaceholder) ويعرضها في DOM بشكل احترافي.</p><div class="subsection"><div class="sub-head"><h3>ملف index.html</h3></div><div class="code-block" data-lang="html">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot html"></span>HTML</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ar" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;تطبيق المستخدمين والمنشورات&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class="app"&gt;
+    &lt;header class="app-header"&gt;
+      &lt;h1&gt;👥 منصة المستخدمين&lt;/h1&gt;
+      &lt;button id="refresh-btn" class="btn btn-primary"&gt;🔄 تحديث&lt;/button&gt;
+    &lt;/header&gt;
+
+    &lt;!-- حالة التحميل --&gt;
+    &lt;div id="loading" class="loading hidden"&gt;
+      &lt;div class="spinner"&gt;&lt;/div&gt;
+      &lt;p&gt;جار التحميل...&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;!-- رسالة الخطأ --&gt;
+    &lt;div id="error-msg" class="error-banner hidden"&gt;
+      &lt;span id="error-text"&gt;&lt;/span&gt;
+      &lt;button id="retry-btn"&gt;إعادة المحاولة&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- شبكة المستخدمين --&gt;
+    &lt;section id="users-section"&gt;
+      &lt;h2&gt;المستخدمون&lt;/h2&gt;
+      &lt;div id="users-grid" class="users-grid"&gt;&lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;!-- منشورات المستخدم المحدد --&gt;
+    &lt;section id="posts-section" class="hidden"&gt;
+      &lt;button id="back-btn" class="btn btn-outline"&gt;← عودة للمستخدمين&lt;/button&gt;
+      &lt;h2 id="posts-title"&gt;المنشورات&lt;/h2&gt;
+      &lt;div id="posts-grid" class="posts-grid"&gt;&lt;/div&gt;
+    &lt;/section&gt;
+
+  &lt;/div&gt;
+
+  &lt;script src="app.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  <div class="output-box" id="out-15"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>ملف app.js</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>/* ═══════════════════════════════════════════════════════ */
+/* تطبيق المستخدمين — Async/Await + Fetch Session 12     */
+/* ═══════════════════════════════════════════════════════ */
+
+const BASE_URL = 'https://jsonplaceholder.typicode.com';
+
+// ══ 1. تحديد العناصر ══
+const usersGrid   = document.getElementById('users-grid');
+const postsGrid   = document.getElementById('posts-grid');
+const postsTitle  = document.getElementById('posts-title');
+const loadingEl   = document.getElementById('loading');
+const errorMsg    = document.getElementById('error-msg');
+const errorText   = document.getElementById('error-text');
+const usersSection = document.getElementById('users-section');
+const postsSection = document.getElementById('posts-section');
+const refreshBtn  = document.getElementById('refresh-btn');
+const backBtn     = document.getElementById('back-btn');
+const retryBtn    = document.getElementById('retry-btn');
+
+// ══ 2. دوال API ══
+async function fetchUsers() {
+  const res = await fetch(`${BASE_URL}/users`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+async function fetchUserPosts(userId) {
+  const res = await fetch(`${BASE_URL}/posts?userId=${userId}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+async function fetchPostDetails(postId) {
+  const [post, comments] = await Promise.all([
+    fetch(`${BASE_URL}/posts/${postId}`).then(r =&gt; r.json()),
+    fetch(`${BASE_URL}/posts/${postId}/comments`).then(r =&gt; r.json()),
+  ]);
+  return { post, comments };
+}
+
+// ══ 3. دوال واجهة المستخدم ══
+function showLoading() {
+  loadingEl.classList.remove('hidden');
+  errorMsg.classList.add('hidden');
+}
+
+function hideLoading() {
+  loadingEl.classList.add('hidden');
+}
+
+function showError(message) {
+  hideLoading();
+  errorText.textContent = message;
+  errorMsg.classList.remove('hidden');
+}
+
+// ══ 4. بناء بطاقة المستخدم ══
+function createUserCard(user) {
+  const card = document.createElement('article');
+  card.className = 'user-card';
+  card.dataset.userId = user.id;
+
+  // Avatar من API الصور
+  const avatarUrl = `https://i.pravatar.cc/80?u=${user.email}`;
+
+  card.innerHTML = `
+    &lt;img src="${avatarUrl}" alt="${user.name}" class="avatar" /&gt;
+    &lt;div class="user-info"&gt;
+      &lt;h3&gt;${user.name}&lt;/h3&gt;
+      &lt;p class="username"&gt;@${user.username}&lt;/p&gt;
+      &lt;p class="email"&gt;📧 ${user.email}&lt;/p&gt;
+      &lt;p class="website"&gt;🌐 ${user.website}&lt;/p&gt;
+      &lt;p class="company"&gt;🏢 ${user.company.name}&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;button class="btn-view-posts" data-user-id="${user.id}"
+      data-user-name="${user.name}"&gt;
+      عرض المنشورات
+    &lt;/button&gt;
+  `;
+
+  return card;
+}
+
+// ══ 5. بناء بطاقة المنشور ══
+function createPostCard(post) {
+  const card = document.createElement('article');
+  card.className = 'post-card';
+
+  card.innerHTML = `
+    &lt;span class="post-id"&gt;#${post.id}&lt;/span&gt;
+    &lt;h3&gt;${post.title}&lt;/h3&gt;
+    &lt;p&gt;${post.body}&lt;/p&gt;
+  `;
+
+  return card;
+}
+
+// ══ 6. تحميل المستخدمين ══
+async function loadUsers() {
+  showLoading();
+  usersGrid.innerHTML = '';
+
+  try {
+    const users = await fetchUsers();
+    hideLoading();
+
+    users.forEach(user =&gt; {
+      usersGrid.appendChild(createUserCard(user));
+    });
+
+  } catch (error) {
+    showError(`تعذّر تحميل المستخدمين: ${error.message}`);
+  }
+}
+
+// ══ 7. تحميل منشورات مستخدم ══
+async function loadUserPosts(userId, userName) {
+  showLoading();
+  postsGrid.innerHTML = '';
+
+  // إظهار قسم المنشورات وإخفاء المستخدمين
+  usersSection.classList.add('hidden');
+  postsSection.classList.remove('hidden');
+  postsTitle.textContent = `منشورات ${userName}`;
+
+  try {
+    const posts = await fetchUserPosts(userId);
+    hideLoading();
+
+    if (posts.length === 0) {
+      postsGrid.innerHTML = '&lt;p class="empty"&gt;لا توجد منشورات&lt;/p&gt;';
+      return;
+    }
+
+    posts.forEach(post =&gt; {
+      postsGrid.appendChild(createPostCard(post));
+    });
+
+  } catch (error) {
+    showError(`تعذّر تحميل المنشورات: ${error.message}`);
+  }
+}
+
+// ══ 8. الأحداث ══
+
+// Event Delegation للمستخدمين
+usersGrid.addEventListener('click', (e) =&gt; {
+  const btn = e.target.closest('.btn-view-posts');
+  if (!btn) return;
+
+  const { userId, userName } = btn.dataset;
+  loadUserPosts(Number(userId), userName);
+});
+
+// العودة للمستخدمين
+backBtn.addEventListener('click', () =&gt; {
+  postsSection.classList.add('hidden');
+  usersSection.classList.remove('hidden');
+});
+
+// إعادة المحاولة
+retryBtn.addEventListener('click', loadUsers);
+
+// تحديث
+refreshBtn.addEventListener('click', loadUsers);
+
+// ══ 9. بدء التطبيق ══
+loadUsers();</code></pre>
+  <div class="output-box" id="out-16"></div>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔗</span><h2>الجزء الثامن: APIs حقيقية مجانية للتدريب</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>API المجاني</th><th>البيانات المتاحة والرابط</th></tr></thead><tbody><tr><td>JSONPlaceholder</td><td>مستخدمون، منشورات، تعليقات، صور — jsonplaceholder.typicode.com</td></tr><tr><td>OpenWeatherMap</td><td>بيانات الطقس لأي مدينة — openweathermap.org/api (مجاني)</td></tr><tr><td>RestCountries</td><td>بيانات دول العالم — restcountries.com</td></tr><tr><td>CoinGecko</td><td>أسعار العملات الرقمية — api.coingecko.com</td></tr><tr><td>Random User</td><td>بيانات مستخدمين عشوائية — randomuser.me/api</td></tr><tr><td>Dog CEO</td><td>صور كلاب عشوائية — dog.ceo/dog-api</td></tr><tr><td>OpenLibrary</td><td>بيانات الكتب — openlibrary.org/api</td></tr><tr><td>ExchangeRate</td><td>أسعار صرف العملات — exchangerate-api.com (مجاني)</td></tr><tr><td>Pokémon API</td><td>بيانات Pokémon — pokeapi.co</td></tr><tr><td>Jikan (Anime)</td><td>بيانات Anime — jikan.moe</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>مثال: جلب بيانات الطقس</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// تحتاج مفتاح API مجاني من openweathermap.org
+const API_KEY = 'YOUR_FREE_API_KEY';
+
+async function getWeather(city) {
+  try {
+    const url = `https://api.openweathermap.org/data/2.5/weather`,
+      + `?q=${encodeURIComponent(city)}`
+      + `&amp;appid=${API_KEY}`
+      + `&amp;units=metric`
+      + `&amp;lang=ar`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      if (response.status === 404) throw new Error('المدينة غير موجودة');
+      throw new Error(`خطأ ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return {
+      city:        data.name,
+      country:     data.sys.country,
+      temp:        Math.round(data.main.temp),
+      feelsLike:   Math.round(data.main.feels_like),
+      humidity:    data.main.humidity,
+      description: data.weather[0].description,
+      icon:        data.weather[0].icon,
+      wind:        data.wind.speed,
+    };
+
+  } catch (error) {
+    throw new Error(`تعذّر جلب الطقس: ${error.message}`);
+  }
+}
+
+// استخدام
+async function displayWeather(cityName) {
+  showLoading();
+  try {
+    const weather = await getWeather(cityName);
+    const iconUrl = `https://openweathermap.org/img/wn/${weather.icon}@2x.png`;
+
+    weatherCard.innerHTML = `
+      &lt;h2&gt;${weather.city}, ${weather.country}&lt;/h2&gt;
+      &lt;img src="${iconUrl}" alt="${weather.description}" /&gt;
+      &lt;p class="temp"&gt;${weather.temp}°م&lt;/p&gt;
+      &lt;p&gt;${weather.description}&lt;/p&gt;
+      &lt;p&gt;الرطوبة: ${weather.humidity}%&lt;/p&gt;
+      &lt;p&gt;الرياح: ${weather.wind} م/ث&lt;/p&gt;
+    `;
+  } catch (e) {
+    showError(e.message);
+  } finally {
+    hideLoading();
+  }
+}</code></pre>
+  <div class="output-box" id="out-17"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء التاسع: تمارين الجلسة الثانية عشرة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — Promises<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">اكتب ومحاكاة العمليات التالية:</p><ul class="mini-list"><li>أنشئ Promise تُحاكي اتصال قاعدة بيانات: ناجح بـ 80% وفاشل بـ 20%</li><li>اكتب تسلسل then لجلب مستخدم ثم منشوراته ثم تعليقات أول منشور</li><li>استخدم Promise.all لجلب 3 مستخدمين في آن واحد</li><li>نفّذ Promise.allSettled على مصفوفة تحتوي على Promise مرفوضة وأثبت أنه يستمر</li><li>أنشئ دالة delay(ms) تُعيد Promise تُحل بعد ms مللي ثانية (مفيد للاختبار)</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — async/await وFetch<span class="ex-time">20 دقيقة</span></h4><p class="blk-para">باستخدام API jsonplaceholder.typicode.com:</p><ul class="mini-list"><li>اكتب async function تجلب كل المنشورات وتصفّي تلك التي يزيد عنوانها على 40 حرفاً</li><li>اكتب async function تجلب مستخدماً + منشوراته + أول تعليق لكل منشور في آنٍ واحد بـ Promise.all</li><li>أضف معالجة شاملة للأخطاء (شبكة + HTTP)</li><li>أضف timeout بـ AbortController (5 ثوانٍ)</li><li>اعرض النتائج في DOM بشكل منظم</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — تطبيق Pokémon<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ تطبيقاً لعرض بيانات Pokémon:</p><ul class="mini-list"><li>اجلب قائمة أول 20 Pokémon: GET https://pokeapi.co/api/v2/pokemon?limit=20</li><li>اعرض كل Pokémon كبطاقة: صورة + اسم + رقم</li><li>عند النقر على بطاقة: اجلب تفاصيل (الطول، الوزن، الأنواع، القدرات)</li><li>أضف Loading Spinner أثناء الجلب وError Message عند الفشل</li><li>أضف زر 'تحميل المزيد' يجلب الـ 20 التاليين</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الثانية عشرة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>Single-Threaded</td><td>JS ينفّذ تعليمة واحدة — العمليات الطويلة تُجمّد بدون async</td></tr><tr><td>Event Loop</td><td>Call Stack → Web APIs → Callback Queue → Event Loop</td></tr><tr><td>setTimeout</td><td>ينفّذ دالة مرة واحدة بعد تأخير | clearTimeout للإلغاء</td></tr><tr><td>setInterval</td><td>ينفّذ دالة كل X مللي ثانية | clearInterval للإيقاف</td></tr><tr><td>Callback</td><td>دالة تُمرَّر لتُنفَّذ لاحقاً — أساس JS غير المتزامن</td></tr><tr><td>Callback Hell</td><td>تداخل عميق — صعب القراءة — الحل: Promises وasync/await</td></tr><tr><td>Promise</td><td>كائن لنتيجة مستقبلية: Pending → Fulfilled أو Rejected</td></tr><tr><td>then/catch/finally</td><td>تسلسل Promises — catch واحد للجميع — finally دائماً</td></tr><tr><td>Promise.all</td><td>ينتظر الجميع — يفشل لو فشل أي — للطلبات المترابطة</td></tr><tr><td>Promise.allSettled</td><td>ينتظر الجميع بغض النظر ✅ — للتقارير الشاملة</td></tr><tr><td>Promise.race</td><td>أول من ينتهي يفوز — للـ timeout</td></tr><tr><td>Promise.any</td><td>أول من ينجح يفوز — للبدائل</td></tr><tr><td>async/await</td><td>كود غير متزامن بأسلوب متزامن نظيف وسهل القراءة ✅</td></tr><tr><td>try/catch مع async</td><td>معالجة أخطاء مألوفة ومرنة</td></tr><tr><td>تنفيذ متوازٍ</td><td>Promise.all مع await لتسريع الطلبات المستقلة</td></tr><tr><td>Fetch API</td><td>fetch(url) → response → .json()  | POST/PUT/DELETE</td></tr><tr><td>HTTP Errors</td><td>response.ok للتحقق | fetch لا يُلقي خطأ لـ 404/500</td></tr><tr><td>AbortController</td><td>إلغاء طلب Fetch بعد timeout محدد</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الثالثة عشرة: Local Storage وSession Storage</span><p>✦ ما هو Web Storage وأنواعه</p><p>✦ localStorage: الحفظ الدائم بين الجلسات</p><p>✦ sessionStorage: الحفظ المؤقت للجلسة الحالية</p><p>✦ تخزين واسترجاع البيانات المعقدة (JSON)</p><p>✦ بناء نظام تفضيلات المستخدم (Theme, Language, Settings)</p><p>✦ Cookies: متى تستخدمها وكيف تتعامل معها</p><p>✦ مشروع: تطبيق مذكرات يحفظ البيانات محلياً</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الثانية عشرة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الثالثة عشرة</span><p>يُرسَل مجلد المشروع (HTML + CSS + JS) مضغوطاً أو رابط GitHub Pages</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: تطبيق الطقس المتكامل 🌤️</h3></div><p class="blk-para">أنشئ تطبيق طقس احترافي يجلب بيانات حقيقية من OpenWeatherMap API (سجّل مجاناً للحصول على مفتاح):</p><h4 class="mini-head">◆ 📋 الوظائف المطلوبة:</h4><ul class="mini-list"><li>حقل بحث بمدينة + زر بحث — عند الضغط: جلب الطقس الحالي وعرضه</li><li>عرض: اسم المدينة والدولة، درجة الحرارة، الوصف، الرطوبة، الرياح، الأيقونة</li><li>جلب توقعات 5 أيام: GET /forecast — عرض كل يوم ببطاقة منفصلة</li><li>Loading Spinner أثناء الجلب — Error Message عند الفشل</li><li>زر 'موقعي الحالي' يستخدم Geolocation API لمعرفة الموقع تلقائياً</li><li>حفظ آخر 5 مدن بحث في localStorage وعرضها كاقتراحات</li></ul><h4 class="mini-head">◆ 🔗 روابط مفيدة:</h4><ul class="mini-list"><li>API الطقس الحالي: api.openweathermap.org/data/2.5/weather?q={city}&amp;appid={key}&amp;units=metric&amp;lang=ar</li><li>API التوقعات: api.openweathermap.org/data/2.5/forecast?q={city}&amp;appid={key}&amp;units=metric&amp;lang=ar</li><li>أيقونات الطقس: openweathermap.org/img/wn/{icon}@2x.png</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>جلب وعرض بيانات الطقس الحالي بشكل صحيح</td><td>25 نقطة</td></tr><tr><td>توقعات 5 أيام تعمل وتُعرَض جميلاً</td><td>20 نقطة</td></tr><tr><td>Loading وError handling كاملان</td><td>20 نقطة</td></tr><tr><td>Geolocation API يعمل</td><td>15 نقطة</td></tr><tr><td>localStorage للمدن الأخيرة</td><td>10 نقاط</td></tr><tr><td>تصميم احترافي ومتجاوب</td><td>10 نقاط</td></tr></tbody></table></div></div></div>
+<div class="closing-banner">
+  <h3>⏳ أحسنت! تطبيقاتك الآن تتحدث مع العالم الخارجي ⏳</h3>
+  <p>async/await + Fetch = مفتاح كل تطبيق ويب حديث</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 12</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-11.html"><small>السابق</small><span>الجلسة 11 — المصفوفات والكائنات المتقدمة</span></a>
+        <a class="nav-arrow next is-disabled" href="#"><small>التالي</small><span>الجلسة 13 — قريباً 🔒</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

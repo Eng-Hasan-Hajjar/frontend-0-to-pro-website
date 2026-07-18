@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 11 — المصفوفات والكائنات المتقدمة | Front-End Master Book</title>
+<meta name="description" content="المصفوفات والكائنات المتقدمة — map • filter • reduce • Destructuring • Spread • Optional Chaining">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="11">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>مسار JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🔢</span>
+    <div>
+      <div class="session-tag">Session 11 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة الحادية عشرة — المصفوفات والكائنات المتقدمة</h1>
+  <p class="tags-line">map • filter • reduce • Destructuring • Spread • Optional Chaining</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة الحادية عشرة</h2>
+  <ul class="goal-list"><li>استخدام طرق المصفوفات عالية الترتيب: map, filter, reduce, find, findIndex</li><li>التعامل مع طرق إضافية: some, every, flat, flatMap, sort, reverse</li><li>فهم الفرق بين الطرق التي تُعدّل المصفوفة الأصلية وتلك التي تُعيد نسخة جديدة</li><li>تطبيق التدمير (Destructuring) على المصفوفات والكائنات</li><li>استخدام Spread وRest مع المصفوفات والكائنات</li><li>التعامل مع Object.keys(), Object.values(), Object.entries()</li><li>دمج الكائنات ونسخها بأمان</li><li>استخدام Optional Chaining (?.) وNullish Coalescing (??)</li><li>كتابة كود وظيفي (Functional Programming) نظيف باستخدام method chaining</li><li>بناء نظام تصفية وترتيب وتحليل بيانات متقدم</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة العاشرة</span><p>✔ DOM: document.querySelector | getElementById</p><p>✔ قراءة وتعديل: textContent, innerHTML, getAttribute, style, classList</p><p>✔ إنشاء وحذف: createElement, appendChild, insertAdjacentHTML, remove()</p><p>✔ الأحداث: addEventListener, Event Object, preventDefault()</p><p>✔ Event Delegation: مستمع واحد على الأب + e.target.closest()</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🗂️</span><h2>الجزء الأول: طرق المصفوفات عالية الترتيب</h2></div><p class="blk-para">الطرق عالية الترتيب (Higher-Order Methods) تأخذ دالة كمعامل — هي أساس البرمجة الوظيفية في JavaScript وتُغني عن كثير من الحلقات.</p><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>map() — تحويل كل عنصر</h3></div><p class="blk-para">map() تُعيد مصفوفة جديدة بنفس الحجم، كل عنصر فيها هو نتيجة تطبيق الدالة على العنصر المقابل:</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const numbers = [1, 2, 3, 4, 5];
+
+// مضاعفة كل رقم
+const doubled = numbers.map(n =&gt; n * 2);
+console.log(doubled); // [2, 4, 6, 8, 10]
+
+// تحويل مصفوفة أرقام لنصوص
+const strings = numbers.map(n =&gt; `الرقم ${n}`);
+// ['الرقم 1', 'الرقم 2', ...]
+
+// مع معامل الفهرس
+const indexed = numbers.map((n, i) =&gt; `${i+1}. ${n}`);
+// ['1. 1', '2. 2', '3. 3', ...]
+
+// تحويل مصفوفة كائنات
+const users = [
+  { id: 1, name: 'أحمد', age: 25 },
+  { id: 2, name: 'سارة', age: 22 },
+  { id: 3, name: 'خالد', age: 30 },
+];
+
+// استخراج الأسماء فقط
+const names = users.map(u =&gt; u.name);
+// ['أحمد', 'سارة', 'خالد']
+
+// إضافة خاصية جديدة لكل كائن
+const usersWithLabel = users.map(u =&gt; ({
+  ...u,
+  label: `${u.name} (${u.age} سنة)`,
+  isAdult: u.age &gt;= 18,
+}));
+
+// إنشاء عناصر HTML من بيانات
+const cards = products.map(p =&gt;
+  `&lt;div class="card"&gt;
+     &lt;h3&gt;${p.name}&lt;/h3&gt;
+     &lt;p&gt;${p.price} ريال&lt;/p&gt;
+   &lt;/div&gt;`
+).join('');
+container.innerHTML = cards;</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>filter() — تصفية العناصر</h3></div><p class="blk-para">filter() تُعيد مصفوفة جديدة تحتوي فقط العناصر التي اجتازت الشرط (أعادت الدالة true):</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const products = [
+  { id:1, name:'كتاب',      price:45,  category:'تعليم',  inStock:true  },
+  { id:2, name:'ساعة',      price:350, category:'إلكترونيات', inStock:false },
+  { id:3, name:'قلم',       price:15,  category:'مكتبية', inStock:true  },
+  { id:4, name:'هاتف',      price:899, category:'إلكترونيات', inStock:true  },
+  { id:5, name:'حقيبة',     price:120, category:'ملابس',  inStock:true  },
+  { id:6, name:'سماعات',    price:250, category:'إلكترونيات', inStock:false },
+];
+
+// المنتجات المتوفرة فقط
+const available = products.filter(p =&gt; p.inStock);
+
+// المنتجات بسعر أقل من 200
+const cheap = products.filter(p =&gt; p.price &lt; 200);
+
+// منتجات الإلكترونيات المتوفرة
+const availableElec = products.filter(
+  p =&gt; p.category === 'إلكترونيات' &amp;&amp; p.inStock
+);
+
+// البحث بالاسم
+const searchTerm = 'ساعة';
+const results = products.filter(p =&gt;
+  p.name.includes(searchTerm) ||
+  p.category.includes(searchTerm)
+);
+
+// حذف عنصر بالـ id (دون تعديل الأصل)
+const withoutId2 = products.filter(p =&gt; p.id !== 2);</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>reduce() — تجميع وتلخيص</h3></div><p class="blk-para">reduce() هي الأقوى — تُحوّل المصفوفة إلى قيمة واحدة: مجموع، كائن، مصفوفة أخرى...</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// reduce(callback, initialValue)
+// callback(accumulator, currentValue, index, array)
+
+const numbers = [1, 2, 3, 4, 5];
+
+// ══ مجموع الأرقام ══
+const sum = numbers.reduce((acc, n) =&gt; acc + n, 0);
+console.log(sum); // 15
+
+// ══ ضرب الأرقام ══
+const product = numbers.reduce((acc, n) =&gt; acc * n, 1);
+console.log(product); // 120
+
+// ══ الحد الأقصى ══
+const max = numbers.reduce((acc, n) =&gt; n &gt; acc ? n : acc, -Infinity);
+console.log(max); // 5
+
+// ══ مجموع خاصية في مصفوفة كائنات ══
+const cart = [
+  { name:'كتاب', price:45,  qty:2 },
+  { name:'قلم',  price:15,  qty:5 },
+  { name:'حقيبة', price:120, qty:1 },
+];
+
+const totalPrice = cart.reduce((acc, item) =&gt; {
+  return acc + (item.price * item.qty);
+}, 0);
+// 45*2 + 15*5 + 120*1 = 90 + 75 + 120 = 285
+
+// ══ تجميع حسب فئة (Grouping) ══
+const grouped = products.reduce((acc, p) =&gt; {
+  const cat = p.category;
+  if (!acc[cat]) acc[cat] = [];
+  acc[cat].push(p);
+  return acc;
+}, {});
+// { 'تعليم': [...], 'إلكترونيات': [...], 'ملابس': [...] }
+
+// ══ تحويل مصفوفة كائنات لـ Map بالـ id ══
+const usersMap = users.reduce((acc, u) =&gt; {
+  acc[u.id] = u;
+  return acc;
+}, {});
+// { 1: {id:1,...}, 2: {id:2,...} }
+console.log(usersMap[2].name); // 'سارة'</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.4</span><h3>find() وfindIndex()</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const users = [
+  { id:1, name:'أحمد',  role:'admin' },
+  { id:2, name:'سارة',  role:'user'  },
+  { id:3, name:'خالد',  role:'user'  },
+  { id:4, name:'نورة',  role:'admin' },
+];
+
+// find — يُعيد أول عنصر مطابق (أو undefined)
+const admin = users.find(u =&gt; u.role === 'admin');
+console.log(admin); // { id:1, name:'أحمد', role:'admin' }
+
+const user3 = users.find(u =&gt; u.id === 3);
+console.log(user3.name); // 'خالد'
+
+const notFound = users.find(u =&gt; u.id === 99);
+console.log(notFound); // undefined
+
+// findIndex — يُعيد فهرس أول عنصر مطابق (أو -1)
+const idx = users.findIndex(u =&gt; u.id === 3);
+console.log(idx); // 2
+
+// مثال عملي: تحديث عنصر بالـ id
+const updateUser = (users, id, updates) =&gt; {
+  const idx = users.findIndex(u =&gt; u.id === id);
+  if (idx === -1) return users; // لم يُوجَد
+  return [
+    ...users.slice(0, idx),
+    { ...users[idx], ...updates },
+    ...users.slice(idx + 1),
+  ];
+};
+
+const updated = updateUser(users, 2, { role: 'admin', city: 'جدة' });</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.5</span><h3>some() وevery()</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const scores = [85, 92, 78, 65, 95, 72];
+
+// some — هل يوجد عنصر واحد على الأقل يحقق الشرط؟
+const hasExcellent = scores.some(s =&gt; s &gt;= 90);
+console.log(hasExcellent); // true (92, 95)
+
+const hasFail = scores.some(s =&gt; s &lt; 60);
+console.log(hasFail); // false
+
+// every — هل جميع العناصر تحقق الشرط؟
+const allPass = scores.every(s =&gt; s &gt;= 60);
+console.log(allPass); // true
+
+const allExcellent = scores.every(s =&gt; s &gt;= 90);
+console.log(allExcellent); // false
+
+// مثال عملي: التحقق من صحة نموذج
+const fields = ['أحمد', 'ahmed@email.com', '0501234567'];
+const allFilled = fields.every(f =&gt; f.trim().length &gt; 0);
+
+// هل يوجد أي منتج نفد من المخزون؟
+const hasOutOfStock = products.some(p =&gt; !p.inStock);</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.6</span><h3>flat() وflatMap()</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// flat — تُسوّي المصفوفات المتداخلة
+const nested = [1, [2, 3], [4, [5, 6]]];
+
+console.log(nested.flat());    // [1, 2, 3, 4, [5, 6]] — عمق 1
+console.log(nested.flat(2));   // [1, 2, 3, 4, 5, 6]  — عمق 2
+console.log(nested.flat(Infinity)); // [1,2,3,4,5,6]  — أي عمق
+
+// مثال عملي: دمج قوائم مشاريع المستخدمين
+const userProjects = [
+  { name: 'أحمد', projects: ['موقع', 'تطبيق'] },
+  { name: 'سارة', projects: ['مدونة', 'متجر', 'API'] },
+];
+const allProjects = userProjects.map(u =&gt; u.projects).flat();
+// ['موقع', 'تطبيق', 'مدونة', 'متجر', 'API']
+
+// flatMap — map ثم flat(1) دفعة واحدة ✅
+const allProjectsFM = userProjects.flatMap(u =&gt; u.projects);
+// نفس النتيجة بسطر واحد
+
+// مثال آخر
+const sentences = ['أهلاً بالعالم', 'JavaScript ممتع'];
+const words = sentences.flatMap(s =&gt; s.split(' '));
+// ['أهلاً', 'بالعالم', 'JavaScript', 'ممتع']</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔀</span><h2>الجزء الثاني: الترتيب والطرق المُعدِّلة</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>sort() — الترتيب</h3></div><p class="blk-para">⚠️ sort() تُعدّل المصفوفة الأصلية — استخدم [...arr].sort() دائماً لنسخها أولاً:</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ══ ترتيب أبجدي (الافتراضي) ══
+const fruits = ['موز', 'تفاح', 'برتقال', 'عنب'];
+const sorted = [...fruits].sort(); // نسخة مرتبة
+console.log(sorted); // ['برتقال', 'تفاح', 'عنب', 'موز']
+console.log(fruits); // لم يتغير ✅
+
+// ⚠️ ترتيب الأرقام بدون دالة مقارنة — خاطئ!
+const nums = [10, 2, 100, 5, 20];
+console.log([...nums].sort()); // [10, 100, 2, 20, 5] ❌
+
+// ✅ ترتيب الأرقام تصاعدياً
+const ascNums = [...nums].sort((a, b) =&gt; a - b);
+// [2, 5, 10, 20, 100] ✅
+
+// ✅ ترتيب الأرقام تنازلياً
+const descNums = [...nums].sort((a, b) =&gt; b - a);
+// [100, 20, 10, 5, 2] ✅
+
+// ترتيب كائنات حسب خاصية
+const employees = [
+  { name:'خالد', salary:5000 },
+  { name:'أحمد', salary:8000 },
+  { name:'سارة', salary:6500 },
+];
+
+// ترتيب تصاعدي بالراتب
+const byAscSalary = [...employees].sort((a, b) =&gt; a.salary - b.salary);
+
+// ترتيب أبجدي بالاسم
+const byName = [...employees].sort((a, b) =&gt; a.name.localeCompare(b.name, 'ar'));
+
+// ترتيب متعدد: بالراتب ثم بالاسم
+const sorted2 = [...employees].sort((a, b) =&gt; {
+  if (a.salary !== b.salary) return b.salary - a.salary;
+  return a.name.localeCompare(b.name, 'ar');
+});</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>الطرق المُعدِّلة للمصفوفة الأصلية (Mutating)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>let arr = [1, 2, 3, 4, 5];
+
+// push — إضافة للنهاية (يُعيد الطول الجديد)
+arr.push(6, 7); // [1,2,3,4,5,6,7]
+
+// pop — حذف من النهاية (يُعيد العنصر المحذوف)
+const last = arr.pop(); // last=7, arr=[1,2,3,4,5,6]
+
+// unshift — إضافة للبداية
+arr.unshift(0); // [0,1,2,3,4,5,6]
+
+// shift — حذف من البداية
+const first = arr.shift(); // first=0, arr=[1,2,3,4,5,6]
+
+// splice — إضافة/حذف/استبدال في موضع محدد
+// splice(start, deleteCount, ...itemsToAdd)
+arr.splice(2, 0, 99);      // إضافة 99 عند الفهرس 2
+arr.splice(2, 1);          // حذف العنصر عند الفهرس 2
+arr.splice(1, 2, 10, 20);  // استبدال 2 عناصر بـ 10 و20
+
+// reverse — عكس المصفوفة
+arr.reverse();              // يعكس الأصل
+const rev = [...arr].reverse(); // نسخة معكوسة ✅
+
+// fill — تعبئة بقيمة
+new Array(5).fill(0);       // [0,0,0,0,0]
+arr.fill(0, 2, 4);          // يملأ من 2 لـ 4 بـ 0</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.3</span><h3>الطرق غير المُعدِّلة (Non-Mutating) ✅</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const arr = [1, 2, 3, 4, 5];
+
+// slice — قطع من المصفوفة (لا تُعدّل الأصل)
+arr.slice(1, 3);     // [2, 3] — من 1 إلى 3 (غير شامل)
+arr.slice(2);        // [3, 4, 5] — من 2 للنهاية
+arr.slice(-2);       // [4, 5] — آخر عنصرين
+arr.slice();         // [1,2,3,4,5] — نسخة كاملة
+
+// concat — دمج مصفوفات
+const a = [1, 2];
+const b = [3, 4];
+const c = a.concat(b);         // [1,2,3,4]
+const d = [...a, ...b];        // [1,2,3,4] ✅ (Spread أفضل)
+
+// indexOf — الفهرس الأول (أو -1)
+arr.indexOf(3);      // 2
+arr.indexOf(99);     // -1
+arr.lastIndexOf(3);  // آخر موضع
+
+// includes — التحقق من وجود قيمة
+arr.includes(3);     // true ✅
+arr.includes(99);    // false
+
+// join — تحويل لنص
+arr.join(', ');      // '1, 2, 3, 4, 5'
+arr.join(' - ');     // '1 - 2 - 3 - 4 - 5'
+arr.join('');        // '12345'
+
+// at() — وصول بفهرس سالب
+arr.at(-1);          // 5 (الأخير) ✅
+arr.at(-2);          // 4
+
+// Array.from() — إنشاء مصفوفة من iterable
+Array.from('مرحبا');          // ['م','ر','ح','ب','ا']
+Array.from({length:5}, (_,i) =&gt; i+1); // [1,2,3,4,5]
+Array.from(document.querySelectorAll('li')); // مصفوفة من NodeList</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.4</span><h3>جدول مرجع شامل لطرق المصفوفات</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الطريقة</th><th>تُعدّل الأصل؟</th><th>تُعيد</th></tr></thead><tbody><tr><td>push(...items)</td><td>✅ نعم</td><td>الطول الجديد</td></tr><tr><td>pop()</td><td>✅ نعم</td><td>العنصر المحذوف</td></tr><tr><td>shift()</td><td>✅ نعم</td><td>العنصر الأول المحذوف</td></tr><tr><td>unshift(...items)</td><td>✅ نعم</td><td>الطول الجديد</td></tr><tr><td>splice(i, n)</td><td>✅ نعم</td><td>مصفوفة المحذوفات</td></tr><tr><td>sort(fn)</td><td>✅ نعم</td><td>المصفوفة المرتبة</td></tr><tr><td>reverse()</td><td>✅ نعم</td><td>المصفوفة المعكوسة</td></tr><tr><td>fill(v, i, j)</td><td>✅ نعم</td><td>المصفوفة المعبأة</td></tr><tr><td>slice(i, j)</td><td>❌ لا</td><td>مصفوفة جديدة</td></tr><tr><td>concat(...arrs)</td><td>❌ لا</td><td>مصفوفة جديدة</td></tr><tr><td>map(fn)</td><td>❌ لا</td><td>مصفوفة جديدة بنفس الحجم</td></tr><tr><td>filter(fn)</td><td>❌ لا</td><td>مصفوفة جديدة (أصغر أو مساوية)</td></tr><tr><td>reduce(fn, init)</td><td>❌ لا</td><td>قيمة واحدة</td></tr><tr><td>find(fn)</td><td>❌ لا</td><td>العنصر أو undefined</td></tr><tr><td>findIndex(fn)</td><td>❌ لا</td><td>الفهرس أو -1</td></tr><tr><td>some(fn)</td><td>❌ لا</td><td>boolean</td></tr><tr><td>every(fn)</td><td>❌ لا</td><td>boolean</td></tr><tr><td>flat(depth)</td><td>❌ لا</td><td>مصفوفة جديدة مسواة</td></tr><tr><td>flatMap(fn)</td><td>❌ لا</td><td>مصفوفة جديدة</td></tr><tr><td>includes(v)</td><td>❌ لا</td><td>boolean</td></tr><tr><td>indexOf(v)</td><td>❌ لا</td><td>رقم (فهرس أو -1)</td></tr><tr><td>join(sep)</td><td>❌ لا</td><td>نص</td></tr><tr><td>at(i)</td><td>❌ لا</td><td>العنصر</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">📦</span><h2>الجزء الثالث: التدمير (Destructuring)</h2></div><p class="blk-para">Destructuring يُتيح استخراج قيم من المصفوفات والكائنات بطريقة أنيقة وموجزة.</p><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>تدمير المصفوفات (Array Destructuring)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const colors = ['أحمر', 'أخضر', 'أزرق', 'أصفر'];
+
+// الطريقة التقليدية
+const c1 = colors[0];
+const c2 = colors[1];
+
+// ✅ Destructuring
+const [first, second, third] = colors;
+console.log(first);  // 'أحمر'
+console.log(second); // 'أخضر'
+
+// تخطّي عناصر
+const [, , blue] = colors; // تخطّي أول وثاني
+console.log(blue); // 'أزرق'
+
+// Rest في التدمير
+const [primary, ...rest] = colors;
+console.log(primary); // 'أحمر'
+console.log(rest);    // ['أخضر', 'أزرق', 'أصفر']
+
+// قيمة افتراضية
+const [a = 'فارغ', b = 'افتراضي', z = 'لا شيء'] = ['أولى'];
+console.log(a); // 'أولى'
+console.log(b); // 'افتراضي'
+console.log(z); // 'لا شيء'
+
+// ⭐ تبادل المتغيرات بسطر واحد
+let x = 1, y = 2;
+[x, y] = [y, x];
+console.log(x, y); // 2  1
+
+// تدمير قيمة Return من دالة
+function getMinMax(arr) {
+  return [Math.min(...arr), Math.max(...arr)];
+}
+const [min, max] = getMinMax([5, 2, 8, 1, 9]);
+console.log(min, max); // 1  9</code></pre>
+  <div class="output-box" id="out-10"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>تدمير الكائنات (Object Destructuring)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const user = {
+  id:    1,
+  name:  'أحمد محمد',
+  email: 'ahmed@example.com',
+  age:   25,
+  city:  'الرياض',
+  role:  'admin',
+};
+
+// ✅ Destructuring الأساسي
+const { name, email, age } = user;
+console.log(name);  // 'أحمد محمد'
+console.log(email); // 'ahmed@example.com'
+
+// إعادة التسمية (rename)
+const { name: userName, email: userEmail } = user;
+console.log(userName);  // 'أحمد محمد'
+
+// قيمة افتراضية
+const { city = 'غير محدد', country = 'السعودية' } = user;
+console.log(city);    // 'الرياض' (موجود)
+console.log(country); // 'السعودية' (افتراضي)
+
+// Rest في تدمير الكائن
+const { id, role, ...userInfo } = user;
+console.log(id);       // 1
+console.log(userInfo); // { name, email, age, city }
+
+// تدمير متداخل
+const person = {
+  name: 'سارة',
+  address: {
+    city: 'جدة',
+    country: 'السعودية',
+    zip: '21577',
+  },
+  skills: ['HTML', 'CSS', 'JavaScript'],
+};
+
+const { name: pName, address: { city, zip }, skills: [firstSkill] } = person;
+console.log(pName);      // 'سارة'
+console.log(city);       // 'جدة'
+console.log(zip);        // '21577'
+console.log(firstSkill); // 'HTML'
+
+// تدمير في معاملات الدالة ✅
+function displayUser({ name, age = 0, role = 'user' }) {
+  console.log(`${name} (${age}) — ${role}`);
+}
+displayUser(user); // 'أحمد محمد (25) — admin'
+displayUser({ name: 'زائر' }); // 'زائر (0) — user'</code></pre>
+  <div class="output-box" id="out-11"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🧩</span><h2>الجزء الرابع: الكائنات المتقدمة (Advanced Objects)</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>Object.keys() وObject.values() وObject.entries()</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const product = {
+  name:     'هاتف ذكي',
+  price:    899,
+  category: 'إلكترونيات',
+  inStock:  true,
+  rating:   4.5,
+};
+
+// Object.keys — مصفوفة بأسماء المفاتيح
+console.log(Object.keys(product));
+// ['name', 'price', 'category', 'inStock', 'rating']
+
+// Object.values — مصفوفة بالقيم
+console.log(Object.values(product));
+// ['هاتف ذكي', 899, 'إلكترونيات', true, 4.5]
+
+// Object.entries — مصفوفة من أزواج [key, value]
+console.log(Object.entries(product));
+// [['name','هاتف ذكي'], ['price',899], ...]
+
+// التكرار على خصائص الكائن
+Object.entries(product).forEach(([key, value]) =&gt; {
+  console.log(`${key}: ${value}`);
+});
+
+// إيجاد مجموع الأرقام في الكائن
+const numericSum = Object.values(product)
+  .filter(v =&gt; typeof v === 'number')
+  .reduce((sum, v) =&gt; sum + v, 0);
+// 899 + 4.5 = 903.5
+
+// تحويل كائن لمصفوفة للترتيب
+const scores = { أحمد: 85, سارة: 92, خالد: 78 };
+const sortedByScore = Object.entries(scores)
+  .sort(([,a], [,b]) =&gt; b - a)
+  .map(([name, score]) =&gt; ({ name, score }));
+// [{ name:'سارة', score:92 }, { name:'أحمد', score:85 }, ...]</code></pre>
+  <div class="output-box" id="out-12"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>دمج ونسخ الكائنات</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const defaults = { color:'أزرق', size:'متوسط', visible:true };
+const custom   = { color:'أحمر', font:'Cairo' };
+
+// Object.assign — دمج في الأصل (يُعدّله!)
+const merged1 = Object.assign({}, defaults, custom);
+// { color:'أحمر', size:'متوسط', visible:true, font:'Cairo' }
+
+// Spread — الأنيق والأحدث ✅
+const merged2 = { ...defaults, ...custom };
+// نفس النتيجة — الأخير يتغلب عند التعارض
+
+// نسخ سطحية (Shallow Copy)
+const original = { name: 'أحمد', scores: [90, 85] };
+const shallow  = { ...original };
+
+// ⚠️ المصفوفات والكائنات المتداخلة مُشتركة!
+shallow.scores.push(95);
+console.log(original.scores); // [90, 85, 95] — تغيّر!
+
+// نسخ عميقة (Deep Copy) — للكائنات المتداخلة
+const deep = JSON.parse(JSON.stringify(original));
+// ✅ لكن لا تعمل مع Date, Function, undefined
+
+// structuredClone — الحديث والأفضل ✅
+const deepCopy = structuredClone(original);
+
+// تحديث خاصية في كائن متداخل بأمان
+const user = { name:'أحمد', address: { city:'الرياض' } };
+const updated = {
+  ...user,
+  address: { ...user.address, city: 'جدة' },
+};
+console.log(user.address.city);    // 'الرياض' (الأصل آمن)
+console.log(updated.address.city); // 'جدة'</code></pre>
+  <div class="output-box" id="out-13"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.3</span><h3>Object.freeze() وObject.seal()</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// Object.freeze — تجميد كامل (لا تعديل، لا إضافة، لا حذف)
+const config = Object.freeze({
+  API_URL:  'https://api.example.com',
+  MAX_SIZE: 100,
+  VERSION:  '2.0',
+});
+
+config.API_URL = 'هجوم'; // لا يُطبَّق (صامت) أو خطأ في strict mode
+config.newProp = 'جديد'; // لا يُطبَّق
+console.log(config.API_URL); // 'https://api.example.com' آمن ✅
+
+// Object.seal — يمنع الإضافة والحذف لكن يسمح التعديل
+const obj = Object.seal({ name: 'أحمد', age: 25 });
+obj.name = 'محمد';  // ✅ تعديل مسموح
+obj.city = 'جدة';   // ❌ لا يُطبَّق
+delete obj.age;      // ❌ لا يُطبَّق
+
+// التحقق
+console.log(Object.isFrozen(config)); // true
+console.log(Object.isSealed(obj));    // true</code></pre>
+  <div class="output-box" id="out-14"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">✨</span><h2>الجزء الخامس: ميزات JavaScript الحديثة</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>Optional Chaining (?.)</h3></div><p class="blk-para">يُتيح الوصول الآمن لخصائص متداخلة دون رمي خطأ إذا كانت القيمة null أو undefined:</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const user = {
+  name: 'أحمد',
+  address: {
+    city: 'الرياض',
+    // country غير موجود
+  },
+  // phone غير موجود
+};
+
+// ❌ بدون Optional Chaining — خطأ!
+// console.log(user.phone.mobile); // TypeError!
+// console.log(user.address.country.code); // TypeError!
+
+// ✅ مع Optional Chaining
+console.log(user?.phone?.mobile);           // undefined (لا خطأ)
+console.log(user?.address?.country?.code);  // undefined
+console.log(user?.address?.city);           // 'الرياض'
+console.log(user?.name);                    // 'أحمد'
+
+// مع المصفوفات
+const arr = null;
+console.log(arr?.[0]); // undefined (لا خطأ)
+
+// مع استدعاء الدوال
+const obj = { greet: () =&gt; 'مرحباً' };
+console.log(obj.greet?.());      // 'مرحباً'
+console.log(obj.farewell?.());   // undefined (لا خطأ)
+
+// مثال عملي: بيانات API قد تكون ناقصة
+const apiResponse = {
+  data: {
+    users: [
+      { name: 'أحمد', profile: { avatar: 'a.jpg' } },
+      { name: 'سارة' }, // لا يوجد profile
+    ]
+  }
+};
+
+apiResponse.data?.users?.forEach(user =&gt; {
+  const avatar = user.profile?.avatar ?? 'default.jpg';
+  console.log(`${user.name}: ${avatar}`);
+});
+// أحمد: a.jpg
+// سارة: default.jpg</code></pre>
+  <div class="output-box" id="out-15"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>Nullish Coalescing (??) وLogical Assignment</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ?? — يُعيد الجانب الأيمن فقط إذا كان الأيسر null أو undefined
+// (مختلف عن || الذي يتجاوب مع كل Falsy)
+
+const name  = null   ?? 'مجهول';    // 'مجهول'
+const count = 0      ?? 'لا يوجد';  // 0 ✅ (0 ليس null!)
+const text  = ''     ?? 'فارغ';     // '' ✅ (نص فارغ ليس null!)
+const score = undefined ?? 50;      // 50
+
+// مقارنة || مع ??
+console.log(0   || 'بديل');  // 'بديل' (0 = falsy)
+console.log(0   ?? 'بديل');  // 0 (0 ليس null/undefined) ✅
+console.log(''  || 'بديل');  // 'بديل'
+console.log(''  ?? 'بديل');  // '' ✅
+
+// مثال عملي: إعدادات المستخدم
+function getSettings(userConfig = {}) {
+  return {
+    theme:    userConfig.theme    ?? 'light',
+    fontSize: userConfig.fontSize ?? 16,
+    lang:     userConfig.lang     ?? 'ar',
+    volume:   userConfig.volume   ?? 50,  // 0 يبقى 0 ✅
+  };
+}
+
+console.log(getSettings({ volume: 0 }));
+// { theme:'light', fontSize:16, lang:'ar', volume:0 }
+
+// Logical Assignment Operators
+let a = null;
+a ??= 'قيمة افتراضية'; // يُسند فقط إذا null/undefined
+
+let b = '';
+b ||= 'بديل';           // يُسند إذا falsy
+
+let c = 'موجود';
+c &amp;&amp;= c.toUpperCase();  // يُسند إذا truthy</code></pre>
+  <div class="output-box" id="out-16"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.3</span><h3>Method Chaining (تسلسل الطرق)</h3></div><p class="blk-para">يمكن تسلسل طرق المصفوفات لكتابة كود أنيق وقابل للقراءة:</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const employees = [
+  { name:'أحمد',  dept:'تقنية',    salary:8000, active:true  },
+  { name:'سارة',  dept:'تسويق',    salary:6500, active:true  },
+  { name:'خالد',  dept:'تقنية',    salary:9000, active:false },
+  { name:'نورة',  dept:'تقنية',    salary:7500, active:true  },
+  { name:'فيصل', dept:'تسويق',    salary:5500, active:true  },
+  { name:'ريم',   dept:'إدارة',    salary:11000, active:true },
+];
+
+// المهمة: أسماء موظفي التقنية النشطين مرتبين بالراتب تنازلياً
+const result = employees
+  .filter(e =&gt; e.dept === 'تقنية' &amp;&amp; e.active)  // تصفية
+  .sort((a, b) =&gt; b.salary - a.salary)           // ترتيب
+  .map(e =&gt; `${e.name}: ${e.salary.toLocaleString('ar')} ريال`); // تحويل
+
+console.log(result);
+// ['نورة: 7٬500 ريال', 'أحمد: 8٬000 ريال'] ← مرتب
+
+// إجمالي رواتب التقنية النشطين
+const techBudget = employees
+  .filter(e =&gt; e.dept === 'تقنية' &amp;&amp; e.active)
+  .reduce((sum, e) =&gt; sum + e.salary, 0);
+console.log(techBudget); // 15500
+
+// تقرير بالأقسام: عدد الموظفين ومتوسط الراتب
+const deptReport = employees
+  .filter(e =&gt; e.active)
+  .reduce((acc, e) =&gt; {
+    if (!acc[e.dept]) acc[e.dept] = { count:0, total:0 };
+    acc[e.dept].count++;
+    acc[e.dept].total += e.salary;
+    return acc;
+  }, {});
+
+Object.entries(deptReport).forEach(([dept, data]) =&gt; {
+  const avg = (data.total / data.count).toFixed(0);
+  console.log(`${dept}: ${data.count} موظف | متوسط: ${avg} ريال`);
+});</code></pre>
+  <div class="output-box" id="out-17"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السادس: المشروع التطبيقي — نظام تحليل بيانات المتجر</h2></div><div class="project-box"><p class="blk-para">سنبني نظاماً متكاملاً لتحليل بيانات متجر إلكتروني يُطبّق كل مفاهيم هذه الجلسة.</p><div class="subsection"><div class="sub-head"><h3>الكود الكامل للمشروع</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>/* ═══════════════════════════════════════════════════ */
+/* نظام تحليل بيانات المتجر — Arrays &amp; Objects Session 11 */
+/* ═══════════════════════════════════════════════════ */
+
+// ══ 1. بيانات المتجر ══
+const store = {
+  name: 'متجر التقنية',
+  products: [
+    { id:1,  name:'هاتف Galaxy',  cat:'هواتف',     price:1200, qty:15, rating:4.5, active:true  },
+    { id:2,  name:'لابتوب Dell',  cat:'حاسبات',    price:3500, qty:8,  rating:4.8, active:true  },
+    { id:3,  name:'سماعات Sony',  cat:'إلكترونيات',price:450,  qty:0,  rating:4.2, active:true  },
+    { id:4,  name:'كيبورد Logic', cat:'ملحقات',    price:280,  qty:25, rating:4.6, active:true  },
+    { id:5,  name:'شاشة LG',      cat:'شاشات',     price:950,  qty:5,  rating:4.3, active:false },
+    { id:6,  name:'ماوس Razer',   cat:'ملحقات',    price:180,  qty:30, rating:4.7, active:true  },
+    { id:7,  name:'هاتف iPhone',  cat:'هواتف',     price:2800, qty:12, rating:4.9, active:true  },
+    { id:8,  name:'تابلت iPad',   cat:'حاسبات',    price:1900, qty:7,  rating:4.6, active:true  },
+    { id:9,  name:'كاميرا Canon', cat:'كاميرات',   price:2200, qty:3,  rating:4.4, active:true  },
+    { id:10, name:'مكبر JBL',     cat:'إلكترونيات',price:320,  qty:20, rating:4.1, active:true  },
+  ],
+  orders: [
+    { id:1, productId:1, qty:2, date:'2025-01-10', customer:'أحمد'  },
+    { id:2, productId:7, qty:1, date:'2025-01-12', customer:'سارة'  },
+    { id:3, productId:4, qty:3, date:'2025-01-15', customer:'خالد'  },
+    { id:4, productId:2, qty:1, date:'2025-01-18', customer:'أحمد'  },
+    { id:5, productId:6, qty:2, date:'2025-01-20', customer:'نورة'  },
+    { id:6, productId:1, qty:1, date:'2025-01-22', customer:'فيصل' },
+  ],
+};
+
+// ══ 2. دوال التحليل ══
+
+// دالة: ملخص المخزون
+function getInventorySummary(products) {
+  const active = products.filter(p =&gt; p.active);
+  const inStock = active.filter(p =&gt; p.qty &gt; 0);
+  const outOfStock = active.filter(p =&gt; p.qty === 0);
+  const totalValue = active.reduce((sum, p) =&gt; sum + p.price * p.qty, 0);
+
+  return {
+    total:      active.length,
+    inStock:    inStock.length,
+    outOfStock: outOfStock.length,
+    totalValue: totalValue,
+    avgPrice:   (active.reduce((s, p) =&gt; s + p.price, 0) / active.length).toFixed(2),
+    topRated:   [...active].sort((a, b) =&gt; b.rating - a.rating)[0],
+    cheapest:   [...active].sort((a, b) =&gt; a.price - b.price)[0],
+    priciest:   [...active].sort((a, b) =&gt; b.price - a.price)[0],
+  };
+}
+
+// دالة: تجميع بالفئة
+function groupByCategory(products) {
+  return products
+    .filter(p =&gt; p.active)
+    .reduce((acc, p) =&gt; {
+      const { cat, price, rating } = p;
+      if (!acc[cat]) acc[cat] = { products:[], totalRevenue:0, avgRating:0 };
+      acc[cat].products.push(p);
+      acc[cat].totalRevenue += price * p.qty;
+      return acc;
+    }, {});
+}
+
+// دالة: تحليل الطلبات
+function analyzeOrders(orders, products) {
+  // خريطة المنتجات بالـ id
+  const productMap = products.reduce((m, p) =&gt; ({ ...m, [p.id]: p }), {});
+
+  // إجمالي الإيرادات
+  const revenue = orders.reduce((sum, o) =&gt; {
+    const product = productMap[o.productId];
+    return sum + (product?.price ?? 0) * o.qty;
+  }, 0);
+
+  // أكثر عميل شراءً
+  const customerOrders = orders.reduce((acc, o) =&gt; {
+    acc[o.customer] = (acc[o.customer] ?? 0) + o.qty;
+    return acc;
+  }, {});
+  const topCustomer = Object.entries(customerOrders)
+    .sort(([,a],[,b]) =&gt; b - a)[0];
+
+  // المنتج الأكثر مبيعاً
+  const productSales = orders.reduce((acc, o) =&gt; {
+    acc[o.productId] = (acc[o.productId] ?? 0) + o.qty;
+    return acc;
+  }, {});
+  const [topId] = Object.entries(productSales).sort(([,a],[,b]) =&gt; b-a)[0];
+
+  return {
+    totalOrders:  orders.length,
+    totalRevenue: revenue,
+    topCustomer:  { name: topCustomer[0], orders: topCustomer[1] },
+    topProduct:   productMap[Number(topId)],
+  };
+}
+
+// دالة: بحث وتصفية
+function searchProducts(products, { query='', cat='', minPrice=0, maxPrice=Infinity, minRating=0 } = {}) {
+  return products
+    .filter(p =&gt; p.active)
+    .filter(p =&gt; !query || p.name.toLowerCase().includes(query.toLowerCase()))
+    .filter(p =&gt; !cat  || p.cat === cat)
+    .filter(p =&gt; p.price &gt;= minPrice &amp;&amp; p.price &lt;= maxPrice)
+    .filter(p =&gt; p.rating &gt;= minRating)
+    .sort((a, b) =&gt; b.rating - a.rating);
+}
+
+// ══ 3. طباعة التقارير ══
+function printReport(store) {
+  const { products, orders } = store;
+  const summary = getInventorySummary(products);
+  const orderStats = analyzeOrders(orders, products);
+  const byCategory = groupByCategory(products);
+
+  console.log('═'.repeat(55));
+  console.log(`  📊 تقرير متجر: ${store.name}`);
+  console.log('═'.repeat(55));
+
+  console.log('\n  📦 ملخص المخزون:');
+  console.log(`  ├ إجمالي المنتجات:  ${summary.total}`);
+  console.log(`  ├ متوفرة:           ${summary.inStock}`);
+  console.log(`  ├ نفدت:             ${summary.outOfStock}`);
+  console.log(`  ├ قيمة المخزون:     ${summary.totalValue.toLocaleString('ar')} ريال`);
+  console.log(`  ├ متوسط السعر:      ${summary.avgPrice} ريال`);
+  console.log(`  ├ الأعلى تقييماً:   ${summary.topRated?.name} (${summary.topRated?.rating}⭐)`);
+  console.log(`  └ الأغلى:           ${summary.priciest?.name} (${summary.priciest?.price} ريال)`);
+
+  console.log('\n  💰 تحليل الطلبات:');
+  console.log(`  ├ عدد الطلبات:      ${orderStats.totalOrders}`);
+  console.log(`  ├ إجمالي الإيرادات: ${orderStats.totalRevenue.toLocaleString('ar')} ريال`);
+  console.log(`  ├ أكثر عميل:        ${orderStats.topCustomer.name} (${orderStats.topCustomer.orders} وحدة)`);
+  console.log(`  └ الأكثر مبيعاً:    ${orderStats.topProduct?.name}`);
+
+  console.log('\n  🗂️ حسب الفئة:');
+  Object.entries(byCategory).forEach(([cat, data]) =&gt; {
+    console.log(`  ├ ${cat}: ${data.products.length} منتجات | إيرادات: ${data.totalRevenue.toLocaleString('ar')} ريال`);
+  });
+}
+
+// ══ 4. التشغيل ══
+printReport(store);
+
+// بحث متقدم
+const hifiSearch = searchProducts(store.products, {
+  minPrice: 500,
+  minRating: 4.5,
+});
+console.log('\n  🔍 المنتجات &gt; 500 ريال بتقييم ≥ 4.5:');
+hifiSearch.forEach(p =&gt; console.log(`  ★ ${p.name}: ${p.price} ريال (${p.rating}⭐)`));</code></pre>
+  <div class="output-box" id="out-18"></div>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء السابع: تمارين الجلسة الحادية عشرة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — map وfilter وreduce<span class="ex-time">20 دقيقة</span></h4><p class="blk-para">باستخدام مصفوفة الطلاب التالية:</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const students = [
+  { name:'أحمد',  grade:92, subject:'رياضيات', passed:true  },
+  { name:'سارة',  grade:78, subject:'علوم',    passed:true  },
+  { name:'خالد',  grade:55, subject:'رياضيات', passed:false },
+  { name:'نورة',  grade:88, subject:'علوم',    passed:true  },
+  { name:'فيصل', grade:45, subject:'رياضيات', passed:false },
+  { name:'ريم',   grade:95, subject:'علوم',    passed:true  },
+];</code></pre>
+  <div class="output-box" id="out-19"></div>
+</div><ul class="mini-list"><li>استخدم filter لإيجاد الطلاب الراسبين</li><li>استخدم map لإنشاء مصفوفة من الأسماء فقط</li><li>استخدم reduce لحساب مجموع الدرجات ومتوسطها</li><li>استخدم some وevery للتحقق: هل يوجد طالب ممتاز (≥90)؟ هل الجميع ناجحون؟</li><li>استخدم find للعثور على الطالب الأعلى درجة</li><li>استخدم sort لترتيب الطلاب تنازلياً بالدرجة</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — Destructuring وSpread<span class="ex-time">15 دقيقة</span></h4><ul class="mini-list"><li>دمّر أول ثلاثة طلاب من مصفوفة students في متغيرات منفصلة</li><li>دمّر كائن user = { name, email, address: { city } } واستخرج city بتدمير متداخل</li><li>استخدم Spread لدمج مصفوفتي الرياضيات والعلوم في مصفوفة واحدة</li><li>اكتب دالة updateStudent(students, name, updates) تُعيد مصفوفة جديدة محدّثة بدون تعديل الأصل</li><li>بادل قيمتي متغيرين بـ Destructuring بسطر واحد</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — Method Chaining وOptional Chaining<span class="ex-time">20 دقيقة</span></h4><p class="blk-para">على مصفوفة products من المشروع:</p><ul class="mini-list"><li>بـ method chaining واحد: احسب إجمالي قيمة المخزون للإلكترونيات المتوفرة فقط</li><li>أنشئ تقريراً بالفئات: كائن { فئة: { count, avgPrice, inStock } }</li><li>استخدم Optional Chaining للوصول الآمن: product?.specifications?.warranty?.years</li><li>استخدم ?? لتعيين قيم افتراضية لخصائص قد تكون null</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الحادية عشرة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>map()</td><td>تحويل كل عنصر — يُعيد مصفوفة بنفس الحجم ❌ لا تُعدّل الأصل</td></tr><tr><td>filter()</td><td>تصفية — يُعيد مصفوفة العناصر التي اجتازت الشرط ❌ لا تُعدّل</td></tr><tr><td>reduce()</td><td>تجميع — يُعيد قيمة واحدة: مجموع، كائن، مصفوفة... ❌ لا تُعدّل</td></tr><tr><td>find/findIndex()</td><td>إيجاد أول عنصر — find يُعيد العنصر | findIndex يُعيد الفهرس</td></tr><tr><td>some/every()</td><td>some: هل يوجد؟ | every: هل الجميع؟ — كلاهما يُعيد boolean</td></tr><tr><td>flat/flatMap()</td><td>تسوية المصفوفات المتداخلة | flatMap = map + flat</td></tr><tr><td>sort()</td><td>⚠️ تُعدّل الأصل — استخدم [...arr].sort((a,b)=&gt;a-b) للأمان</td></tr><tr><td>طرق مُعدِّلة</td><td>push, pop, shift, unshift, splice, reverse, fill — تُعدّل الأصل</td></tr><tr><td>طرق آمنة</td><td>slice, concat, map, filter, reduce, find, includes, join, at()</td></tr><tr><td>Array Destructuring</td><td>[a, b, ...rest] = arr | التبادل [x,y]=[y,x] | قيمة افتراضية</td></tr><tr><td>Object Destructuring</td><td>{ name, age } = user | إعادة تسمية | تداخل | في معاملات الدوال</td></tr><tr><td>Object.keys/values/entries</td><td>المفاتيح, القيم, الأزواج — للتكرار والتحويل</td></tr><tr><td>دمج الكائنات</td><td>{ ...obj1, ...obj2 } | structuredClone() للنسخ العميقة</td></tr><tr><td>Optional Chaining</td><td>obj?.prop?.nested — آمن مع null/undefined</td></tr><tr><td>Nullish Coalescing</td><td>value ?? 'default' — فقط مع null/undefined (ليس 0 أو '')</td></tr><tr><td>Method Chaining</td><td>arr.filter().sort().map() — كود نظيف ووظيفي</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الثانية عشرة: Asynchronous JavaScript</span><p>✦ ما هو البرمجة غير المتزامنة ولماذا نحتاجها</p><p>✦ Callbacks والمشاكل التي تُسببها (Callback Hell)</p><p>✦ Promises: الحالات الثلاث (Pending, Fulfilled, Rejected)</p><p>✦ then/catch/finally وتسلسل الـ Promises</p><p>✦ async/await — كتابة كود غير متزامن بأسلوب متزامن</p><p>✦ try/catch مع async/await لمعالجة الأخطاء</p><p>✦ مشروع: جلب بيانات من API حقيقي وعرضها</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الحادية عشرة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الثانية عشرة</span><p>يُرسَل ملف JavaScript (.js) أو رابط GitHub عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: نظام إدارة أكاديمية تعليمية</h3></div><p class="blk-para">أنشئ نظاماً لإدارة أكاديمية تعليمية بالبيانات والدوال التالية:</p><h4 class="mini-head">◆ 📋 البيانات المطلوبة:</h4><ul class="mini-list"><li>مصفوفة courses: 6 كورسات — id, title, instructor, category, price, duration, studentsCount, rating</li><li>مصفوفة students: 10 طلاب — id, name, email, enrolledCourses (مصفوفة ids), scores (object: {courseId: score}), joinDate</li></ul><h4 class="mini-head">◆ ⚙️ الدوال المطلوبة:</h4><ul class="mini-list"><li>getTopStudents(students, courses, n=3): أفضل n طلاب بمتوسط درجاتهم — استخدم map وsort</li><li>getCourseReport(courses, students): لكل كورس: عدد الطلاب، متوسط الدرجات، إجمالي الإيرادات</li><li>searchStudents(students, query): بحث بالاسم أو البريد — Optional Chaining + filter</li><li>getStudentProfile(students, courses, id): تقرير طالب: بياناته + كورساته + درجاته + التقديرات</li><li>getInstructorStats(courses, students): إحصائيات كل مدرب: عدد الكورسات، الطلاب، الإيرادات</li><li>getRankingTable(students, courses): جدول ترتيب الطلاب — Destructuring + Method Chaining</li></ul><h4 class="mini-head">◆ 🎯 متطلبات إضافية:</h4><ul class="mini-list"><li>استخدم Destructuring في جميع معاملات الدوال</li><li>استخدم Optional Chaining و?? في أي وصول قد يكون null/undefined</li><li>لا تُعدّل أي مصفوفة أصلية — استخدم Spread لنسخ آمن دائماً</li><li>استخدم Method Chaining بدلاً من متغيرات وسيطة حيثما أمكن</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>البيانات الصحيحة وغنى المحتوى</td><td>10 نقاط</td></tr><tr><td>6 دوال تعمل بشكل صحيح</td><td>40 نقاط</td></tr><tr><td>Destructuring وSpread بشكل صحيح</td><td>15 نقاط</td></tr><tr><td>Optional Chaining و?? مناسبَين</td><td>15 نقاط</td></tr><tr><td>Method Chaining وعدم تعديل الأصل</td><td>10 نقاط</td></tr><tr><td>جودة الكود وتعليقاته</td><td>10 نقاط</td></tr></tbody></table></div></div></div>
+<div class="closing-banner">
+  <h3>🔢 أحسنت! الكود الوظيفي أصبح سلاحك الأقوى 🔢</h3>
+  <p>map وfilter وreduce — ثلاثة أوامر تحل 80% من مشاكل البيانات</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 11</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-10.html"><small>السابق</small><span>الجلسة 10 — JavaScript والـ DOM</span></a>
+        <a class="nav-arrow next is-disabled" href="#"><small>التالي</small><span>الجلسة 12 — قريباً 🔒</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

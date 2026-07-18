@@ -384,6 +384,11 @@ footer{ background: var(--ink); color: #C7D2E6; padding: 56px 0 26px; }
 .callout.info .callout-title{ color: var(--ink); }
 .callout.question{ background: var(--accent-100); border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
 .callout.question .callout-title{ color: var(--accent-ink); }
+.callout pre.ascii-diagram{
+  margin: 10px 0 2px; padding: 14px 18px; background: var(--code-bg); color: var(--code-text);
+  border-radius: var(--radius-s); font-family: var(--font-mono); font-size:.8rem; line-height:1.65;
+  direction: ltr; text-align:left; overflow-x:auto; white-space:pre;
+}
 
 /* جداول البيانات */
 .tbl-wrap{ overflow-x:auto; margin: 16px 0; border-radius: var(--radius-m); border:1px solid var(--border); }

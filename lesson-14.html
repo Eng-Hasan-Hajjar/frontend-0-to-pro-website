@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 14 — البرمجة الكائنية (OOP) | Front-End Master Book</title>
+<meta name="description" content="البرمجة الكائنية (OOP) — Classes • Encapsulation • Inheritance • Polymorphism • Abstraction">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="14">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>مسار JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🏛️</span>
+    <div>
+      <div class="session-tag">Session 14 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة الرابعة عشرة — البرمجة الكائنية (OOP)</h1>
+  <p class="tags-line">Classes • Encapsulation • Inheritance • Polymorphism • Abstraction</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة الرابعة عشرة</h2>
+  <ul class="goal-list"><li>فهم المفاهيم الأربعة للبرمجة الكائنية: التغليف والوراثة والتعددية والتجريد</li><li>تعريف Classes باستخدام صيغة ES6 الحديثة</li><li>استخدام constructor لتهيئة الكائنات</li><li>تعريف instance methods وstatic methods بشكل صحيح</li><li>استخدام Getters وSetters للتحكم في الوصول للبيانات</li><li>إخفاء البيانات الداخلية باستخدام الحقول الخاصة (#private fields)</li><li>تطبيق الوراثة باستخدام extends وsuper</li><li>تجاوز الطرق (Method Overriding) وتطبيق Polymorphism</li><li>فهم Prototype Chain وكيف تعمل الوراثة داخلياً في JavaScript</li><li>بناء نظام إدارة موظفين كامل باستخدام OOP</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة الثالثة عشرة</span><p>✔ localStorage: setItem/getItem/removeItem/clear + JSON.stringify/parse</p><p>✔ Storage Wrapper مع TTL ومعالجة QuotaExceededError</p><p>✔ sessionStorage: مؤقت للجلسة | Cookies: تُرسَل للخادم</p><p>✔ Storage Event: مزامنة البيانات بين التبويبات</p><p>✔ IndexedDB: قاعدة بيانات كاملة في المتصفح</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🏛️</span><h2>الجزء الأول: ما هي البرمجة الكائنية (OOP)؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>التعريف والفلسفة</h3></div><p class="blk-para">البرمجة الكائنية (Object-Oriented Programming) هي نمط برمجي يُنظّم الكود حول الكائنات (Objects) بدلاً من الإجراءات والدوال. كل كائن يجمع البيانات (Properties) والوظائف التي تعمل عليها (Methods) في وحدة واحدة متماسكة.</p><p class="blk-para">مثال من الواقع: سيارة = كائن له خصائص (اللون، الموديل، السرعة) وطرق (اقلع، أوقف، تسارع، أبطئ).</p></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>المفاهيم الأربعة للـ OOP</h3></div><div class="callout info"><span class="callout-title">🏛️ ركائز البرمجة الكائنية الأربع</span><p>  1. التغليف (Encapsulation)</p><p>     ← تجميع البيانات والطرق في كائن واحد</p><p>     ← إخفاء التفاصيل الداخلية عن الخارج</p><p>     ← التحكم في الوصول عبر getters/setters</p><p>  2. الوراثة (Inheritance)</p><p>     ← الكائن الابن يرث خصائص وطرق الأب</p><p>     ← إعادة استخدام الكود بدلاً من التكرار</p><p>     ← تسلسل هرمي: Animal → Dog → GoldenRetriever</p><p>  3. التعددية (Polymorphism)</p><p>     ← نفس الاسم، سلوك مختلف حسب الكائن</p><p>     ← Animal.speak() → Dog: 'هاو' | Cat: 'مياو'</p><p>     ← Method Overriding في الكلاسات الفرعية</p><p>  4. التجريد (Abstraction)</p><p>     ← إخفاء التعقيد وإظهار الواجهة البسيطة فقط</p><p>     ← مثل قيادة السيارة بدون معرفة المحرك</p><p>     ← Abstract Classes وInterfaces</p></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الركيزة</th><th>التطبيق في JavaScript</th></tr></thead><tbody><tr><td>التغليف</td><td>class مع private fields (#) وgetters/setters</td></tr><tr><td>الوراثة</td><td>extends وsuper وPrototype Chain</td></tr><tr><td>التعددية</td><td>Method Overriding — نفس الاسم سلوك مختلف</td></tr><tr><td>التجريد</td><td>Abstract-like patterns وInterfaces بـ Error throwing</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>الجزء الثاني: Classes الأساسية في JavaScript</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>تعريف Class بسيط</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// تعريف Class
+class Person {
+  // constructor يُنفَّذ عند إنشاء كائن جديد
+  constructor(name, age, email) {
+    this.name  = name;
+    this.age   = age;
+    this.email = email;
+    this.createdAt = new Date().toLocaleDateString('ar-SA');
+  }
+
+  // Instance Method — دالة لكل كائن
+  greet() {
+    return `مرحباً، أنا ${this.name} وعمري ${this.age} سنة`;
+  }
+
+  introduce() {
+    return `اسمي ${this.name} وبريدي ${this.email}`;
+  }
+
+  isAdult() {
+    return this.age &gt;= 18;
+  }
+
+  // toString — يُستخدم عند تحويل الكائن لنص
+  toString() {
+    return `Person(${this.name}, ${this.age})`;
+  }
+}
+
+// إنشاء كائنات (Instances) باستخدام new
+const ahmed = new Person('أحمد محمد', 25, 'ahmed@example.com');
+const sara  = new Person('سارة علي',  22, 'sara@example.com');
+
+console.log(ahmed.name);        // 'أحمد محمد'
+console.log(ahmed.greet());     // 'مرحباً، أنا أحمد محمد وعمري 25 سنة'
+console.log(sara.isAdult());    // true
+console.log(`${ahmed}`);        // 'Person(أحمد محمد, 25)'
+
+// التحقق من نوع الكائن
+console.log(ahmed instanceof Person); // true
+console.log(typeof ahmed);           // 'object'
+
+// كل instance مستقل بخصائصه
+ahmed.age = 26; // لا يؤثر على sara
+console.log(sara.age); // 22 (لم تتغير)</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>Static Methods والـ Static Properties</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>class MathUtils {
+  // خاصية static — مشتركة بين جميع الكائنات
+  static PI = 3.14159265359;
+  static version = '1.0.0';
+  static #instanceCount = 0; // private static
+
+  constructor() {
+    MathUtils.#instanceCount++;
+  }
+
+  // طريقة static — لا تحتاج instance للاستدعاء
+  static add(a, b)      { return a + b; }
+  static subtract(a, b) { return a - b; }
+  static multiply(a, b) { return a * b; }
+  static divide(a, b) {
+    if (b === 0) throw new Error('لا يمكن القسمة على صفر!');
+    return a / b;
+  }
+
+  static circleArea(r)   { return this.PI * r * r; }
+  static circlePerimeter(r) { return 2 * this.PI * r; }
+
+  static clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  static getInstanceCount() { return MathUtils.#instanceCount; }
+}
+
+// استخدام static methods بدون إنشاء كائن
+console.log(MathUtils.add(10, 5));        // 15
+console.log(MathUtils.circleArea(7));     // 153.938...
+console.log(MathUtils.PI);                // 3.14159...
+console.log(MathUtils.clamp(150, 0, 100)); // 100
+
+// ❌ خطأ — static لا تُستدعى على instance
+// const m = new MathUtils();
+// m.add(1, 2); // TypeError
+
+// مثال شائع: Factory Method Static
+class User {
+  constructor(name, role) {
+    this.name = name;
+    this.role = role;
+    this.id   = Date.now();
+  }
+
+  // Factory Methods
+  static createAdmin(name) {
+    return new User(name, 'admin');
+  }
+  static createGuest() {
+    return new User('زائر', 'guest');
+  }
+  static fromJSON(json) {
+    const data = JSON.parse(json);
+    return new User(data.name, data.role);
+  }
+}
+
+const admin = User.createAdmin('أحمد');
+const guest = User.createGuest();
+console.log(admin.role); // 'admin'</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.3</span><h3>Getters وSetters</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>class Temperature {
+  #celsius; // Private field
+
+  constructor(celsius) {
+    this.#celsius = celsius;
+  }
+
+  // Getter — يُستدعى كخاصية (بدون أقواس)
+  get celsius()    { return this.#celsius; }
+  get fahrenheit() { return this.#celsius * 9/5 + 32; }
+  get kelvin()     { return this.#celsius + 273.15; }
+
+  // Setter — يُستدعى عند الإسناد
+  set celsius(value) {
+    if (value &lt; -273.15) {
+      throw new RangeError('لا يمكن أن تكون أقل من الصفر المطلق!');
+    }
+    this.#celsius = value;
+  }
+
+  set fahrenheit(f) {
+    this.celsius = (f - 32) * 5/9; // يستخدم الـ setter للتحقق
+  }
+
+  toString() {
+    return `${this.#celsius}°م (${this.fahrenheit.toFixed(1)}°ف)`;
+  }
+}
+
+const temp = new Temperature(25);
+console.log(temp.celsius);    // 25
+console.log(temp.fahrenheit); // 77
+console.log(temp.kelvin);     // 298.15
+
+temp.celsius = 100;
+console.log(`${temp}`); // '100°م (212.0°ف)'
+
+// temp.celsius = -300; // ❌ RangeError
+
+// مثال OOP متكامل: الشخص مع التحقق
+class Person {
+  #name;
+  #age;
+
+  constructor(name, age) {
+    this.name = name; // يمر عبر setter
+    this.age  = age;
+  }
+
+  get name() { return this.#name; }
+  set name(val) {
+    if (!val || val.trim().length &lt; 2)
+      throw new Error('الاسم يجب أن يكون حرفين على الأقل');
+    this.#name = val.trim();
+  }
+
+  get age() { return this.#age; }
+  set age(val) {
+    if (!Number.isInteger(val) || val &lt; 0 || val &gt; 150)
+      throw new RangeError('العمر يجب أن يكون بين 0 و150');
+    this.#age = val;
+  }
+}</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔒</span><h2>الجزء الثالث: التغليف والحقول الخاصة (Encapsulation)</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>Private Fields (#)</h3></div><p class="blk-para">الحقول الخاصة (Private Fields) تُعرَّف بإشارة # وتكون مرئية فقط داخل الـ Class — لا يمكن الوصول إليها من الخارج:</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>class BankAccount {
+  // ══ Private Fields — لا يمكن الوصول من خارج الـ class ══
+  #balance;
+  #owner;
+  #transactionHistory = [];
+  #accountNumber;
+
+  constructor(owner, initialBalance = 0) {
+    this.#owner         = owner;
+    this.#balance       = initialBalance;
+    this.#accountNumber = this.#generateAccountNumber();
+  }
+
+  // Private Method
+  #generateAccountNumber() {
+    return 'SA' + Math.random().toString().slice(2, 12).padStart(10, '0');
+  }
+
+  #recordTransaction(type, amount, note = '') {
+    this.#transactionHistory.push({
+      type, amount, note,
+      balance: this.#balance,
+      date: new Date().toLocaleString('ar-SA'),
+    });
+  }
+
+  // ══ Public Interface ══
+  get balance()      { return this.#balance; }
+  get owner()        { return this.#owner; }
+  get accountNumber(){ return this.#accountNumber; }
+
+  deposit(amount, note = 'إيداع') {
+    if (amount &lt;= 0) throw new Error('المبلغ يجب أن يكون أكبر من صفر');
+    this.#balance += amount;
+    this.#recordTransaction('إيداع', amount, note);
+    return this;  // للـ Method Chaining
+  }
+
+  withdraw(amount, note = 'سحب') {
+    if (amount &lt;= 0)              throw new Error('المبلغ يجب أن يكون أكبر من صفر');
+    if (amount &gt; this.#balance)   throw new Error('رصيد غير كافٍ!');
+    this.#balance -= amount;
+    this.#recordTransaction('سحب', amount, note);
+    return this;
+  }
+
+  transfer(amount, targetAccount) {
+    this.withdraw(amount, `تحويل إلى ${targetAccount.owner}`);
+    targetAccount.deposit(amount, `تحويل من ${this.#owner}`);
+    return this;
+  }
+
+  getStatement(last = 10) {
+    return [...this.#transactionHistory].slice(-last);
+  }
+
+  toString() {
+    return `حساب ${this.#owner} | الرصيد: ${this.#balance.toLocaleString('ar')} ريال`;
+  }
+}
+
+// ══ الاستخدام ══
+const ahmed = new BankAccount('أحمد محمد', 1000);
+const sara  = new BankAccount('سارة علي', 500);
+
+ahmed.deposit(2000, 'راتب شهر يناير')
+     .deposit(500, 'مكافأة')
+     .withdraw(300, 'فاتورة كهرباء');
+
+ahmed.transfer(800, sara);
+
+console.log(`${ahmed}`); // 'حساب أحمد محمد | الرصيد: 2٬400 ريال'
+console.log(`${sara}`);  // 'حساب سارة علي | الرصيد: 1٬300 ريال'
+
+// ❌ لا يمكن الوصول للحقول الخاصة من الخارج
+// ahmed.#balance = 1000000; // SyntaxError
+// ahmed.#transactionHistory;  // SyntaxError</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div></div></div><div class="part"><div class="part-head"><h2>👨‍👩‍👧 الجزء الرابع: الوراثة (Inheritance)</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>الوراثة الأساسية بـ extends وsuper</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ══ الكلاس الأب (Base Class / Parent Class) ══
+class Animal {
+  #name;
+  #sound;
+  #legs;
+
+  constructor(name, sound, legs) {
+    this.#name  = name;
+    this.#sound = sound;
+    this.#legs  = legs;
+  }
+
+  get name()  { return this.#name; }
+  get sound() { return this.#sound; }
+  get legs()  { return this.#legs; }
+
+  speak() {
+    return `${this.#name} يقول: ${this.#sound}`;
+  }
+
+  move(distance = 10) {
+    return `${this.#name} تحرّك ${distance} متر`;
+  }
+
+  describe() {
+    return `${this.#name} حيوان له ${this.#legs} أرجل`;
+  }
+
+  toString() { return `Animal(${this.#name})`; }
+}
+
+// ══ كلاس الابن (Derived Class / Child Class) ══
+class Dog extends Animal {
+  #breed;
+  #trained;
+
+  constructor(name, breed, trained = false) {
+    // super() يجب أن يُستدعى أولاً قبل استخدام this
+    super(name, 'هاو! هاو!', 4);
+    this.#breed   = breed;
+    this.#trained = trained;
+  }
+
+  get breed()   { return this.#breed; }
+  get trained() { return this.#trained; }
+
+  // طريقة خاصة بـ Dog
+  fetch(item) {
+    return `${this.name} جلب الـ ${item}! 🎾`;
+  }
+
+  // Method Overriding — تجاوز طريقة الأب
+  speak() {
+    const base = super.speak(); // استدعاء الأب
+    return `${base} (وهو يهز ذيله 🐾)`;
+  }
+
+  describe() {
+    return `${super.describe()} | السلالة: ${this.#breed} | مُدرَّب: ${this.#trained ? 'نعم' : 'لا'}`;
+  }
+}
+
+class Cat extends Animal {
+  #indoor;
+
+  constructor(name, indoor = true) {
+    super(name, 'مياو~', 4);
+    this.#indoor = indoor;
+  }
+
+  speak() {
+    return `${super.speak()} (وتتجاهلك بعدين 😼)`;
+  }
+
+  purr() { return `${this.name} تُصدر صوت خرخرة... 😻`; }
+}
+
+class Bird extends Animal {
+  #canFly;
+
+  constructor(name, canFly = true) {
+    super(name, 'تغريد', 2);
+    this.#canFly = canFly;
+  }
+
+  move(distance = 50) {
+    if (this.#canFly) return `${this.name} طار ${distance} متر 🦅`;
+    return super.move(distance); // يستخدم طريقة الأب إذا لا يطير
+  }
+}
+
+// ══ الاستخدام ══
+const dog  = new Dog('ماكس', 'جولدن ريتريفر', true);
+const cat  = new Cat('ميسة');
+const bird = new Bird('عصفور', true);
+
+console.log(dog.speak());     // 'ماكس يقول: هاو! هاو! (وهو يهز ذيله 🐾)'
+console.log(cat.speak());     // 'ميسة تقول: مياو~ (وتتجاهلك بعدين 😼)'
+console.log(dog.fetch('كرة')); // 'ماكس جلب الـ كرة! 🎾'
+console.log(bird.move());     // 'عصفور طار 50 متر 🦅'
+
+// التحقق من الوراثة
+console.log(dog instanceof Dog);    // true
+console.log(dog instanceof Animal); // true (مهم!)
+console.log(cat instanceof Dog);    // false</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>Prototype Chain — كيف تعمل الوراثة داخلياً</h3></div><p class="blk-para">في JavaScript، كل كائن يمتلك مرجعاً لـ Prototype خاص به — وهكذا تعمل الوراثة:</p><div class="callout info"><span class="callout-title">🔗 Prototype Chain</span><pre class="ascii-diagram">  dog                    → Dog.prototype
+  ┌──────────────┐        ┌───────────────────┐
+  │ name: 'ماكس' │   ──►  │ fetch()           │
+  │ breed: 'جولدن'│        │ speak() (override)│
+  │ trained: true │        │ __proto__ ──────────►  Animal.prototype
+  └──────────────┘        └───────────────────┘   ┌───────────────────┐
+                                                   │ speak()           │
+                                                   │ move()            │
+                                                   │ describe()        │
+                                                   │ __proto__ ──────►  Object.prototype
+                                                   └───────────────────┘
+  عند dog.speak() — JS يبحث:
+  1. في dog نفسه ← لا يوجد
+  2. في Dog.prototype ← وجد! يُنفَّذ
+  عند dog.move() — JS يبحث:
+  1. في dog نفسه ← لا يوجد
+  2. في Dog.prototype ← لا يوجد
+  3. في Animal.prototype ← وجد! يُنفَّذ</pre></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// التحقق من Prototype Chain
+console.log(Object.getPrototypeOf(dog) === Dog.prototype);    // true
+console.log(Object.getPrototypeOf(Dog.prototype) === Animal.prototype); // true
+
+// instanceof يتحقق على طول السلسلة كلها
+console.log(dog instanceof Dog);    // true
+console.log(dog instanceof Animal); // true
+console.log(dog instanceof Object); // true (الجميع!)
+
+// الطرق المُعرَّفة على الـ prototype (لا تُكرَّر لكل كائن)
+console.log(dog.speak === cat.speak); // false (override مختلف)
+console.log(dog.move === cat.move);   // true (نفس طريقة Animal)
+
+// hasOwnProperty — هل الخاصية للكائن نفسه؟
+// (لا تنتمي للـ prototype)
+console.log(dog.hasOwnProperty('name'));  // true
+console.log(dog.hasOwnProperty('speak')); // false (من Dog.prototype)</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎭</span><h2>الجزء الخامس: التعددية (Polymorphism)</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>Method Overriding وPolymorphism</h3></div><p class="blk-para">Polymorphism يعني «أشكال متعددة» — نفس الواجهة، سلوك مختلف حسب الكائن:</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ══ نظام الأشكال الهندسية ══
+class Shape {
+  #color;
+  #name;
+
+  constructor(name, color = 'أزرق') {
+    this.#name  = name;
+    this.#color = color;
+  }
+
+  get name()  { return this.#name; }
+  get color() { return this.#color; }
+
+  // Polymorphic methods — كل كلاس فرعي يتجاوزها
+  area()      { return 0; }
+  perimeter() { return 0; }
+
+  describe() {
+    return `${this.#name} (${this.#color}) | المساحة: ${this.area().toFixed(2)} | المحيط: ${this.perimeter().toFixed(2)}`;
+  }
+}
+
+class Circle extends Shape {
+  #radius;
+
+  constructor(radius, color) {
+    super('دائرة', color);
+    this.#radius = radius;
+  }
+
+  area()      { return Math.PI * this.#radius ** 2; }
+  perimeter() { return 2 * Math.PI * this.#radius; }
+  get diameter() { return this.#radius * 2; }
+}
+
+class Rectangle extends Shape {
+  #width; #height;
+
+  constructor(width, height, color) {
+    super('مستطيل', color);
+    this.#width  = width;
+    this.#height = height;
+  }
+
+  area()      { return this.#width * this.#height; }
+  perimeter() { return 2 * (this.#width + this.#height); }
+  get isSquare() { return this.#width === this.#height; }
+}
+
+class Triangle extends Shape {
+  #a; #b; #c;
+
+  constructor(a, b, c, color) {
+    super('مثلث', color);
+    this.#a = a; this.#b = b; this.#c = c;
+    const s = this.perimeter() / 2;
+    if (s &lt;= 0) throw new Error('أضلاع المثلث غير صالحة');
+  }
+
+  perimeter() { return this.#a + this.#b + this.#c; }
+  area() {
+    const s = this.perimeter() / 2;
+    return Math.sqrt(s * (s-this.#a) * (s-this.#b) * (s-this.#c));
+  }
+}
+
+// ══ Polymorphism في العمل ══
+const shapes = [
+  new Circle(7, 'أحمر'),
+  new Rectangle(10, 5, 'أخضر'),
+  new Triangle(3, 4, 5, 'أزرق'),
+  new Rectangle(6, 6, 'بنفسجي'),
+];
+
+// نفس الكود يعمل مع جميع الأشكال — Polymorphism ✅
+shapes.forEach(shape =&gt; {
+  console.log(shape.describe());
+});
+
+// إجمالي المساحات
+const totalArea = shapes.reduce((sum, s) =&gt; sum + s.area(), 0);
+console.log(`المساحة الكلية: ${totalArea.toFixed(2)}`);
+
+// ترتيب حسب المساحة
+const sorted = [...shapes].sort((a, b) =&gt; b.area() - a.area());
+console.log('الأكبر مساحة:', sorted[0].name);</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>Abstract Class Pattern</h3></div><p class="blk-para">JavaScript لا تملك abstract classes رسمياً، لكن يمكن محاكاتها:</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// محاكاة Abstract Class في JavaScript
+class AbstractVehicle {
+  #make;
+  #model;
+  #year;
+
+  constructor(make, model, year) {
+    // منع إنشاء كائن من Abstract Class مباشرة
+    if (new.target === AbstractVehicle) {
+      throw new Error('لا يمكن إنشاء كائن من AbstractVehicle مباشرة!');
+    }
+    this.#make  = make;
+    this.#model = model;
+    this.#year  = year;
+  }
+
+  get make()  { return this.#make; }
+  get model() { return this.#model; }
+  get year()  { return this.#year; }
+  get age()   { return new Date().getFullYear() - this.#year; }
+
+  // Abstract Methods — يجب أن يُطبَّق في الكلاسات الفرعية
+  getFuelType() { throw new Error('getFuelType() يجب أن يُنفَّذ!'); }
+  start()       { throw new Error('start() يجب أن يُنفَّذ!'); }
+  stop()        { throw new Error('stop() يجب أن يُنفَّذ!'); }
+
+  // Concrete Method — موجود في جميع المركبات
+  describe() {
+    return `${this.#year} ${this.#make} ${this.#model} (${this.getFuelType()})`;
+  }
+}
+
+class ElectricCar extends AbstractVehicle {
+  #batteryLevel;
+
+  constructor(make, model, year, batteryLevel = 100) {
+    super(make, model, year);
+    this.#batteryLevel = batteryLevel;
+  }
+
+  getFuelType() { return 'كهربائي ⚡'; }
+
+  start() {
+    if (this.#batteryLevel &lt; 5) return 'البطارية فارغة! اشحن السيارة';
+    return `${this.make} ${this.model} تعمل بصمت (${this.#batteryLevel}% بطارية)`;
+  }
+
+  stop() { return `${this.make} تتوقف وتُعيد شحن البطارية`; }
+
+  charge(amount) {
+    this.#batteryLevel = Math.min(100, this.#batteryLevel + amount);
+    return `البطارية: ${this.#batteryLevel}%`;
+  }
+}
+
+class GasCar extends AbstractVehicle {
+  #fuel;
+
+  constructor(make, model, year, fuel = 50) {
+    super(make, model, year);
+    this.#fuel = fuel;
+  }
+
+  getFuelType() { return 'بنزين ⛽'; }
+  start()  { return `محرك ${this.make} ${this.model} يبدأ بضجيج (${this.#fuel}L وقود)`; }
+  stop()   { return `${this.make} تتوقف`; }
+}
+
+// ❌ لا يمكن إنشاء Abstract مباشرة
+// const v = new AbstractVehicle(); // Error!
+
+const tesla = new ElectricCar('Tesla', 'Model 3', 2024, 80);
+const camry = new GasCar('Toyota', 'Camry', 2022, 45);
+
+const vehicles = [tesla, camry];
+vehicles.forEach(v =&gt; {
+  console.log(v.describe());
+  console.log(v.start());
+});</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🧩</span><h2>الجزء السادس: Mixins وComposition</h2></div><p class="blk-para">JavaScript لا تدعم الوراثة المتعددة — لكن Mixins تحل هذه المشكلة بإضافة وظائف من مصادر متعددة:</p><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>Mixins Pattern</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ══ Mixin: وظيفة تُضيف طرقاً لـ class ══
+
+// Mixin للتسلسل الزمني
+const TimestampMixin = (Base) =&gt; class extends Base {
+  #createdAt = new Date();
+  #updatedAt = new Date();
+
+  get createdAt() { return this.#createdAt.toLocaleDateString('ar-SA'); }
+  get updatedAt() { return this.#updatedAt.toLocaleDateString('ar-SA'); }
+
+  touch() { this.#updatedAt = new Date(); return this; }
+};
+
+// Mixin للتحقق
+const ValidatableMixin = (Base) =&gt; class extends Base {
+  #errors = [];
+
+  get errors()  { return [...this.#errors]; }
+  get isValid() { return this.#errors.length === 0; }
+
+  addError(field, msg) { this.#errors.push({ field, msg }); }
+  clearErrors()        { this.#errors = []; }
+};
+
+// Mixin للتسجيل
+const LoggableMixin = (Base) =&gt; class extends Base {
+  #logs = [];
+
+  log(action) {
+    this.#logs.push({ action, at: new Date().toLocaleTimeString('ar-SA') });
+  }
+
+  getLogs() { return [...this.#logs]; }
+};
+
+// تطبيق Mixins متعددة
+class BaseProduct {
+  constructor(name, price) {
+    this.name  = name;
+    this.price = price;
+  }
+}
+
+class Product extends LoggableMixin(ValidatableMixin(TimestampMixin(BaseProduct))) {
+  constructor(name, price, stock) {
+    super(name, price);
+    this.stock = stock;
+    this.log('إنشاء منتج');
+  }
+
+  validate() {
+    this.clearErrors();
+    if (!this.name || this.name.length &lt; 2) this.addError('name', 'اسم قصير');
+    if (this.price &lt;= 0)  this.addError('price', 'سعر غير صالح');
+    if (this.stock &lt; 0)   this.addError('stock', 'كمية سالبة');
+    return this.isValid;
+  }
+
+  updatePrice(newPrice) {
+    const old = this.price;
+    this.price = newPrice;
+    this.touch();
+    this.log(`تغيير السعر: ${old} → ${newPrice}`);
+    return this;
+  }
+}
+
+const product = new Product('هاتف Galaxy', 899, 50);
+product.validate();
+product.updatePrice(799);
+console.log(product.isValid);   // true
+console.log(product.createdAt); // تاريخ اليوم
+console.log(product.getLogs()); // [{action:'إنشاء منتج',...}, {action:'تغيير السعر',...}]</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السابع: المشروع التطبيقي — نظام إدارة الموظفين</h2></div><div class="project-box"><p class="blk-para">سنبني نظاماً متكاملاً لإدارة الموظفين باستخدام OOP يُطبّق جميع المفاهيم الأربعة.</p><div class="subsection"><div class="sub-head"><h3>نظام إدارة الموظفين — الكود الكامل</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>/* ═══════════════════════════════════════════════════════════ */
+/* نظام إدارة الموظفين — OOP Session 14                       */
+/* ═══════════════════════════════════════════════════════════ */
+
+// ══ 1. Base Class: Person ══
+class Person {
+  #name; #email; #phone;
+
+  constructor(name, email, phone) {
+    this.name  = name;
+    this.email = email;
+    this.phone = phone;
+  }
+
+  get name()  { return this.#name; }
+  get email() { return this.#email; }
+  get phone() { return this.#phone; }
+
+  set name(val) {
+    if (!val?.trim() || val.trim().length &lt; 2)
+      throw new Error('الاسم يجب أن يكون حرفين على الأقل');
+    this.#name = val.trim();
+  }
+  set email(val) {
+    if (!val?.includes('@')) throw new Error('البريد الإلكتروني غير صالح');
+    this.#email = val.toLowerCase().trim();
+  }
+  set phone(val) {
+    if (!/^05[0-9]{8}$/.test(val)) throw new Error('رقم الجوال غير صالح');
+    this.#phone = val;
+  }
+
+  getContactInfo() {
+    return `📧 ${this.#email} | 📞 ${this.#phone}`;
+  }
+
+  toString() { return `Person(${this.#name})`; }
+}
+
+// ══ 2. Employee Class ══
+class Employee extends Person {
+  static #totalEmployees = 0;
+  static #nextId = 1000;
+
+  #id;
+  #department;
+  #baseSalary;
+  #hireDate;
+  #leaveBalance;
+  #performanceHistory = [];
+
+  constructor(name, email, phone, department, baseSalary) {
+    super(name, email, phone);
+    this.#id          = `EMP-${++Employee.#nextId}`;
+    this.#department  = department;
+    this.#baseSalary  = baseSalary;
+    this.#hireDate    = new Date();
+    this.#leaveBalance = 21; // 21 يوم إجازة سنوياً
+    Employee.#totalEmployees++;
+  }
+
+  // Getters
+  get id()          { return this.#id; }
+  get department()  { return this.#department; }
+  get baseSalary()  { return this.#baseSalary; }
+  get hireDate()    { return this.#hireDate.toLocaleDateString('ar-SA'); }
+  get leaveBalance(){ return this.#leaveBalance; }
+  get yearsOfService() {
+    return Math.floor((Date.now() - this.#hireDate) / (365.25 * 24 * 60 * 60 * 1000));
+  }
+
+  // Polymorphic — كل كلاس يُعرّفه بشكل مختلف
+  calculateBonus()  { return 0; }
+  calculateSalary() { return this.#baseSalary + this.calculateBonus(); }
+  getRole()         { return 'موظف'; }
+
+  addPerformance(score, comment) {
+    if (score &lt; 1 || score &gt; 5) throw new RangeError('التقييم بين 1 و5');
+    this.#performanceHistory.push({
+      score, comment,
+      date: new Date().toLocaleDateString('ar-SA'),
+    });
+  }
+
+  getAvgPerformance() {
+    if (this.#performanceHistory.length === 0) return 0;
+    const sum = this.#performanceHistory.reduce((s, r) =&gt; s + r.score, 0);
+    return (sum / this.#performanceHistory.length).toFixed(2);
+  }
+
+  requestLeave(days) {
+    if (days &gt; this.#leaveBalance) throw new Error('رصيد الإجازة غير كافٍ!');
+    this.#leaveBalance -= days;
+    return `${this.name}: تمت الموافقة على إجازة ${days} أيام. الرصيد المتبقي: ${this.#leaveBalance}`;
+  }
+
+  promote(newDept, salaryIncrease) {
+    const old = { dept: this.#department, salary: this.#baseSalary };
+    this.#department  = newDept;
+    this.#baseSalary += salaryIncrease;
+    return `ترقية ${this.name}: ${old.dept} → ${newDept} | الراتب: ${old.salary} → ${this.#baseSalary}`;
+  }
+
+  static getTotalEmployees() { return Employee.#totalEmployees; }
+
+  getSummary() {
+    return {
+      id:          this.#id,
+      name:        this.name,
+      role:        this.getRole(),
+      department:  this.#department,
+      salary:      this.calculateSalary(),
+      performance: this.getAvgPerformance(),
+      hireDate:    this.hireDate,
+    };
+  }
+
+  toString() {
+    return `[${this.#id}] ${this.name} — ${this.getRole()} في ${this.#department}`;
+  }
+}
+
+// ══ 3. Manager Class ══
+class Manager extends Employee {
+  #team = [];
+  #budget;
+
+  constructor(name, email, phone, department, baseSalary, budget) {
+    super(name, email, phone, department, baseSalary);
+    this.#budget = budget;
+  }
+
+  getRole() { return 'مدير'; }
+
+  // Polymorphism — مكافأة المدير أعلى
+  calculateBonus() {
+    const avg = Number(this.getAvgPerformance());
+    return this.baseSalary * (avg &gt;= 4 ? 0.25 : 0.10);
+  }
+
+  addTeamMember(employee) {
+    this.#team.push(employee);
+    return `${employee.name} انضم لفريق ${this.name}`;
+  }
+
+  removeTeamMember(employeeId) {
+    const idx = this.#team.findIndex(e =&gt; e.id === employeeId);
+    if (idx === -1) throw new Error('الموظف غير موجود في الفريق');
+    const [removed] = this.#team.splice(idx, 1);
+    return `${removed.name} غادر فريق ${this.name}`;
+  }
+
+  get teamSize()  { return this.#team.length; }
+  get teamNames() { return this.#team.map(e =&gt; e.name); }
+  get budget()    { return this.#budget; }
+
+  getTeamReport() {
+    return {
+      manager: this.name,
+      teamSize: this.#team.length,
+      avgSalary: this.#team.reduce((s, e) =&gt; s + e.calculateSalary(), 0) / (this.#team.length || 1),
+      avgPerformance: this.#team.reduce((s, e) =&gt; s + Number(e.getAvgPerformance()), 0) / (this.#team.length || 1),
+    };
+  }
+}
+
+// ══ 4. Specialized Classes ══
+class Developer extends Employee {
+  #techStack;
+  #level; // junior, mid, senior
+
+  constructor(name, email, phone, department, baseSalary, techStack, level = 'mid') {
+    super(name, email, phone, department, baseSalary);
+    this.#techStack = techStack;
+    this.#level     = level;
+  }
+
+  getRole() { return `مطوّر ${this.#level}`; }
+
+  calculateBonus() {
+    const multiplier = { junior: 0.05, mid: 0.10, senior: 0.20 };
+    return this.baseSalary * (multiplier[this.#level] ?? 0.10);
+  }
+
+  get techStack() { return [...this.#techStack]; }
+
+  addSkill(skill) {
+    if (!this.#techStack.includes(skill)) this.#techStack.push(skill);
+    return `${this.name} أضاف مهارة: ${skill}`;
+  }
+}
+
+class SalesRep extends Employee {
+  #commissionRate;
+  #monthlySales;
+
+  constructor(name, email, phone, department, baseSalary, commissionRate, monthlySales = 0) {
+    super(name, email, phone, department, baseSalary);
+    this.#commissionRate = commissionRate;
+    this.#monthlySales   = monthlySales;
+  }
+
+  getRole() { return 'مندوب مبيعات'; }
+
+  calculateBonus() {
+    return this.#monthlySales * this.#commissionRate;
+  }
+
+  recordSale(amount) {
+    this.#monthlySales += amount;
+    return `${this.name}: تم تسجيل بيع ${amount} ريال. إجمالي الشهر: ${this.#monthlySales} ريال`;
+  }
+
+  get monthlySales() { return this.#monthlySales; }
+}
+
+// ══ 5. HR Department ══
+class HRDepartment {
+  #employees = new Map();
+  #companyName;
+
+  constructor(companyName) {
+    this.#companyName = companyName;
+  }
+
+  hire(employee) {
+    this.#employees.set(employee.id, employee);
+    return `تم توظيف ${employee.name} كـ ${employee.getRole()}`;
+  }
+
+  fire(employeeId) {
+    const emp = this.#employees.get(employeeId);
+    if (!emp) throw new Error(`الموظف ${employeeId} غير موجود`);
+    this.#employees.delete(employeeId);
+    return `تم إنهاء خدمة ${emp.name}`;
+  }
+
+  find(id)       { return this.#employees.get(id); }
+  getAll()       { return [...this.#employees.values()]; }
+  getCount()     { return this.#employees.size; }
+
+  // Polymorphism — يعمل مع جميع أنواع الموظفين
+  getPayroll() {
+    return this.getAll().map(e =&gt; ({
+      id:     e.id,
+      name:   e.name,
+      role:   e.getRole(),
+      salary: e.calculateSalary(),
+    }));
+  }
+
+  getTotalPayroll() {
+    return this.getAll().reduce((s, e) =&gt; s + e.calculateSalary(), 0);
+  }
+
+  getDeptReport() {
+    return this.getAll().reduce((acc, emp) =&gt; {
+      const dept = emp.department;
+      if (!acc[dept]) acc[dept] = { count:0, totalSalary:0 };
+      acc[dept].count++;
+      acc[dept].totalSalary += emp.calculateSalary();
+      return acc;
+    }, {});
+  }
+
+  printReport() {
+    console.log(`═`.repeat(60));
+    console.log(`   📊 تقرير ${this.#companyName}`);
+    console.log(`═`.repeat(60));
+    console.log(`   إجمالي الموظفين: ${this.getCount()}`);
+    console.log(`   إجمالي الرواتب:  ${this.getTotalPayroll().toLocaleString('ar')} ريال`);
+    console.log();
+    this.getAll().forEach(e =&gt; console.log(`   ${e}`));
+  }
+}
+
+// ══ 6. التشغيل ══
+const hr = new HRDepartment('أكاديمية التقنية');
+
+// توظيف الموظفين
+const mgr  = new Manager('أحمد الشمري', 'ahmed@tech.sa', '0501111111', 'تقنية', 15000, 500000);
+const dev1 = new Developer('سارة القحطاني', 'sara@tech.sa', '0502222222', 'تقنية', 10000, ['JS','React','Node'], 'senior');
+const dev2 = new Developer('خالد العتيبي', 'khalid@tech.sa', '0503333333', 'تقنية', 7000, ['HTML','CSS'], 'junior');
+const sales = new SalesRep('نورة الدوسري', 'noura@tech.sa', '0504444444', 'مبيعات', 6000, 0.05, 0);
+
+hr.hire(mgr);
+hr.hire(dev1);
+hr.hire(dev2);
+hr.hire(sales);
+
+// إضافة الفريق للمدير
+mgr.addTeamMember(dev1);
+mgr.addTeamMember(dev2);
+
+// تقييمات الأداء
+dev1.addPerformance(5, 'ممتازة');
+dev1.addPerformance(4, 'جيد جداً');
+mgr.addPerformance(5, 'قيادة رائعة');
+
+// تسجيل مبيعات
+sales.recordSale(20000);
+sales.recordSale(15000);
+
+// طلب إجازة
+console.log(dev2.requestLeave(5));
+
+// Polymorphism: calculateSalary() لكل نوع
+console.log('\nكشف الرواتب (Polymorphism):');
+hr.getPayroll().forEach(p =&gt; {
+  console.log(`  ${p.name} (${p.role}): ${p.salary.toLocaleString('ar')} ريال`);
+});
+
+hr.printReport();</code></pre>
+  <div class="output-box" id="out-10"></div>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثامن: تمارين الجلسة الرابعة عشرة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — الأساسيات<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">أنشئ نظام مكتبة رقمية بـ OOP:</p><ul class="mini-list"><li>class Book: title, author, year, isbn (private) + getters/setters مع تحقق</li><li>static method: Book.fromJSON(json) — Factory Method</li><li>method: getSummary() تُعيد object بملخص الكتاب</li><li>class EBook extends Book: fileSize, format + calculateDownloadTime(speedMbps)</li><li>class AudioBook extends Book: duration, narrator + getDailyListenPlan(minutesPerDay)</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — Encapsulation وValidation<span class="ex-time">20 دقيقة</span></h4><p class="blk-para">أنشئ class Product كامل:</p><ul class="mini-list"><li>جميع الخصائص private (#): name, price, stock, category, rating</li><li>Getters لجميع الخصائص</li><li>Setter price مع تحقق: &gt; 0 وليس NaN</li><li>Setter stock مع تحقق: عدد صحيح غير سالب</li><li>method: applyDiscount(percent) — تُعيد السعر الجديد وتُخزّنه</li><li>method: sell(qty) — تُنقص المخزون أو تُلقي خطأ 'نفد المخزون'</li><li>static method: comparePrice(p1, p2) — تُعيد الأرخص</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — Polymorphism كامل<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ نظام دفع إلكتروني:</p><ul class="mini-list"><li>Abstract class PaymentMethod: amount, currency, processPayment() يُلقي Error</li><li>class CreditCard extends: cardNumber (private آخر 4 أرقام فقط)، processPayment() يُعيد رسالة</li><li>class BankTransfer extends: bankName, accountNumber، processPayment()</li><li>class DigitalWallet extends: walletProvider (Apple Pay, Google Pay)، processPayment()</li><li>class PaymentProcessor: يأخذ أي PaymentMethod ويُشغّل process() — Polymorphism</li><li>اختبر: PaymentProcessor يعمل مع جميع الأنواع بنفس الكود</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الرابعة عشرة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>OOP المفاهيم</td><td>التغليف، الوراثة، التعددية، التجريد — الأربع ركائز</td></tr><tr><td>class</td><td>كلمة المفتاح الأساسية — تجميع البيانات والطرق</td></tr><tr><td>constructor</td><td>يُستدعى عند new — لتهيئة الكائن</td></tr><tr><td>this</td><td>مرجع للكائن الحالي — يُستخدم داخل الـ class</td></tr><tr><td>Instance Methods</td><td>طرق خاصة بكل كائن — this.method()</td></tr><tr><td>static</td><td>طرق وخصائص مشتركة — ClassName.method()</td></tr><tr><td>get/set</td><td>Getters/Setters للتحكم الآمن في الوصول</td></tr><tr><td>#private</td><td>Private Fields — مرئية فقط داخل الـ class</td></tr><tr><td>extends</td><td>الوراثة — الابن يرث كل شيء من الأب</td></tr><tr><td>super()</td><td>استدعاء constructor الأب — إلزامي قبل this</td></tr><tr><td>super.method()</td><td>استدعاء طريقة الأب من داخل الابن</td></tr><tr><td>Method Overriding</td><td>إعادة تعريف طريقة الأب في الابن بسلوك مختلف</td></tr><tr><td>instanceof</td><td>التحقق من نوع الكائن على طول السلسلة</td></tr><tr><td>Prototype Chain</td><td>آلية البحث عن الطرق: obj → Class → Parent → Object</td></tr><tr><td>Polymorphism</td><td>نفس الطريقة، سلوك مختلف — calculateSalary() لكل نوع موظف</td></tr><tr><td>Abstraction</td><td>new.target لمنع إنشاء Abstract Class مباشرة</td></tr><tr><td>Mixins</td><td>إضافة وظائف من مصادر متعددة بدون وراثة متعددة</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الخامسة عشرة: JavaScript المتقدم — Modules وIterators وGenerators</span><p>✦ ES Modules: import وexport وتنظيم الكود</p><p>✦ Named Exports وDefault Export والفرق بينهما</p><p>✦ Dynamic Import وCode Splitting</p><p>✦ Symbol وWell-known Symbols</p><p>✦ Iterators وIterable Protocol</p><p>✦ Generators: function* ويield</p><p>✦ WeakMap وWeakSet وMap وSet</p><p>✦ مشروع: بناء مكتبة JavaScript قابلة لإعادة الاستخدام</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الرابعة عشرة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الخامسة عشرة</span><p>يُرسَل ملف JavaScript (.js) أو رابط GitHub عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: نظام إدارة فندق بالكامل</h3></div><p class="blk-para">أنشئ نظام إدارة فندق احترافي باستخدام OOP يشمل:</p><h4 class="mini-head">◆ 📋 الكلاسات المطلوبة:</h4><ul class="mini-list"><li>class Room: رقم الغرفة، النوع (مفردة/مزدوجة/جناح)، السعر، الطابق، مرافق (array) — private fields كلها</li><li>class Guest extends Person: جواز السفر، الجنسية، تاريخ الميلاد — method: getAge()</li><li>class Reservation: غرفة + ضيف + تواريخ — calculateTotalCost() مع الخصومات</li><li>class StandardRoom/DeluxeRoom/Suite extends Room — كل واحدة تُجاوز calculateRate()</li><li>class Hotel: اسم، موقع — إدارة الغرف والحجوزات والتقارير</li><li>class FrontDesk: واجهة للحجز والإلغاء والـ Check-in/out</li></ul><h4 class="mini-head">◆ ⚙️ الوظائف المطلوبة:</h4><ul class="mini-list"><li>بحث عن الغرف المتاحة بالنوع والتاريخ</li><li>حجز غرفة + تسجيل وصول + تسجيل مغادرة</li><li>حساب الفاتورة النهائية مع الضرائب والخدمات</li><li>تقرير الإشغال: نسبة الغرف المحجوزة</li><li>تقرير الإيرادات اليومية والشهرية</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>5 كلاسات مع private fields وgetters/setters</td><td>25 نقطة</td></tr><tr><td>تسلسل الوراثة الصحيح + super()</td><td>20 نقطة</td></tr><tr><td>Polymorphism واضح في calculateRate()</td><td>20 نقطة</td></tr><tr><td>معالجة الأخطاء الشاملة</td><td>15 نقطة</td></tr><tr><td>تقارير وإحصائيات تعمل بشكل صحيح</td><td>10 نقاط</td></tr><tr><td>جودة الكود وتنظيمه وتعليقاته</td><td>10 نقاط</td></tr></tbody></table></div></div></div>
+<div class="closing-banner">
+  <h3>🏛️ أحسنت! كودك الآن منظم ومتماسك وقابل للتوسيع 🏛️</h3>
+  <p>OOP = تفكير بالعالم الحقيقي وترجمته لكود نظيف</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 14</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-13.html"><small>السابق</small><span>الجلسة 13 — التخزين المحلي في المتصفح</span></a>
+        <a class="nav-arrow next is-disabled" href="#"><small>التالي</small><span>هذه آخر جلسة حالياً</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 10 — JavaScript والـ DOM | Front-End Master Book</title>
+<meta name="description" content="JavaScript والـ DOM — تحديد العناصر • التعديل • الإنشاء • الأحداث • To-Do List">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="10">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>مسار JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🌳</span>
+    <div>
+      <div class="session-tag">Session 10 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة العاشرة — JavaScript والـ DOM</h1>
+  <p class="tags-line">تحديد العناصر • التعديل • الإنشاء • الأحداث • To-Do List</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة العاشرة</h2>
+  <ul class="goal-list"><li>فهم ما هو DOM وكيف يمثّل صفحة HTML كشجرة من العقد</li><li>تحديد العناصر بجميع الطرق: getElementById, querySelector, querySelectorAll</li><li>قراءة وتعديل المحتوى: innerHTML, textContent, outerHTML</li><li>قراءة وتعديل الخصائص: getAttribute, setAttribute, removeAttribute</li><li>التحكم في تنسيق CSS مباشرة من JavaScript</li><li>إضافة وإزالة وتبديل CSS Classes باستخدام classList</li><li>إنشاء عناصر HTML ديناميكياً وإضافتها للصفحة</li><li>حذف وإعادة ترتيب العناصر في شجرة DOM</li><li>التنقل في شجرة DOM: الأب، الأبناء، الأشقاء</li><li>التعامل مع الأحداث: addEventListener، Event Object، Event Delegation</li><li>بناء تطبيق To-Do List تفاعلي كامل</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة التاسعة</span><p>✔ const وlet وvar — نطاق المتغيرات</p><p>✔ أنواع البيانات: String, Number, Boolean, null, undefined, Object, Array</p><p>✔ العمليات: حسابية, مقارنة (===), منطقية (&amp;&amp;, ||, ??)</p><p>✔ التحكم: if/else, switch, Ternary, for, while</p><p>✔ الدوال: Declaration, Expression, Arrow, Default Params, Rest, Spread</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🌳</span><h2>الجزء الأول: ما هو DOM؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>تعريف DOM</h3></div><p class="blk-para">DOM (Document Object Model) هو واجهة برمجية تمثّل صفحة HTML كشجرة من العقد (Nodes). كل عنصر HTML يُصبح «عقدة» في هذه الشجرة يمكن لـ JavaScript الوصول إليها وتعديلها.</p><div class="callout info"><span class="callout-title">🌳 شجرة DOM لصفحة HTML بسيطة</span><pre class="ascii-diagram">  document
+  └── html
+      ├── head
+      │   ├── title → 'أكاديمية التقنية'
+      │   └── link (stylesheet)
+      └── body
+          ├── header
+          │   ├── h1 → 'مرحباً'
+          │   └── nav
+          │       ├── a → 'الرئيسية'
+          │       └── a → 'من نحن'
+          ├── main
+          │   ├── section#hero
+          │   │   └── p → 'نص البطل'
+          │   └── section#courses
+          └── footer
+              └── p → '© 2025'</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>العلاقة بين HTML وDOM</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>HTML</th><th>DOM</th></tr></thead><tbody><tr><td>نص ثابت في ملف .html</td><td>تمثيل حي في ذاكرة المتصفح</td></tr><tr><td>لا يمكن تغييره بعد الحفظ مباشرةً</td><td>يمكن تغييره ديناميكياً بـ JavaScript</td></tr><tr><td>يُقرأ مرة عند التحميل</td><td>يتحدث مع كل تفاعل</td></tr><tr><td>&lt;h1&gt;عنوان&lt;/h1&gt;</td><td>document.querySelector('h1')</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>كائن document</h3></div><p class="blk-para">document هو نقطة الدخول الرئيسية للـ DOM — يمثّل الصفحة كاملة:</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// document يمثّل الصفحة بأكملها
+console.log(document);              // الصفحة كلها
+console.log(document.title);        // عنوان الصفحة
+console.log(document.URL);          // رابط الصفحة الحالية
+console.log(document.body);         // عنصر &lt;body&gt;
+console.log(document.head);         // عنصر &lt;head&gt;
+console.log(document.documentElement); // عنصر &lt;html&gt;
+
+// تعديل عنوان الصفحة ديناميكياً
+document.title = 'صفحة جديدة';
+
+// تغيير لون خلفية الصفحة مباشرة
+document.body.style.backgroundColor = '#F0F6FF';</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎯</span><h2>الجزء الثاني: تحديد العناصر (Selecting Elements)</h2></div><p class="blk-para">قبل أن تُعدّل أي عنصر، يجب أن تُحدّده أولاً. JavaScript توفر عدة طرق لذلك:</p><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>querySelector وquerySelectorAll (الأحدث والأقوى ✅)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// querySelector — يُعيد أول عنصر مطابق
+const title    = document.querySelector('h1');
+const btn      = document.querySelector('.btn-primary');
+const mainNav  = document.querySelector('#main-nav');
+const firstLi  = document.querySelector('ul li');
+const emailInp = document.querySelector('input[type="email"]');
+const active   = document.querySelector('.nav-link.active');
+
+// إذا لم يُوجد العنصر تُعاد null
+const notFound = document.querySelector('.nothing');
+console.log(notFound); // null
+
+// querySelectorAll — يُعيد NodeList بجميع المطابقات
+const allBtns    = document.querySelectorAll('.btn');
+const allInputs  = document.querySelectorAll('input');
+const navLinks   = document.querySelectorAll('.nav-link');
+const evenRows   = document.querySelectorAll('tr:nth-child(even)');
+
+// التكرار على NodeList
+navLinks.forEach(link =&gt; {
+  console.log(link.textContent);
+});
+
+// تحويل NodeList لـ Array للمزيد من المرونة
+const linksArray = Array.from(navLinks);
+const filtered   = linksArray.filter(l =&gt; l.classList.contains('active'));
+
+// البحث داخل عنصر محدد (وليس الصفحة كلها)
+const card     = document.querySelector('.card');
+const cardTitle = card.querySelector('h3');  // h3 داخل .card فقط</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>الطرق الكلاسيكية</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// getElementById — بالمعرّف id
+const header = document.getElementById('main-header');
+// يُعيد العنصر مباشرة أو null
+
+// getElementsByClassName — بالـ class
+const cards = document.getElementsByClassName('card');
+// يُعيد HTMLCollection (حي — يتحدث تلقائياً)
+
+// getElementsByTagName — باسم الوسم
+const allDivs = document.getElementsByTagName('div');
+const allImgs = document.getElementsByTagName('img');
+
+// getElementsByName — بخاصية name (للنماذج)
+const radioGroup = document.getElementsByName('gender');</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الطريقة</th><th>ما تُعيده وملاحظات</th></tr></thead><tbody><tr><td>querySelector()</td><td>أول عنصر مطابق | null إذا لم يوجد | يقبل CSS Selectors ✅</td></tr><tr><td>querySelectorAll()</td><td>NodeList بجميع المطابقات | يقبل CSS Selectors ✅</td></tr><tr><td>getElementById()</td><td>عنصر واحد بـ id | أسرع لأن id فريد</td></tr><tr><td>getElementsByClassName()</td><td>HTMLCollection حية | تتحدث عند تغيير DOM</td></tr><tr><td>getElementsByTagName()</td><td>HTMLCollection بجميع عناصر الوسم</td></tr></tbody></table></div><div class="callout tip"><span class="callout-title">💡 أيهما تستخدم؟</span><p>querySelector وquerySelectorAll في 95% من الحالات — أقوى وأكثر مرونة</p><p>getElementById عندما تحتاج أداءً عالياً لعنصر محدد بـ id</p><p>getElementsByClassName وgetElementsByTagName للكود القديم فقط</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثالث: قراءة المحتوى وتعديله</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>textContent وinnerHTML وinnerText</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const el = document.querySelector('#message');
+
+// ══ textContent — النص الخام (بدون HTML) ✅ ══
+console.log(el.textContent);         // النص فقط
+el.textContent = 'نص جديد آمن';      // يُعامل كنص (لا يُفسَّر كـ HTML)
+el.textContent = '&lt;b&gt;لا يُعرض&lt;/b&gt;'; // يُعرض حرفياً كنص
+
+// ══ innerHTML — النص مع HTML ══
+console.log(el.innerHTML);           // النص مع وسوم HTML
+el.innerHTML = '&lt;strong&gt;نص غامق&lt;/strong&gt;'; // يُفسَّر كـ HTML ✅
+el.innerHTML = '';                   // مسح كل المحتوى الداخلي
+
+// ⚠️ تحذير XSS — لا تضع مُدخَل المستخدم مباشرة في innerHTML!
+// el.innerHTML = userInput; // ❌ خطر أمني!
+// استخدم textContent للمُدخَلات دائماً
+
+// ══ outerHTML — العنصر كاملاً مع وسوم الإغلاق ══
+console.log(el.outerHTML);
+// '&lt;div id="message"&gt;النص&lt;/div&gt;'
+
+// ══ innerText — مثل textContent لكن يراعي التنسيق المرئي ══
+// (لا يُعيد النصوص المخفية بـ CSS)
+console.log(el.innerText);</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>الخصائص (Attributes)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const link = document.querySelector('a.hero-link');
+const img  = document.querySelector('img.avatar');
+const inp  = document.querySelector('#email-input');
+
+// ══ قراءة خاصية ══
+console.log(link.getAttribute('href'));   // '/about'
+console.log(img.getAttribute('alt'));     // 'صورة المستخدم'
+console.log(inp.getAttribute('type'));    // 'email'
+
+// ══ تعديل خاصية ══
+link.setAttribute('href', '/contact');
+img.setAttribute('src', 'new-photo.jpg');
+img.setAttribute('alt', 'صورة جديدة');
+
+// ══ حذف خاصية ══
+link.removeAttribute('target');
+
+// ══ التحقق من وجود خاصية ══
+console.log(inp.hasAttribute('required')); // true أو false
+
+// ══ الخصائص المباشرة (Dot Notation) — أسرع ✅ ══
+console.log(link.href);        // رابط كامل
+console.log(img.src);          // مسار كامل
+console.log(img.alt);          // النص البديل
+console.log(inp.value);        // قيمة حقل الإدخال
+console.log(inp.type);         // نوع الحقل
+console.log(inp.disabled);     // boolean
+console.log(inp.checked);      // للـ checkbox/radio
+
+// تعديل مباشر
+inp.value    = 'ahmed@example.com';
+inp.disabled = true;
+inp.placeholder = 'أدخل بريدك';
+
+// dataset — الخصائص المخصصة (data-*)
+// &lt;div data-user-id='42' data-role='admin'&gt;
+const userCard = document.querySelector('.user-card');
+console.log(userCard.dataset.userId); // '42'
+console.log(userCard.dataset.role);   // 'admin'
+userCard.dataset.status = 'active';   // يُضيف data-status='active'</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎨</span><h2>الجزء الرابع: التحكم في CSS من JavaScript</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>خاصية style المباشرة</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const box = document.querySelector('.box');
+
+// قراءة
+console.log(box.style.backgroundColor); // '' فارغ إذا لم يُحدَّد inline
+console.log(box.style.width);
+
+// تعديل خاصية واحدة
+box.style.backgroundColor = '#2E75B6';
+box.style.color = 'white';
+box.style.width = '300px';
+box.style.padding = '20px';
+box.style.borderRadius = '12px';  // camelCase بدلاً من border-radius
+box.style.fontSize = '1.2rem';
+box.style.display = 'none';       // إخفاء
+box.style.display = '';           // إعادة لافتراضي (إظهار)
+
+// تعديل متعدد دفعة واحدة بـ cssText
+box.style.cssText = `
+  background-color: #1A3C5E;
+  color: white;
+  padding: 24px;
+  border-radius: 16px;
+  font-size: 1rem;
+`;
+
+// قراءة القيمة المحسوبة الفعلية (بما فيها CSS الخارجي)
+const computed = getComputedStyle(box);
+console.log(computed.backgroundColor); // 'rgb(26, 60, 94)'
+console.log(computed.fontSize);        // '16px'
+console.log(computed.display);         // 'block'</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>classList — الطريقة الاحترافية ✅</h3></div><p class="blk-para">أفضل بكثير من style المباشرة — تعمل مع CSS المُعرَّف مسبقاً:</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const card = document.querySelector('.card');
+
+// ══ add — إضافة class ══
+card.classList.add('card--active');
+card.classList.add('card--highlighted', 'animate-in'); // متعدد
+
+// ══ remove — حذف class ══
+card.classList.remove('card--loading');
+card.classList.remove('hidden', 'disabled');
+
+// ══ toggle — إضافة إن لم يكن موجود، حذف إن كان موجوداً ✅ ══
+card.classList.toggle('card--expanded');
+card.classList.toggle('dark-mode');
+
+// toggle مع قيمة (force)
+card.classList.toggle('active', true);  // يُضيف دائماً
+card.classList.toggle('active', false); // يحذف دائماً
+
+// ══ contains — التحقق من وجود class ══
+if (card.classList.contains('card--featured')) {
+  console.log('هذه بطاقة مميزة');
+}
+
+// ══ replace — استبدال class بآخر ══
+card.classList.replace('card--loading', 'card--loaded');
+
+// ══ قراءة جميع الـ classes ══
+console.log(card.className);              // نص
+console.log(card.classList.toString());   // نص
+console.log([...card.classList]);         // مصفوفة
+console.log(card.classList.length);       // العدد
+
+// مثال عملي: Dark Mode Toggle
+const toggleBtn = document.querySelector('#theme-toggle');
+toggleBtn.addEventListener('click', () =&gt; {
+  document.body.classList.toggle('dark-mode');
+  const isDark = document.body.classList.contains('dark-mode');
+  toggleBtn.textContent = isDark ? '☀️ فاتح' : '🌙 داكن';
+});</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔨</span><h2>الجزء الخامس: إنشاء وحذف العناصر</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>إنشاء عناصر جديدة</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ══ createElement — إنشاء عنصر ══
+const newCard = document.createElement('article');
+const newBtn  = document.createElement('button');
+const newImg  = document.createElement('img');
+const newPara = document.createElement('p');
+
+// إعداد العنصر الجديد
+newCard.className = 'product-card';
+newCard.id = 'card-42';
+newCard.setAttribute('data-product-id', '42');
+
+newBtn.textContent = 'أضف للسلة 🛒';
+newBtn.className = 'btn btn--primary';
+newBtn.type = 'button';
+
+newImg.src = 'product.jpg';
+newImg.alt = 'صورة المنتج';
+newImg.loading = 'lazy'; // تحميل كسول
+
+newPara.innerHTML = `السعر: &lt;strong&gt;99 ريال&lt;/strong&gt;`;
+
+// ══ إضافة العنصر للصفحة ══
+const container = document.querySelector('.products-grid');
+
+// appendChild — إضافة في نهاية الأب
+container.appendChild(newCard);
+
+// prepend — إضافة في بداية الأب
+container.prepend(newCard);
+
+// insertBefore — إضافة قبل عنصر محدد
+const thirdCard = container.querySelector(':nth-child(3)');
+container.insertBefore(newCard, thirdCard);
+
+// insertAdjacentHTML — أسرع للمحتوى الجاهز ✅
+container.insertAdjacentHTML('beforeend',
+  `&lt;article class="card"&gt;
+    &lt;h3&gt;منتج جديد&lt;/h3&gt;
+    &lt;p&gt;وصف المنتج&lt;/p&gt;
+   &lt;/article&gt;`
+);
+// 'beforebegin' — قبل العنصر
+// 'afterbegin'  — داخل العنصر في البداية
+// 'beforeend'   — داخل العنصر في النهاية ✅
+// 'afterend'    — بعد العنصر</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>طريقة إنشاء عنصر كامل دفعة واحدة</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// دالة مساعدة لإنشاء بطاقة منتج
+function createProductCard(product) {
+  const card = document.createElement('article');
+  card.className = 'product-card';
+  card.dataset.productId = product.id;
+
+  card.innerHTML = `
+    &lt;img src="${product.image}" alt="${product.name}" /&gt;
+    &lt;div class="product-card__body"&gt;
+      &lt;h3 class="product-card__name"&gt;${product.name}&lt;/h3&gt;
+      &lt;p class="product-card__desc"&gt;${product.description}&lt;/p&gt;
+      &lt;div class="product-card__footer"&gt;
+        &lt;span class="product-card__price"&gt;${product.price} ريال&lt;/span&gt;
+        &lt;button class="btn btn--primary" data-id="${product.id}"&gt;
+          أضف للسلة
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  `;
+
+  return card;
+}
+
+// استخدام الدالة
+const products = [
+  { id: 1, name: 'كتاب JavaScript', description: 'مرجع شامل', price: 85, image: 'js.jpg' },
+  { id: 2, name: 'كورس CSS', description: 'تصميم احترافي', price: 120, image: 'css.jpg' },
+];
+
+const grid = document.querySelector('.products-grid');
+products.forEach(product =&gt; {
+  grid.appendChild(createProductCard(product));
+});</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.3</span><h3>حذف العناصر</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ══ remove — حذف العنصر نفسه ✅ ══
+const card = document.querySelector('.card-to-delete');
+card.remove();
+
+// ══ removeChild — حذف ابن من أبيه ══
+const list = document.querySelector('#task-list');
+const lastItem = list.lastElementChild;
+list.removeChild(lastItem);
+
+// ══ innerHTML = '' — مسح جميع الأبناء ══
+const container = document.querySelector('.notifications');
+container.innerHTML = ''; // مسح كل شيء
+
+// ══ replaceWith — استبدال بعنصر آخر ══
+const oldEl = document.querySelector('.old-banner');
+const newEl = document.createElement('div');
+newEl.className = 'new-banner';
+newEl.textContent = 'إعلان جديد';
+oldEl.replaceWith(newEl);
+
+// ══ cloneNode — نسخ عنصر ══
+const template = document.querySelector('.card-template');
+const clone = template.cloneNode(true); // true = ينسخ الأبناء أيضاً
+clone.querySelector('h3').textContent = 'بطاقة جديدة';
+document.querySelector('.grid').appendChild(clone);</code></pre>
+  <div class="output-box" id="out-10"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🧭</span><h2>الجزء السادس: التنقل في شجرة DOM (Traversal)</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>خصائص التنقل</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const item = document.querySelector('.list-item');
+
+// ══ الأب (Parent) ══
+console.log(item.parentElement);      // العنصر الأب (أفضل من parentNode)
+console.log(item.parentElement.parentElement); // الجد
+console.log(item.closest('ul'));       // يبحث للأعلى عن المطابق ✅
+console.log(item.closest('.container')); // مفيد جداً
+
+// ══ الأبناء (Children) ══
+const list = document.querySelector('ul');
+console.log(list.children);           // HTMLCollection بالأبناء المباشرين
+console.log(list.childElementCount);  // عدد الأبناء
+console.log(list.firstElementChild);  // أول ابن
+console.log(list.lastElementChild);   // آخر ابن
+console.log([...list.children]);      // مصفوفة من الأبناء
+
+// ══ الأشقاء (Siblings) ══
+console.log(item.nextElementSibling);     // الشقيق التالي
+console.log(item.previousElementSibling); // الشقيق السابق
+
+// ══ مثال: تلوين كل عنصر قائمة بالتناوب ══
+const items = document.querySelectorAll('li');
+items.forEach((item, index) =&gt; {
+  item.style.backgroundColor = index % 2 === 0 ? '#F0F6FF' : 'white';
+});</code></pre>
+  <div class="output-box" id="out-11"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.2</span><h3>closest() لإيجاد الأب المطابق</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// closest() — يبحث للأعلى في الشجرة حتى يجد مطابقاً
+// مفيد جداً مع Event Delegation
+
+// &lt;div class='card'&gt;
+//   &lt;h3&gt;عنوان&lt;/h3&gt;
+//   &lt;button class='delete-btn'&gt;حذف&lt;/button&gt;
+// &lt;/div&gt;
+
+document.addEventListener('click', (e) =&gt; {
+  if (e.target.classList.contains('delete-btn')) {
+    const card = e.target.closest('.card'); // يُعيد .card الأب
+    if (card) card.remove();
+  }
+});
+
+// مثال: تحديد صف الجدول من زر داخله
+document.querySelector('table').addEventListener('click', (e) =&gt; {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+
+  const row = btn.closest('tr');
+  const action = btn.dataset.action;
+
+  if (action === 'delete') {
+    row.remove();
+  } else if (action === 'edit') {
+    row.classList.add('editing');
+  }
+});</code></pre>
+  <div class="output-box" id="out-12"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🖱️</span><h2>الجزء السابع: الأحداث (Events)</h2></div><p class="blk-para">الأحداث هي طريقة JavaScript للاستجابة لتفاعلات المستخدم: النقر، الكتابة، التمرير، تحريك الماوس، وغيرها.</p><div class="subsection"><div class="sub-head"><span class="sub-num">7.1</span><h3>addEventListener (الطريقة الاحترافية ✅)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const btn = document.querySelector('#submit-btn');
+
+// الصيغة: element.addEventListener(event, handler, options)
+btn.addEventListener('click', function(event) {
+  console.log('تم النقر!');
+  console.log(event.target);    // العنصر الذي نُقر عليه
+});
+
+// مع Arrow Function
+btn.addEventListener('click', (e) =&gt; {
+  console.log('الزر نُقر:', e.target.textContent);
+});
+
+// إضافة مستمعَيْن لنفس الحدث — كلاهما يعمل
+btn.addEventListener('click', handleFirstClick);
+btn.addEventListener('click', handleSecondClick);
+
+// إزالة مستمع الحدث
+btn.removeEventListener('click', handleFirstClick);
+
+// once: true — يُنفَّذ مرة واحدة فقط ✅
+btn.addEventListener('click', () =&gt; {
+  console.log('هذا يظهر مرة واحدة فقط!');
+}, { once: true });</code></pre>
+  <div class="output-box" id="out-13"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">7.2</span><h3>أنواع الأحداث الشائعة</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الفئة</th><th>الحدث</th><th>متى يُطلَق؟</th></tr></thead><tbody><tr><td>الماوس</td><td>click</td><td>النقر بالزر الأيسر</td></tr><tr><td>الماوس</td><td>dblclick</td><td>النقر المزدوج</td></tr><tr><td>الماوس</td><td>mouseenter</td><td>دخول الماوس فوق العنصر</td></tr><tr><td>الماوس</td><td>mouseleave</td><td>خروج الماوس من العنصر</td></tr><tr><td>الماوس</td><td>mousemove</td><td>تحريك الماوس</td></tr><tr><td>الماوس</td><td>contextmenu</td><td>النقر بالزر الأيمن</td></tr><tr><td>لوحة المفاتيح</td><td>keydown</td><td>عند الضغط على مفتاح</td></tr><tr><td>لوحة المفاتيح</td><td>keyup</td><td>عند رفع المفتاح</td></tr><tr><td>لوحة المفاتيح</td><td>keypress</td><td>عند الكتابة (قديم)</td></tr><tr><td>النموذج</td><td>submit</td><td>عند إرسال النموذج</td></tr><tr><td>النموذج</td><td>change</td><td>عند تغيير قيمة حقل</td></tr><tr><td>النموذج</td><td>input</td><td>عند كل تغيير فوري</td></tr><tr><td>النموذج</td><td>focus</td><td>عند التركيز على حقل</td></tr><tr><td>النموذج</td><td>blur</td><td>عند ترك الحقل</td></tr><tr><td>الصفحة</td><td>DOMContentLoaded</td><td>تحميل HTML كامل</td></tr><tr><td>الصفحة</td><td>load</td><td>تحميل كل شيء (صور أيضاً)</td></tr><tr><td>الصفحة</td><td>scroll</td><td>عند التمرير</td></tr><tr><td>الصفحة</td><td>resize</td><td>عند تغيير حجم النافذة</td></tr><tr><td>اللمس</td><td>touchstart</td><td>لمس الشاشة (جوال)</td></tr><tr><td>اللمس</td><td>touchend</td><td>رفع الإصبع</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">7.3</span><h3>Event Object (كائن الحدث)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>document.querySelector('form').addEventListener('submit', (event) =&gt; {
+  // ══ منع السلوك الافتراضي ══
+  event.preventDefault(); // منع إرسال النموذج وإعادة تحميل الصفحة
+
+  // ══ خصائص Event Object ══
+  console.log(event.type);           // 'submit'
+  console.log(event.target);         // النموذج نفسه
+  console.log(event.currentTarget);  // العنصر الذي يستمع
+  console.log(event.timeStamp);      // وقت الحدث
+});
+
+// أحداث الماوس
+document.querySelector('.canvas').addEventListener('mousemove', (e) =&gt; {
+  console.log(e.clientX, e.clientY);  // موضع في الشاشة
+  console.log(e.pageX, e.pageY);      // موضع في الصفحة
+  console.log(e.offsetX, e.offsetY);  // موضع داخل العنصر
+  console.log(e.buttons);             // أي أزرار الماوس مضغوطة
+});
+
+// أحداث لوحة المفاتيح
+document.addEventListener('keydown', (e) =&gt; {
+  console.log(e.key);        // 'Enter', 'Escape', 'a', 'ArrowUp'...
+  console.log(e.code);       // 'KeyA', 'Space', 'Enter'...
+  console.log(e.ctrlKey);    // هل Ctrl مضغوط؟
+  console.log(e.shiftKey);   // هل Shift مضغوط؟
+  console.log(e.altKey);     // هل Alt مضغوط؟
+
+  // مثال: اختصارات لوحة المفاتيح
+  if (e.ctrlKey &amp;&amp; e.key === 's') {
+    e.preventDefault();
+    saveDocument();
+  }
+  if (e.key === 'Escape') {
+    closeModal();
+  }
+});</code></pre>
+  <div class="output-box" id="out-14"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">7.4</span><h3>Event Delegation (تفويض الأحداث) ✅</h3></div><p class="blk-para">بدلاً من إضافة مستمع لكل عنصر، نضيف مستمعاً واحداً للأب — يُوفّر الأداء ويعمل مع العناصر الديناميكية:</p><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ❌ طريقة سيئة — مستمع لكل زر
+document.querySelectorAll('.delete-btn').forEach(btn =&gt; {
+  btn.addEventListener('click', () =&gt; { /* ... */ });
+});
+// مشكلة: لا يعمل مع الأزرار المضافة لاحقاً!
+
+// ✅ Event Delegation — مستمع واحد على الأب
+const taskList = document.querySelector('#task-list');
+
+taskList.addEventListener('click', (e) =&gt; {
+  // e.target هو العنصر الذي نُقر عليه فعلاً
+
+  // التحقق من نوع الزر المنقور
+  if (e.target.classList.contains('btn-delete')) {
+    const task = e.target.closest('.task-item');
+    task.remove();
+  }
+
+  if (e.target.classList.contains('btn-complete')) {
+    const task = e.target.closest('.task-item');
+    task.classList.toggle('task--completed');
+  }
+
+  if (e.target.classList.contains('btn-edit')) {
+    const task = e.target.closest('.task-item');
+    const title = task.querySelector('.task-title');
+    title.contentEditable = 'true';
+    title.focus();
+  }
+});
+
+// الآن حتى المهام المضافة لاحقاً لها نفس السلوك!</code></pre>
+  <div class="output-box" id="out-15"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">7.5</span><h3>DOMContentLoaded وload</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// DOMContentLoaded — ينطلق عند اكتمال تحميل HTML
+// (قبل تحميل الصور والـ stylesheets الخارجية)
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  console.log('HTML جاهز!');
+  // يمكن البدء في التعامل مع DOM هنا
+  initApp();
+});
+
+// load — ينطلق عند اكتمال تحميل كل شيء
+window.addEventListener('load', () =&gt; {
+  console.log('كل شيء محمّل — الصور والـ CSS أيضاً');
+});
+
+// الفرق في الاستخدام:
+// - defer في &lt;script&gt; = DOMContentLoaded تقريباً
+// - &lt;script&gt; في نهاية body = لا تحتاج DOMContentLoaded
+// - &lt;script&gt; في head بدون defer = استخدم DOMContentLoaded
+
+// scroll — حدث التمرير
+window.addEventListener('scroll', () =&gt; {
+  const navbar = document.querySelector('.navbar');
+  if (window.scrollY &gt; 80) {
+    navbar.classList.add('navbar--scrolled');
+  } else {
+    navbar.classList.remove('navbar--scrolled');
+  }
+});
+
+// resize — تغيير حجم النافذة
+window.addEventListener('resize', () =&gt; {
+  console.log(`${window.innerWidth} x ${window.innerHeight}`);
+});</code></pre>
+  <div class="output-box" id="out-16"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء الثامن: المشروع التطبيقي — To-Do List تفاعلية كاملة</h2></div><div class="project-box"><p class="blk-para">سنبني تطبيق قائمة مهام (To-Do List) متكامل يُطبّق كل مفاهيم DOM التي تعلمناها.</p><div class="subsection"><div class="sub-head"><h3>ملف index.html</h3></div><div class="code-block" data-lang="html">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot html"></span>HTML</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ar" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;قائمة مهامي ✅&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div class="app"&gt;
+
+    &lt;!-- رأس التطبيق --&gt;
+    &lt;header class="app-header"&gt;
+      &lt;h1&gt;📝 قائمة مهامي&lt;/h1&gt;
+      &lt;div class="stats"&gt;
+        &lt;span id="total-count"&gt;0 مهمة&lt;/span&gt;
+        &lt;span id="done-count"&gt;0 مكتملة&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;!-- نموذج الإضافة --&gt;
+    &lt;form class="add-form" id="add-form"&gt;
+      &lt;input
+        type="text"
+        id="task-input"
+        placeholder="أضف مهمة جديدة..."
+        autocomplete="off"
+        required
+      /&gt;
+      &lt;select id="priority-select"&gt;
+        &lt;option value="normal"&gt;عادية&lt;/option&gt;
+        &lt;option value="high"&gt;عالية 🔴&lt;/option&gt;
+        &lt;option value="low"&gt;منخفضة 🟢&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;button type="submit" class="btn btn-add"&gt;إضافة +&lt;/button&gt;
+    &lt;/form&gt;
+
+    &lt;!-- أزرار التصفية --&gt;
+    &lt;div class="filters"&gt;
+      &lt;button class="filter-btn active" data-filter="all"&gt;الكل&lt;/button&gt;
+      &lt;button class="filter-btn" data-filter="active"&gt;النشطة&lt;/button&gt;
+      &lt;button class="filter-btn" data-filter="done"&gt;المكتملة&lt;/button&gt;
+      &lt;button class="btn-danger" id="clear-done"&gt;حذف المكتملة&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- قائمة المهام --&gt;
+    &lt;ul class="task-list" id="task-list"&gt;
+      &lt;li class="empty-state" id="empty-state"&gt;
+        &lt;span&gt;🎉 لا توجد مهام — أضف مهمتك الأولى!&lt;/span&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+  &lt;/div&gt;
+
+  &lt;script src="app.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  <div class="output-box" id="out-17"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>ملف app.js</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>/* ═══════════════════════════════════════════════ */
+/* To-Do List App — DOM Session 10                */
+/* ═══════════════════════════════════════════════ */
+
+// ══ 1. تحديد العناصر ══
+const addForm      = document.getElementById('add-form');
+const taskInput    = document.getElementById('task-input');
+const prioritySel  = document.getElementById('priority-select');
+const taskList     = document.getElementById('task-list');
+const emptyState   = document.getElementById('empty-state');
+const totalCount   = document.getElementById('total-count');
+const doneCount    = document.getElementById('done-count');
+const clearDoneBtn = document.getElementById('clear-done');
+const filterBtns   = document.querySelectorAll('.filter-btn');
+
+// ══ 2. البيانات ══
+let tasks = [];
+let nextId = 1;
+let currentFilter = 'all';
+
+// ══ 3. إنشاء عنصر مهمة ══
+function createTaskElement(task) {
+  const li = document.createElement('li');
+  li.className = `task-item task-item--${task.priority}
+    ${task.done ? 'task-item--done' : ''}`.trim();
+  li.dataset.taskId = task.id;
+
+  li.innerHTML = `
+    &lt;label class="task-check"&gt;
+      &lt;input type="checkbox" ${task.done ? 'checked' : ''}
+        data-action="toggle" /&gt;
+      &lt;span class="task-title"&gt;${escapeHtml(task.title)}&lt;/span&gt;
+    &lt;/label&gt;
+    &lt;div class="task-actions"&gt;
+      &lt;span class="task-priority priority--${task.priority}"&gt;
+        ${getPriorityLabel(task.priority)}
+      &lt;/span&gt;
+      &lt;button class="btn-icon" data-action="edit" title="تعديل"&gt;✏️&lt;/button&gt;
+      &lt;button class="btn-icon btn-icon--danger" data-action="delete"
+        title="حذف"&gt;🗑️&lt;/button&gt;
+    &lt;/div&gt;
+  `;
+
+  return li;
+}
+
+// ══ 4. دالة عرض المهام ══
+function renderTasks() {
+  // تصفية المهام
+  const filtered = tasks.filter(task =&gt; {
+    if (currentFilter === 'active') return !task.done;
+    if (currentFilter === 'done')   return task.done;
+    return true; // 'all'
+  });
+
+  // مسح القائمة
+  taskList.innerHTML = '';
+
+  // حالة القائمة الفارغة
+  if (filtered.length === 0) {
+    const msg = currentFilter === 'done'
+      ? '😊 لا توجد مهام مكتملة'
+      : '🎉 لا توجد مهام!';
+    taskList.innerHTML =
+      `&lt;li class="empty-state"&gt;${msg}&lt;/li&gt;`;
+    updateStats();
+    return;
+  }
+
+  // رسم المهام
+  filtered.forEach(task =&gt; {
+    taskList.appendChild(createTaskElement(task));
+  });
+
+  updateStats();
+}
+
+// ══ 5. تحديث الإحصائيات ══
+function updateStats() {
+  const total = tasks.length;
+  const done  = tasks.filter(t =&gt; t.done).length;
+  totalCount.textContent = `${total} مهمة`;
+  doneCount.textContent  = `${done} مكتملة`;
+}
+
+// ══ 6. إضافة مهمة ══
+function addTask(title, priority) {
+  const task = {
+    id:       nextId++,
+    title:    title.trim(),
+    priority: priority,
+    done:     false,
+    createdAt: new Date().toLocaleDateString('ar-SA'),
+  };
+  tasks.unshift(task); // إضافة للبداية
+  renderTasks();
+}
+
+// ══ 7. حذف مهمة ══
+function deleteTask(id) {
+  tasks = tasks.filter(t =&gt; t.id !== id);
+  renderTasks();
+}
+
+// ══ 8. تبديل حالة إنجاز المهمة ══
+function toggleTask(id) {
+  const task = tasks.find(t =&gt; t.id === id);
+  if (task) {
+    task.done = !task.done;
+    renderTasks();
+  }
+}
+
+// ══ 9. تعديل مهمة ══
+function editTask(id, li) {
+  const task  = tasks.find(t =&gt; t.id === id);
+  const title = li.querySelector('.task-title');
+  const newText = prompt('تعديل المهمة:', task.title);
+  if (newText &amp;&amp; newText.trim() !== '') {
+    task.title = newText.trim();
+    renderTasks();
+  }
+}
+
+// ══ 10. مساعدات ══
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function getPriorityLabel(p) {
+  return p === 'high' ? '🔴 عالية'
+       : p === 'low'  ? '🟢 منخفضة'
+       :                '🟡 عادية';
+}
+
+// ══ 11. مستمعات الأحداث ══
+
+// إضافة مهمة
+addForm.addEventListener('submit', (e) =&gt; {
+  e.preventDefault();
+  const title = taskInput.value.trim();
+  if (!title) return;
+  addTask(title, prioritySel.value);
+  taskInput.value = '';
+  taskInput.focus();
+});
+
+// Event Delegation — إجراءات المهام
+taskList.addEventListener('click', (e) =&gt; {
+  const action = e.target.closest('[data-action]')?.dataset.action;
+  if (!action) return;
+
+  const li   = e.target.closest('.task-item');
+  const id   = Number(li.dataset.taskId);
+
+  switch (action) {
+    case 'toggle': toggleTask(id); break;
+    case 'delete': deleteTask(id); break;
+    case 'edit':   editTask(id, li); break;
+  }
+});
+
+// أزرار التصفية
+document.querySelector('.filters').addEventListener('click', (e) =&gt; {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+
+  filterBtns.forEach(b =&gt; b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = btn.dataset.filter;
+  renderTasks();
+});
+
+// حذف المهام المكتملة
+clearDoneBtn.addEventListener('click', () =&gt; {
+  if (!confirm('حذف جميع المهام المكتملة؟')) return;
+  tasks = tasks.filter(t =&gt; !t.done);
+  renderTasks();
+});
+
+// اختصار Enter لإضافة وEscape للإغلاق
+taskInput.addEventListener('keydown', (e) =&gt; {
+  if (e.key === 'Escape') taskInput.blur();
+});
+
+// ══ 12. تشغيل أولي ══
+renderTasks();
+taskInput.focus();</code></pre>
+  <div class="output-box" id="out-18"></div>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء التاسع: تمارين الجلسة العاشرة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — تحديد العناصر وتعديلها<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">في Console المتصفح على أي موقع تختاره:</p><ul class="mini-list"><li>حدّد عنوان الصفحة وغيّر نصه</li><li>أضف class='highlight' لجميع الفقرات بـ querySelectorAll + forEach</li><li>حدّد أول رابط وغيّر href الخاص به</li><li>أضف زر HTML جديد في نهاية body بـ insertAdjacentHTML</li><li>غيّر لون خلفية body عند النقر على الزر باستخدام addEventListener</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — إنشاء وحذف العناصر ديناميكياً<span class="ex-time">20 دقيقة</span></h4><p class="blk-para">أنشئ صفحة بـ HTML وJS تحتوي على:</p><ul class="mini-list"><li>حقل إدخال اسم المهارة + حقل نسبة (0-100) + زر إضافة</li><li>عند النقر: أنشئ div جديد يحتوي على اسم المهارة وشريط تقدم بالنسبة المحددة</li><li>كل شريط تقدم له لون مختلف حسب النسبة: أحمر &lt; 50, أصفر &lt; 75, أخضر ≥ 75</li><li>أضف زر حذف لكل مهارة يحذفها عند النقر</li><li>عدّاد يُظهر عدد المهارات المضافة</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — Event Delegation وأحداث متقدمة<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ جدولاً تفاعلياً لقائمة موظفين:</p><ul class="mini-list"><li>جدول يحتوي 5 موظفين: الاسم، القسم، الراتب، الحالة (نشط/غير نشط)</li><li>زر 'حذف' في كل صف يحذف الصف بـ Event Delegation على الجدول</li><li>النقر على الصف يُبرزه ويُلغي تبرز الصفوف الأخرى</li><li>حقل بحث يُصفّي الصفوف المرئية بـ textContent.includes() عند كل input</li><li>زر 'تصدير' يُطبع أسماء الموظفين في console</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة العاشرة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>DOM</td><td>تمثيل HTML كشجرة عقد قابلة للتعديل — document هو نقطة الدخول</td></tr><tr><td>querySelector</td><td>querySelector() وquerySelectorAll() — يقبلان CSS Selectors ✅</td></tr><tr><td>قراءة المحتوى</td><td>textContent (آمن) | innerHTML (HTML) | outerHTML</td></tr><tr><td>الخصائص</td><td>getAttribute/setAttribute/removeAttribute | الخصائص المباشرة | dataset</td></tr><tr><td>style المباشر</td><td>element.style.property | cssText | getComputedStyle()</td></tr><tr><td>classList</td><td>add, remove, toggle, contains, replace — أفضل من style ✅</td></tr><tr><td>إنشاء العناصر</td><td>createElement + appendChild | insertAdjacentHTML (أسرع) ✅</td></tr><tr><td>حذف العناصر</td><td>element.remove() | removeChild() | innerHTML = ''</td></tr><tr><td>التنقل في DOM</td><td>parentElement | children | firstElementChild | closest() ✅</td></tr><tr><td>addEventListener</td><td>element.addEventListener(event, handler, {once}) — الاحترافي ✅</td></tr><tr><td>Event Object</td><td>e.target | e.preventDefault() | e.key | e.clientX/Y</td></tr><tr><td>Event Delegation</td><td>مستمع واحد على الأب + e.target.closest() — للعناصر الديناميكية ✅</td></tr><tr><td>أحداث الصفحة</td><td>DOMContentLoaded | load | scroll | resize</td></tr><tr><td>أحداث النموذج</td><td>submit + preventDefault | input | change | focus | blur</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الحادية عشرة: المصفوفات والكائنات في JavaScript</span><p>✦ طرق المصفوفات المتقدمة: map, filter, reduce, find, findIndex</p><p>✦ sort وreverse وsome وevery وflat</p><p>✦ التدمير (Destructuring): مصفوفات وكائنات</p><p>✦ تعامل متقدم مع الـ Objects: Object.keys(), values(), entries()</p><p>✦ Spread وRest مع Objects وArrays</p><p>✦ Optional Chaining (?.) وNullish Coalescing (??)</p><p>✦ مشروع: نظام تصفية وترتيب بيانات متقدم</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة العاشرة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الحادية عشرة</span><p>يُرسَل مجلد المشروع (HTML + CSS + JS) مضغوطاً أو رابط GitHub</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: تطبيق متجر كتب تفاعلي</h3></div><p class="blk-para">أنشئ تطبيقاً لعرض كتب وإدارتها بالكامل بـ DOM — بدون إعادة تحميل الصفحة:</p><h4 class="mini-head">◆ 📋 البيانات الأولية (كمصفوفة في JS):</h4><ul class="mini-list"><li>10 كتب على الأقل: id, title, author, genre, price, rating, inStock</li></ul><h4 class="mini-head">◆ ⚙️ الوظائف المطلوبة:</h4><ul class="mini-list"><li>عرض جميع الكتب ديناميكياً كبطاقات بـ createElement أو insertAdjacentHTML</li><li>بحث فوري (input event): تصفية الكتب بالعنوان أو المؤلف</li><li>تصفية بالنوع (genre) عبر أزرار فئات</li><li>ترتيب بالسعر تصاعدياً/تنازلياً (زر toggle)</li><li>إضافة كتاب جديد من نموذج HTML مع تحقق من الحقول</li><li>حذف كتاب من واجهة المستخدم بزر X على كل بطاقة</li><li>مفضّلة (Wishlist): زر قلب على كل بطاقة يُضيفها/يحذفها من المفضّلة</li><li>عدّاد: عدد الكتب الكلي + المتاح + في المفضّلة</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>عرض الكتب ديناميكياً بشكل صحيح وجميل</td><td>20 نقطة</td></tr><tr><td>البحث الفوري يعمل مع كل حرف</td><td>15 نقطة</td></tr><tr><td>التصفية والترتيب يعملان بشكل صحيح</td><td>20 نقطة</td></tr><tr><td>إضافة وحذف الكتب مع Event Delegation</td><td>20 نقطة</td></tr><tr><td>نظام المفضّلة والعدّاد يعملان</td><td>15 نقطة</td></tr><tr><td>جودة الكود وتنظيمه وتعليقاته</td><td>10 نقاط</td></tr></tbody></table></div></div></div>
+<div class="closing-banner">
+  <h3>🌳 أحسنت! أنت الآن تتحكم في صفحاتك بشكل كامل 🌳</h3>
+  <p>DOM هو الجسر بين HTML ولغة البرمجة — أتقنته اليوم!</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 10</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-09.html"><small>السابق</small><span>الجلسة 09 — مقدمة إلى JavaScript</span></a>
+        <a class="nav-arrow next is-disabled" href="#"><small>التالي</small><span>الجلسة 11 — قريباً 🔒</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
