@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 09 — مقدمة إلى JavaScript | Front-End Master Book</title>
+<meta name="description" content="مقدمة إلى JavaScript — المتغيرات • أنواع البيانات • العمليات • التحكم في التدفق • الدوال">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="09">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>مسار JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">⚡</span>
+    <div>
+      <div class="session-tag">Session 09 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة التاسعة — مقدمة إلى JavaScript</h1>
+  <p class="tags-line">المتغيرات • أنواع البيانات • العمليات • التحكم في التدفق • الدوال</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة التاسعة</h2>
+  <ul class="goal-list"><li>فهم دور JavaScript في الويب والفرق بينها وبين HTML وCSS</li><li>تشغيل JavaScript في المتصفح وعبر console المطوّر</li><li>التمييز بين var وlet وconst واختيار المناسب في كل حالة</li><li>التعامل مع جميع أنواع البيانات: String, Number, Boolean, null, undefined, Symbol, BigInt</li><li>فهم الفرق بين التحقق الضعيف (==) والصارم (===)</li><li>استخدام جميع أنواع العمليات: حسابية، منطقية، مقارنة، إسناد، نصية</li><li>كتابة شروط if/else وswitch وعوامل ثلاثية (Ternary)</li><li>بناء حلقات: for وwhile وdo...while وfor...of وfor...in</li><li>تعريف الدوال بطرق مختلفة: Declaration, Expression, Arrow Function</li><li>بناء أول برنامج JavaScript تفاعلي حقيقي</li></ul>
+</div><div class="callout success"><span class="callout-title">🎓 أهلاً بمرحلة JavaScript!</span><p>تهانينا على إتمام مرحلة HTML &amp; CSS بنجاح!</p><p>الآن ننتقل لمرحلة JavaScript — اللغة التي تُحوّل صفحاتك الثابتة إلى تطبيقات حية.</p><p>JavaScript تُضيف التفاعل والديناميكية: تحريك العناصر، التحقق من النماذج، جلب البيانات، والمزيد.</p><p>خذ نفساً عميقاً — هذه رحلة جديدة ممتعة تبدأ من الصفر!</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🌐</span><h2>الجزء الأول: ما هو JavaScript ودوره في الويب؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>المثلث الذهبي للويب</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>التقنية</th><th>الدور والمسؤولية</th></tr></thead><tbody><tr><td>HTML 🏗️</td><td>الهيكل والمحتوى — ماذا تقول الصفحة؟</td></tr><tr><td>CSS 🎨</td><td>المظهر والتنسيق — كيف تبدو الصفحة؟</td></tr><tr><td>JavaScript ⚡</td><td>التفاعل والسلوك — كيف تتصرف الصفحة؟</td></tr></tbody></table></div><p class="blk-para">مثال: زر «إرسال النموذج» — HTML يُنشئ الزر، CSS يُجمّله، JavaScript يتحقق من البيانات ويرسلها للخادم.</p></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>ماذا يمكن لـ JavaScript أن يفعل؟</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الإمكانية</th><th>مثال عملي</th></tr></thead><tbody><tr><td>تغيير محتوى الصفحة ديناميكياً</td><td>عرض اسم المستخدم بعد تسجيل الدخول</td></tr><tr><td>التحقق من النماذج</td><td>تنبيه المستخدم عند إدخال بريد خاطئ</td></tr><tr><td>الأنيميشن والتأثيرات</td><td>قائمة تنزلق، مودال يظهر، عداد يزيد</td></tr><tr><td>جلب البيانات من الخادم</td><td>تحديث أسعار العملات بدون إعادة تحميل</td></tr><tr><td>التخزين المحلي</td><td>حفظ تفضيلات المستخدم في المتصفح</td></tr><tr><td>التحكم في العناصر</td><td>إضافة وحذف وتعديل عناصر HTML</td></tr><tr><td>التعامل مع الأحداث</td><td>الضغط، الكتابة، التمرير، حركة الماوس</td></tr><tr><td>بناء تطبيقات كاملة</td><td>مع React وNode.js وغيرها</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>كيف تُشغّل JavaScript؟</h3></div><p class="blk-para">ثلاث طرق لتشغيل JavaScript في صفحة HTML:</p><div class="code-block" data-lang="html">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot html"></span>HTML</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>&lt;!-- الطريقة 1: داخل وسم &lt;script&gt; في HTML --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="ar"&gt;
+&lt;head&gt;
+  &lt;title&gt;أول برنامج JS&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1 id="title"&gt;مرحباً&lt;/h1&gt;
+
+  &lt;!-- الطريقة 1: في نهاية body مباشرة --&gt;
+  &lt;script&gt;
+    console.log('مرحباً بالعالم!');
+    alert('هذا هو JavaScript!');
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+&lt;!-- الطريقة 2: ملف خارجي (المُفضَّل) --&gt;
+&lt;script src="js/main.js"&gt;&lt;/script&gt;
+
+&lt;!-- الطريقة 3: Inline (غير مُنصح به) --&gt;
+&lt;button onclick="alert('مرحبا');"&gt;اضغط هنا&lt;/button&gt;</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div><div class="callout tip"><span class="callout-title">💡 لماذا في نهاية &lt;body&gt;؟</span><p>عند وضع &lt;script&gt; في نهاية &lt;body&gt;، يتحمّل HTML أولاً ثم يُنفَّذ JavaScript.</p><p>هذا يضمن أن جميع العناصر موجودة عند تنفيذ الكود.</p><p>البديل الحديث: إضافة defer أو async على الوسم: &lt;script src='main.js' defer&gt;</p></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.4</span><h3>أدوات المطوّر في المتصفح (DevTools)</h3></div><p class="blk-para">Console في Chrome DevTools هي أهم أداة للتعلم والتجربة:</p><ul class="mini-list"><li>اضغط F12 في المتصفح أو انقر بزر الأيمن → Inspect</li><li>انتقل لتبويب 'Console'</li><li>اكتب أي كود JavaScript واضغط Enter لتنفيذه فوراً</li><li>console.log() يُطبع النتائج في Console</li><li>console.error() يُطبع أخطاء بالأحمر</li><li>console.warn() يُطبع تحذيرات بالأصفر</li><li>console.table() يعرض البيانات بشكل جدول جميل</li></ul><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// جرّب هذه الأوامر في Console مباشرة
+console.log('مرحباً بالعالم!');
+console.log(2 + 2);
+console.log(typeof 'نص');
+console.warn('هذا تحذير!');
+console.error('هذا خطأ!');
+console.table([{name: 'أحمد', age: 25}, {name: 'سارة', age: 22}]);</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">📦</span><h2>الجزء الثاني: المتغيرات (Variables)</h2></div><p class="blk-para">المتغير هو صندوق له اسم نخزّن فيه قيمة. مثل: اسم المستخدم، عمره، رصيده، سلة مشترياته.</p><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>let وconst وvar</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ══ const — للقيم الثابتة التي لا تتغير ══
+const PI = 3.14159;
+const SITE_NAME = 'أكاديمية التقنية';
+const MAX_USERS = 100;
+// PI = 3.14; // ❌ خطأ! لا يمكن تغيير const
+
+// ══ let — للقيم التي قد تتغير ══
+let userName = 'أحمد';
+let score = 0;
+let isLoggedIn = false;
+
+userName = 'محمد';  // ✅ يمكن تغييرها
+score = score + 10; // ✅ تحديث القيمة
+
+// ══ var — القديم، تجنّبه ══
+var oldVar = 'تجنّب استخدام var في الكود الحديث';
+// var له مشاكل في النطاق (Scope) سنشرحها لاحقاً</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الكلمة</th><th>يمكن تغييرها؟</th><th>متى تستخدمها؟</th></tr></thead><tbody><tr><td>const</td><td>❌ لا</td><td>القيم الثابتة (الأكثر استخداماً) ✅</td></tr><tr><td>let</td><td>✅ نعم</td><td>القيم التي ستتغير</td></tr><tr><td>var</td><td>✅ نعم</td><td>❌ تجنّبه — مشاكل في النطاق</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>قواعد تسمية المتغيرات</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ✅ أسماء صحيحة
+let userName = 'أحمد';
+let user_age = 25;         // snake_case
+let userAge = 25;          // camelCase ✅ (المُفضَّل في JS)
+let _privateVar = 'خاص';
+let $price = 99.99;
+let عمر = 25;              // عربي (مسموح لكن غير شائع)
+
+// ❌ أسماء خاطئة
+// let 1user = 'أحمد';   // لا يبدأ برقم
+// let user-name = ...;   // لا يحتوي شرطة
+// let let = 'كلمة';      // لا يستخدم كلمة محجوزة
+// let class = 'CSS';     // class كلمة محجوزة
+
+// الكلمات المحجوزة (Reserved Words) — لا تُستخدم كأسماء:
+// let, const, var, if, else, for, while, function, return,
+// class, new, this, import, export, true, false, null...
+
+// أفضل الممارسات في التسمية:
+const MAX_SIZE = 100;      // الثوابت بالأحرف الكبيرة
+let currentUser = null;    // camelCase للمتغيرات
+function getUserName() {}  // camelCase للدوال
+class UserProfile {}       // PascalCase للـ Classes</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.3</span><h3>Hoisting ونطاق المتغيرات (Scope)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// Block Scope — let وconst محدودة بالكتلة { }
+{
+  let x = 10;
+  const y = 20;
+  console.log(x); // ✅ 10
+}
+// console.log(x); // ❌ خطأ! x غير موجودة هنا
+
+// Function Scope — var محدودة بالدالة
+function example() {
+  var z = 30;
+  console.log(z); // ✅ 30
+}
+// console.log(z); // ❌ خطأ! z غير موجودة هنا
+
+// ⚠️ مشكلة var في الحلقات
+for (var i = 0; i &lt; 3; i++) { }
+console.log(i); // ✅ 3 — var تتسرب خارج الحلقة!
+
+for (let j = 0; j &lt; 3; j++) { }
+// console.log(j); // ❌ j محدودة بالحلقة — الصحيح</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🧪</span><h2>الجزء الثالث: أنواع البيانات (Data Types)</h2></div><p class="blk-para">JavaScript لغة ديناميكية النوع — المتغير يمكن أن يحمل أي نوع بيانات، ونوعه يُحدَّد تلقائياً.</p><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>الأنواع الأولية (Primitive Types)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ══ 1. String (النص) ══
+const name = "أحمد محمد";          // بعلامات مزدوجة
+const city = 'الرياض';             // بعلامات مفردة
+const msg  = `مرحباً يا ${name}!`; // Template Literal ✅
+
+// ══ 2. Number (الرقم) ══
+const age      = 25;       // عدد صحيح
+const price    = 99.99;    // عدد عشري
+const negative = -50;      // عدد سالب
+const big      = 1_000_000; // فاصل للوضوح (ES2021)
+const inf      = Infinity;  // ما لا نهاية
+const notNum   = NaN;       // Not a Number
+
+// ══ 3. Boolean (المنطقي) ══
+const isActive  = true;
+const isDeleted = false;
+const hasAccess = true;
+
+// ══ 4. null (قيمة فارغة متعمدة) ══
+let currentUser = null;    // لا يوجد مستخدم حالياً — متعمد
+let selectedItem = null;
+
+// ══ 5. undefined (غير معرّف) ══
+let notDefined;            // لم تُعطَ قيمة — undefined تلقائياً
+console.log(notDefined);   // undefined
+
+// ══ 6. BigInt (أعداد ضخمة جداً) ══
+const bigNumber = 9007199254740991n; // n في النهاية
+
+// ══ 7. Symbol (معرّف فريد) ══
+const id1 = Symbol('id');
+const id2 = Symbol('id');
+console.log(id1 === id2); // false — كل Symbol فريد</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>النوع المركّب: Object</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// Object — كائن يحتوي على خصائص (key: value)
+const user = {
+  name:    'أحمد محمد',
+  age:     25,
+  city:    'الرياض',
+  isAdmin: false,
+};
+
+// الوصول للخصائص
+console.log(user.name);      // 'أحمد محمد' — Dot notation
+console.log(user['age']);    // 25 — Bracket notation
+
+// تعديل خاصية
+user.age = 26;
+
+// إضافة خاصية جديدة
+user.email = 'ahmed@example.com';
+
+// حذف خاصية
+delete user.isAdmin;
+
+// Array — مصفوفة (نوع خاص من Object)
+const fruits = ['تفاح', 'موز', 'برتقال'];
+const numbers = [1, 2, 3, 4, 5];
+const mixed  = [1, 'نص', true, null, {name: 'أحمد'}];
+
+console.log(fruits[0]);        // 'تفاح' — الفهرس يبدأ من 0
+console.log(fruits.length);    // 3
+fruits.push('عنب');            // إضافة للنهاية
+fruits.pop();                  // حذف من النهاية</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.3</span><h3>typeof للتحقق من النوع</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>console.log(typeof 'نص');         // 'string'
+console.log(typeof 42);           // 'number'
+console.log(typeof true);         // 'boolean'
+console.log(typeof undefined);    // 'undefined'
+console.log(typeof null);         // 'object' ⚠️ خطأ تاريخي في JS
+console.log(typeof {});           // 'object'
+console.log(typeof []);           // 'object' (المصفوفة object أيضاً)
+console.log(typeof function(){}); // 'function'
+console.log(typeof Symbol());     // 'symbol'
+console.log(typeof 42n);          // 'bigint'
+
+// للتحقق من مصفوفة
+console.log(Array.isArray([]));   // true ✅
+console.log(Array.isArray({}));   // false
+
+// للتحقق من null
+const val = null;
+console.log(val === null);        // true ✅</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.4</span><h3>تحويل أنواع البيانات (Type Conversion)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ══ تحويل صريح (Explicit) ══
+
+// إلى String
+String(42);          // '42'
+String(true);        // 'true'
+String(null);        // 'null'
+(42).toString();     // '42'
+(255).toString(16);  // 'ff' (hexadecimal)
+
+// إلى Number
+Number('42');        // 42
+Number('3.14');      // 3.14
+Number('');          // 0
+Number(true);        // 1
+Number(false);       // 0
+Number(null);        // 0
+Number('abc');       // NaN
+parseInt('42px');    // 42 (يأخذ الرقم فقط)
+parseFloat('3.14m'); // 3.14
+
+// إلى Boolean
+Boolean(0);          // false
+Boolean('');         // false
+Boolean(null);       // false
+Boolean(undefined);  // false
+Boolean(NaN);        // false
+// كل ما عدا هؤلاء = true (Truthy)
+Boolean(1);          // true
+Boolean('نص');       // true
+Boolean([]);         // true (مصفوفة فارغة = true!)
+Boolean({});         // true
+
+// ══ تحويل ضمني (Implicit) — احذر منه ══
+console.log('5' + 3);   // '53' — رقم تحوّل لنص
+console.log('5' - 3);   // 2   — نص تحوّل لرقم
+console.log('5' * '2'); // 10  — كلاهما تحوّل لرقم
+console.log(true + 1);  // 2   — true = 1</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔢</span><h2>الجزء الرابع: العمليات والعوامل (Operators)</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>العمليات الحسابية (Arithmetic)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const a = 10;
+const b = 3;
+
+console.log(a + b);   // 13  — الجمع
+console.log(a - b);   // 7   — الطرح
+console.log(a * b);   // 30  — الضرب
+console.log(a / b);   // 3.333... — القسمة
+console.log(a % b);   // 1   — باقي القسمة (Modulo)
+console.log(a ** b);  // 1000 — الأس (10³)
+console.log(Math.floor(a / b)); // 3 — قسمة صحيحة
+
+// عمليات الزيادة والنقصان
+let count = 0;
+count++;         // count = 1 (Post-increment)
+++count;         // count = 2 (Pre-increment)
+count--;         // count = 1 (Post-decrement)
+--count;         // count = 0 (Pre-decrement)
+
+// الفرق بين Pre وPost
+let x = 5;
+console.log(x++); // 5 — يُطبع أولاً ثم يزيد
+console.log(x);   // 6
+console.log(++x); // 7 — يزيد أولاً ثم يُطبع</code></pre>
+  <div class="output-box" id="out-10"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>عوامل الإسناد (Assignment)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>let score = 100;
+
+score = 100;    // إسناد عادي
+score += 10;    // score = score + 10  → 110
+score -= 5;     // score = score - 5   → 105
+score *= 2;     // score = score * 2   → 210
+score /= 3;     // score = score / 3   → 70
+score %= 4;     // score = score % 4   → 2
+score **= 3;    // score = score ** 3  → 8
+
+// Nullish Coalescing Assignment (ES2021)
+let name = null;
+name ??= 'مجهول';  // يُسند فقط إذا كانت null أو undefined
+console.log(name); // 'مجهول'
+
+// Logical OR Assignment
+let user = '';
+user ||= 'زائر';   // يُسند إذا كانت falsy
+console.log(user); // 'زائر'</code></pre>
+  <div class="output-box" id="out-11"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.3</span><h3>عوامل المقارنة (Comparison)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ══ المقارنة الضعيفة == (تحوّل الأنواع) ══
+console.log(5 == '5');   // true  ⚠️ (رقم ونص متساويان!)
+console.log(0 == false); // true  ⚠️
+console.log(null == undefined); // true ⚠️
+
+// ══ المقارنة الصارمة === (لا تحوّل) ✅ استخدم دائماً ══
+console.log(5 === '5');  // false ✅ (نوع مختلف)
+console.log(5 === 5);    // true  ✅
+console.log(0 === false);// false ✅
+
+// بقية عوامل المقارنة
+console.log(10 &gt; 5);    // true  — أكبر من
+console.log(10 &lt; 5);    // false — أصغر من
+console.log(10 &gt;= 10);  // true  — أكبر أو يساوي
+console.log(10 &lt;= 9);   // false — أصغر أو يساوي
+console.log(5 !== '5'); // true  — لا يساوي (صارم)
+console.log(5 != 6);    // true  — لا يساوي (ضعيف)
+
+// مقارنة النصوص (ترتيب أبجدي)
+console.log('أ' &lt; 'ب');  // true
+console.log('z' &gt; 'a');  // true</code></pre>
+  <div class="output-box" id="out-12"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.4</span><h3>العوامل المنطقية (Logical)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const isLoggedIn = true;
+const isAdmin    = false;
+const age        = 20;
+
+// &amp;&amp; (AND) — كلاهما يجب أن يكون true
+console.log(true &amp;&amp; true);   // true
+console.log(true &amp;&amp; false);  // false
+console.log(isLoggedIn &amp;&amp; isAdmin); // false
+
+// || (OR) — أحدهما كافٍ ليكون true
+console.log(false || true);  // true
+console.log(false || false); // false
+console.log(isLoggedIn || isAdmin); // true
+
+// ! (NOT) — عكس القيمة
+console.log(!true);          // false
+console.log(!isLoggedIn);    // false
+console.log(!isAdmin);       // true
+
+// ?? (Nullish Coalescing) — بديل null/undefined فقط
+const userName = null ?? 'زائر';    // 'زائر'
+const score    = 0    ?? 'لا يوجد'; // 0 (ليس null!)
+
+// Short-circuit Evaluation — تقييم قصير
+// &amp;&amp; يُعيد الأول إذا كان falsy، وإلا يُعيد الثاني
+console.log(null &amp;&amp; 'نص');    // null
+console.log('نص' &amp;&amp; 42);     // 42
+
+// || يُعيد الأول إذا كان truthy، وإلا يُعيد الثاني
+const name = '' || 'افتراضي'; // 'افتراضي'
+const port = process?.env?.PORT || 3000; // 3000</code></pre>
+  <div class="output-box" id="out-13"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.5</span><h3>عمليات النصوص (String Operations)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const firstName = 'أحمد';
+const lastName  = 'الشمري';
+
+// الدمج (Concatenation)
+const fullName = firstName + ' ' + lastName; // 'أحمد الشمري'
+
+// Template Literals (الأفضل) ✅
+const greeting = `مرحباً يا ${firstName}!`;
+const info = `الاسم: ${fullName}، العمر: ${25 + 1}`;
+
+// خصائص النص
+const text = 'أهلاً بالعالم';
+console.log(text.length);           // 13
+console.log(text.toUpperCase());    // أهلاً بالعالم (لا أثر على العربية)
+console.log(text.toLowerCase());    // أهلاً بالعالم
+console.log(text.includes('العالم')); // true
+console.log(text.startsWith('أهلاً')); // true
+console.log(text.endsWith('العالم')); // true
+console.log(text.indexOf('العالم')); // 7
+console.log(text.slice(0, 5));      // 'أهلاً'
+console.log(text.replace('العالم', 'بك')); // 'أهلاً ببك'
+console.log(text.trim());           // يحذف المسافات
+console.log(text.split(' '));       // ['أهلاً', 'بالعالم']
+console.log('5'.padStart(3, '0')); // '005'
+console.log('ha'.repeat(3));       // 'hahaha'</code></pre>
+  <div class="output-box" id="out-14"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔀</span><h2>الجزء الخامس: التحكم في التدفق (Control Flow)</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>الشرط if / else if / else</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const score = 75;
+
+// شرط بسيط
+if (score &gt;= 60) {
+  console.log('ناجح ✅');
+}
+
+// if...else
+if (score &gt;= 60) {
+  console.log('ناجح ✅');
+} else {
+  console.log('راسب ❌');
+}
+
+// if...else if...else (تسلسلي)
+if (score &gt;= 90) {
+  console.log('ممتاز 🏆');
+} else if (score &gt;= 80) {
+  console.log('جيد جداً 👍');
+} else if (score &gt;= 70) {
+  console.log('جيد');
+} else if (score &gt;= 60) {
+  console.log('مقبول');
+} else {
+  console.log('راسب ❌');
+}
+// النتيجة: 'جيد'
+
+// شرط مُختصر بدون أقواس {} (سطر واحد فقط)
+if (score &gt;= 60) console.log('ناجح'); // لا يُنصح به</code></pre>
+  <div class="output-box" id="out-15"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>العامل الثلاثي (Ternary Operator)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// condition ? valueIfTrue : valueIfFalse
+const age = 20;
+
+// بدل if...else
+const status = age &gt;= 18 ? 'بالغ' : 'قاصر';
+console.log(status); // 'بالغ'
+
+// في Template Literal
+const msg = `المستخدم ${age &gt;= 18 ? 'مسموح له' : 'غير مسموح'} بالدخول`;
+
+// متداخل (تجنّب التعقيد)
+const grade = score &gt;= 90 ? 'A'
+            : score &gt;= 80 ? 'B'
+            : score &gt;= 70 ? 'C'
+            : score &gt;= 60 ? 'D'
+            : 'F';
+
+// للإسناد السريع
+const isEven = (num) =&gt; num % 2 === 0 ? 'زوجي' : 'فردي';
+console.log(isEven(4)); // 'زوجي'
+console.log(isEven(7)); // 'فردي'</code></pre>
+  <div class="output-box" id="out-16"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.3</span><h3>switch / case</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const day = 'الاثنين';
+
+switch (day) {
+  case 'الأحد':
+    console.log('بداية أسبوع العمل');
+    break;
+  case 'الاثنين':
+  case 'الثلاثاء':
+    console.log('أيام دراسة');
+    break;  // break ضروري لوقف التنفيذ!
+  case 'الجمعة':
+    console.log('عطلة نهاية الأسبوع 🎉');
+    break;
+  default:
+    console.log('يوم عادي');
+}
+// النتيجة: 'أيام دراسة'
+
+// switch بالأرقام
+const month = 3;
+switch (month) {
+  case 1: case 3: case 5:
+  case 7: case 8: case 10: case 12:
+    console.log('31 يوماً'); break;
+  case 4: case 6: case 9: case 11:
+    console.log('30 يوماً'); break;
+  case 2:
+    console.log('28 أو 29 يوماً'); break;
+}</code></pre>
+  <div class="output-box" id="out-17"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.4</span><h3>حلقة for</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// for الكلاسيكية: for (تهيئة; شرط; تحديث)
+for (let i = 0; i &lt; 5; i++) {
+  console.log(`العدد: ${i}`);
+}
+// 0, 1, 2, 3, 4
+
+// العد التنازلي
+for (let i = 10; i &gt; 0; i--) {
+  console.log(i);
+}
+
+// تكرار على مصفوفة
+const fruits = ['تفاح', 'موز', 'برتقال', 'عنب'];
+
+for (let i = 0; i &lt; fruits.length; i++) {
+  console.log(`${i + 1}. ${fruits[i]}`);
+}
+
+// for...of — الأفضل للمصفوفات ✅
+for (const fruit of fruits) {
+  console.log(fruit);
+}
+
+// for...in — للـ Objects (الخصائص)
+const user = { name: 'أحمد', age: 25, city: 'الرياض' };
+for (const key in user) {
+  console.log(`${key}: ${user[key]}`);
+}
+// name: أحمد | age: 25 | city: الرياض</code></pre>
+  <div class="output-box" id="out-18"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.5</span><h3>حلقة while وdo...while</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// while — يتحقق من الشرط أولاً
+let count = 0;
+while (count &lt; 5) {
+  console.log(`العدد: ${count}`);
+  count++;
+}
+
+// do...while — يُنفَّذ مرة واحدة على الأقل
+let attempts = 0;
+do {
+  attempts++;
+  console.log(`المحاولة رقم: ${attempts}`);
+} while (attempts &lt; 3);
+
+// break — إيقاف الحلقة
+for (let i = 0; i &lt; 10; i++) {
+  if (i === 5) break; // يخرج عند i=5
+  console.log(i);     // 0,1,2,3,4
+}
+
+// continue — تخطّي التكرار الحالي
+for (let i = 0; i &lt; 10; i++) {
+  if (i % 2 === 0) continue; // يتخطى الأعداد الزوجية
+  console.log(i);             // 1,3,5,7,9
+}
+
+// ⚠️ تجنّب الحلقة اللانهائية!
+// while (true) { } // ❌ يُجمّد المتصفح!
+// تأكد دائماً أن الشرط سيصبح false في مرحلة ما</code></pre>
+  <div class="output-box" id="out-19"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔧</span><h2>الجزء السادس: الدوال (Functions)</h2></div><p class="blk-para">الدالة مجموعة من التعليمات المُسمّاة التي تُنجز مهمة محددة ويمكن إعادة استخدامها. هي اللبنة الأساسية في البرمجة.</p><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>Function Declaration (إعلان الدالة)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// تعريف الدالة
+function greet(name) {
+  return `مرحباً يا ${name}!`;
+}
+
+// استدعاء الدالة
+const result = greet('أحمد');
+console.log(result); // 'مرحباً يا أحمد!'
+
+// دالة بمعاملات متعددة
+function add(a, b) {
+  return a + b;
+}
+console.log(add(5, 3)); // 8
+
+// دالة بدون return (تُعيد undefined تلقائياً)
+function printLine(text) {
+  console.log('━'.repeat(30));
+  console.log(text);
+  console.log('━'.repeat(30));
+  // لا يوجد return
+}
+printLine('أكاديمية التقنية');
+
+// ميزة: Function Declaration تُرفع (Hoisted)
+// يمكن استدعاؤها قبل تعريفها في الكود
+sayHello('سارة'); // ✅ يعمل رغم أنه قبل التعريف
+function sayHello(name) {
+  console.log(`أهلاً ${name}`);
+}</code></pre>
+  <div class="output-box" id="out-20"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.2</span><h3>Function Expression (تعبير الدالة)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// تُسند لمتغير — لا تُرفع (Not Hoisted)
+const multiply = function(a, b) {
+  return a * b;
+};
+console.log(multiply(4, 5)); // 20
+
+// يمكن إسنادها لمتغير آخر أو تمريرها كمعامل
+const myFunction = multiply;
+console.log(myFunction(3, 3)); // 9
+
+// Immediately Invoked Function Expression (IIFE)
+// تُنفَّذ فوراً عند تعريفها
+(function() {
+  const secret = 'هذا سري لا يُشاهَد من الخارج';
+  console.log(secret);
+})();</code></pre>
+  <div class="output-box" id="out-21"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.3</span><h3>Arrow Functions (دوال السهم) ✅</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// الصيغة الكاملة
+const greet = (name) =&gt; {
+  return `مرحباً يا ${name}!`;
+};
+
+// مختصرة — معامل واحد: بدون أقواس
+const double = num =&gt; num * 2;
+console.log(double(5)); // 10
+
+// مختصرة — return ضمني (سطر واحد بدون {})
+const square = n =&gt; n * n;
+const add    = (a, b) =&gt; a + b;
+const greet2 = name =&gt; `أهلاً ${name}`;
+
+// بدون معاملات
+const getDate = () =&gt; new Date().toLocaleDateString('ar-SA');
+
+// إعادة object (يجب تغليفه بأقواس)
+const makeUser = (name, age) =&gt; ({ name, age });
+console.log(makeUser('أحمد', 25));
+// { name: 'أحمد', age: 25 }
+
+// الفرق الجوهري: Arrow لا تملك this الخاص بها
+// (ستتعلم this لاحقاً مع الكائنات)</code></pre>
+  <div class="output-box" id="out-22"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.4</span><h3>المعاملات الافتراضية (Default Parameters)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// معامل بقيمة افتراضية إذا لم يُمرَّر
+function greet(name = 'زائر', lang = 'ar') {
+  if (lang === 'ar') return `أهلاً يا ${name}!`;
+  return `Hello ${name}!`;
+}
+
+console.log(greet());             // 'أهلاً يا زائر!'
+console.log(greet('أحمد'));        // 'أهلاً يا أحمد!'
+console.log(greet('Ahmed', 'en')); // 'Hello Ahmed!'
+
+// مع Arrow Function
+const createProduct = (name, price = 0, inStock = true) =&gt; ({
+  name,
+  price,
+  inStock,
+});
+
+console.log(createProduct('كتاب', 45));
+// { name: 'كتاب', price: 45, inStock: true }</code></pre>
+  <div class="output-box" id="out-23"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.5</span><h3>Rest Parameters وSpread Operator</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// Rest (...) — يجمع باقي المعاملات في مصفوفة
+function sum(...numbers) {
+  let total = 0;
+  for (const num of numbers) {
+    total += num;
+  }
+  return total;
+}
+console.log(sum(1, 2, 3));          // 6
+console.log(sum(1, 2, 3, 4, 5));    // 15
+console.log(sum(10, 20));            // 30
+
+// Spread (...) — ينشر العناصر
+const arr1 = [1, 2, 3];
+const arr2 = [4, 5, 6];
+const merged = [...arr1, ...arr2]; // [1,2,3,4,5,6]
+
+// نسخ مصفوفة
+const original = [1, 2, 3];
+const copy = [...original]; // نسخة مستقلة
+
+// نشر في استدعاء دالة
+const numbers = [5, 2, 8, 1, 9, 3];
+console.log(Math.max(...numbers)); // 9
+console.log(Math.min(...numbers)); // 1
+
+// نسخ Object
+const user = { name: 'أحمد', age: 25 };
+const updatedUser = { ...user, age: 26, city: 'الرياض' };
+// { name: 'أحمد', age: 26, city: 'الرياض' }</code></pre>
+  <div class="output-box" id="out-24"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.6</span><h3>نطاق الدالة والإغلاق (Closure)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// Closure: دالة داخلية تتذكر متغيرات الدالة الخارجية
+function makeCounter(start = 0) {
+  let count = start; // هذا المتغير محفوظ في الـ Closure
+
+  return {
+    increment: () =&gt; ++count,
+    decrement: () =&gt; --count,
+    reset:     () =&gt; { count = start; return count; },
+    getValue:  () =&gt; count,
+  };
+}
+
+const counter = makeCounter(10);
+console.log(counter.getValue());   // 10
+console.log(counter.increment());  // 11
+console.log(counter.increment());  // 12
+console.log(counter.decrement());  // 11
+console.log(counter.reset());      // 10
+
+// كل counter مستقل!
+const counter2 = makeCounter(0);
+counter2.increment();
+counter2.increment();
+console.log(counter2.getValue());  // 2
+console.log(counter.getValue());   // 10 (لم يتغير)</code></pre>
+  <div class="output-box" id="out-25"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السابع: المشروع التطبيقي — برنامج إدارة الطلاب</h2></div><div class="project-box"><p class="blk-para">سنبني برنامجاً كاملاً في JavaScript يدير قائمة طلاب ودرجاتهم — يُطبّق كل ما تعلمناه في هذه الجلسة.</p><div class="subsection"><div class="sub-head"><h3>الكود الكامل للمشروع</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>/* ═══════════════════════════════════════════════ */
+/* برنامج إدارة درجات الطلاب — JavaScript Session 9 */
+/* ═══════════════════════════════════════════════ */
+
+// ══ بيانات الطلاب ══
+const students = [
+  { id: 1, name: 'أحمد محمد',  score: 92 },
+  { id: 2, name: 'سارة علي',   score: 78 },
+  { id: 3, name: 'خالد عمر',   score: 65 },
+  { id: 4, name: 'نورة سعد',   score: 88 },
+  { id: 5, name: 'يوسف عبد',   score: 45 },
+  { id: 6, name: 'ريم حسن',    score: 95 },
+  { id: 7, name: 'فيصل صالح',  score: 72 },
+];
+
+// ══ الدالة 1: تحديد التقدير ══
+function getGrade(score) {
+  if (score &gt;= 90) return { grade: 'A', label: 'ممتاز', emoji: '🏆' };
+  if (score &gt;= 80) return { grade: 'B', label: 'جيد جداً', emoji: '⭐' };
+  if (score &gt;= 70) return { grade: 'C', label: 'جيد', emoji: '👍' };
+  if (score &gt;= 60) return { grade: 'D', label: 'مقبول', emoji: '📚' };
+  return { grade: 'F', label: 'راسب', emoji: '❌' };
+}
+
+// ══ الدالة 2: حساب المتوسط ══
+const calcAverage = (arr) =&gt; {
+  const total = arr.reduce((sum, s) =&gt; sum + s.score, 0);
+  return (total / arr.length).toFixed(2);
+};
+
+// ══ الدالة 3: إيجاد الأعلى والأدنى ══
+function getTopBottom(arr) {
+  const sorted = [...arr].sort((a, b) =&gt; b.score - a.score);
+  return {
+    top:    sorted[0],
+    bottom: sorted[sorted.length - 1],
+  };
+}
+
+// ══ الدالة 4: تقرير الطالب ══
+function printStudentReport(student) {
+  const { grade, label, emoji } = getGrade(student.score);
+  console.log('─'.repeat(40));
+  console.log(`👤 الطالب: ${student.name}`);
+  console.log(`📊 الدرجة: ${student.score}/100`);
+  console.log(`🎯 التقدير: ${grade} — ${label} ${emoji}`);
+}
+
+// ══ الدالة 5: تقرير الفصل ══
+function printClassReport(students) {
+  console.log('═'.repeat(50));
+  console.log('         📋 تقرير الفصل الدراسي');
+  console.log('═'.repeat(50));
+
+  // طباعة جميع الطلاب
+  for (const student of students) {
+    printStudentReport(student);
+  }
+
+  // إحصائيات عامة
+  const avg = calcAverage(students);
+  const { top, bottom } = getTopBottom(students);
+  const passed  = students.filter(s =&gt; s.score &gt;= 60).length;
+  const failed   = students.length - passed;
+
+  console.log('═'.repeat(50));
+  console.log('         📈 الإحصائيات العامة');
+  console.log('═'.repeat(50));
+  console.log(`👥 عدد الطلاب:   ${students.length}`);
+  console.log(`📊 متوسط الدرجات: ${avg}`);
+  console.log(`✅ الناجحون:     ${passed} طالب`);
+  console.log(`❌ الراسبون:     ${failed} طالب`);
+  console.log(`🏆 الأعلى:       ${top.name} (${top.score})`);
+  console.log(`📉 الأدنى:       ${bottom.name} (${bottom.score})`);
+}
+
+// ══ الدالة 6: إضافة طالب ══
+function addStudent(students, name, score) {
+  if (!name || name.trim() === '') {
+    console.error('❌ الاسم مطلوب!');
+    return students;
+  }
+  if (score &lt; 0 || score &gt; 100) {
+    console.error('❌ الدرجة يجب أن تكون بين 0 و100!');
+    return students;
+  }
+  const newStudent = {
+    id:    students.length + 1,
+    name:  name.trim(),
+    score: score,
+  };
+  return [...students, newStudent];
+}
+
+// ══ تشغيل البرنامج ══
+let classList = [...students];
+
+// إضافة طلاب جدد
+classList = addStudent(classList, 'محمد أحمد', 83);
+classList = addStudent(classList, '', 90);    // ❌ خطأ
+classList = addStudent(classList, 'هنا', 110); // ❌ خطأ
+
+// طباعة التقرير الكامل
+printClassReport(classList);
+
+// تصفية الممتازين
+const topStudents = classList.filter(s =&gt; s.score &gt;= 90);
+console.log('\n🏆 قائمة الشرف:');
+topStudents.forEach(s =&gt; console.log(`  ★ ${s.name}: ${s.score}`));</code></pre>
+  <div class="output-box" id="out-26"></div>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثامن: تمارين الجلسة التاسعة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — المتغيرات وأنواع البيانات<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">في Console المتصفح جرّب:</p><ul class="mini-list"><li>أنشئ متغيرات: اسمك، عمرك، مدينتك، هل أنت طالب (boolean)</li><li>أنشئ object يحتوي على بياناتك الشخصية كاملة</li><li>استخدم typeof لاكتشاف نوع كل متغير</li><li>حوّل '25' لرقم وaTrue لنص وتحقق من النتائج</li><li>جرّب: console.log('5' + 3) وconsole.log('5' - 3) وفسّر الفرق</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — التحكم في التدفق<span class="ex-time">20 دقيقة</span></h4><p class="blk-para">اكتب الدوال التالية:</p><ul class="mini-list"><li>دالة isLeapYear(year): تُعيد true إذا كانت السنة كبيسة</li><li>دالة getDayName(num): تُعيد اسم اليوم (1=الأحد ... 7=السبت) بـ switch</li><li>دالة fizzBuzz(n): تُطبع 1 إلى n — Fizz لمضاعفات 3، Buzz لـ 5، FizzBuzz لـ 15</li><li>دالة isPrime(n): تُعيد true إذا كان العدد أولياً (لا يقبل القسمة إلا على 1 ونفسه)</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — الدوال<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ برنامج آلة حاسبة:</p><ul class="mini-list"><li>دالة calculate(a, operator, b): تُجري العملية المناسبة (+, -, *, /, %)</li><li>دالة validateInput(value): تتحقق أن القيمة رقم وليست NaN</li><li>دالة formatResult(num): تُنسّق الرقم (يُوقف عند 4 خانات عشرية)</li><li>اكتبها بـ 3 طرق: Declaration، Expression، وArrow Function</li><li>أضف معاملات افتراضية واستخدم Rest Parameters لجمع قائمة أرقام</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة التاسعة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>دور JavaScript</td><td>التفاعل والسلوك — يُحرّك HTML وCSS ليكونا حيَّيْن</td></tr><tr><td>تشغيل JS</td><td>&lt;script&gt; في HTML | ملف خارجي | Console المتصفح</td></tr><tr><td>المتغيرات</td><td>const للثابت ✅ | let للمتغير | var تجنّبه</td></tr><tr><td>قواعد التسمية</td><td>camelCase للمتغيرات | PascalCase للـ Classes | UPPER_CASE للثوابت</td></tr><tr><td>النطاق (Scope)</td><td>Block Scope (let/const) | Function Scope (var)</td></tr><tr><td>أنواع البيانات</td><td>String, Number, Boolean, null, undefined, BigInt, Symbol</td></tr><tr><td>Object والمصفوفة</td><td>{ key: value } | [item1, item2] | typeof | Array.isArray()</td></tr><tr><td>تحويل الأنواع</td><td>Number(), String(), Boolean() | parseInt() | parseFloat()</td></tr><tr><td>العمليات الحسابية</td><td>+ - * / % ** | ++ -- | +=  -=  *=  /=</td></tr><tr><td>المقارنة</td><td>=== (صارم) ✅ | == (ضعيف) تجنّبه | &gt; &lt; &gt;= &lt;=</td></tr><tr><td>العمليات المنطقية</td><td>&amp;&amp; AND | || OR | ! NOT | ?? Nullish Coalescing</td></tr><tr><td>عمليات النصوص</td><td>Template Literal ` ` | length | includes | slice | split | replace</td></tr><tr><td>if/else/switch</td><td>تسلسل الشروط | switch/case مع break | Ternary ? :</td></tr><tr><td>الحلقات</td><td>for | for...of ✅ | for...in | while | do...while | break | continue</td></tr><tr><td>الدوال</td><td>Declaration (Hoisted) | Expression | Arrow ✅ (الأكثر استخداماً)</td></tr><tr><td>معاملات الدوال</td><td>Default Parameters | Rest (...args) | Spread (...arr)</td></tr><tr><td>Closure</td><td>دالة داخلية تتذكر متغيرات الدالة الخارجية</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة العاشرة: JavaScript والـ DOM</span><p>✦ ما هو DOM (Document Object Model) وكيف يعمل</p><p>✦ تحديد العناصر: getElementById, querySelector, querySelectorAll</p><p>✦ قراءة وتعديل المحتوى: innerHTML, textContent, value</p><p>✦ التحكم في الـ CSS من JavaScript: style وclassList</p><p>✦ إنشاء وحذف العناصر: createElement, appendChild, remove</p><p>✦ التنقل في شجرة DOM: parentElement, children, nextSibling</p><p>✦ مشروع: قائمة مهام (To-Do List) تفاعلية كاملة</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة التاسعة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة العاشرة</span><p>يُرسَل ملف JavaScript (.js) أو رابط GitHub عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: نظام إدارة مكتبة رقمية</h3></div><p class="blk-para">أنشئ نظاماً لإدارة مكتبة رقمية يحتوي على مجموعة كتب مع وظائف إدارتها:</p><h4 class="mini-head">◆ 📋 البيانات المطلوبة:</h4><p class="blk-para">مصفوفة books تحتوي 8 كتب على الأقل، كل كتاب له:</p><ul class="mini-list"><li>id (رقم)، title (نص)، author (نص)، year (رقم)، pages (رقم)</li><li>genre (نص: رواية/علوم/تقنية/تاريخ)، rating (رقم 1-5)، available (boolean)</li></ul><h4 class="mini-head">◆ ⚙️ الدوال المطلوبة (اكتب كل دالة بطريقة مختلفة):</h4><ul class="mini-list"><li>findBook(id) — Arrow Function: تُعيد الكتاب بالـ id أو null إذا لم يوجد</li><li>addBook(books, bookData) — Declaration: تُضيف كتاباً جديداً للمصفوفة مع تحقق</li><li>searchByAuthor(books, author) — Expression: تُعيد جميع كتب المؤلف</li><li>filterByGenre(books, genre) — Arrow: تُعيد كتب نوع معين</li><li>getTopRated(books, minRating = 4) — Default Param: الكتب ذات تقييم عالٍ</li><li>calcStats(books) — يُعيد object: المجموع، المتوسط، الأعلى تقييماً، الأقدم، الأحدث</li><li>printCatalog(books) — يُطبع جميع الكتب بتنسيق جميل مع التقييم بنجوم ★</li><li>borrowBook(books, id) — يُغيّر available لـ false أو يُعيد رسالة خطأ</li></ul><h4 class="mini-head">◆ 🎯 متطلبات إضافية:</h4><ul class="mini-list"><li>استخدم const وlet بشكل صحيح (لا var)</li><li>استخدم Template Literals في جميع رسائل الإخراج</li><li>أضف التحقق من صحة المدخلات في دوال الإضافة</li><li>استخدم Spread Operator لنسخ المصفوفات بدلاً من التعديل المباشر</li><li>اكتب تعليقات واضحة لكل دالة تشرح ما تفعله</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>البيانات الصحيحة وبنية الـ Objects</td><td>15 نقطة</td></tr><tr><td>8 دوال تعمل بشكل صحيح</td><td>40 نقطة</td></tr><tr><td>استخدام 3 طرق لكتابة الدوال</td><td>15 نقطة</td></tr><tr><td>التحقق من المدخلات وإدارة الأخطاء</td><td>15 نقطة</td></tr><tr><td>جودة الكود (تعليقات، تسمية، تنظيم)</td><td>15 نقطة</td></tr></tbody></table></div></div></div>
+<div class="closing-banner">
+  <h3>⚡ أحسنت! أنت الآن تفكر كمبرمج ⚡</h3>
+  <p>JavaScript هي بداية رحلة البرمجة الحقيقية — استمر!</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 09</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev is-disabled" href="#"><small>السابق</small><span>لا يوجد درس سابق</span></a>
+        <a class="nav-arrow next is-disabled" href="#"><small>التالي</small><span>الجلسة 10 — قريباً 🔒</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

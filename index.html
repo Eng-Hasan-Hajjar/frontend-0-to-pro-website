@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Front-End Master Book | مسار JavaScript — م. حسن حجار</title>
+<meta name="description" content="منصة تفاعلية حيّة لتعلّم JavaScript باللغة العربية — بديل عن عروض PowerPoint، إعداد م. حسن حجار.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== شريط التنقل ===== -->
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>مسار JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active">الرئيسية</a>
+      <a href="#lessons">الجلسات</a>
+      <a href="#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <a href="lesson-09.html" class="btn btn-primary btn-sm">ابدأ التعلّم</a>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="#lessons">الجلسات</a>
+  <a href="#about">عن المدرب</a>
+  <a href="lesson-09.html">ابدأ التعلّم</a>
+</div>
+
+<!-- ===== قسم البطل ===== -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-copy">
+      <span class="eyebrow"><span class="dot"></span> Front-End Master Book · مسار JavaScript</span>
+      <h1>تعلّم <span class="hl">JavaScript</span> بأسلوب <span class="hl2">حيّ وتفاعلي</span>، لا بعرض شرائح ساكن</h1>
+      <p class="lead">
+        منصّة تعليمية كاملة تستبدل عروض PowerPoint التقليدية بدروس حيّة: كل مفهوم مشروح، مُجرَّب أمامك مباشرة،
+        وقابل للتشغيل والتعديل من داخل المتصفح — بإعداد المهندس <strong>حسن حجار</strong>.
+      </p>
+      <div class="hero-cta">
+        <a href="lesson-09.html" class="btn btn-primary">ابدأ من الجلسة 09 ⟵</a>
+        <a href="#lessons" class="btn btn-ghost">تصفّح كل الجلسات</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><b>6</b><span>جلسات JavaScript</span></div>
+        <div class="stat"><b>18</b><span>ساعة تدريب</span></div>
+        <div class="stat"><b>٪100</b><span>أمثلة قابلة للتشغيل</span></div>
+      </div>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
+        <span>session-09.js</span>
+      </div>
+      <div class="terminal-body">
+        <pre><code data-hero-code></code></pre>
+        <div class="terminal-out" data-hero-out></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== شبكة الجلسات ===== -->
+<section id="lessons">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">المسار التعليمي</span>
+      <h2>ست جلسات، من الأساسيات إلى البرمجة الكائنية</h2>
+      <p>نفس التسلسل والمحتوى المعتمد في جلسات المدرّب — بشكل تفاعلي كامل بدل الشرائح الثابتة.</p>
+    </div>
+    <div class="lessons-grid" data-lessons-grid></div>
+  </div>
+</section>
+
+<!-- ===== عن المدرب ===== -->
+<section id="about" class="section-alt">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-avatar"><span>HH</span></div>
+      <div>
+        <div class="about-role">عن المدرّب</div>
+        <h2 class="about-name">Eng. Hasan Hajjar — م. حسن حجار</h2>
+        <p class="about-text">Software Engineer &amp; AI Engineer، ومؤلّف سلسلة <strong>Front-End Master Book</strong> — مرجع متكامل لتعليم الويب باللغة العربية، من HTML وCSS الأساسيات وصولاً إلى JavaScript الحديثة وأنماط البرمجة المتقدمة.</p>
+        <p class="about-text">هذه المنصّة هي التحويل التفاعلي لجلسات المسار: كل جلسة تحافظ على نفس الترتيب والمحتوى والأهداف التعليمية، لكن بصيغة حيّة يمكن تجربتها وتشغيلها مباشرة من المتصفح.</p>
+        <div class="about-badges">
+          <span>⚡ JavaScript ES6+</span>
+          <span>🌳 DOM &amp; Events</span>
+          <span>⏳ Async / Await</span>
+          <span>🏛️ OOP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== التذييل ===== -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="brand"><span class="brand-mark">&lt;/&gt;</span><span>Front-End Master</span></a>
+        <p>منصّة عربية تفاعلية لتعليم JavaScript، بديلة عن عروض PowerPoint التقليدية — إعداد م. حسن حجار.</p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h4>المسار</h4>
+          <a href="lesson-09.html">الجلسة 09 — مقدمة JavaScript</a>
+          <a href="#lessons">كل الجلسات</a>
+          <a href="#about">عن المدرب</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Front-End Master Book — Eng. Hasan Hajjar</span>
+      <span>صُنع بـ HTML وCSS وJavaScript خالص — بدون أي إطار عمل خارجي</span>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
