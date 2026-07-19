@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 03 — مقدمة إلى CSS | Front-End Master Book</title>
+<meta name="description" content="مقدمة إلى CSS — المحددات • الألوان • الخطوط • نموذج الصندوق (Box Model)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="03">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>مسار HTML &amp; CSS · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🎨</span>
+    <div>
+      <div class="session-tag">Session 03 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة الثالثة — مقدمة إلى CSS</h1>
+  <p class="tags-line">المحددات • الألوان • الخطوط • نموذج الصندوق (Box Model)</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة الثالثة</h2>
+  <ul class="goal-list"><li>فهم ما هو CSS ودوره في تصميم صفحات الويب</li><li>ربط CSS بـ HTML بثلاث طرق مختلفة والتمييز بينها</li><li>استخدام المحددات (Selectors) بجميع أنواعها الأساسية والمتقدمة</li><li>فهم قواعد الأولوية (Specificity) وترتيب تطبيق الأنماط</li><li>استخدام الألوان بجميع صيغها: HEX, RGB, RGBA, HSL</li><li>ضبط الخطوط: النوع، الحجم، الوزن، الارتفاع، المسافات</li><li>فهم نموذج الصندوق (Box Model) تماماً: margin, padding, border, width, height</li><li>التمييز بين عناصر Block وInline وInline-block</li><li>تنسيق صفحة HTML كاملة باستخدام CSS خارجي احترافي</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلستين السابقتين</span><p>✔ هيكل HTML: DOCTYPE, html, head, body</p><p>✔ العناصر الأساسية: h1-h6, p, a, img, ul, ol, li</p><p>✔ الجداول: table, thead, tbody, tr, th, td — colspan وrowspan</p><p>✔ النماذج: form, input (20 نوع), select, textarea, fieldset</p><p>✔ Semantic HTML: header, nav, main, article, section, aside, footer</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🎨</span><h2>الجزء الأول: ما هو CSS؟</h2></div><p class="blk-para">CSS تعني Cascading Style Sheets — صحائف الأنماط المتتالية. هي اللغة المسؤولة عن تحديد مظهر وتنسيق عناصر HTML من ألوان وخطوط وأحجام ومواقع وحركات.</p><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>بنية قاعدة CSS</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* بنية قاعدة CSS الأساسية */
+selector {
+  property: value;
+  property: value;
+}
+
+/* مثال حقيقي */
+h1 {
+  color: #1A3C5E;      /* لون النص */
+  font-size: 36px;     /* حجم الخط */
+  text-align: center;  /* محاذاة النص */
+  margin-bottom: 20px; /* مسافة سفلية */
+}</code></pre>
+</div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المصطلح</th><th>المعنى والدور</th></tr></thead><tbody><tr><td>Selector (المحدد)</td><td>يحدد أي عنصر HTML نريد تنسيقه</td></tr><tr><td>Property (الخاصية)</td><td>اسم الشيء الذي نريد تغييره (اللون، الحجم...)</td></tr><tr><td>Value (القيمة)</td><td>القيمة المرادة للخاصية (أحمر، 16px...)</td></tr><tr><td>Declaration (التصريح)</td><td>الخاصية + القيمة معاً: color: red;</td></tr><tr><td>Rule (القاعدة)</td><td>المحدد + التصريحات داخل أقواس {}</td></tr><tr><td>/* تعليق */</td><td>تعليقات CSS — لا تؤثر على التنسيق</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>معنى «Cascading» (التتالي)</h3></div><p class="blk-para">كلمة Cascading تعني أن CSS يطبق الأنماط بترتيب معين — كالشلال — وعند التعارض تكون الأولوية لـ:</p><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الأولوية (من الأعلى للأدنى)</th><th>المصدر</th></tr></thead><tbody><tr><td>1 — الأعلى أولوية</td><td>!important  (تجاوز إلزامي)</td></tr><tr><td>2</td><td>CSS المضمّن (Inline Style)</td></tr><tr><td>3</td><td>CSS داخلي في &lt;style&gt; في &lt;head&gt;</td></tr><tr><td>4</td><td>CSS خارجي في ملف .css</td></tr><tr><td>5 — الأدنى أولوية</td><td>الأنماط الافتراضية للمتصفح</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔗</span><h2>الجزء الثاني: طرق ربط CSS بـ HTML</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>الطريقة الأولى: CSS المضمّن (Inline CSS)</h3></div><p class="blk-para">يُكتب مباشرة داخل خاصية style في عنصر HTML:</p><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="html-code">&lt;p style="color: #E8A020; font-size: 20px; font-weight: bold;"&gt;
+  هذه فقرة بلون برتقالي وحجم 20px وخط عريض
+&lt;/p&gt;
+
+&lt;h1 style="text-align: center; color: #1A3C5E; border-bottom: 3px solid #E8A020;"&gt;
+  عنوان رئيسي منسّق
+&lt;/h1&gt;</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div><div class="callout warning"><span class="callout-title">⚠️ متى نستخدم Inline CSS؟</span><p>✅ للاختبار السريع فقط</p><p>✅ لتنسيقات استثنائية لا تتكرر</p><p>❌ لا يُنصح باستخدامه في المشاريع الحقيقية — يصعب الصيانة</p><p>❌ لا يمكن إعادة استخدامه على عناصر أخرى</p></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>الطريقة الثانية: CSS الداخلي (Internal CSS)</h3></div><p class="blk-para">يُكتب داخل وسم &lt;style&gt; في قسم &lt;head&gt;:</p><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="html-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="ar" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;title&gt;مثال CSS داخلي&lt;/title&gt;
+
+  &lt;style&gt;
+    /* تنسيق عام للصفحة */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #1A3C5E;
+      text-align: center;
+    }
+
+    p {
+      color: #333;
+      line-height: 1.8;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;عنوان منسّق&lt;/h1&gt;
+  &lt;p&gt;فقرة منسّقة بـ CSS داخلي&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.3</span><h3>الطريقة الثالثة: CSS الخارجي (External CSS) — المُفضّلة ✅</h3></div><p class="blk-para">يُكتب في ملف منفصل بامتداد .css ويُربط بـ HTML عبر &lt;link&gt;:</p><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+    </div>
+    <pre><code data-role="html-code">&lt;!-- في ملف index.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="ar" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;title&gt;مثال CSS خارجي&lt;/title&gt;
+  &lt;!-- ربط ملف CSS الخارجي --&gt;
+  &lt;link rel="stylesheet" href="style.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;عنوان منسّق&lt;/h1&gt;
+  &lt;p&gt;فقرة منسّقة بـ CSS خارجي&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+  <div class="code-block" data-lang="css">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot css"></span>CSS</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="css-code">/* ملف style.css */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f6ff;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  color: #1A3C5E;
+  text-align: center;
+  font-size: 2rem;
+}
+
+p {
+  color: #333333;
+  line-height: 1.8;
+  font-size: 1rem;
+}</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المقارنة</th><th>CSS خارجي (External)</th></tr></thead><tbody><tr><td>✅ إعادة الاستخدام</td><td>ملف CSS واحد لجميع صفحات الموقع</td></tr><tr><td>✅ الصيانة</td><td>تعديل واحد يؤثر على جميع الصفحات</td></tr><tr><td>✅ الأداء</td><td>المتصفح يخزّن الملف (Cache) فيتحمل أسرع</td></tr><tr><td>✅ التنظيم</td><td>فصل التنسيق عن البنية — مبدأ Separation of Concerns</td></tr><tr><td>✅ العمل الجماعي</td><td>المصمم يعمل على CSS والمطوّر على HTML في نفس الوقت</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎯</span><h2>الجزء الثالث: المحددات (CSS Selectors)</h2></div><p class="blk-para">المحدد هو الجزء الذي يُحدد أي عنصر HTML سيُطبَّق عليه التنسيق. إتقان المحددات هو مفتاح إتقان CSS.</p><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>المحددات الأساسية</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* 1. محدد العنصر (Element Selector) */
+/* يُطبَّق على جميع عناصر h2 في الصفحة */
+h2 {
+  color: #2E75B6;
+  font-size: 28px;
+
+
+}
+#hero {
+background-image: url("22.png");
+background-repeat: no-repeat;
+background-position: center;
+background-size: cover;
+background-size: stretch;
+background-size: 100% 100%;
+background-repeat: repeat-x;
+background-repeat: repeat-y;
+background-position: top center;
+background-position: bottom center;
+background-position: left center;
+background-position: right center;
+height: 100vh;
+background-image: url("22.png");
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+}
+
+/* 2. محدد الفئة (Class Selector) — يبدأ بنقطة . */
+/* يُطبَّق على كل عنصر لديه class="highlight" */
+.highlight {
+  background-color: #FFF3CD;
+  padding: 10px;
+  border-right: 4px solid #E8A020;
+}
+
+/* 3. محدد المعرّف (ID Selector) — يبدأ بـ # */
+/* يُطبَّق على العنصر الوحيد id="main-title" */
+#main-title {
+  font-size: 40px;
+  text-align: center;
+  color: #1A3C5E;
+}
+
+/* 4. محدد الكل (Universal Selector) */
+/* يُطبَّق على جميع العناصر */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}</code></pre>
+</div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المحدد</th><th>التطبيق في HTML</th></tr></thead><tbody><tr><td>h2 { }</td><td>&lt;h2&gt;عنوان&lt;/h2&gt;</td></tr><tr><td>.highlight { }</td><td>&lt;p class="highlight"&gt;نص&lt;/p&gt;</td></tr><tr><td>#main-title { }</td><td>&lt;h1 id="main-title"&gt;عنوان&lt;/h1&gt;</td></tr><tr><td>* { }</td><td>جميع العناصر بدون استثناء</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>محددات التجميع والتداخل</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* تجميع محددات متعددة — نفس التنسيق */
+h1, h2, h3 {
+  font-family: Arial, sans-serif;
+  color: #1A3C5E;
+}
+
+/* محدد التداخل (Descendant) — عناصر داخل عناصر */
+/* يُطبَّق على كل &lt;a&gt; داخل &lt;nav&gt; */
+nav a {
+  color: white;
+  text-decoration: none;
+}
+
+/* محدد الابن المباشر (Child) — يستخدم &gt; */
+/* فقط &lt;li&gt; الأبناء المباشرون لـ &lt;ul&gt; */
+ul &gt; li {
+  list-style: none;
+  padding: 8px 0;
+}
+
+/* محدد الأخ المجاور (Adjacent Sibling) — يستخدم + */
+/* &lt;p&gt; الذي يأتي مباشرة بعد &lt;h2&gt; */
+h2 + p {
+  font-size: 18px;
+  color: #555;
+}
+
+/* محدد العنصر + فئة معاً */
+/* فقط &lt;p&gt; التي لها class="intro" */
+p.intro {
+  font-size: 20px;
+  font-weight: bold;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.3</span><h3>محددات الخصائص (Attribute Selectors)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* العناصر التي لها خاصية معينة */
+input[required] {
+  border: 2px solid #E8A020;
+}
+
+/* العناصر بقيمة خاصية محددة */
+input[type="email"] {
+  padding-right: 40px;
+  background-image: url('email-icon.svg');
+}
+
+/* الروابط الخارجية (تبدأ بـ https) */
+a[href^="https"] {
+  color: #1E6B3C;
+}
+
+/* الروابط لملفات PDF (تنتهي بـ .pdf) */
+a[href$=".pdf"] {
+  color: #CC0000;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.4</span><h3>المحددات الزائفة (Pseudo-classes)</h3></div><p class="blk-para">المحددات الزائفة تُطبَّق على العنصر في حالة معينة أو وضع محدد:</p><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* عند تحريك الماوس فوق الرابط */
+a:hover {
+  color: #E8A020;
+  text-decoration: underline;
+}
+
+/* الرابط الذي زُرته من قبل */
+a:visited {
+  color: #5B2D8E;
+}
+
+/* عند الضغط على الزر */
+button:active {
+  transform: scale(0.98);
+}
+
+/* عند التركيز على حقل إدخال */
+input:focus {
+  outline: 2px solid #2E75B6;
+  border-color: #2E75B6;
+}
+
+/* العنصر الأول من نوعه */
+li:first-child {
+  font-weight: bold;
+  color: #1A3C5E;
+}
+
+/* العنصر الأخير من نوعه */
+li:last-child {
+  border-bottom: none;
+}
+
+/* كل عنصر زوجي (2, 4, 6...) */
+tr:nth-child(even) {
+  background-color: #F0F6FF;
+}
+
+/* كل عنصر فردي (1, 3, 5...) */
+tr:nth-child(odd) {
+  background-color: #FFFFFF;
+}
+
+/* حقل input غير صالح (فشل التحقق) */
+input:invalid {
+  border-color: #CC0000;
+}
+
+/* حقل input صالح */
+input:valid {
+  border-color: #1E6B3C;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.5</span><h3>العناصر الزائفة (Pseudo-elements)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* أول حرف في الفقرة */
+p::first-letter {
+  font-size: 3em;
+  font-weight: bold;
+  color: #E8A020;
+  float: right;
+  margin-left: 8px;
+}
+
+/* أول سطر في الفقرة */
+p::first-line {
+  font-weight: bold;
+  color: #1A3C5E;
+}
+
+/* إضافة محتوى قبل العنصر */
+.required-field::before {
+  content: "* ";
+  color: #CC0000;
+  font-weight: bold;
+}
+
+/* إضافة محتوى بعد العنصر */
+.external-link::after {
+  content: " ↗";
+  font-size: 0.8em;
+  color: #5A6A7A;
+}
+
+/* تنسيق النص المحدد (selection) */
+::selection {
+  background-color: #2E75B6;
+  color: white;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.6</span><h3>الأولوية (Specificity)</h3></div><p class="blk-para">عند تعارض قواعد CSS، يُطبَّق التنسيق الأعلى أولوية. حساب الأولوية:</p><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المحدد</th><th>النقاط</th><th>مثال</th><th>الأولوية</th></tr></thead><tbody><tr><td>!important</td><td>∞ (لا تُقهر)</td><td>color: red !important;</td><td>الأعلى دائماً</td></tr><tr><td>Inline Style</td><td>1000 نقطة</td><td>style="color:red"</td><td>عالية جداً</td></tr><tr><td>ID Selector</td><td>100 نقطة</td><td>#header { }</td><td>عالية</td></tr><tr><td>Class / Pseudo</td><td>10 نقاط</td><td>.nav, :hover</td><td>متوسطة</td></tr><tr><td>Element / Pseudo-el</td><td>1 نقطة</td><td>p, h1, ::before</td><td>منخفضة</td></tr><tr><td>Universal *</td><td>0 نقاط</td><td>* { }</td><td>الأدنى</td></tr></tbody></table></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* مثال على حساب الأولوية */
+
+p { color: black; }              /* 1 نقطة */
+.text { color: blue; }           /* 10 نقاط — يتغلب */
+#intro { color: green; }         /* 100 نقطة — يتغلب */
+p.text#intro { color: purple; }  /* 111 نقطة — يتغلب */
+
+/* !important يتجاوز كل شيء */
+p { color: red !important; }     /* يفوز دائماً */</code></pre>
+</div><p class="blk-para">مثال 1: تحميل ملف PDF</p><p class="blk-para">HTML</p><p class="blk-para">&lt;h2&gt;الملفات المتاحة للتحميل&lt;/h2&gt;</p><p class="blk-para">&lt;a href="files/frontend-course.pdf" download&gt;</p><p class="blk-para">تحميل كورس Front-End PDF</p><p class="blk-para">&lt;/a&gt;</p><p class="blk-para">&lt;br&gt;&lt;br&gt;</p><p class="blk-para">&lt;a href="files/css-guide.pdf" download&gt;</p><p class="blk-para">تحميل دليل CSS</p><p class="blk-para">&lt;/a&gt;</p><p class="blk-para">&lt;br&gt;&lt;br&gt;</p><p class="blk-para">&lt;a href="files/javascript-book.pdf" target="_blank"&gt;</p><p class="blk-para">عرض كتاب JavaScript</p><p class="blk-para">&lt;/a&gt;</p><p class="blk-para">CSS</p><p class="blk-para">/* روابط PDF */</p><p class="blk-para">a[href$=".pdf"] {</p><p class="blk-para">color: #CC0000;</p><p class="blk-para">font-weight: bold;</p><p class="blk-para">}</p><p class="blk-para">/* عند المرور بالماوس */</p><p class="blk-para">a[href$=".pdf"]:hover {</p><p class="blk-para">color: #E8A020;</p><p class="blk-para">}</p><p class="blk-para">مثال 2: الروابط الخارجية HTTPS</p><p class="blk-para">HTML</p><p class="blk-para">&lt;h2&gt;مواقع مفيدة للمطورين&lt;/h2&gt;</p><p class="blk-para">&lt;a href="https://developer.mozilla.org"&gt;</p><p class="blk-para">MDN Web Docs</p><p class="blk-para">&lt;/a&gt;</p><p class="blk-para">&lt;br&gt;</p><p class="blk-para">&lt;a href="https://www.w3schools.com"&gt;</p><p class="blk-para">W3Schools</p><p class="blk-para">&lt;/a&gt;</p><p class="blk-para">&lt;br&gt;</p><p class="blk-para">&lt;a href="http://example.com"&gt;</p><p class="blk-para">موقع HTTP عادي</p><p class="blk-para">&lt;/a&gt;</p><p class="blk-para">CSS</p><p class="blk-para">/* روابط HTTPS */</p><p class="blk-para">a[href^="https"] {</p><p class="blk-para">color: green;</p><p class="blk-para">font-weight: bold;</p><p class="blk-para">}</p><p class="blk-para">مثال 3: حقول الإدخال المطلوبة Required</p><p class="blk-para">HTML</p><p class="blk-para">&lt;form&gt;</p><p class="blk-para">&lt;label&gt;الاسم الكامل&lt;/label&gt;</p><p class="blk-para">&lt;input type="text" required&gt;</p><p class="blk-para">&lt;br&gt;&lt;br&gt;</p><p class="blk-para">&lt;label&gt;البريد الإلكتروني&lt;/label&gt;</p><p class="blk-para">&lt;input type="email" required&gt;</p><p class="blk-para">&lt;br&gt;&lt;br&gt;</p><p class="blk-para">&lt;button&gt;إرسال&lt;/button&gt;</p><p class="blk-para">&lt;/form&gt;</p><p class="blk-para">CSS</p><p class="blk-para">input[required] {
+    border: 2px solid orange;
+}</p><p class="blk-para">مثال 4: حقل البريد الإلكتروني</p><p class="blk-para">HTML</p><p class="blk-para">&lt;input</p><p class="blk-para">type="email"</p><p class="blk-para">placeholder="example@gmail.com"&gt;</p><p class="blk-para">CSS</p><p class="blk-para">input[type="email"] {</p><p class="blk-para">padding: 12px;</p><p class="blk-para">border: 2px solid #2E75B6;</p><p class="blk-para">}</p><p class="blk-para">مشروع متكامل يجمع معظم الأمثلة</p><p class="blk-para">HTML</p><p class="blk-para">&lt;!DOCTYPE html&gt;</p><p class="blk-para">&lt;html lang="ar"&gt;</p><p class="blk-para">&lt;head&gt;</p><p class="blk-para">&lt;meta charset="UTF-8"&gt;</p><p class="blk-para">&lt;title&gt;أكاديمية Front-End&lt;/title&gt;</p><p class="blk-para">&lt;link rel="stylesheet" href="style.css"&gt;</p><p class="blk-para">&lt;/head&gt;</p><p class="blk-para">&lt;body&gt;</p><p class="blk-para">&lt;h1&gt;أكاديمية Front-End&lt;/h1&gt;</p><p class="blk-para">&lt;p&gt;</p><p class="blk-para">مرحباً بكم في دورة تطوير واجهات المستخدم.</p><p class="blk-para">ستتعلمون HTML و CSS و JavaScript</p><p class="blk-para">بأسلوب عملي احترافي.</p><p class="blk-para">&lt;/p&gt;</p><p class="blk-para">&lt;!-- روابط خارجية --&gt;</p><p class="blk-para">&lt;h2&gt;مصادر تعليمية&lt;/h2&gt;</p><p class="blk-para">&lt;a class="external-link"</p><p class="blk-para">href="https://developer.mozilla.org"&gt;</p><p class="blk-para">MDN</p><p class="blk-para">&lt;/a&gt;</p><p class="blk-para">&lt;br&gt;</p><p class="blk-para">&lt;a class="external-link"</p><p class="blk-para">href="https://www.w3schools.com"&gt;</p><p class="blk-para">W3Schools</p><p class="blk-para">&lt;/a&gt;</p><p class="blk-para">&lt;hr&gt;</p><p class="blk-para">&lt;!-- ملفات PDF --&gt;</p><p class="blk-para">&lt;h2&gt;ملفات الدورة&lt;/h2&gt;</p><p class="blk-para">&lt;a href="frontend-course.pdf" download&gt;</p><p class="blk-para">تحميل كتاب HTML PDF</p><p class="blk-para">&lt;/a&gt;</p><p class="blk-para">&lt;br&gt;</p><p class="blk-para">&lt;a href="css-course.pdf" download&gt;</p><p class="blk-para">تحميل كتاب CSS PDF</p><p class="blk-para">&lt;/a&gt;</p><p class="blk-para">&lt;hr&gt;</p><p class="blk-para">&lt;!-- نموذج --&gt;</p><p class="blk-para">&lt;h2&gt;التسجيل في الدورة&lt;/h2&gt;</p><p class="blk-para">&lt;form&gt;</p><p class="blk-para">&lt;label class="required-field"&gt;</p><p class="blk-para">الاسم</p><p class="blk-para">&lt;/label&gt;</p><p class="blk-para">&lt;input</p><p class="blk-para">type="text"</p><p class="blk-para">required&gt;</p><p class="blk-para">&lt;br&gt;&lt;br&gt;</p><p class="blk-para">&lt;label class="required-field"&gt;</p><p class="blk-para">البريد الإلكتروني</p><p class="blk-para">&lt;/label&gt;</p><p class="blk-para">&lt;input</p><p class="blk-para">type="email"</p><p class="blk-para">required&gt;</p><p class="blk-para">&lt;br&gt;&lt;br&gt;</p><p class="blk-para">&lt;button&gt;</p><p class="blk-para">تسجيل</p><p class="blk-para">&lt;/button&gt;</p><p class="blk-para">&lt;/form&gt;</p><p class="blk-para">&lt;hr&gt;</p><p class="blk-para">&lt;!-- قائمة --&gt;</p><p class="blk-para">&lt;h2&gt;المسارات التعليمية&lt;/h2&gt;</p><p class="blk-para">&lt;ul&gt;</p><p class="blk-para">&lt;li&gt;HTML&lt;/li&gt;</p><p class="blk-para">&lt;li&gt;CSS&lt;/li&gt;</p><p class="blk-para">&lt;li&gt;JavaScript&lt;/li&gt;</p><p class="blk-para">&lt;li&gt;Bootstrap&lt;/li&gt;</p><p class="blk-para">&lt;li&gt;React&lt;/li&gt;</p><p class="blk-para">&lt;/ul&gt;</p><p class="blk-para">&lt;hr&gt;</p><p class="blk-para">&lt;!-- جدول --&gt;</p><p class="blk-para">&lt;h2&gt;جدول الدورات&lt;/h2&gt;</p><p class="blk-para">&lt;table border="1"&gt;</p><p class="blk-para">&lt;tr&gt;</p><p class="blk-para">&lt;th&gt;الدورة&lt;/th&gt;</p><p class="blk-para">&lt;th&gt;الساعات&lt;/th&gt;</p><p class="blk-para">&lt;/tr&gt;</p><p class="blk-para">&lt;tr&gt;</p><p class="blk-para">&lt;td&gt;HTML&lt;/td&gt;</p><p class="blk-para">&lt;td&gt;20&lt;/td&gt;</p><p class="blk-para">&lt;/tr&gt;</p><p class="blk-para">&lt;tr&gt;</p><p class="blk-para">&lt;td&gt;CSS&lt;/td&gt;</p><p class="blk-para">&lt;td&gt;25&lt;/td&gt;</p><p class="blk-para">&lt;/tr&gt;</p><p class="blk-para">&lt;tr&gt;</p><p class="blk-para">&lt;td&gt;JavaScript&lt;/td&gt;</p><p class="blk-para">&lt;td&gt;40&lt;/td&gt;</p><p class="blk-para">&lt;/tr&gt;</p><p class="blk-para">&lt;tr&gt;</p><p class="blk-para">&lt;td&gt;React&lt;/td&gt;</p><p class="blk-para">&lt;td&gt;35&lt;/td&gt;</p><p class="blk-para">&lt;/tr&gt;</p><p class="blk-para">&lt;/table&gt;</p><p class="blk-para">&lt;/body&gt;</p><p class="blk-para">&lt;/html&gt;</p><p class="blk-para">CSS</p><p class="blk-para">body{</p><p class="blk-para">font-family: Tahoma;</p><p class="blk-para">direction: rtl;</p><p class="blk-para">padding: 20px;</p><p class="blk-para">}</p><p class="blk-para">/* Required */</p><p class="blk-para">input[required]{</p><p class="blk-para">border:2px solid #E8A020;</p><p class="blk-para">}</p><p class="blk-para">/* Email */</p><p class="blk-para">input[type="email"]{</p><p class="blk-para">padding-right:40px;</p><p class="blk-para">}</p><p class="blk-para">/* HTTPS */</p><p class="blk-para">a[href^="https"]{</p><p class="blk-para">color:#1E6B3C;</p><p class="blk-para">}</p><p class="blk-para">/* PDF */</p><p class="blk-para">a[href$=".pdf"]{</p><p class="blk-para">color:#CC0000;</p><p class="blk-para">font-weight:bold;</p><p class="blk-para">}</p><p class="blk-para">/* Hover */</p><p class="blk-para">a:hover{</p><p class="blk-para">color:#E8A020;</p><p class="blk-para">text-decoration:underline;</p><p class="blk-para">}</p><p class="blk-para">/* Visited */</p><p class="blk-para">a:visited{</p><p class="blk-para">color:#5B2D8E;</p><p class="blk-para">}</p><p class="blk-para">/* Active */</p><p class="blk-para">button:active{</p><p class="blk-para">transform:scale(0.98);</p><p class="blk-para">}</p><p class="blk-para">/* Focus */</p><p class="blk-para">input:focus{</p><p class="blk-para">outline:2px solid #2E75B6;</p><p class="blk-para">}</p><p class="blk-para">/* First Child */</p><p class="blk-para">li:first-child{</p><p class="blk-para">color:#1A3C5E;</p><p class="blk-para">font-weight:bold;</p><p class="blk-para">}</p><p class="blk-para">/* Last Child */</p><p class="blk-para">li:last-child{</p><p class="blk-para">color:#CC0000;</p><p class="blk-para">}</p><p class="blk-para">/* Even */</p><p class="blk-para">tr:nth-child(even){</p><p class="blk-para">background:#F0F6FF;</p><p class="blk-para">}</p><p class="blk-para">/* Odd */</p><p class="blk-para">tr:nth-child(odd){</p><p class="blk-para">background:#FFFFFF;</p><p class="blk-para">}</p><p class="blk-para">/* Valid */</p><p class="blk-para">input:valid{</p><p class="blk-para">border-color:#1E6B3C;</p><p class="blk-para">}</p><p class="blk-para">/* Invalid */</p><p class="blk-para">input:invalid{</p><p class="blk-para">border-color:#CC0000;</p><p class="blk-para">}</p><p class="blk-para">/* First Letter */</p><p class="blk-para">p::first-letter{</p><p class="blk-para">font-size:3em;</p><p class="blk-para">color:#E8A020;</p><p class="blk-para">font-weight:bold;</p><p class="blk-para">}</p><p class="blk-para">/* First Line */</p><p class="blk-para">p::first-line{</p><p class="blk-para">color:#1A3C5E;</p><p class="blk-para">font-weight:bold;</p><p class="blk-para">}</p><p class="blk-para">/* Before */</p><p class="blk-para">.required-field::before{</p><p class="blk-para">content:"* ";</p><p class="blk-para">color:red;</p><p class="blk-para">}</p><p class="blk-para">/* After */</p><p class="blk-para">.external-link::after{</p><p class="blk-para">content:" ↗";</p><p class="blk-para">}</p><p class="blk-para">/* Selection */</p><p class="blk-para">::selection{</p><p class="blk-para">background:#2E75B6;</p><p class="blk-para">color:white;</p><p class="blk-para">}</p><p class="blk-para">أمثلة تعليمية جميلة لشرح محددات الـ Attribute</p><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المحدد</th><th>مثال</th></tr></thead><tbody><tr><td>[required]</td><td>جميع الحقول المطلوبة</td></tr><tr><td>[type="email"]</td><td>حقل البريد الإلكتروني فقط</td></tr><tr><td>[href^="https"]</td><td>الروابط التي تبدأ بـ HTTPS</td></tr><tr><td>[href$=".pdf"]</td><td>روابط ملفات PDF</td></tr><tr><td>[src$=".png"]</td><td>الصور بصيغة PNG</td></tr><tr><td>[class*="card"]</td><td>أي Class يحتوي كلمة card</td></tr><tr><td>[title]</td><td>أي عنصر يحتوي خاصية title</td></tr><tr><td>[placeholder]</td><td>جميع حقول الإدخال التي تحتوي Placeholder</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🌈</span><h2>الجزء الرابع: الألوان في CSS</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>صيغ تحديد الألوان</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الصيغة</th><th>مثال</th></tr></thead><tbody><tr><td>اسم اللون (Keyword)</td><td>color: red; / color: navy; / color: coral;</td></tr><tr><td>HEX (سداسي عشري)</td><td>color: #FF5733; أو المختصر color: #F53;</td></tr><tr><td>RGB (أحمر، أخضر، أزرق)</td><td>color: rgb(255, 87, 51);</td></tr><tr><td>RGBA (مع الشفافية)</td><td>color: rgba(255, 87, 51, 0.5); /* 50% شفاف */</td></tr><tr><td>HSL (تدرج، تشبع، سطوع)</td><td>color: hsl(14, 100%, 60%);</td></tr><tr><td>HSLA (مع الشفافية)</td><td>color: hsla(14, 100%, 60%, 0.7);</td></tr></tbody></table></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* أمثلة شاملة على الألوان */
+body {
+  background-color: #F0F6FF;   /* HEX — ألوان دقيقة جداً */
+}
+
+h1 {
+  color: rgb(26, 60, 94);      /* RGB — نفس #1A3C5E */
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.6);  /* أسود بشفافية 60% */
+}
+
+.btn-primary {
+  background-color: hsl(210, 60%, 24%);  /* HSL — سهل التعديل */
+}
+
+/* خلفية متدرجة (Gradient) */
+.hero {
+  background: linear-gradient(135deg, #1A3C5E, #2E75B6);
+}
+
+.card {
+  background: linear-gradient(to bottom, #ffffff, #EBF3FB);
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>خصائص الألوان الشائعة</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الخاصية</th><th>الوظيفة</th></tr></thead><tbody><tr><td>color</td><td>لون النص</td></tr><tr><td>background-color</td><td>لون خلفية العنصر</td></tr><tr><td>border-color</td><td>لون حدود العنصر</td></tr><tr><td>outline-color</td><td>لون الإطار الخارجي عند التركيز</td></tr><tr><td>background</td><td>خلفية شاملة (لون، صورة، تدرج)</td></tr><tr><td>linear-gradient()</td><td>تدرج خطي بين لونين أو أكثر</td></tr><tr><td>radial-gradient()</td><td>تدرج دائري من المركز للحواف</td></tr><tr><td>opacity</td><td>شفافية العنصر كاملاً (0 = شفاف, 1 = معتم)</td></tr></tbody></table></div><div class="callout tip"><span class="callout-title">💡 نصيحة: HEX أم RGB أم HSL؟</span><p>HEX — الأكثر استخداماً، مثالي عند نسخ الألوان من Figma أو أدوات التصميم</p><p>RGB/RGBA — عندما تحتاج للشفافية أو حساب الألوان برمجياً</p><p>HSL — الأسهل للتعديل اليدوي — زيادة السطوع أو التشبع بسهولة</p></div><p class="blk-para">1) color</p><p class="blk-para">الوظيفة: تغيير لون النص.</p><p class="blk-para">HTML</p><p class="blk-para">&lt;h2&gt;أكاديمية البرمجة&lt;/h2&gt;</p><p class="blk-para">&lt;p&gt;</p><p class="blk-para">تعلم HTML و CSS و JavaScript من الصفر حتى الاحتراف.</p><p class="blk-para">&lt;/p&gt;</p><p class="blk-para">&lt;a href="#"&gt;ابدأ الآن&lt;/a&gt;</p><p class="blk-para">CSS</p><p class="blk-para">h2{</p><p class="blk-para">color:#1A3C5E;</p><p class="blk-para">}</p><p class="blk-para">p{</p><p class="blk-para">color:#555;</p><p class="blk-para">}</p><p class="blk-para">a{</p><p class="blk-para">color:#2E75B6;</p><p class="blk-para">}</p><p class="blk-para">2) background-color</p><p class="blk-para">الوظيفة: تغيير لون خلفية العنصر.</p><p class="blk-para">HTML</p><p class="blk-para">&lt;div class="notice"&gt;</p><p class="blk-para">تم التسجيل في الدورة بنجاح.</p><p class="blk-para">&lt;/div&gt;</p><p class="blk-para">CSS</p><p class="blk-para">.notice{</p><p class="blk-para">background-color:#DFF6DD;</p><p class="blk-para">color:#1E6B3C;</p><p class="blk-para">padding:20px;</p><p class="blk-para">border-radius:8px;</p><p class="blk-para">}</p><p class="blk-para">3) border-color</p><p class="blk-para">الوظيفة: تغيير لون الحدود.</p><p class="blk-para">HTML</p><p class="blk-para">&lt;div class="card"&gt;
+
+    &lt;h3&gt;كورس CSS&lt;/h3&gt;
+
+    &lt;p&gt;احتراف تصميم المواقع.&lt;/p&gt;
+
+&lt;/div&gt;</p><p class="blk-para">CSS</p><p class="blk-para">.card{
+
+    border:3px solid;
+
+    border-color:#2E75B6;
+
+    padding:20px;
+
+}</p><p class="blk-para">4) outline-color</p><p class="blk-para">الوظيفة: تغيير لون الإطار الخارجي عند التركيز (Focus).</p><p class="blk-para">HTML</p><p class="blk-para">&lt;input
+type="text"
+placeholder="اكتب اسمك"&gt;</p><p class="blk-para">CSS</p><p class="blk-para">input:focus{
+
+    outline:4px solid;
+
+    outline-color:#E8A020;
+
+}</p><p class="blk-para">5) background</p><p class="blk-para">هذه الخاصية تجمع أكثر من شيء معًا.</p><p class="blk-para">مثال لون فقط</p><p class="blk-para">.hero{
+
+    background:#2E75B6;
+
+}</p><p class="blk-para">مثال صورة</p><p class="blk-para">HTML</p><p class="blk-para">&lt;header class="hero"&gt;
+
+&lt;h1&gt;مرحباً بكم&lt;/h1&gt;
+
+&lt;/header&gt;</p><p class="blk-para">CSS</p><p class="blk-para">.hero{
+
+    height:300px;
+
+    background:url(images/bg.jpg);
+
+    background-size:cover;
+
+    background-position:center;
+
+}</p><p class="blk-para">مثال لون مع صورة</p><p class="blk-para">.hero{
+
+    background:#000 url(images/bg.jpg);
+
+    background-size:cover;
+
+}</p><p class="blk-para">6) linear-gradient()</p><p class="blk-para">من أكثر الأمثلة التي يحبها الطلاب.</p><p class="blk-para">HTML</p><p class="blk-para">&lt;section class="banner"&gt;
+
+&lt;h1&gt;Front-End Course&lt;/h1&gt;
+
+&lt;/section&gt;</p><p class="blk-para">CSS</p><p class="blk-para">.banner{
+
+    height:250px;
+
+    background:linear-gradient(
+
+        to left,
+
+        #2E75B6,
+
+        #1A3C5E
+
+    );
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}</p><p class="blk-para">مثال بثلاثة ألوان</p><p class="blk-para">background:linear-gradient(
+
+45deg,
+
+#ff9800,
+
+#ff5722,
+
+#2196f3
+
+);</p><p class="blk-para">مثال يشبه أزرار المواقع</p><p class="blk-para">button{
+
+    background:linear-gradient(
+
+        #2E75B6,
+
+        #1A3C5E
+
+    );
+
+    color:white;
+
+}</p><p class="blk-para">7) radial-gradient()</p><p class="blk-para">التدرج الدائري.</p><p class="blk-para">HTML</p><p class="blk-para">&lt;div class="circle"&gt;
+
+خصم 50%
+
+&lt;/div&gt;</p><p class="blk-para">CSS</p><p class="blk-para">.circle{
+
+    width:220px;
+
+    height:220px;
+
+    border-radius:50%;
+
+    background:radial-gradient(
+
+        circle,
+
+        #FFD54F,
+
+        #F57C00
+
+    );
+
+}</p><p class="blk-para">مثال آخر</p><p class="blk-para">background:radial-gradient(
+
+circle,
+
+white,
+
+skyblue,
+
+navy
+
+);</p><p class="blk-para">8) opacity</p><p class="blk-para">الشفافية.</p><p class="blk-para">HTML</p><p class="blk-para">&lt;img
+src="student.jpg"
+class="student"&gt;</p><p class="blk-para">CSS</p><p class="blk-para">.student{
+
+    opacity:0.5;
+
+}</p><p class="blk-para">عند مرور الماوس</p><p class="blk-para">.student{
+
+    opacity:0.5;
+
+    transition:0.5s;
+
+}
+
+.student:hover{
+
+    opacity:1;
+
+}</p><p class="blk-para">مثال احترافي يجمع معظم الخصائص</p><p class="blk-para">HTML</p><p class="blk-para">&lt;section class="course"&gt;
+
+&lt;h2&gt;دورة Front-End&lt;/h2&gt;
+
+&lt;p&gt;
+
+ابدأ رحلتك في تصميم المواقع الحديثة.
+
+&lt;/p&gt;
+
+&lt;button&gt;
+
+اشترك الآن
+
+&lt;/button&gt;
+
+&lt;/section&gt;</p><p class="blk-para">CSS</p><p class="blk-para">.course{
+
+    width:500px;
+
+    padding:30px;
+
+    margin:auto;
+
+    border:3px solid;
+
+    border-color:#2E75B6;
+
+    border-radius:12px;
+
+    background:linear-gradient(
+
+        to left,
+
+        #2E75B6,
+
+        #1A3C5E
+
+    );
+
+}
+
+.course h2{
+
+    color:white;
+
+}
+
+.course p{
+
+    color:#F5F5F5;
+
+}
+
+.course button{
+
+    background:#E8A020;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 25px;
+
+    cursor:pointer;
+
+}
+
+.course button:hover{
+
+    opacity:.8;
+
+}</p></div></div><div class="part"><div class="part-head"><span class="p-icon">✍️</span><h2>الجزء الخامس: الخطوط والنصوص (Typography)</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>خصائص الخط (Font Properties)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>body {
+  /* نوع الخط — بترتيب الأفضلية */
+  font-family: "Segoe UI", Arial, Tahoma, sans-serif;
+
+  /* حجم الخط */
+  font-size: 16px;        /* بيكسل */
+  font-size: 1rem;        /* نسبة إلى حجم الخط الجذر (عادة 16px) */
+  font-size: 1.2em;       /* نسبة إلى الخط الأب */
+
+  /* وزن الخط (السماكة) */
+  font-weight: normal;    /* = 400 */
+  font-weight: bold;      /* = 700 */
+  font-weight: 300;       /* خفيف */
+  font-weight: 900;       /* أثقل */
+
+  /* نمط الخط */
+  font-style: normal;     /* عادي */
+  font-style: italic;     /* مائل */
+  font-style: oblique;    /* مائل قسري */
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>خصائص النص (Text Properties)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>h1 {
+  text-align: center;       /* المحاذاة: right, left, center, justify */
+  text-decoration: none;    /* إزالة الخط من الروابط */
+  text-transform: uppercase;/* تحويل: uppercase, lowercase, capitalize */
+  letter-spacing: 2px;      /* المسافة بين الحروف */
+  word-spacing: 5px;        /* المسافة بين الكلمات */
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3); /* ظل النص */
+  text-indent: 30px;        /* مسافة بداية الفقرة */
+}
+
+p {
+  line-height: 1.8;         /* ارتفاع السطر (1.5 إلى 2 مناسب للعربية) */
+  white-space: nowrap;      /* منع التفاف النص */
+  overflow: hidden;         /* إخفاء النص الزائد */
+  text-overflow: ellipsis;  /* إضافة ... للنص المقطوع */
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.3</span><h3>استيراد خطوط Google Fonts</h3></div><p class="blk-para">Google Fonts تُتيح آلاف الخطوط المجانية — بما فيها خطوط عربية رائعة:</p><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+    </div>
+    <pre><code data-role="html-code">&lt;!-- في HTML داخل &lt;head&gt; --&gt;
+&lt;link rel="preconnect" href="https://fonts.googleapis.com" /&gt;
+&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /&gt;
+&lt;link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&amp;family=Tajawal:wght@400;500;700&amp;display=swap" rel="stylesheet" /&gt;</code></pre>
+  </div>
+  <div class="code-block" data-lang="css">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot css"></span>CSS</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="css-code">/* في ملف CSS */
+body {
+  font-family: "Cairo", "Tajawal", sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: "Cairo", sans-serif;
+  font-weight: 700;
+}
+
+p {
+  font-family: "Tajawal", sans-serif;
+  font-weight: 400;
+  line-height: 1.9;
+}</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>خط Google عربي</th><th>الاستخدام المناسب</th></tr></thead><tbody><tr><td>Cairo</td><td>خط متعدد الأوزان — ممتاز للعناوين والمحتوى</td></tr><tr><td>Tajawal</td><td>خط نظيف وبسيط — ممتاز للمحتوى الطويل</td></tr><tr><td>Almarai</td><td>خط إماراتي أنيق — للمواقع الرسمية</td></tr><tr><td>Noto Kufi Arabic</td><td>خط كوفي — للعناوين الاحترافية</td></tr><tr><td>Amiri</td><td>خط تقليدي — للمواقع الثقافية والدينية</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">📦</span><h2>الجزء السادس: نموذج الصندوق (Box Model)</h2></div><p class="blk-para">كل عنصر HTML هو في جوهره صندوق مستطيل. Box Model يصف طبقات هذا الصندوق من الداخل للخارج:</p><div class="callout info"><span class="callout-title">🗂️ طبقات Box Model من الداخل للخارج</span><p>1. Content (المحتوى) — النص والصور والعناصر الداخلية</p><p>2. Padding (الحشوة) — مسافة شفافة بين المحتوى والحدود</p><p>3. Border (الحدود) — الإطار حول العنصر</p><p>4. Margin (الهامش) — مسافة شفافة خارج الحدود تفصل بين العناصر</p></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>المحتوى والأبعاد (Content &amp; Dimensions)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.box {
+  /* العرض والارتفاع */
+  width: 300px;           /* عرض ثابت */
+  height: 200px;          /* ارتفاع ثابت */
+  width: 50%;             /* 50% من عرض الأب */
+  max-width: 800px;       /* حد أقصى للعرض */
+  min-width: 200px;       /* حد أدنى للعرض */
+  max-height: 500px;      /* حد أقصى للارتفاع */
+  min-height: 100px;      /* حد أدنى للارتفاع */
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.2</span><h3>الحشوة (Padding)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.box {
+  /* الطريقة المختصرة */
+  padding: 20px;              /* جميع الجهات: أعلى يمين أسفل يسار */
+  padding: 20px 40px;         /* أعلى-أسفل: 20px | يمين-يسار: 40px */
+  padding: 10px 20px 30px;    /* أعلى: 10 | يمين-يسار: 20 | أسفل: 30 */
+  padding: 10px 20px 30px 40px; /* أعلى يمين أسفل يسار (عكس عقارب الساعة) */
+
+  /* الطريقة التفصيلية */
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.3</span><h3>الحدود (Border)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.box {
+  /* الصيغة المختصرة: السماكة - النوع - اللون */
+  border: 2px solid #1A3C5E;
+  border: 1px dashed #E8A020;
+  border: 3px dotted #CC0000;
+
+  /* حد لجهة معينة فقط */
+  border-bottom: 3px solid #2E75B6;
+  border-right: 4px solid #E8A020;
+
+  /* تفصيلي */
+  border-width: 2px;
+  border-style: solid;   /* solid, dashed, dotted, double, groove, none */
+  border-color: #1A3C5E;
+
+  /* تدوير الزوايا */
+  border-radius: 8px;      /* زوايا دائرية بسيطة */
+  border-radius: 50%;      /* دائرة كاملة (يجب أن يكون width = height) */
+  border-radius: 10px 20px 30px 40px; /* كل زاوية على حدة */
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.4</span><h3>الهامش (Margin)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.box {
+  /* نفس صيغ padding */
+  margin: 20px;
+  margin: 20px auto;       /* توسيط أفقي! auto يُوزّع تلقائياً */
+  margin: 0 auto;          /* إلغاء الهامش العمودي + توسيط أفقي */
+
+  margin-top: 30px;
+  margin-right: 0;
+  margin-bottom: 30px;
+  margin-left: 0;
+
+  /* قيمة سالبة — تسحب العنصر للخارج */
+  margin-top: -10px;
+}
+
+/* ⚠️ تداخل الهوامش (Margin Collapse) */
+/* إذا عنصران متتاليان لهما margin-bottom وmargin-top */
+/* يتداخل الهامشان ويُطبَّق الأكبر فقط (لا يُجمعان) */
+h2 { margin-bottom: 30px; }
+p  { margin-top: 20px; }
+/* المسافة الفعلية بينهما = 30px (الأكبر) وليس 50px */</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.5</span><h3>box-sizing: أهم خاصية في CSS!</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* المشكلة: افتراضياً الـ width لا يشمل padding وborder */
+.box-default {
+  width: 300px;
+  padding: 20px;
+  border: 2px solid black;
+  /* العرض الفعلي = 300 + 20 + 20 + 2 + 2 = 344px ❌ */
+}
+
+/* الحل: box-sizing: border-box */
+.box-fixed {
+  box-sizing: border-box;
+  width: 300px;
+  padding: 20px;
+  border: 2px solid black;
+  /* العرض الفعلي = 300px تماماً ✅ */
+}
+
+/* الحل العالمي — أفضل ممارسة في كل مشروع */
+* {
+  box-sizing: border-box;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.6</span><h3>Block vs Inline vs Inline-block</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>نوع العرض</th><th>الخصائص والأمثلة</th></tr></thead><tbody><tr><td>display: block</td><td>يأخذ السطر كاملاً | يقبل width وheight | أمثلة: div, p, h1, ul, section</td></tr><tr><td>display: inline</td><td>يأخذ المساحة التي يحتاجها فقط | لا يقبل width وheight | أمثلة: span, a, strong, em</td></tr><tr><td>display: inline-block</td><td>يبقى في السطر + يقبل width وheight | مزيج من الاثنين | مفيد للأزرار</td></tr><tr><td>display: none</td><td>يُخفي العنصر تماماً ويحذف مساحته من الصفحة</td></tr><tr><td>visibility: hidden</td><td>يُخفي العنصر لكن يُبقي المساحة محجوزة</td></tr></tbody></table></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* تحويل display */
+a {
+  display: block;          /* رابط يأخذ السطر كاملاً */
+  padding: 10px 20px;
+  background-color: #2E75B6;
+  color: white;
+}
+
+li {
+  display: inline-block;   /* عناصر قائمة أفقية */
+  margin-right: 10px;
+}
+
+.hidden {
+  display: none;           /* إخفاء كامل */
+}
+
+.invisible {
+  visibility: hidden;      /* إخفاء مع الحفاظ على المساحة */
+}</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">⚙️</span><h2>الجزء السابع: خصائص CSS مهمة إضافية</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">7.1</span><h3>الخلفية (Background)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.hero {
+  /* لون خلفية */
+  background-color: #1A3C5E;
+
+  /* صورة خلفية */
+  background-image: url("hero.jpg");
+  background-size: cover;      /* تغطية كاملة */
+  background-position: center; /* توسيط */
+  background-repeat: no-repeat;/* بدون تكرار */
+  background-attachment: fixed;/* خلفية ثابتة عند التمرير */
+
+  /* الصيغة المختصرة */
+  background: url("hero.jpg") center/cover no-repeat #1A3C5E;
+
+  /* تدرج خطي */
+  background: linear-gradient(to right, #1A3C5E, #2E75B6);
+
+  /* تدرج دائري */
+  background: radial-gradient(circle, #2E75B6, #1A3C5E);
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">7.2</span><h3>الظلال (Shadows)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* ظل الصندوق */
+.card {
+  /* x  y  blur  color */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  /* ظل متعدد */
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.1),
+    0 8px 24px rgba(0,0,0,0.15);
+
+  /* ظل داخلي (inset) */
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* ظل النص */
+h1 {
+  /* x  y  blur  color */
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+
+  /* ظل توهج */
+  text-shadow: 0 0 10px rgba(46, 117, 182, 0.8);
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">7.3</span><h3>Overflow والتمرير</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.container {
+  height: 200px;
+  overflow: hidden;   /* إخفاء المحتوى الزائد */
+  overflow: scroll;   /* إظهار شريط تمرير دائماً */
+  overflow: auto;     /* شريط تمرير عند الحاجة فقط ✅ */
+  overflow: visible;  /* الافتراضي — المحتوى يخرج خارج الحدود */
+
+  overflow-x: auto;   /* تمرير أفقي فقط */
+  overflow-y: auto;   /* تمرير رأسي فقط */
+}
+
+/* نص مقطوع بـ ... */
+.truncated-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">7.4</span><h3>الموضع (Position) — مقدمة</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>القيمة</th><th>السلوك</th></tr></thead><tbody><tr><td>position: static</td><td>الافتراضي — يتبع تدفق الصفحة الطبيعي</td></tr><tr><td>position: relative</td><td>يتحرك نسبة إلى موضعه الأصلي — يبقى في التدفق</td></tr><tr><td>position: absolute</td><td>يتحرك نسبة إلى الأب المُحدَّد — يخرج من التدفق</td></tr><tr><td>position: fixed</td><td>يثبت في موضع محدد من الشاشة — لا يتأثر بالتمرير</td></tr><tr><td>position: sticky</td><td>يسلك سلوك relative حتى يصل لحد التمرير فيصبح fixed</td></tr></tbody></table></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* شريط تنقل ثابت في أعلى الصفحة */
+nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;  /* يظهر فوق كل شيء */
+  background-color: #1A3C5E;
+}
+
+/* عنصر يتحرك بسيطاً من مكانه */
+.shifted {
+  position: relative;
+  top: 10px;
+  right: 20px;
+}
+
+/* شارة فوق العنصر */
+.card {
+  position: relative;  /* مرجع للعنصر المطلق */
+}
+.badge {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background-color: #CC0000;
+  color: white;
+  border-radius: 50%;
+}</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء الثامن: المشروع التطبيقي — تنسيق البطاقة الشخصية</h2></div><div class="project-box"><p class="blk-para">سنأخذ صفحة HTML من الجلسة الأولى ونحوّلها إلى صفحة مُنسَّقة احترافية باستخدام CSS خارجي.</p><div class="subsection"><div class="sub-head"><h3>ملف index.html</h3></div><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="html-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="ar" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;بطاقتي التعريفية&lt;/title&gt;
+  &lt;link rel="preconnect" href="https://fonts.googleapis.com" /&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&amp;display=swap" rel="stylesheet" /&gt;
+  &lt;link rel="stylesheet" href="style.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;header class="site-header"&gt;
+    &lt;nav class="main-nav"&gt;
+      &lt;a href="#about"&gt;من أنا&lt;/a&gt;
+      &lt;a href="#skills"&gt;المهارات&lt;/a&gt;
+      &lt;a href="#contact"&gt;تواصل&lt;/a&gt;
+    &lt;/nav&gt;
+  &lt;/header&gt;
+
+  &lt;main&gt;
+
+    &lt;section id="about" class="profile-card"&gt;
+      &lt;img src="https://via.placeholder.com/150" alt="صورتي" class="avatar" /&gt;
+      &lt;h1 class="profile-name"&gt;أحمد محمد&lt;/h1&gt;
+      &lt;p class="profile-title"&gt;مطوّر Front-End&lt;/p&gt;
+      &lt;p class="profile-bio"&gt;
+        متحمس لتعلم تطوير الويب بشغف. أسعى لبناء مواقع جميلة وسريعة.
+      &lt;/p&gt;
+    &lt;/section&gt;
+
+    &lt;section id="skills" class="section-block"&gt;
+      &lt;h2&gt;مهاراتي التقنية&lt;/h2&gt;
+      &lt;ul class="skills-list"&gt;
+        &lt;li&gt;HTML5&lt;/li&gt;
+        &lt;li&gt;CSS3&lt;/li&gt;
+        &lt;li&gt;JavaScript&lt;/li&gt;
+        &lt;li&gt;React&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/section&gt;
+
+    &lt;section id="contact" class="section-block"&gt;
+      &lt;h2&gt;تواصل معي&lt;/h2&gt;
+      &lt;p&gt;&lt;a href="mailto:ahmed@example.com" class="contact-link"&gt;📧 البريد الإلكتروني&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a href="https://github.com" class="contact-link" target="_blank"&gt;💻 GitHub&lt;/a&gt;&lt;/p&gt;
+    &lt;/section&gt;
+
+  &lt;/main&gt;
+
+  &lt;footer class="site-footer"&gt;
+    &lt;p&gt;© 2025 أحمد محمد — Front-End Student&lt;/p&gt;
+  &lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div></div><div class="subsection"><div class="sub-head"><h3>ملف style.css</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* ══ إعادة ضبط عامة ══ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Cairo", sans-serif;
+  background-color: #F0F6FF;
+  color: #1A1A2E;
+  line-height: 1.8;
+  direction: rtl;
+}
+
+/* ══ Header والتنقل ══ */
+.site-header {
+  background: linear-gradient(135deg, #1A3C5E, #2E75B6);
+  padding: 0 40px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.main-nav {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 16px 0;
+}
+
+.main-nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.main-nav a:hover {
+  background-color: rgba(255,255,255,0.2);
+}
+
+/* ══ بطاقة البروفايل ══ */
+.profile-card {
+  max-width: 600px;
+  margin: 50px auto;
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+}
+
+.avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 4px solid #2E75B6;
+  margin-bottom: 20px;
+}
+
+.profile-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1A3C5E;
+  margin-bottom: 6px;
+}
+
+.profile-title {
+  font-size: 16px;
+  color: #2E75B6;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.profile-bio {
+  font-size: 15px;
+  color: #5A6A7A;
+  line-height: 2;
+}
+
+/* ══ أقسام المحتوى ══ */
+.section-block {
+  max-width: 600px;
+  margin: 30px auto;
+  background: white;
+  border-radius: 16px;
+  padding: 30px 40px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.section-block h2 {
+  font-size: 22px;
+  color: #1A3C5E;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 3px solid #E8A020;
+}
+
+/* ══ قائمة المهارات ══ */
+.skills-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skills-list li {
+  background-color: #EBF3FB;
+  color: #1A3C5E;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.skills-list li:hover {
+  background-color: #2E75B6;
+  color: white;
+}
+
+/* ══ روابط التواصل ══ */
+.contact-link {
+  display: inline-block;
+  color: #2E75B6;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 8px 0;
+  transition: color 0.3s ease;
+}
+
+.contact-link:hover {
+  color: #E8A020;
+}
+
+/* ══ Footer ══ */
+.site-footer {
+  text-align: center;
+  padding: 24px;
+  color: #5A6A7A;
+  font-size: 14px;
+  margin-top: 40px;
+  border-top: 1px solid #D0E4F5;
+}</code></pre>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء التاسع: تمارين الجلسة الثالثة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — المحددات<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">أنشئ ملف CSS وطبّق التنسيقات التالية:</p><ul class="mini-list"><li>اجعل جميع عناوين h2 باللون الأزرق الداكن مع خط سفلي برتقالي</li><li>اجعل العنصر ذو class="box" له خلفية رمادية فاتحة وحدود دائرية وظل</li><li>اجعل الروابط داخل nav بيضاء وعند hover تصبح برتقالية</li><li>اجعل أول li في كل قائمة غامق الخط ولون مختلف</li><li>اجعل صفوف الجدول المزدوجة لها خلفية زرقاء فاتحة</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — Box Model<span class="ex-time">20 دقيقة</span></h4><p class="blk-para">أنشئ صفحة تحتوي على 4 بطاقات (cards) منسّقة:</p><ul class="mini-list"><li>كل بطاقة: عرض 220px، padding داخلي 20px، border-radius 12px</li><li>ظل خفيف: box-shadow: 0 4px 12px rgba(0,0,0,0.1)</li><li>البطاقات تظهر بجانب بعضها (display: inline-block)</li><li>عند hover: تغيير لون الخلفية واستخدام transition لتأثير سلس</li><li>حوّل الصفحة كلها لاستخدام box-sizing: border-box</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — Typography وألوان<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ صفحة مقالة بلون وتنسيق احترافي:</p><ul class="mini-list"><li>استيراد خط Cairo من Google Fonts</li><li>عنوان رئيسي h1: 36px, وزن 700, لون متدرج (text-shadow)</li><li>خلفية الصفحة: تدرج linear-gradient فاتح</li><li>فقرات: font-size 16px, line-height 1.9, لون رمادي داكن</li><li>الكلمات المهمة strong: لون مختلف مع خلفية ملونة شفافة</li><li>أول حرف في الفقرة ::first-letter كبير وملون</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الثالثة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>ما هو CSS</td><td>Cascading Style Sheets — بنية القاعدة: selector { property: value; }</td></tr><tr><td>طرق الربط</td><td>Inline (ضعيف) | Internal &lt;style&gt; | External .css (المُفضَّل) ✅</td></tr><tr><td>المحددات</td><td>Element, Class, ID, Universal, Grouping, Descendant, Child, Sibling</td></tr><tr><td>Pseudo-classes</td><td>:hover, :focus, :active, :first-child, :nth-child, :valid, :invalid</td></tr><tr><td>Pseudo-elements</td><td>::before, ::after, ::first-letter, ::first-line, ::selection</td></tr><tr><td>الأولوية</td><td>!important &gt; Inline &gt; ID(100) &gt; Class(10) &gt; Element(1)</td></tr><tr><td>الألوان</td><td>Keyword | HEX | RGB | RGBA | HSL | HSLA | linear-gradient</td></tr><tr><td>الخطوط</td><td>font-family, font-size, font-weight, line-height, Google Fonts</td></tr><tr><td>النصوص</td><td>text-align, text-decoration, text-transform, letter-spacing</td></tr><tr><td>Box Model</td><td>Content → Padding → Border → Margin | box-sizing: border-box</td></tr><tr><td>Display</td><td>block | inline | inline-block | none | visibility: hidden</td></tr><tr><td>Position</td><td>static | relative | absolute | fixed | sticky | z-index</td></tr><tr><td>الخلفية</td><td>background-color, image, size, position, repeat, gradient</td></tr><tr><td>الظلال</td><td>box-shadow | text-shadow | transition للتأثيرات السلسة</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الرابعة: CSS Flexbox</span><p>✦ ما هو Flexbox ومتى نستخدمه</p><p>✦ المحور الرئيسي والمحور العرضي</p><p>✦ خصائص الحاوية: flex-direction, justify-content, align-items, flex-wrap</p><p>✦ خصائص العناصر: flex-grow, flex-shrink, flex-basis, align-self</p><p>✦ أنماط شائعة: التوسيط الكامل، الشريط الجانبي، شبكة البطاقات</p><p>✦ مشروع: بناء تخطيط صفحة كاملة باستخدام Flexbox</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الثالثة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الرابعة</span><p>يُرسَل مجلد المشروع (HTML + CSS) مضغوطاً عبر القناة أو البريد الإلكتروني</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: تنسيق موقع الشركة من الجلسة الثانية</h3></div><p class="blk-para">أضف ملفات CSS خارجية للصفحات الثلاث التي أنشأتها في الجلسة الثانية (index, about, contact) مع تطبيق كل ما تعلمناه في هذه الجلسة:</p><h4 class="mini-head">◆ 📁 هيكل المشروع المطلوب:</h4><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>company-website/
+├── index.html
+├── about.html
+├── contact.html
+└── css/
+    └── style.css   (ملف CSS مشترك للصفحات الثلاث)</code></pre>
+</div><h4 class="mini-head">◆ 🎨 متطلبات التنسيق:</h4><ul class="mini-list"><li>استيراد خط عربي من Google Fonts (Cairo أو Tajawal أو Almarai)</li><li>تطبيق * { box-sizing: border-box; } و CSS reset</li><li>تنسيق header ثابت (fixed أو sticky) مع خلفية متدرجة وظل</li><li>تنسيق nav مع روابط لها hover effect</li><li>تنسيق الجداول: tr:nth-child(even)، thead بلون مختلف، borders</li><li>تنسيق النموذج: inputs وselect وtextarea وlabels</li><li>حالات focus لحقول الإدخال مع outline ملون</li><li>تنسيق footer بلون خلفية مختلف</li><li>استخدام متغيرات CSS الجذرية لتنظيم الألوان (اختياري للمتقدمين)</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>ملف CSS خارجي صحيح ومرتبط بالصفحات الثلاث</td><td>20 نقطة</td></tr><tr><td>استخدام المحددات بأنواعها المختلفة</td><td>20 نقطة</td></tr><tr><td>Box Model صحيح (padding, margin, border)</td><td>20 نقطة</td></tr><tr><td>Typography وألوان احترافية</td><td>20 نقطة</td></tr><tr><td>hover effects وتأثيرات التفاعل</td><td>10 نقاط</td></tr><tr><td>الإبداع في التصميم والتنظيم</td><td>10 نقاط</td></tr></tbody></table></div></div></div>
+<div class="closing-banner">
+  <h3>🎨 أحسنت! صفحاتك الآن تبدو احترافية بالكامل 🎨</h3>
+  
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 03</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-02.html"><small>السابق</small><span>الجلسة 02 — HTML المتقدم</span></a>
+        <a class="nav-arrow next is-disabled" href="#"><small>التالي</small><span>الجلسة 04 — قريباً 🔒</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

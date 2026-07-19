@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 08 — المشروع الشامل | Front-End Master Book</title>
+<meta name="description" content="المشروع الشامل — موقع متكامل من الصفر • مراجعة HTML &amp; CSS • GitHub Pages">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="08">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>مسار HTML &amp; CSS · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🏗️</span>
+    <div>
+      <div class="session-tag">Session 08 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة الثامنة — المشروع الشامل</h1>
+  <p class="tags-line">موقع متكامل من الصفر • مراجعة HTML &amp; CSS • GitHub Pages</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة الثامنة</h2>
+  <ul class="goal-list"><li>بناء موقع ويب متكامل من الصفر بصفحات متعددة مترابطة</li><li>تطبيق جميع مفاهيم HTML وCSS في مشروع حقيقي واحد</li><li>تنظيم ملفات المشروع باحترافية وفق معايير الصناعة</li><li>كتابة CSS نظيف وقابل للصيانة باستخدام CSS Variables ومنهجية BEM</li><li>تطبيق تقنيات CSS المتقدمة: Custom Scrollbar، Print CSS، Selection Styles</li><li>استخدام Git وGitHub لحفظ المشروع ونشره على الإنترنت</li><li>نشر الموقع مجاناً على GitHub Pages ليكون متاحاً للعالم</li><li>مراجعة كود الطلاب وتطبيق قائمة تحقق الجودة (Quality Checklist)</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 ملخص رحلة HTML &amp; CSS — جلسات 1 إلى 7</span><p>✔ الجلسة 1: HTML الأساسي — هيكل الصفحة، عناوين، نصوص، روابط، صور، قوائم</p><p>✔ الجلسة 2: HTML المتقدم — جداول، نماذج، Semantic HTML، وسائط</p><p>✔ الجلسة 3: CSS الأساسي — محددات، ألوان، خطوط، Box Model, Display</p><p>✔ الجلسة 4: CSS Flexbox — تخطيط أحادي البُعد، توسيط، توزيع</p><p>✔ الجلسة 5: CSS Grid — تخطيط ثنائي الأبعاد، مناطق، auto-fit</p><p>✔ الجلسة 6: Responsive Design — Mobile-First، Media Queries، CSS Variables</p><p>✔ الجلسة 7: CSS Animations — Transitions، Transforms، Keyframes</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">📐</span><h2>الجزء الأول: تخطيط المشروع الاحترافي</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>المشروع: موقع شركة تقنية خيالية</h3></div><p class="blk-para">سنبني معاً موقع «TechCraft Agency» — شركة تطوير برمجيات خيالية — موقع كامل من 4 صفحات مترابطة يُدمج كل ما تعلمناه.</p><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>تفصيل المشروع</th><th>القيمة</th></tr></thead><tbody><tr><td>اسم الشركة</td><td>TechCraft Agency — وكالة التقنية المبدعة</td></tr><tr><td>عدد الصفحات</td><td>4 صفحات HTML مترابطة</td></tr><tr><td>الملفات</td><td>HTML (4) + CSS (1 مشترك) + images/</td></tr><tr><td>المميزات</td><td>متجاوب + CSS Variables + Animations + Grid + Flex</td></tr><tr><td>النشر</td><td>GitHub Pages — رابط حقيقي على الإنترنت</td></tr><tr><td>الهدف النهائي</td><td>مشروع جاهز للمحفظة (Portfolio)</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>هيكل الصفحات الأربع</h3></div><div class="callout info"><span class="callout-title">🗂️ صفحات الموقع الأربع</span><p>  1. index.html    — الصفحة الرئيسية (Home)</p><p>     Hero + Stats + Services + Testimonials + CTA</p><p>  2. about.html    — من نحن (About)</p><p>     قصة الشركة + الفريق + القيم + الإنجازات</p><p>  3. services.html — خدماتنا (Services)</p><p>     بطاقات الخدمات + الأسعار + FAQ</p><p>  4. contact.html  — تواصل معنا (Contact)</p><p>     نموذج التواصل + خريطة + معلومات الاتصال</p></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>هيكل ملفات المشروع الاحترافي</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>techcraft-agency/
+├── index.html
+├── about.html
+├── services.html
+├── contact.html
+│
+├── css/
+│   └── style.css          ← ملف CSS مشترك لجميع الصفحات
+│
+├── images/
+│   ├── logo.svg
+│   ├── hero-bg.jpg
+│   ├── team/
+│   │   ├── member-1.jpg
+│   │   └── member-2.jpg
+│   └── services/
+│       └── web-dev.jpg
+│
+├── js/
+│   └── main.js            ← JavaScript بسيط (Hamburger + Scroll)
+│
+└── README.md              ← وصف المشروع لـ GitHub</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.4</span><h3>Wireframe الصفحة الرئيسية</h3></div><div class="callout info"><span class="callout-title">✏️ Wireframe — index.html</span><pre class="ascii-diagram">  ┌─────────────────────────────────────────────┐
+  │  🔷 NAVBAR: Logo | Home About Services Contact [CTA]│
+  ├─────────────────────────────────────────────┤
+  │  HERO: عنوان ضخم + وصف + زران + إحصائيات  │
+  │        [صورة تعبيرية أو بطاقات عائمة]       │
+  ├─────────────────────────────────────────────┤
+  │  STATS: [+500 مشروع] [+100 عميل] [8 سنوات] │
+  ├──────────────┬──────────────────────────────┤
+  │  SERVICES    │  بطاقات 3 أعمدة (auto-fit)  │
+  │  (عنوان)     │  كل بطاقة: أيقونة+عنوان+نص  │
+  ├──────────────┴──────────────────────────────┤
+  │  TESTIMONIALS: آراء العملاء — Slider-style  │
+  ├─────────────────────────────────────────────┤
+  │  CTA BANNER: نص تشجيعي + زر كبير           │
+  ├─────────────────────────────────────────────┤
+  │  FOOTER: 3 أعمدة Grid + حقوق النشر         │
+  └─────────────────────────────────────────────┘</pre></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎨</span><h2>الجزء الثاني: تقنيات CSS متقدمة للمشروع</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>منهجية BEM لتسمية الـ Classes</h3></div><p class="blk-para">BEM (Block Element Modifier) هي منهجية تسمية classes بشكل منظم تُسهّل الفهم والصيانة في المشاريع الكبيرة:</p><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* BEM: Block__Element--Modifier */
+
+/* Block — المكوّن الرئيسي */
+.card { }
+
+/* Element — جزء من Block — يُفصل بـ __ */
+.card__title { }
+.card__image { }
+.card__body  { }
+.card__footer { }
+.card__btn   { }
+
+/* Modifier — حالة مختلفة — يُفصل بـ -- */
+.card--featured  { }   /* بطاقة مميزة */
+.card--dark      { }   /* بطاقة داكنة */
+.card--disabled  { }   /* بطاقة معطلة */
+
+/* مثال كامل */
+.service-card { }
+.service-card__icon { }
+.service-card__title { }
+.service-card__desc { }
+.service-card__price { }
+.service-card--popular { border: 2px solid var(--accent); }
+
+/* في HTML */
+/* &lt;article class="service-card service-card--popular"&gt; */
+/*   &lt;div class="service-card__icon"&gt;🌐&lt;/div&gt;          */
+/*   &lt;h3 class="service-card__title"&gt;تطوير الويب&lt;/h3&gt; */
+/* &lt;/article&gt;                                          */</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>Custom Scrollbar (شريط التمرير المخصص)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* تخصيص شريط التمرير — يعمل على Chrome وEdge */
+
+/* المسار الكامل */
+::-webkit-scrollbar {
+  width: 10px;           /* عرض الشريط العمودي */
+  height: 10px;          /* ارتفاع الشريط الأفقي */
+}
+
+/* الخلفية (المسار) */
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+  border-radius: 10px;
+}
+
+/* المقبض المتحرك */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--color-secondary), var(--color-primary));
+  border-radius: 10px;
+  border: 2px solid var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+/* للمتصفحات الحديثة (Firefox) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-secondary) var(--color-bg);
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.3</span><h3>Selection Styles (تنسيق النص المحدد)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* تنسيق النص عند تظليله بالماوس */
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+}
+
+/* لـ Firefox */
+::-moz-selection {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+}
+
+/* تنسيق مختلف للعناوين */
+h1::selection, h2::selection {
+  background-color: var(--color-primary);
+  color: white;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.4</span><h3>Print CSS (تنسيق الطباعة)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* CSS خاص بالطباعة — يُطبَّق عند طباعة الصفحة */
+@media print {
+  /* إخفاء العناصر غير الضرورية */
+  .navbar,
+  .hamburger,
+  .hero-btns,
+  .footer-links,
+  .cta-section,
+  .cookie-banner {
+    display: none !important;
+  }
+
+  /* ضبط الألوان للطباعة */
+  body {
+    background: white;
+    color: black;
+    font-size: 12pt;
+  }
+
+  /* إظهار الروابط كاملة */
+  a[href]::after {
+    content: ' (' attr(href) ')';
+    font-size: 10pt;
+    color: #555;
+  }
+
+  /* تجنب قطع العناصر بين الصفحات */
+  .card, article, section {
+    page-break-inside: avoid;
+  }
+
+  /* هوامش الطباعة */
+  @page {
+    margin: 2cm;
+  }
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.5</span><h3>Utility Classes (فئات المساعدة)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* ══ Utility Classes — فئات صغيرة قابلة لإعادة الاستخدام ══ */
+
+/* النصوص */
+.text-center  { text-align: center; }
+.text-right   { text-align: right; }
+.text-left    { text-align: left; }
+.text-primary { color: var(--color-primary); }
+.text-accent  { color: var(--color-accent); }
+.text-muted   { color: var(--color-muted); }
+.text-sm      { font-size: var(--font-size-sm); }
+.text-lg      { font-size: var(--font-size-lg); }
+.text-bold    { font-weight: 700; }
+
+/* المسافات */
+.mt-1 { margin-top: var(--space-4); }
+.mt-2 { margin-top: var(--space-8); }
+.mb-1 { margin-bottom: var(--space-4); }
+.mb-2 { margin-bottom: var(--space-8); }
+.mx-auto { margin-inline: auto; }
+
+/* العرض */
+.w-full   { width: 100%; }
+.w-half   { width: 50%; }
+.max-w-sm { max-width: 400px; }
+.max-w-md { max-width: 700px; }
+.max-w-lg { max-width: 1000px; }
+
+/* الإخفاء */
+.hidden       { display: none; }
+.sr-only {      /* مرئي لقارئات الشاشة فقط */
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); border: 0;
+}
+
+/* التأثيرات */
+.rounded    { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-full { border-radius: 9999px; }
+.shadow     { box-shadow: var(--shadow-md); }
+.shadow-lg  { box-shadow: var(--shadow-lg); }
+.transition { transition: all var(--transition-normal); }</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.6</span><h3>Smooth Scroll والـ Scroll Behavior</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* Smooth Scroll — تمرير ناعم عند النقر على الروابط الداخلية */
+html {
+  scroll-behavior: smooth;
+}
+
+/* تعويض ارتفاع الـ navbar الثابت عند الانتقال للأقسام */
+[id] {
+  scroll-margin-top: 80px; /* = ارتفاع الـ navbar */
+}
+
+/* Scroll Snap — تثبيت التمرير عند كل قسم */
+.scroll-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+
+.scroll-section {
+  height: 100vh;
+  scroll-snap-align: start;
+}
+
+/* احترام تفضيلات التمرير */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء الثالث: كود المشروع الكامل</h2></div><div class="project-box"><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>ملف CSS Variables الشامل (بداية style.css)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* ════════════════════════════════════════════════ */
+/* TechCraft Agency — style.css                    */
+/* ════════════════════════════════════════════════ */
+
+/* ══ 1. CSS Variables ══ */
+:root {
+  /* الألوان */
+  --color-primary:    #1A3C5E;
+  --color-secondary:  #2E75B6;
+  --color-accent:     #E8A020;
+  --color-bg:         #F0F6FF;
+  --color-bg-dark:    #1A1A2E;
+  --color-text:       #1A1A2E;
+  --color-text-light: #5A6A7A;
+  --color-white:      #FFFFFF;
+  --color-border:     #D0E4F5;
+
+  /* الخطوط */
+  --font-primary: 'Cairo', sans-serif;
+  --font-size-xs:   0.75rem;
+  --font-size-sm:   0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg:   1.125rem;
+  --font-size-xl:   1.25rem;
+  --font-size-2xl:  1.5rem;
+  --font-size-3xl:  1.875rem;
+  --font-size-4xl:  2.25rem;
+  --font-size-hero: clamp(2rem, 5vw, 3.5rem);
+
+  /* المسافات */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* الزوايا */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-full: 9999px;
+
+  /* الظلال */
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md:  0 4px 20px rgba(0,0,0,0.10);
+  --shadow-lg:  0 8px 40px rgba(0,0,0,0.15);
+  --shadow-xl:  0 16px 60px rgba(0,0,0,0.20);
+
+  /* الانتقالات */
+  --transition-fast:   0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow:   0.6s ease;
+
+  /* الحاوية */
+  --container-max: 1280px;
+  --container-pad: var(--space-8);
+
+  /* الـ Navbar */
+  --navbar-height: 72px;
+}
+
+/* ══ 2. Reset &amp; Base ══ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 100%;
+  scroll-behavior: smooth;
+}
+
+[id] { scroll-margin-top: var(--navbar-height); }
+
+body {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.75;
+  direction: rtl;
+}
+
+img, video { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+ul, ol { list-style: none; }
+
+/* ══ 3. Custom Scrollbar ══ */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--color-secondary), var(--color-primary));
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
+* { scrollbar-width: thin; scrollbar-color: var(--color-secondary) var(--color-bg); }
+
+/* ══ 4. Selection ══ */
+::selection { background: var(--color-accent); color: var(--color-primary); }</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>كود index.html الكامل</h3></div><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="html-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="ar" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;meta name="description" content="TechCraft Agency — وكالة تطوير الويب الاحترافية" /&gt;
+  &lt;title&gt;TechCraft Agency — الرئيسية&lt;/title&gt;
+  &lt;link rel="preconnect" href="https://fonts.googleapis.com" /&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&amp;display=swap" rel="stylesheet" /&gt;
+  &lt;link rel="stylesheet" href="css/style.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- ══ Navbar ══ --&gt;
+  &lt;header class="navbar" id="navbar"&gt;
+    &lt;div class="container navbar__inner"&gt;
+      &lt;a href="index.html" class="navbar__logo"&gt;
+        🔷 TechCraft
+      &lt;/a&gt;
+      &lt;button class="navbar__hamburger" id="hamburger" aria-label="القائمة" aria-expanded="false"&gt;
+        &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;nav class="navbar__links" id="nav-links"&gt;
+        &lt;a href="index.html" class="navbar__link navbar__link--active"&gt;الرئيسية&lt;/a&gt;
+        &lt;a href="about.html" class="navbar__link"&gt;من نحن&lt;/a&gt;
+        &lt;a href="services.html" class="navbar__link"&gt;خدماتنا&lt;/a&gt;
+        &lt;a href="contact.html" class="navbar__link"&gt;تواصل&lt;/a&gt;
+        &lt;a href="contact.html" class="btn btn--primary btn--sm"&gt;ابدأ مشروعك&lt;/a&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;!-- ══ Hero ══ --&gt;
+  &lt;section class="hero" id="home"&gt;
+    &lt;div class="container hero__inner"&gt;
+      &lt;div class="hero__content"&gt;
+        &lt;span class="hero__badge animate-fade-in"&gt;🚀 وكالة تقنية رائدة&lt;/span&gt;
+        &lt;h1 class="hero__title animate-fade-in-up"&gt;
+          نبني المستقبل الرقمي
+          &lt;span class="text-accent"&gt;لعملك&lt;/span&gt;
+        &lt;/h1&gt;
+        &lt;p class="hero__subtitle animate-fade-in-up" style="animation-delay:0.2s"&gt;
+          تطوير مواقع ويب وتطبيقات احترافية بأحدث التقنيات
+          تُساعدك على النمو وتحقيق أهدافك الرقمية
+        &lt;/p&gt;
+        &lt;div class="hero__actions animate-fade-in-up" style="animation-delay:0.4s"&gt;
+          &lt;a href="services.html" class="btn btn--primary btn--lg btn--glow"&gt;استعرض خدماتنا&lt;/a&gt;
+          &lt;a href="contact.html" class="btn btn--outline btn--lg"&gt;تواصل معنا&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="hero__visual animate-fade-in-right"&gt;
+        &lt;div class="tech-grid"&gt;
+          &lt;div class="tech-card" style="--delay:0s"&gt;HTML5 🌐&lt;/div&gt;
+          &lt;div class="tech-card" style="--delay:0.3s"&gt;CSS3 🎨&lt;/div&gt;
+          &lt;div class="tech-card" style="--delay:0.6s"&gt;React ⚛️&lt;/div&gt;
+          &lt;div class="tech-card" style="--delay:0.9s"&gt;Node.js 🟩&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ══ Stats ══ --&gt;
+  &lt;section class="stats"&gt;
+    &lt;div class="container stats__grid"&gt;
+      &lt;div class="stats__item"&gt;
+        &lt;span class="stats__number"&gt;+500&lt;/span&gt;
+        &lt;span class="stats__label"&gt;مشروع مكتمل&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="stats__item"&gt;
+        &lt;span class="stats__number"&gt;+100&lt;/span&gt;
+        &lt;span class="stats__label"&gt;عميل راضٍ&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="stats__item"&gt;
+        &lt;span class="stats__number"&gt;8&lt;/span&gt;
+        &lt;span class="stats__label"&gt;سنوات خبرة&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="stats__item"&gt;
+        &lt;span class="stats__number"&gt;24/7&lt;/span&gt;
+        &lt;span class="stats__label"&gt;دعم فني&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ══ Services Preview ══ --&gt;
+  &lt;section class="services-preview section" id="services"&gt;
+    &lt;div class="container"&gt;
+      &lt;div class="section__header"&gt;
+        &lt;h2 class="section__title"&gt;خدماتنا الرئيسية&lt;/h2&gt;
+        &lt;p class="section__subtitle"&gt;نقدم حلولاً رقمية شاملة تلبي احتياجات عملك&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="services-grid"&gt;
+        &lt;article class="service-card"&gt;
+          &lt;div class="service-card__icon"&gt;🌐&lt;/div&gt;
+          &lt;h3 class="service-card__title"&gt;تطوير المواقع&lt;/h3&gt;
+          &lt;p class="service-card__desc"&gt;مواقع ويب احترافية متجاوبة وسريعة&lt;/p&gt;
+          &lt;a href="services.html#web" class="service-card__link"&gt;اعرف المزيد ←&lt;/a&gt;
+        &lt;/article&gt;
+        &lt;article class="service-card"&gt;
+          &lt;div class="service-card__icon"&gt;📱&lt;/div&gt;
+          &lt;h3 class="service-card__title"&gt;تطبيقات الجوال&lt;/h3&gt;
+          &lt;p class="service-card__desc"&gt;تطبيقات iOS وAndroid بتجربة مستخدم مميزة&lt;/p&gt;
+          &lt;a href="services.html#mobile" class="service-card__link"&gt;اعرف المزيد ←&lt;/a&gt;
+        &lt;/article&gt;
+        &lt;article class="service-card"&gt;
+          &lt;div class="service-card__icon"&gt;🎨&lt;/div&gt;
+          &lt;h3 class="service-card__title"&gt;تصميم UI/UX&lt;/h3&gt;
+          &lt;p class="service-card__desc"&gt;تصميمات جذابة تُحسّن تجربة المستخدم&lt;/p&gt;
+          &lt;a href="services.html#design" class="service-card__link"&gt;اعرف المزيد ←&lt;/a&gt;
+        &lt;/article&gt;
+        &lt;article class="service-card"&gt;
+          &lt;div class="service-card__icon"&gt;🤖&lt;/div&gt;
+          &lt;h3 class="service-card__title"&gt;حلول الذكاء الاصطناعي&lt;/h3&gt;
+          &lt;p class="service-card__desc"&gt;دمج تقنيات AI في مشاريعك الرقمية&lt;/p&gt;
+          &lt;a href="services.html#ai" class="service-card__link"&gt;اعرف المزيد ←&lt;/a&gt;
+        &lt;/article&gt;
+        &lt;article class="service-card"&gt;
+          &lt;div class="service-card__icon"&gt;🛒&lt;/div&gt;
+          &lt;h3 class="service-card__title"&gt;المتاجر الإلكترونية&lt;/h3&gt;
+          &lt;p class="service-card__desc"&gt;متاجر احترافية مع بوابات دفع آمنة&lt;/p&gt;
+          &lt;a href="services.html#ecom" class="service-card__link"&gt;اعرف المزيد ←&lt;/a&gt;
+        &lt;/article&gt;
+        &lt;article class="service-card"&gt;
+          &lt;div class="service-card__icon"&gt;📊&lt;/div&gt;
+          &lt;h3 class="service-card__title"&gt;لوحات التحكم&lt;/h3&gt;
+          &lt;p class="service-card__desc"&gt;أنظمة إدارة وتحليل بيانات متطورة&lt;/p&gt;
+          &lt;a href="services.html#dashboard" class="service-card__link"&gt;اعرف المزيد ←&lt;/a&gt;
+        &lt;/article&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ══ CTA ══ --&gt;
+  &lt;section class="cta-banner"&gt;
+    &lt;div class="container cta-banner__inner"&gt;
+      &lt;h2 class="cta-banner__title"&gt;جاهز لتحويل فكرتك إلى واقع؟&lt;/h2&gt;
+      &lt;p class="cta-banner__text"&gt;فريقنا جاهز لمساعدتك في بناء مشروعك الرقمي&lt;/p&gt;
+      &lt;a href="contact.html" class="btn btn--white btn--lg"&gt;ابدأ الآن 🚀&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ══ Footer ══ --&gt;
+  &lt;footer class="footer"&gt;
+    &lt;div class="container footer__grid"&gt;
+      &lt;div class="footer__brand"&gt;
+        &lt;h3 class="footer__logo"&gt;🔷 TechCraft Agency&lt;/h3&gt;
+        &lt;p class="footer__tagline"&gt;نبني المستقبل الرقمي لعملك بأحدث التقنيات&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="footer__col"&gt;
+        &lt;h4 class="footer__heading"&gt;صفحات الموقع&lt;/h4&gt;
+        &lt;ul class="footer__links"&gt;
+          &lt;li&gt;&lt;a href="index.html"&gt;الرئيسية&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="about.html"&gt;من نحن&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="services.html"&gt;خدماتنا&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="contact.html"&gt;تواصل معنا&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div class="footer__col"&gt;
+        &lt;h4 class="footer__heading"&gt;تواصل معنا&lt;/h4&gt;
+        &lt;ul class="footer__links footer__contact"&gt;
+          &lt;li&gt;&lt;a href="mailto:info@techcraft.com"&gt;📧 info@techcraft.com&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="tel:+966501234567"&gt;📞 +966 50 123 4567&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;📍 الرياض، المملكة العربية السعودية&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="footer__bottom container"&gt;
+      &lt;p&gt;© 2025 TechCraft Agency — جميع الحقوق محفوظة&lt;/p&gt;
+      &lt;p&gt;Developed with ❤️ by Eng. Hasan Hajjar&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/footer&gt;
+
+  &lt;script src="js/main.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.3</span><h3>JavaScript بسيط (js/main.js)</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* ═══════════════════════════════════════════ */
+/* TechCraft Agency — main.js                 */
+/* ═══════════════════════════════════════════ */
+
+/* ══ 1. Hamburger Menu ══ */
+const hamburger = document.getElementById('hamburger');
+const navLinks  = document.getElementById('nav-links');
+
+hamburger.addEventListener('click', () =&gt; {
+  const isOpen = navLinks.classList.toggle('navbar__links--open');
+  hamburger.setAttribute('aria-expanded', isOpen);
+  hamburger.classList.toggle('navbar__hamburger--open');
+});
+
+/* إغلاق القائمة عند النقر على رابط */
+navLinks.querySelectorAll('.navbar__link').forEach(link =&gt; {
+  link.addEventListener('click', () =&gt; {
+    navLinks.classList.remove('navbar__links--open');
+    hamburger.setAttribute('aria-expanded', false);
+    hamburger.classList.remove('navbar__hamburger--open');
+  });
+});
+
+/* ══ 2. Navbar تغيير عند التمرير ══ */
+const navbar = document.getElementById('navbar');
+
+window.addEventListener('scroll', () =&gt; {
+  if (window.scrollY &gt; 50) {
+    navbar.classList.add('navbar--scrolled');
+  } else {
+    navbar.classList.remove('navbar--scrolled');
+  }
+});
+
+/* ══ 3. Animate on Scroll — Intersection Observer ══ */
+const animateElements = document.querySelectorAll('[data-animate]');
+
+const observer = new IntersectionObserver((entries) =&gt; {
+  entries.forEach(entry =&gt; {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target); /* يوقف المراقبة بعد الظهور */
+    }
+  });
+}, { threshold: 0.15 });
+
+animateElements.forEach(el =&gt; observer.observe(el));
+
+/* ══ 4. Active Navbar Link ══ */
+const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+document.querySelectorAll('.navbar__link').forEach(link =&gt; {
+  const href = link.getAttribute('href');
+  if (href === currentPage || (currentPage === '' &amp;&amp; href === 'index.html')) {
+    link.classList.add('navbar__link--active');
+  }
+});</code></pre>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🚀</span><h2>الجزء الرابع: Git وGitHub ونشر الموقع</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>ما هو Git وGitHub؟</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المصطلح</th><th>الشرح المبسط</th></tr></thead><tbody><tr><td>Git</td><td>نظام تتبع التغييرات في الكود — مثل آلة الزمن لمشاريعك</td></tr><tr><td>GitHub</td><td>منصة لاستضافة مشاريع Git على الإنترنت — مجاني وشائع</td></tr><tr><td>Repository (Repo)</td><td>مجلد المشروع المتتبع بـ Git</td></tr><tr><td>Commit</td><td>لقطة محفوظة من حالة الكود في لحظة معينة</td></tr><tr><td>Push</td><td>رفع التغييرات من جهازك إلى GitHub</td></tr><tr><td>Pull</td><td>تنزيل التغييرات من GitHub لجهازك</td></tr><tr><td>GitHub Pages</td><td>خدمة استضافة مجانية من GitHub لمواقع HTML/CSS/JS</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>تثبيت Git وإعداده</h3></div><p class="blk-para">اتبع الخطوات التالية لتثبيت Git وإعداده:</p><ul class="mini-list"><li>افتح: https://git-scm.com وحمّل Git لنظام التشغيل</li><li>ثبّته بالإعدادات الافتراضية (Next, Next, Install)</li><li>افتح Terminal في VS Code: Ctrl + `</li><li>أعدّ اسمك وبريدك (مرة واحدة فقط):</li></ul><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code># إعداد هويتك في Git
+git config --global user.name "Hasan Hajjar"
+git config --global user.email "hasan@example.com"
+
+# التحقق من الإعداد
+git config --list</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.3</span><h3>إنشاء Repository على GitHub</h3></div><p class="blk-para">اتبع هذه الخطوات لإنشاء Repository جديد على GitHub:</p><ul class="mini-list"><li>سجّل دخولك على https://github.com</li><li>اضغط على زر '+' في أعلى الصفحة ثم 'New repository'</li><li>أدخل اسم المشروع: techcraft-agency</li><li>اختر: Public (ليكون مرئياً للعامة)</li><li>لا تُضف README الآن (سنضيفه من الكود)</li><li>اضغط 'Create repository'</li><li>انسخ الرابط: https://github.com/username/techcraft-agency.git</li></ul></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.4</span><h3>ربط المشروع بـ GitHub ورفعه</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code># في Terminal داخل مجلد المشروع
+
+# الخطوة 1: تهيئة Git في المشروع
+git init
+
+# الخطوة 2: إضافة جميع الملفات للتتبع
+git add .
+
+# الخطوة 3: حفظ أول نسخة (Commit)
+git commit -m "🚀 Initial commit: TechCraft Agency website"
+
+# الخطوة 4: تسمية الفرع الرئيسي
+git branch -M main
+
+# الخطوة 5: ربط بـ GitHub (غيّر username بحسابك)
+git remote add origin https://github.com/username/techcraft-agency.git
+
+# الخطوة 6: رفع الكود لـ GitHub
+git push -u origin main
+
+# ✅ الآن كودك على GitHub!</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.5</span><h3>تفعيل GitHub Pages (النشر المجاني)</h3></div><p class="blk-para">بعد رفع الكود، اتبع هذه الخطوات لنشر الموقع على الإنترنت:</p><ul class="mini-list"><li>افتح صفحة الـ Repository على GitHub</li><li>اضغط على تبويب 'Settings' (الإعدادات)</li><li>من القائمة الجانبية اختر 'Pages'</li><li>تحت 'Source' اختر: Branch: main → /root</li><li>اضغط 'Save'</li><li>انتظر دقيقتين ثم اضغط Refresh</li><li>ستجد رابط موقعك: https://username.github.io/techcraft-agency</li></ul><div class="callout success"><span class="callout-title">🎉 مبروك! موقعك الآن على الإنترنت</span><pre class="ascii-diagram">الرابط: https://username.github.io/techcraft-agency
+أي تعديل تُجريه وترفعه بـ git push سيظهر على الموقع خلال دقيقة
+يمكنك مشاركة هذا الرابط في ملفك الشخصي (CV) ومحفظتك
+GitHub Pages مجاني تماماً ويدعم HTML + CSS + JavaScript</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.6</span><h3>أوامر Git الأساسية للعمل اليومي</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code># ══ أوامر Git اليومية ══
+
+# رؤية حالة الملفات المعدّلة
+git status
+
+# إضافة ملف محدد للتتبع
+git add index.html
+
+# إضافة جميع التغييرات
+git add .
+
+# حفظ تعديل جديد
+git commit -m "✨ تحديث قسم Hero"
+
+# رفع التعديلات لـ GitHub
+git push
+
+# رؤية سجل الـ commits
+git log --oneline
+
+# التراجع عن آخر تعديل (قبل commit)
+git checkout -- .
+
+# رؤية الفروق (ما تغيّر)
+git diff
+
+# ══ رسائل Commit الاحترافية ══
+# git commit -m "type: description"
+#
+# git commit -m "feat: إضافة صفحة من نحن"
+# git commit -m "fix: إصلاح responsive navbar"
+# git commit -m "style: تحسين تنسيق البطاقات"
+# git commit -m "docs: تحديث README"
+# git commit -m "perf: تحسين أداء الصور"</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">✅</span><h2>الجزء الخامس: قائمة تحقق جودة المشروع</h2></div><p class="blk-para">قبل تسليم أو نشر أي مشروع، تحقق من هذه القائمة بالكامل:</p><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>تحقق HTML</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>البند</th><th>كيفية التحقق</th></tr></thead><tbody><tr><td>DOCTYPE وlang وdir صحيحة</td><td>راجع أول 3 سطور في كل ملف HTML</td></tr><tr><td>viewport meta tag موجود</td><td>ابحث عن &lt;meta name='viewport'&gt; في كل صفحة</td></tr><tr><td>title مناسب لكل صفحة</td><td>تحقق أن كل صفحة لها &lt;title&gt; مختلف ووصفي</td></tr><tr><td>جميع الصور لها alt وصفي</td><td>ابحث عن &lt;img&gt; وتأكد من وجود alt في كل منها</td></tr><tr><td>الروابط الداخلية تعمل</td><td>اضغط على كل رابط وتأكد من وصوله للصفحة الصحيحة</td></tr><tr><td>الروابط الخارجية بـ target='_blank'</td><td>الروابط الخارجية يجب أن تفتح في تبويب جديد</td></tr><tr><td>النماذج لها labels مرتبطة</td><td>كل input له label مرتبط بـ for وid</td></tr><tr><td>HTML صحيح بلا أخطاء</td><td>اختبر على: validator.w3.org</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>تحقق CSS</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>البند</th><th>كيفية التحقق</th></tr></thead><tbody><tr><td>box-sizing: border-box مطبّق عالمياً</td><td>ابحث عن * { box-sizing: border-box; }</td></tr><tr><td>CSS Variables في :root</td><td>تأكد من وجود نظام متغيرات منظم</td></tr><tr><td>لا قيم مكررة خارج المتغيرات</td><td>الألوان والمسافات كلها من var()</td></tr><tr><td>Mobile-First مطبّق</td><td>الكود الافتراضي للجوال وmin-width للكبار</td></tr><tr><td>جميع الصور max-width: 100%</td><td>ابحث في CSS عن img { max-width: 100%; }</td></tr><tr><td>transition على التأثيرات التفاعلية</td><td>كل :hover له transition مناسب</td></tr><tr><td>prefers-reduced-motion مُضمَّن</td><td>وجود @media (prefers-reduced-motion)</td></tr><tr><td>CSS صحيح بلا أخطاء</td><td>اختبر على: jigsaw.w3.org/css-validator</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.3</span><h3>تحقق التجاوب والأداء</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>البند</th><th>كيفية التحقق</th></tr></thead><tbody><tr><td>iPhone SE (375px) يعمل بشكل صحيح</td><td>Chrome DevTools → iPhone SE</td></tr><tr><td>iPad (768px) يعمل بشكل صحيح</td><td>Chrome DevTools → iPad</td></tr><tr><td>Desktop (1280px) يعمل بشكل صحيح</td><td>نافذة المتصفح الكاملة</td></tr><tr><td>Hamburger Menu يعمل على الجوال</td><td>جرّب فتح وإغلاق القائمة</td></tr><tr><td>الصور لا تتمدد خارج حاويتها</td><td>تحقق بصرياً على الجوال</td></tr><tr><td>النص مقروء على جميع الأجهزة</td><td>حجم الخط لا يقل عن 14px</td></tr><tr><td>Lighthouse Score جيد</td><td>Chrome DevTools → Lighthouse → اختبر</td></tr><tr><td>لا روابط معطلة (404)</td><td>تحقق من جميع الروابط الداخلية والخارجية</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.4</span><h3>تحقق إمكانية الوصول (Accessibility)</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>البند</th><th>السبب</th></tr></thead><tbody><tr><td>التباين بين النص والخلفية كافٍ</td><td>للمستخدمين ضعاف البصر (نسبة 4.5:1 على الأقل)</td></tr><tr><td>focus مرئي على العناصر التفاعلية</td><td>للمستخدمين الذين يتصفحون بلوحة المفاتيح</td></tr><tr><td>aria-label على الأزرار بدون نص</td><td>قارئات الشاشة تحتاج وصفاً للأزرار الأيقونية</td></tr><tr><td>البنية الهرمية للعناوين صحيحة</td><td>h1 ← h2 ← h3 بدون تخطي مستويات</td></tr><tr><td>lang وdir صحيحان في &lt;html&gt;</td><td>قارئات الشاشة تحتاجهما للنطق الصحيح</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">📖</span><h2>الجزء السادس: مراجعة شاملة لـ HTML &amp; CSS</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>أسئلة المراجعة السريعة</h3></div><p class="blk-para">أجب على هذه الأسئلة من الذاكرة — إذا لم تعرف إجابة فارجع للجلسة المعنية:</p><h4 class="mini-head">◆ HTML (جلسات 1-2)</h4><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>السؤال</th><th>الإجابة الصحيحة</th></tr></thead><tbody><tr><td>ما الفرق بين &lt;strong&gt; و&lt;b&gt;؟</td><td>&lt;strong&gt; دلالي ومهم لـ SEO | &lt;b&gt; تنسيقي فقط</td></tr><tr><td>متى تستخدم &lt;section&gt; ومتى &lt;div&gt;؟</td><td>&lt;section&gt; لمحتوى له عنوان وسياق | &lt;div&gt; للتقسيم البصري فقط</td></tr><tr><td>ما الفرق بين method=get وpost؟</td><td>get: البيانات في URL | post: مخفية (للكلمات السرية والبيانات الحساسة)</td></tr><tr><td>لماذا alt في الصور ضروري؟</td><td>قارئات الشاشة، عند فشل التحميل، لـ SEO</td></tr><tr><td>ما الفرق بين &lt;article&gt; و&lt;section&gt;؟</td><td>&lt;article&gt; مستقل يمكن نشره وحده | &lt;section&gt; جزء من الصفحة</td></tr></tbody></table></div><h4 class="mini-head">◆ CSS الأساسيات (جلسة 3)</h4><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>السؤال</th><th>الإجابة الصحيحة</th></tr></thead><tbody><tr><td>ما أولوية: class مقابل ID؟</td><td>ID (100 نقطة) &gt; Class (10 نقاط)</td></tr><tr><td>ما الفرق بين display:none وvisibility:hidden؟</td><td>none: يحذف المساحة | hidden: يخفي لكن يبقي المساحة</td></tr><tr><td>ما box-sizing: border-box؟</td><td>يجعل padding وborder ضمن العرض المحدد — لا يزيد عليه</td></tr><tr><td>ما الفرق بين margin وpadding؟</td><td>margin: خارج الحدود | padding: داخل الحدود</td></tr><tr><td>متى نستخدم !important؟</td><td>نادراً جداً — عند الاستثناء الإجباري فقط</td></tr></tbody></table></div><h4 class="mini-head">◆ Flexbox وGrid (جلسات 4-5)</h4><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>السؤال</th><th>الإجابة الصحيحة</th></tr></thead><tbody><tr><td>متى Flexbox ومتى Grid؟</td><td>Flex: صف أو عمود واحد | Grid: صفوف وأعمدة معاً</td></tr><tr><td>ما justify-content: space-between؟</td><td>توزيع العناصر بمسافات متساوية بينها (لا مسافة عند الأطراف)</td></tr><tr><td>ما الوصفة الذهبية لشبكة متجاوبة؟</td><td>repeat(auto-fit, minmax(280px, 1fr))</td></tr><tr><td>ما flex: 1؟</td><td>flex: 1 1 0% — العنصر ينمو وينكمش بحرية</td></tr><tr><td>كيف تجعل عنصراً يمتد كل أعمدة Grid؟</td><td>grid-column: 1 / -1</td></tr></tbody></table></div><h4 class="mini-head">◆ Responsive وAnimations (جلسات 6-7)</h4><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>السؤال</th><th>الإجابة الصحيحة</th></tr></thead><tbody><tr><td>ما Mobile-First؟</td><td>نكتب CSS الجوال أولاً ونستخدم min-width لإضافة التعديلات</td></tr><tr><td>ما الفرق بين rem وem؟</td><td>rem: نسبة للجذر (html) | em: نسبة للأب المباشر</td></tr><tr><td>ما clamp(min, preferred, max)؟</td><td>قيمة مرنة بحدود دنيا وعليا — تُغني عن Media Queries</td></tr><tr><td>ما الخصائص الآمنة للتحريك؟</td><td>transform وopacity فقط — لأنهما يستخدمان GPU</td></tr><tr><td>ما animation-fill-mode: forwards؟</td><td>العنصر يبقى عند آخر حالة في الـ keyframes بعد انتهاء الأنيميشن</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء السابع: تمارين الجلسة الثامنة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — إتمام الصفحات الثلاث<span class="ex-time">60 دقيقة</span></h4><p class="blk-para">استكمل بناء صفحات about.html وservices.html وcontact.html للمشروع:</p><h4 class="mini-head">◆ about.html — من نحن:</h4><ul class="mini-list"><li>قسم Hero صغير: عنوان + وصف مختصر بخلفية متدرجة</li><li>قسم القصة: صورة + نص تعريفي (Flexbox: صورة يميناً، نص يساراً)</li><li>قسم الفريق: 4 بطاقات بـ Grid auto-fit — صورة + اسم + مسمى + أيقونات تواصل</li><li>قسم القيم: 3 أيقونات مع عنوان ووصف (Flexbox)</li><li>شريط إنجازات: 4 أرقام بارزة بتأثير عداد (CSS فقط)</li></ul><h4 class="mini-head">◆ services.html — الخدمات:</h4><ul class="mini-list"><li>6 بطاقات خدمات مفصّلة بـ Grid auto-fit (اسم + وصف + ميزات + سعر)</li><li>البطاقة الأولى مميزة (--popular): border أصفر + شارة 'الأكثر طلباً'</li><li>قسم الأسعار: 3 خطط سعرية بتصميم احترافي</li><li>قسم FAQ: 5 أسئلة شائعة بـ &lt;details&gt; و&lt;summary&gt; مع animation</li></ul><h4 class="mini-head">◆ contact.html — تواصل:</h4><ul class="mini-list"><li>نموذج تواصل كامل: الاسم، البريد، الهاتف، الموضوع، الرسالة — بتصميم CSS احترافي</li><li>validation CSS: :valid و:invalid مع ألوان مختلفة</li><li>معلومات الاتصال: عنوان، بريد، هاتف، ساعات العمل</li><li>خريطة مدمجة بـ &lt;iframe&gt;</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — رفع المشروع على GitHub Pages<span class="ex-time">20 دقيقة</span></h4><ul class="mini-list"><li>أنشئ حساباً على GitHub إن لم يكن لديك</li><li>ثبّت Git وأعدّ اسمك وبريدك</li><li>أنشئ Repository جديداً باسم portfolio-project</li><li>ارفع جميع ملفات المشروع</li><li>فعّل GitHub Pages</li><li>شارك رابط موقعك مع المدرب</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الثامنة وإنجازات مرحلة HTML &amp; CSS</h2></div><div class="subsection"><div class="sub-head"><h3>ملخص الجلسة الثامنة</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>ما تعلمناه</th></tr></thead><tbody><tr><td>تخطيط المشروع</td><td>Wireframe، هيكل الملفات، تنظيم CSS احترافي</td></tr><tr><td>منهجية BEM</td><td>Block__Element--Modifier لتسمية classes منظمة</td></tr><tr><td>Custom Scrollbar</td><td>::-webkit-scrollbar وscrollbar-width للمتصفحات الحديثة</td></tr><tr><td>Selection Styles</td><td>::selection لتخصيص مظهر النص المظلل</td></tr><tr><td>Print CSS</td><td>@media print لتحسين مظهر الطباعة</td></tr><tr><td>Utility Classes</td><td>فئات مساعدة صغيرة قابلة لإعادة الاستخدام</td></tr><tr><td>Smooth Scroll</td><td>scroll-behavior: smooth + scroll-margin-top</td></tr><tr><td>Git أساسيات</td><td>init, add, commit, push, status, log</td></tr><tr><td>GitHub Pages</td><td>نشر مجاني للمواقع الثابتة من GitHub</td></tr><tr><td>قائمة تحقق الجودة</td><td>HTML + CSS + Responsive + Accessibility</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><h3>🏆 ما أنجزته في مرحلة HTML &amp; CSS (جلسات 1-8)</h3></div><div class="callout success"><span class="callout-title">🎓 شهادة إتمام مرحلة HTML &amp; CSS</span><p>✅ بناء صفحات HTML كاملة باستخدام Semantic HTML الصحيح</p><p>✅ إنشاء نماذج تفاعلية مع HTML5 Validation</p><p>✅ كتابة CSS نظيف ومنظم باستخدام CSS Variables</p><p>✅ بناء تخطيطات مرنة بـ Flexbox وCSS Grid</p><p>✅ تصميم مواقع متجاوبة بمنهجية Mobile-First</p><p>✅ إضافة تأثيرات بصرية احترافية بـ CSS Animations</p><p>✅ نشر موقع حقيقي على الإنترنت بـ GitHub Pages</p><p>✅ استخدام Git لإدارة الكود بشكل احترافي</p></div></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة — بداية مرحلة JavaScript...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة التاسعة: مقدمة إلى JavaScript</span><p>✦ ما هو JavaScript ودوره في تطوير الويب</p><p>✦ المتغيرات: var, let, const والفروق بينها</p><p>✦ أنواع البيانات: String, Number, Boolean, Array, Object</p><p>✦ العمليات والمقارنات والمنطق</p><p>✦ التحكم في التدفق: if/else, switch, الحلقات</p><p>✦ الدوال (Functions): التعريف والاستدعاء والـ Arrow Functions</p><p>✦ مشروع: أول برنامج JavaScript تفاعلي</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الثامنة (المشروع النهائي لمرحلة CSS)</h2></div><div class="callout info"><span class="callout-title">📅 الواجب الختامي لمرحلة HTML &amp; CSS — يُسلَّم قبل الجلسة التاسعة</span><p>هذا الواجب هو مشروع تخرّجك من مرحلة HTML وCSS</p><p>يُرسَل رابط GitHub Pages + رابط Repository عبر القناة</p><p>سيُراجع المدرب كل مشروع ويقدم ملاحظات تفصيلية</p></div><div class="subsection"><div class="sub-head"><h3>المشروع: موقع Portfolio شخصي كامل</h3></div><p class="blk-para">أنشئ موقع Portfolio شخصي احترافي كامل تستخدمه في سيرتك الذاتية وطلبات العمل:</p><h4 class="mini-head">◆ 📄 الصفحات المطلوبة (4 صفحات):</h4><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الصفحة</th><th>المحتوى المطلوب</th></tr></thead><tbody><tr><td>index.html — الرئيسية</td><td>Hero مع اسمك + تخصصك + مهاراتك الرئيسية + روابط للصفحات</td></tr><tr><td>about.html — عني</td><td>صورتك + قصتك + مهاراتك بشرائط تقدم + شهاداتك</td></tr><tr><td>projects.html — مشاريعي</td><td>بطاقات مشاريع Grid: كل بطاقة = صورة + اسم + وصف + رابط</td></tr><tr><td>contact.html — تواصل</td><td>نموذج + بريد + هاتف + أيقونات LinkedIn وGitHub وTwitter</td></tr></tbody></table></div><h4 class="mini-head">◆ 🎯 المتطلبات التقنية الإلزامية:</h4><ul class="mini-list"><li>CSS Variables كاملة في :root (ألوان + خطوط + مسافات + ظلال + انتقالات)</li><li>Mobile-First مع 3 breakpoints: 480px, 768px, 1024px</li><li>Hamburger Menu يعمل بـ JavaScript بسيط</li><li>CSS Grid للتخطيط الرئيسي وبطاقات المشاريع</li><li>Flexbox للعناصر الداخلية والـ Navbar</li><li>Keyframe Animations: fadeInUp عند التحميل + شرائط تقدم متحركة</li><li>Transitions على جميع العناصر التفاعلية (hover effects)</li><li>Google Fonts عربي (Cairo أو Tajawal)</li><li>Custom Scrollbar وSelection styles</li><li>Print CSS يُخفي الـ Navbar والـ buttons</li><li>نشر الموقع على GitHub Pages</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>اكتمال الصفحات الأربع ومحتواها</td><td>20 نقطة</td></tr><tr><td>CSS Variables وتنظيم الكود (BEM)</td><td>15 نقطة</td></tr><tr><td>Mobile-First والتجاوب الكامل</td><td>20 نقطة</td></tr><tr><td>Grid وFlexbox صحيحان</td><td>15 نقطة</td></tr><tr><td>Animations وTransitions احترافية</td><td>15 نقطة</td></tr><tr><td>GitHub Pages يعمل ورابط صحيح</td><td>10 نقاط</td></tr><tr><td>الإبداع وجودة التصميم</td><td>5 نقاط</td></tr></tbody></table></div></div></div>
+<div class="closing-banner">
+  <h3>🏆 أحسنت! أنت الآن مطوّر HTML &amp; CSS احترافي 🏆</h3>
+  <p>موقعك الأول على الإنترنت — هذه لحظة لن تنساها!</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 08</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-07.html"><small>السابق</small><span>الجلسة 07 — CSS Animations</span></a>
+        <a class="nav-arrow next is-disabled" href="#"><small>التالي</small><span>هذه آخر جلسة حالياً</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 05 — CSS Grid | Front-End Master Book</title>
+<meta name="description" content="CSS Grid — الشبكة ثنائية الأبعاد • الأعمدة والصفوف • المناطق • التصميم الاحترافي">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="05">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>مسار HTML &amp; CSS · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🗂️</span>
+    <div>
+      <div class="session-tag">Session 05 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة الخامسة — CSS Grid</h1>
+  <p class="tags-line">الشبكة ثنائية الأبعاد • الأعمدة والصفوف • المناطق • التصميم الاحترافي</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة الخامسة</h2>
+  <ul class="goal-list"><li>فهم الفرق الجوهري بين CSS Grid وFlexbox واختيار المناسب لكل حالة</li><li>تعريف الأعمدة والصفوف باستخدام grid-template-columns وgrid-template-rows</li><li>استخدام وحدة fr (fraction) لتوزيع المساحة بمرونة</li><li>استخدام دالة repeat() وminmax() لبناء شبكات ديناميكية</li><li>وضع العناصر في مواضع محددة باستخدام grid-column وgrid-row</li><li>تمديد العناصر عبر أعمدة وصفوف متعددة باستخدام span</li><li>تسمية مناطق الشبكة وبناء تخطيطات مرئية بـ grid-template-areas</li><li>التحكم في المسافات والمحاذاة داخل الشبكة</li><li>بناء تخطيط صفحة ويب احترافي كامل باستخدام CSS Grid</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة الرابعة (Flexbox)</span><p>✔ display: flex يُفعّل Flexbox على الحاوية</p><p>✔ justify-content: توزيع على المحور الرئيسي</p><p>✔ align-items: محاذاة على المحور العرضي</p><p>✔ flex-wrap: wrap — التفاف العناصر</p><p>✔ flex: grow shrink basis — الاختصار الشامل</p><p>✔ gap: المسافة بين العناصر</p><p>✔ align-self وorder: تحكم فردي في كل عنصر</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">⚖️</span><h2>الجزء الأول: Grid مقابل Flexbox — متى تستخدم أيهما؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>الفرق الجوهري</h3></div><p class="blk-para">Flexbox أحادي البُعد: يُنظّم العناصر في صف واحد أو عمود واحد فقط. CSS Grid ثنائي الأبعاد: يُنظّم العناصر في صفوف وأعمدة في آنٍ واحد.</p><div class="callout info"><span class="callout-title">📐 Flexbox (1D) مقابل CSS Grid (2D)</span><pre class="ascii-diagram">  Flexbox — صف واحد:
+  ┌────────────────────────────────────────┐
+  │  [Item 1]  [Item 2]  [Item 3]  [Item 4]│  ← محور واحد فقط
+  └────────────────────────────────────────┘
+  CSS Grid — صفوف وأعمدة معاً:
+  ┌──────────┬──────────┬──────────┐
+  │  Item 1  │  Item 2  │  Item 3  │  ← صف 1
+  ├──────────┼──────────┼──────────┤
+  │  Item 4  │  Item 5  │  Item 6  │  ← صف 2
+  ├──────────┼──────────┼──────────┤
+  │  Item 7  │  Item 8  │  Item 9  │  ← صف 3
+  └──────────┴──────────┴──────────┘
+     عمود 1    عمود 2    عمود 3</pre></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>استخدم Flexbox عندما:</th><th>استخدم CSS Grid عندما:</th></tr></thead><tbody><tr><td>ترتيب عناصر في صف أو عمود واحد</td><td>بناء تخطيط الصفحة الكاملة</td></tr><tr><td>شريط التنقل (Navbar)</td><td>شبكة بطاقات بصفوف وأعمدة</td></tr><tr><td>مجموعة أزرار أو أيقونات</td><td>تخطيط Dashboard معقد</td></tr><tr><td>توسيط عنصر داخل حاوية</td><td>تخطيط مجلة أو صحيفة</td></tr><tr><td>توزيع مرن في اتجاه واحد</td><td>موضع دقيق لكل عنصر في شبكة</td></tr><tr><td>عناصر بأحجام غير منتظمة</td><td>تمديد عنصر عبر عدة أعمدة وصفوف</td></tr></tbody></table></div><div class="callout tip"><span class="callout-title">💡 الحقيقة: Flexbox وGrid ليسا متنافسَين!</span><p>المشاريع الاحترافية تستخدم الاثنين معاً:</p><p>✦ Grid للتخطيط الخارجي للصفحة: header, sidebar, main, footer</p><p>✦ Flexbox للتخطيط الداخلي لكل قسم: محاذاة العناصر داخل header مثلاً</p><p>✦ القاعدة: Grid من الخارج للداخل، Flexbox من الداخل للخارج</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🧱</span><h2>الجزء الثاني: أساسيات CSS Grid</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>تفعيل Grid وتعريف الأعمدة</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* تفعيل Grid على الحاوية */
+.container {
+  display: grid;
+}
+
+/* تعريف 3 أعمدة بعرض ثابت */
+.container {
+  display: grid;
+  grid-template-columns: 200px 200px 200px;
+}
+
+/* تعريف 3 أعمدة بنسب مئوية */
+.container {
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+}
+
+/* تعريف صفوف بارتفاع محدد */
+.container {
+  display: grid;
+  grid-template-columns: 200px 200px 200px;
+  grid-template-rows: 100px 200px 100px;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>وحدة fr (Fraction)</h3></div><p class="blk-para">وحدة fr تعني «كسر من المساحة المتبقية» — هي الوحدة الأقوى والأكثر استخداماً في Grid:</p><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* 3 أعمدة بمساحة متساوية */
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  /* = كل عمود يأخذ ثلث المساحة المتاحة */
+}
+
+/* توزيع غير متساوٍ */
+.container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  /* sidebar | main | sidebar */
+  /* 25%    | 50%  | 25%     */
+}
+
+/* مزج بين ثابت ومرن */
+.container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  /* sidebar ثابت 280px | main يأخذ الباقي */
+}
+
+/* 3 أعمدة + footer يمتد لكل العرض */
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}</code></pre>
+</div><div class="callout info"><span class="callout-title">📏 توضيح وحدة fr</span><pre class="ascii-diagram">  grid-template-columns: 1fr 1fr 1fr
+  ┌──────────────┬──────────────┬──────────────┐
+  │     1fr      │     1fr      │     1fr      │
+  │   (33.3%)    │   (33.3%)    │   (33.3%)    │
+  └──────────────┴──────────────┴──────────────┘
+  grid-template-columns: 1fr 2fr 1fr
+  ┌──────────┬────────────────────┬──────────┐
+  │   1fr    │        2fr         │   1fr    │
+  │  (25%)   │       (50%)        │  (25%)   │
+  └──────────┴────────────────────┴──────────┘
+  grid-template-columns: 280px 1fr
+  ┌────────────┬──────────────────────────────┐
+  │   280px    │       1fr (الباقي كله)       │
+  │  (ثابت)   │          (مرن)               │
+  └────────────┴──────────────────────────────┘</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.3</span><h3>دالة repeat()</h3></div><p class="blk-para">repeat() تختصر تكرار نفس التعريف عدة مرات:</p><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* بدون repeat — مكرر */
+grid-template-columns: 1fr 1fr 1fr 1fr;
+
+/* مع repeat — أنيق ومختصر */
+grid-template-columns: repeat(4, 1fr);
+
+/* repeat بأعمدة مختلفة */
+grid-template-columns: repeat(3, 200px);
+/* = 200px 200px 200px */
+
+/* مزج repeat مع قيم ثابتة */
+grid-template-columns: 280px repeat(3, 1fr);
+/* = 280px 1fr 1fr 1fr */
+
+/* تعريف صفوف بـ repeat */
+grid-template-rows: repeat(4, 150px);
+
+/* repeat مع auto — الصف يتمدد حسب المحتوى */
+grid-template-rows: repeat(3, auto);</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.4</span><h3>دالة minmax()</h3></div><p class="blk-para">minmax() تحدد حداً أدنى وحداً أقصى لعرض العمود أو ارتفاع الصف — مفتاح التجاوب الحقيقي:</p><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* عمود لا يقل عن 200px ولا يزيد عن 1fr */
+grid-template-columns: repeat(3, minmax(200px, 1fr));
+
+/* الوصفة الذهبية لشبكة متجاوبة بدون Media Queries! */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+/* auto-fit: يضع أكبر عدد ممكن من الأعمدة */
+/* minmax(280px, 1fr): كل عمود بين 280px و1fr */
+/* النتيجة: تلقائياً 3 أعمدة → 2 → 1 حسب العرض */
+
+/* auto-fill vs auto-fit */
+/* auto-fill: يملأ بأعمدة فارغة إذا لزم الأمر */
+/* auto-fit: يُمدّد العناصر لملء المساحة الفارغة ✅ */
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));</code></pre>
+</div><div class="callout info"><span class="callout-title">⭐ الوصفة الذهبية — احفظها!</span><p>repeat(auto-fit, minmax(MIN, 1fr))</p><p>هذه الوصفة تُنشئ شبكة متجاوبة تلقائياً بدون أي Media Query!</p><p>عندما تضيق الشاشة: تنتقل من 3 أعمدة → 2 أعمدة → 1 عمود تلقائياً</p><p>استبدل MIN بأصغر عرض مناسب لبطاقاتك (مثال: 250px, 300px, 350px)</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">📍</span><h2>الجزء الثالث: وضع العناصر وتمديدها</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>خطوط الشبكة (Grid Lines)</h3></div><p class="blk-para">Grid تعمل على خطوط وهمية تُرقَّم تلقائياً. شبكة بـ 3 أعمدة لها 4 خطوط عمودية (1 إلى 4) وشبكة بـ 2 صف لها 3 خطوط أفقية (1 إلى 3):</p><div class="callout info"><span class="callout-title">🔢 أرقام خطوط الشبكة (Grid Lines)</span><pre class="ascii-diagram">       1        2        3        4     ← خطوط الأعمدة
+  1    ┌────────┬────────┬────────┐
+       │ [1,1]  │ [2,1]  │ [3,1]  │
+  2    ├────────┼────────┼────────┤
+       │ [1,2]  │ [2,2]  │ [3,2]  │
+  3    ├────────┼────────┼────────┤
+       │ [1,3]  │ [2,3]  │ [3,3]  │
+  4    └────────┴────────┴────────┘
+  ↑
+  خطوط الصفوف
+  [عمود, صف] — كل خلية بين خطين عموديين وخطين أفقيين</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>grid-column وgrid-row</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 150px);
+  gap: 16px;
+}
+
+/* وضع عنصر في عمود محدد */
+.item-a {
+  grid-column: 2;    /* يبدأ من الخط 2 (العمود الثاني) */
+  grid-row: 1;       /* في الصف الأول */
+}
+
+/* تمديد عنصر عبر أعمدة — من الخط 1 إلى الخط 3 */
+.item-header {
+  grid-column: 1 / 3;    /* يمتد من الخط 1 حتى الخط 3 (عمودان) */
+  grid-row: 1 / 2;       /* الصف الأول فقط */
+}
+
+/* تمديد عنصر بكلمة span */
+.item-wide {
+  grid-column: span 2;   /* يمتد بعرض عمودين */
+  grid-row: span 2;      /* يمتد بارتفاع صفين */
+}
+
+/* -1 تعني آخر خط (نهاية الشبكة) */
+.item-full-width {
+  grid-column: 1 / -1;   /* يمتد من أول خط لآخر خط = عرض كامل */
+}</code></pre>
+</div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* مثال عملي: تخطيط magazine */
+/*
+  ┌─────────────────────────────┐
+  │       Featured Article      │  ← يمتد 2 عمود + 2 صف
+  │         (2col × 2row)       │
+  ├──────────────┬──────────────┤
+  │   Article 2  │   Article 3  │  ← عمود × صف
+  └──────────────┴──────────────┘
+*/
+.magazine-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 200px);
+  gap: 20px;
+}
+
+.featured {
+  grid-column: 1 / -1;   /* عرض كامل */
+  grid-row: 1 / 3;       /* صفان */
+}
+
+.article-2 {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.article-3 {
+  grid-column: 2;
+  grid-row: 3;
+}</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🗺️</span><h2>الجزء الرابع: مناطق الشبكة (Grid Template Areas)</h2></div><p class="blk-para">grid-template-areas تُتيح تسمية مناطق الشبكة بأسماء وصفية وبناء التخطيط بشكل مرئي جداً — وكأنك ترسم تخطيط الصفحة مباشرة في CSS!</p><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>طريقة الاستخدام</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* الخطوة 1: تعريف مناطق الشبكة في الحاوية */
+.page {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: 70px 1fr 60px;
+  min-height: 100vh;
+  gap: 0;
+
+  grid-template-areas:
+    "header  header"
+    "sidebar main  "
+    "footer  footer";
+}
+
+/* الخطوة 2: تعيين كل عنصر لمنطقته */
+header  { grid-area: header;  }
+.sidebar { grid-area: sidebar; }
+main    { grid-area: main;    }
+footer  { grid-area: footer;  }</code></pre>
+</div><div class="callout info"><span class="callout-title">🗺️ تصور grid-template-areas</span><pre class="ascii-diagram">  grid-template-areas:
+    "header  header"    ← الصف 1: header يمتد عمودين
+    "sidebar main  "    ← الصف 2: sidebar | main
+    "footer  footer";   ← الصف 3: footer يمتد عمودين
+  النتيجة البصرية:
+  ┌──────────────────────────────────┐
+  │            header                │
+  ├──────────────┬───────────────────┤
+  │   sidebar    │       main        │
+  │              │                   │
+  ├──────────────┴───────────────────┤
+  │            footer                │
+  └──────────────────────────────────┘</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>مثال: تخطيط ثلاثة أعمدة مع header وfooter</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.page-3col {
+  display: grid;
+  grid-template-columns: 220px 1fr 220px;
+  grid-template-rows: 70px 1fr auto 60px;
+  min-height: 100vh;
+
+  grid-template-areas:
+    "header  header  header "
+    "sidebar main    aside  "
+    "sidebar content aside  "
+    "footer  footer  footer ";
+}
+
+header  { grid-area: header;  background: #1A3C5E; color: white; }
+.sidebar { grid-area: sidebar; background: #EBF3FB; }
+main    { grid-area: main;    padding: 30px; }
+.content { grid-area: content; padding: 30px; }
+aside   { grid-area: aside;   background: #F5EEFF; }
+footer  { grid-area: footer;  background: #1A1A2E; color: white; }</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.3</span><h3>الخلايا الفارغة بنقطة (.)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* النقطة . تعني خلية فارغة في الشبكة */
+.layout {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 150px);
+
+  grid-template-areas:
+    "header header header"
+    "main   main   .     "
+    "main   main   sidebar";
+}
+/* الخلية الفارغة لن يشغلها أي عنصر */</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">📐</span><h2>الجزء الخامس: المسافات والمحاذاة في Grid</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>المسافات (Gap)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  /* مسافة موحدة بين جميع الخلايا */
+  gap: 20px;
+
+  /* مسافة مختلفة: أفقية وعمودية */
+  gap: 16px 24px;    /* صفوف: 16px | أعمدة: 24px */
+
+  /* تفصيلي */
+  row-gap: 16px;
+  column-gap: 24px;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>محاذاة الشبكة كلها (justify-content &amp; align-content)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* محاذاة الشبكة كلها داخل الحاوية */
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 200px); /* أعمدة ثابتة تاركة مساحة */
+  width: 100%;
+
+  /* توزيع الشبكة أفقياً */
+  justify-content: center;        /* توسيط الشبكة */
+  justify-content: space-between; /* توزيع موزون */
+  justify-content: start;         /* الافتراضي */
+  justify-content: end;
+
+  /* توزيع الشبكة عمودياً */
+  align-content: center;
+  align-content: space-between;
+  align-content: start;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.3</span><h3>محاذاة العناصر داخل خلاياها</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* محاذاة جميع العناصر داخل خلاياها */
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  /* أفقياً داخل الخلية */
+  justify-items: start;    /* محاذاة يسار */
+  justify-items: end;      /* محاذاة يمين */
+  justify-items: center;   /* توسيط أفقي */
+  justify-items: stretch;  /* الافتراضي: يملأ الخلية */
+
+  /* عمودياً داخل الخلية */
+  align-items: start;    /* أعلى */
+  align-items: end;      /* أسفل */
+  align-items: center;   /* توسيط عمودي */
+  align-items: stretch;  /* الافتراضي */
+}
+
+/* محاذاة عنصر واحد بشكل مستقل */
+.special-item {
+  justify-self: center;   /* توسيط أفقي لهذا العنصر فقط */
+  align-self: end;        /* في أسفل خليته فقط */
+}
+
+/* توسيط عنصر كاملاً داخل خليته */
+.centered-item {
+  justify-self: center;
+  align-self: center;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.4</span><h3>جدول مرجع: place-content وplace-items وplace-self</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الاختصار</th><th>ما يُختصره</th></tr></thead><tbody><tr><td>place-content: center</td><td>align-content: center + justify-content: center</td></tr><tr><td>place-items: center</td><td>align-items: center + justify-items: center</td></tr><tr><td>place-self: center</td><td>align-self: center + justify-self: center</td></tr><tr><td>place-content: end start</td><td>align-content: end + justify-content: start</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">📋</span><h2>الجزء السادس: جدول مرجع شامل لـ CSS Grid</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>خصائص الحاوية (Container)</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الخاصية</th><th>القيم المتاحة</th><th>الوظيفة</th></tr></thead><tbody><tr><td>display</td><td>grid | inline-grid</td><td>تفعيل Grid</td></tr><tr><td>grid-template-columns</td><td>px | fr | % | repeat() | minmax()</td><td>تعريف الأعمدة</td></tr><tr><td>grid-template-rows</td><td>px | fr | auto | repeat()</td><td>تعريف الصفوف</td></tr><tr><td>grid-template-areas</td><td>أسماء المناطق في سلاسل نصية</td><td>تسمية مناطق التخطيط</td></tr><tr><td>grid-template</td><td>اختصار columns/rows/areas</td><td>الاختصار الشامل</td></tr><tr><td>gap / row-gap / column-gap</td><td>قيمة</td><td>المسافات بين الخلايا</td></tr><tr><td>justify-content</td><td>start|end|center|space-*</td><td>توزيع الشبكة أفقياً</td></tr><tr><td>align-content</td><td>start|end|center|space-*</td><td>توزيع الشبكة عمودياً</td></tr><tr><td>justify-items</td><td>start|end|center|stretch</td><td>محاذاة العناصر أفقياً</td></tr><tr><td>align-items</td><td>start|end|center|stretch</td><td>محاذاة العناصر عمودياً</td></tr><tr><td>grid-auto-columns</td><td>قيمة</td><td>حجم الأعمدة الضمنية التلقائية</td></tr><tr><td>grid-auto-rows</td><td>قيمة</td><td>حجم الصفوف الضمنية التلقائية</td></tr><tr><td>grid-auto-flow</td><td>row|column|dense</td><td>اتجاه وضع العناصر التلقائي</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.2</span><h3>خصائص العناصر (Items)</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الخاصية</th><th>القيم</th><th>الوظيفة</th></tr></thead><tbody><tr><td>grid-column</td><td>start / end | span n</td><td>تحديد أعمدة العنصر</td></tr><tr><td>grid-row</td><td>start / end | span n</td><td>تحديد صفوف العنصر</td></tr><tr><td>grid-area</td><td>اسم منطقة | row-start/col-start/row-end/col-end</td><td>تعيين لمنطقة أو تحديد موضع</td></tr><tr><td>justify-self</td><td>start|end|center|stretch</td><td>محاذاة أفقية فردية</td></tr><tr><td>align-self</td><td>start|end|center|stretch</td><td>محاذاة عمودية فردية</td></tr><tr><td>place-self</td><td>align justify</td><td>اختصار align-self + justify-self</td></tr><tr><td>order</td><td>رقم</td><td>ترتيب العرض (يؤثر على auto placement)</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎨</span><h2>الجزء السابع: أنماط Grid الشائعة والاحترافية</h2></div><div class="subsection"><div class="sub-head"><h3>النمط 1 — شبكة بطاقات متجاوبة تلقائياً</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* الوصفة الذهبية — لا تحتاج Media Query! */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+  padding: 40px;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border-top: 4px solid #2E75B6;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.14);
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><h3>النمط 2 — تخطيط الصفحة الكاملة</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.page {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: 70px 1fr 60px;
+  min-height: 100vh;
+
+  grid-template-areas:
+    "header  header"
+    "sidebar main  "
+    "footer  footer";
+}
+
+.page-header  { grid-area: header;  background: #1A3C5E; }
+.page-sidebar { grid-area: sidebar; background: #EBF3FB; }
+.page-main    { grid-area: main;    padding: 30px; overflow-y: auto; }
+.page-footer  { grid-area: footer;  background: #1A1A2E; }</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><h3>النمط 3 — شبكة مجلة (Magazine Layout)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/*
+  ┌────────────────────┬──────────┐
+  │                    │ Article  │
+  │   Featured Post    │    B     │
+  │   (2 col × 2 row)  ├──────────┤
+  │                    │ Article  │
+  ├──────────┬─────────┤    C     │
+  │Article D │Article E│          │
+  └──────────┴─────────┴──────────┘
+*/
+.magazine {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 220px);
+  gap: 20px;
+}
+
+.featured  { grid-column: 1 / 3; grid-row: 1 / 3; }
+.article-b { grid-column: 3; grid-row: 1; }
+.article-c { grid-column: 3; grid-row: 2 / 4; }
+.article-d { grid-column: 1; grid-row: 3; }
+.article-e { grid-column: 2; grid-row: 3; }</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><h3>النمط 4 — شبكة الصور (Image Gallery)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 200px;
+  gap: 12px;
+}
+
+.gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* الصورة تغطي المساحة دون تشوه */
+  border-radius: 8px;
+  transition: transform 0.3s, filter 0.3s;
+}
+
+.gallery img:hover {
+  transform: scale(1.03);
+  filter: brightness(1.1);
+}
+
+/* صور بارزة تشغل مساحة أكبر */
+.gallery-featured {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.gallery-wide {
+  grid-column: span 2;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><h3>النمط 5 — لوحة تحكم (Dashboard Grid)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.dashboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  gap: 24px;
+  padding: 30px;
+}
+
+/* بطاقات الإحصائيات — كل واحدة في عمود */
+.stat-card { grid-column: span 1; }
+
+/* الرسم البياني — يمتد 3 أعمدة */
+.chart-big { grid-column: span 3; }
+
+/* النشاط الأخير — عمود واحد */
+.recent-activity { grid-column: span 1; }
+
+/* الجدول — يمتد كل العرض */
+.data-table { grid-column: 1 / -1; }
+
+/* بطاقة صغيرة — عمودان */
+.half-card { grid-column: span 2; }</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء الثامن: المشروع التطبيقي — موقع مجلة رقمية</h2></div><div class="project-box"><p class="blk-para">سنبني صفحة لمجلة رقمية احترافية تستخدم CSS Grid لتخطيط الصفحة الكامل وعرض المقالات.</p><div class="subsection"><div class="sub-head"><h3>ملف index.html</h3></div><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="html-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="ar" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;مجلة التقنية العربية&lt;/title&gt;
+  &lt;link rel="preconnect" href="https://fonts.googleapis.com" /&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&amp;display=swap" rel="stylesheet" /&gt;
+  &lt;link rel="stylesheet" href="style.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- ══ Header ══ --&gt;
+  &lt;header class="site-header"&gt;
+    &lt;div class="header-top"&gt;
+      &lt;div class="logo"&gt;📰 مجلة التقنية العربية&lt;/div&gt;
+      &lt;nav class="main-nav"&gt;
+        &lt;a href="#"&gt;الرئيسية&lt;/a&gt;
+        &lt;a href="#"&gt;تقنية&lt;/a&gt;
+        &lt;a href="#"&gt;برمجة&lt;/a&gt;
+        &lt;a href="#"&gt;ذكاء اصطناعي&lt;/a&gt;
+        &lt;a href="#"&gt;مراجعات&lt;/a&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;!-- ══ الصفحة الرئيسية بـ Grid ══ --&gt;
+  &lt;div class="page-layout"&gt;
+
+    &lt;!-- ══ Main Content ══ --&gt;
+    &lt;main class="main-content"&gt;
+
+      &lt;!-- شبكة المقالات --&gt;
+      &lt;section class="articles-grid"&gt;
+
+        &lt;!-- المقال الرئيسي --&gt;
+        &lt;article class="article-featured"&gt;
+          &lt;img src="https://via.placeholder.com/800x400" alt="الذكاء الاصطناعي" /&gt;
+          &lt;div class="article-content"&gt;
+            &lt;span class="category"&gt;ذكاء اصطناعي&lt;/span&gt;
+            &lt;h2&gt;كيف يُغيّر الذكاء الاصطناعي عالم البرمجة في 2025؟&lt;/h2&gt;
+            &lt;p&gt;يشهد عالم تطوير البرمجيات تحولاً جذرياً مع ظهور نماذج الذكاء الاصطناعي التوليدية...&lt;/p&gt;
+            &lt;div class="meta"&gt;&lt;span&gt;👤 أحمد الشمري&lt;/span&gt;&lt;span&gt;📅 15 يناير 2025&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+
+        &lt;!-- مقالات جانبية --&gt;
+        &lt;article class="article-side"&gt;
+          &lt;img src="https://via.placeholder.com/400x220" alt="React 19" /&gt;
+          &lt;div class="article-content"&gt;
+            &lt;span class="category"&gt;برمجة&lt;/span&gt;
+            &lt;h3&gt;أبرز ميزات React 19&lt;/h3&gt;
+            &lt;p&gt;ما الجديد في أحدث إصدار من مكتبة React...&lt;/p&gt;
+            &lt;div class="meta"&gt;&lt;span&gt;📅 10 يناير 2025&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+
+        &lt;article class="article-side"&gt;
+          &lt;img src="https://via.placeholder.com/400x220" alt="CSS Grid" /&gt;
+          &lt;div class="article-content"&gt;
+            &lt;span class="category"&gt;تصميم&lt;/span&gt;
+            &lt;h3&gt;CSS Grid: دليل المبتدئين الشامل&lt;/h3&gt;
+            &lt;p&gt;تعلّم CSS Grid من الصفر حتى الاحتراف...&lt;/p&gt;
+            &lt;div class="meta"&gt;&lt;span&gt;📅 8 يناير 2025&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+
+        &lt;article class="article-small"&gt;
+          &lt;span class="category"&gt;تقنية&lt;/span&gt;
+          &lt;h4&gt;إطلاق iPhone 17 Pro&lt;/h4&gt;
+          &lt;div class="meta"&gt;&lt;span&gt;📅 5 يناير 2025&lt;/span&gt;&lt;/div&gt;
+        &lt;/article&gt;
+
+        &lt;article class="article-small"&gt;
+          &lt;span class="category"&gt;برمجة&lt;/span&gt;
+          &lt;h4&gt;TypeScript 5.8 — كل التفاصيل&lt;/h4&gt;
+          &lt;div class="meta"&gt;&lt;span&gt;📅 3 يناير 2025&lt;/span&gt;&lt;/div&gt;
+        &lt;/article&gt;
+
+        &lt;article class="article-small"&gt;
+          &lt;span class="category"&gt;ذكاء اصطناعي&lt;/span&gt;
+          &lt;h4&gt;GPT-5: ما نعرفه حتى الآن&lt;/h4&gt;
+          &lt;div class="meta"&gt;&lt;span&gt;📅 1 يناير 2025&lt;/span&gt;&lt;/div&gt;
+        &lt;/article&gt;
+
+      &lt;/section&gt;
+    &lt;/main&gt;
+
+    &lt;!-- ══ Sidebar ══ --&gt;
+    &lt;aside class="sidebar"&gt;
+      &lt;section class="widget"&gt;
+        &lt;h3&gt;الأكثر قراءة&lt;/h3&gt;
+        &lt;ol&gt;
+          &lt;li&gt;&lt;a href="#"&gt;أفضل 10 لغات برمجة في 2025&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;مقارنة: React vs Vue vs Angular&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;كيف تبدأ في تعلم البرمجة؟&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;مستقبل الـ Web3&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#"&gt;Flexbox vs CSS Grid&lt;/a&gt;&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/section&gt;
+
+      &lt;section class="widget newsletter"&gt;
+        &lt;h3&gt;اشترك في نشرتنا&lt;/h3&gt;
+        &lt;p&gt;احصل على أفضل المقالات مباشرة في بريدك&lt;/p&gt;
+        &lt;input type="email" placeholder="بريدك الإلكتروني" /&gt;
+        &lt;button&gt;اشترك&lt;/button&gt;
+      &lt;/section&gt;
+    &lt;/aside&gt;
+
+  &lt;/div&gt;
+
+  &lt;!-- ══ Footer ══ --&gt;
+  &lt;footer class="site-footer"&gt;
+    &lt;div class="footer-grid"&gt;
+      &lt;div class="footer-col"&gt;
+        &lt;h3&gt;📰 مجلة التقنية العربية&lt;/h3&gt;
+        &lt;p&gt;مصدرك العربي الأول لأخبار التقنية والبرمجة والذكاء الاصطناعي.&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="footer-col"&gt;&lt;h3&gt;الأقسام&lt;/h3&gt;
+        &lt;a href="#"&gt;تقنية&lt;/a&gt;&lt;a href="#"&gt;برمجة&lt;/a&gt;
+        &lt;a href="#"&gt;ذكاء اصطناعي&lt;/a&gt;&lt;a href="#"&gt;مراجعات&lt;/a&gt;
+      &lt;/div&gt;
+      &lt;div class="footer-col"&gt;&lt;h3&gt;تواصل&lt;/h3&gt;
+        &lt;a href="mailto:info@tech-mag.com"&gt;📧 info@tech-mag.com&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="footer-bottom"&gt;&lt;p&gt;© 2025 مجلة التقنية العربية&lt;/p&gt;&lt;/div&gt;
+  &lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div></div><div class="subsection"><div class="sub-head"><h3>ملف style.css</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Cairo", sans-serif;
+  background: #F0F6FF;
+  color: #1A1A2E;
+  direction: rtl;
+}
+
+/* ══ Header ══ */
+.site-header { background: #1A3C5E; padding: 0 40px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.2); position: sticky; top:0; z-index:100; }
+.header-top { display: flex; justify-content: space-between;
+  align-items: center; padding: 16px 0; }
+.logo { color: white; font-size: 22px; font-weight: 700; }
+.main-nav { display: flex; gap: 4px; }
+.main-nav a { color: rgba(255,255,255,0.85); text-decoration: none;
+  padding: 8px 14px; border-radius: 6px; transition: background 0.3s; }
+.main-nav a:hover { background: rgba(255,255,255,0.15); color: white; }
+
+/* ══ Page Layout — CSS Grid ══ */
+.page-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 30px;
+  max-width: 1280px;
+  margin: 30px auto;
+  padding: 0 30px;
+}
+
+/* ══ Articles Grid — CSS Grid ══ */
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto auto;
+  gap: 24px;
+}
+
+/* المقال الرئيسي يمتد 3 أعمدة */
+.article-featured {
+  grid-column: 1 / -1;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.article-featured img { width: 100%; height: 100%; object-fit: cover; }
+.article-featured .article-content { padding: 32px; }
+.article-featured h2 { font-size: 26px; color: #1A3C5E;
+  font-weight: 700; margin: 10px 0; line-height: 1.4; }
+
+/* المقالات الجانبية — كل منها عمود */
+.article-side {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+  transition: transform 0.3s;
+}
+.article-side:hover { transform: translateY(-5px); }
+.article-side img { width: 100%; height: 180px; object-fit: cover; }
+.article-side .article-content { padding: 20px; }
+.article-side h3 { font-size: 18px; color: #1A3C5E; font-weight: 700; margin: 8px 0; }
+
+/* المقالات الصغيرة */
+.article-small {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+  border-right: 4px solid #E8A020;
+}
+.article-small h4 { font-size: 16px; color: #1A3C5E; font-weight: 700;
+  margin: 8px 0; line-height: 1.5; }
+
+/* تصنيف المقال */
+.category { display: inline-block; background: #EBF3FB; color: #2E75B6;
+  font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+
+.meta { display: flex; gap: 16px; font-size: 13px; color: #5A6A7A; margin-top: 12px; }
+
+/* ══ Sidebar ══ */
+.sidebar { display: flex; flex-direction: column; gap: 24px; }
+
+.widget { background: white; border-radius: 14px; padding: 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+.widget h3 { font-size: 18px; color: #1A3C5E; font-weight: 700;
+  margin-bottom: 16px; padding-bottom: 10px;
+  border-bottom: 2px solid #E8A020; }
+.widget ol { padding-right: 20px; }
+.widget li { margin-bottom: 10px; }
+.widget a { color: #2E75B6; text-decoration: none; font-size: 14px;
+  font-weight: 600; line-height: 1.5; transition: color 0.3s; }
+.widget a:hover { color: #E8A020; }
+
+.newsletter p { color: #5A6A7A; font-size: 14px; margin-bottom: 16px; }
+.newsletter input { width: 100%; padding: 10px 14px;
+  border: 2px solid #D0E4F5; border-radius: 8px;
+  font-family: inherit; font-size: 14px; margin-bottom: 10px; direction: rtl; }
+.newsletter input:focus { outline: none; border-color: #2E75B6; }
+.newsletter button { width: 100%; padding: 10px; background: #2E75B6;
+  color: white; border: none; border-radius: 8px; font-size: 15px;
+  font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.3s; }
+.newsletter button:hover { background: #1A3C5E; }
+
+/* ══ Footer ══ */
+.site-footer { background: #1A1A2E; color: #CDD6F4; padding: 50px 40px 24px; margin-top: 50px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 30px; }
+.footer-col h3 { color: #E8A020; font-size: 17px; margin-bottom: 14px; }
+.footer-col p { color: #8FBCBB; font-size: 14px; line-height: 1.8; }
+.footer-col a { display: block; color: #8FBCBB; text-decoration: none;
+  font-size: 14px; margin-bottom: 8px; transition: color 0.3s; }
+.footer-col a:hover { color: white; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 20px; text-align: center; font-size: 13px; color: #5A6A7A; }</code></pre>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء التاسع: تمارين الجلسة الخامسة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — الأساسيات<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">أنشئ شبكة بسيطة وطبّق ما يلي:</p><ul class="mini-list"><li>شبكة 4 أعمدة بوحدة fr متساوية مع 9 عناصر ملونة</li><li>شبكة بأعمدة: 200px 1fr 2fr 1fr مع gap: 20px</li><li>العنصر الأول يمتد عبر أول عمودين (grid-column: span 2)</li><li>العنصر الأخير يمتد عبر آخر عمودين بالقيمة السالبة</li><li>جرّب: repeat(auto-fit, minmax(150px, 1fr)) وتغيير حجم النافذة</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — grid-template-areas<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ تخطيط صفحة كاملة باستخدام grid-template-areas:</p><ul class="mini-list"><li>header: شريط أزرق داكن يمتد عرض الصفحة كاملاً</li><li>nav: شريط أفقي بروابط تحت الـ header</li><li>sidebar: شريط جانبي أيمن عرضه 240px</li><li>main: قسم المحتوى الرئيسي يأخذ الباقي</li><li>ads: شريط جانبي أيسر عرضه 180px</li><li>footer: تذييل يمتد عرض الصفحة كاملاً</li><li>ضع محتوى وهمياً في كل منطقة مع لون خلفية مختلف</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — تخطيط المجلة<span class="ex-time">30 دقيقة</span></h4><p class="blk-para">أنشئ صفحة فئة بشبكة مقالات تحتوي على:</p><ul class="mini-list"><li>مقال رئيسي يمتد عبر عمودين وصفين (featured)</li><li>مقالان جانبيان بجانب المقال الرئيسي</li><li>صف من 4 مقالات صغيرة تحت الجميع</li><li>hover effect على كل مقال: ارتفاع + تغيير ظل</li><li>استخدم grid-auto-rows: minmax(200px, auto) للصفوف</li><li>أضف صور placeholder مع object-fit: cover</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الخامسة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>Grid vs Flexbox</td><td>Grid ثنائي الأبعاد للتخطيط الكامل | Flexbox أحادي البُعد للعناصر الداخلية</td></tr><tr><td>تفعيل Grid</td><td>display: grid — الأبناء المباشرون يصبحون Grid Items</td></tr><tr><td>تعريف الأعمدة</td><td>grid-template-columns: px | fr | % | repeat() | minmax()</td></tr><tr><td>وحدة fr</td><td>كسر من المساحة المتبقية — أقوى وحدة في Grid</td></tr><tr><td>repeat()</td><td>repeat(3, 1fr) اختصار لـ 1fr 1fr 1fr</td></tr><tr><td>minmax()</td><td>minmax(280px, 1fr) — حد أدنى وأقصى للعمود</td></tr><tr><td>الوصفة الذهبية</td><td>repeat(auto-fit, minmax(MIN, 1fr)) — شبكة متجاوبة بلا Media Queries</td></tr><tr><td>وضع العناصر</td><td>grid-column: start / end | span n | 1 / -1 للعرض الكامل</td></tr><tr><td>grid-template-areas</td><td>تسمية المناطق وبناء التخطيط بشكل مرئي في CSS</td></tr><tr><td>المسافات</td><td>gap | row-gap | column-gap</td></tr><tr><td>المحاذاة</td><td>justify-items, align-items, justify-self, align-self — نفس مفهوم Flexbox</td></tr><tr><td>دمج Grid + Flex</td><td>Grid للتخطيط الخارجي | Flexbox للمحتوى الداخلي لكل قسم</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة السادسة: التصميم المتجاوب (Responsive Design)</span><p>✦ ما هو Mobile-First Design ولماذا هو المعيار الحديث</p><p>✦ وحدات القياس المرنة: rem, em, vw, vh, %</p><p>✦ Media Queries: الكتابة الصحيحة والنقاط الفاصلة (Breakpoints)</p><p>✦ الصور والوسائط المتجاوبة</p><p>✦ CSS Variables (المتغيرات) لتنظيم الألوان والأبعاد</p><p>✦ مشروع: تحويل موقع الأكاديمية لتصميم متجاوب كامل</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الخامسة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة السادسة</span><p>يُرسَل مجلد المشروع (HTML + CSS) مضغوطاً عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: موقع متجر إلكتروني (صفحة المنتجات)</h3></div><p class="blk-para">أنشئ صفحة «المنتجات» لمتجر إلكتروني باستخدام CSS Grid وFlexbox معاً:</p><h4 class="mini-head">◆ 📁 هيكل الصفحة:</h4><div class="code-block" data-lang="layout">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Layout</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>┌──────────────────────────────────────────────────┐
+│                    Header / Navbar               │
+├──────────────────────────────────────────────────┤
+│  Hero Banner — grid-column: 1 / -1              │
+├──────────────┬───────────────────────────────────┤
+│   Filters    │   Products Grid                   │
+│   Sidebar    │   (auto-fit, minmax(220px, 1fr))  │
+│              │                                   │
+│  ☑ تقنية    │  [Card][Card][Card]               │
+│  ☑ برمجة    │  [Card][Card][Card]               │
+│  ☑ كتب      │  [Card][Card][Card]               │
+├──────────────┴───────────────────────────────────┤
+│              Pagination (Flexbox)                │
+├──────────────────────────────────────────────────┤
+│              Footer (Grid — 3 أعمدة)            │
+└──────────────────────────────────────────────────┘</code></pre>
+</div><h4 class="mini-head">◆ 📋 المتطلبات التفصيلية:</h4><ul class="mini-list"><li>تخطيط الصفحة الرئيسي: CSS Grid بـ grid-template-areas</li><li>Hero Banner: يمتد عرض الصفحة كاملاً، خلفية متدرجة، نص مركزي + زرّ</li><li>Sidebar الفلاتر: عرض ثابت 220px، قائمة checkboxes لتصفية المنتجات (ديكور فقط)</li><li>شبكة المنتجات: repeat(auto-fit, minmax(220px, 1fr)) — تتجاوب تلقائياً</li><li>كل بطاقة منتج: صورة + اسم المنتج + السعر + زر «أضف للسلة» — تصميم احترافي</li><li>منتج واحد مميز (Featured): grid-column: span 2 — بطاقة أكبر</li><li>Pagination: شريط أرقام الصفحات بـ Flexbox مع justify-content: center</li><li>Footer: CSS Grid بـ 3 أعمدة — معلومات + روابط + تواصل</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>CSS Grid صحيح لتخطيط الصفحة الكاملة</td><td>25 نقطة</td></tr><tr><td>شبكة المنتجات المتجاوبة بـ auto-fit + minmax</td><td>25 نقطة</td></tr><tr><td>البطاقة المميزة تمتد عمودين بشكل صحيح</td><td>15 نقطة</td></tr><tr><td>دمج Grid وFlexbox بشكل صحيح</td><td>15 نقطة</td></tr><tr><td>التصميم والألوان والاحترافية العامة</td><td>20 نقطة</td></tr></tbody></table></div></div></div>
+<div class="closing-banner">
+  <h3>🗂️ أحسنت! أنت الآن تتحكم في تخطيط الصفحة كاملاً بـ CSS Grid 🗂️</h3>
+  
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 05</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-04.html"><small>السابق</small><span>الجلسة 04 — CSS Flexbox</span></a>
+        <a class="nav-arrow next" href="lesson-06.html"><small>التالي</small><span>الجلسة 06 — التصميم المتجاوب (Responsive Design)</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

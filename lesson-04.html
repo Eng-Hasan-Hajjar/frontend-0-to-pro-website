@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 04 — CSS Flexbox | Front-End Master Book</title>
+<meta name="description" content="CSS Flexbox — التخطيط المرن • المحاور • التوسيط • الأنماط الاحترافية">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="04">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>مسار HTML &amp; CSS · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🧩</span>
+    <div>
+      <div class="session-tag">Session 04 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة الرابعة — CSS Flexbox</h1>
+  <p class="tags-line">التخطيط المرن • المحاور • التوسيط • الأنماط الاحترافية</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة الرابعة</h2>
+  <ul class="goal-list"><li>فهم مشكلة التخطيط (Layout) التقليدي وسبب ظهور Flexbox</li><li>التمييز بين الحاوية (Flex Container) والعناصر (Flex Items)</li><li>فهم المحور الرئيسي (Main Axis) والمحور العرضي (Cross Axis)</li><li>إتقان جميع خصائص الحاوية: flex-direction, justify-content, align-items, align-content, flex-wrap, gap</li><li>إتقان جميع خصائص العناصر: flex-grow, flex-shrink, flex-basis, flex, align-self, order</li><li>توسيط أي عنصر أفقياً وعمودياً بسطر واحد من CSS</li><li>بناء أنماط تخطيط شائعة: شريط التنقل، شبكة البطاقات، التخطيط ثنائي العمود</li><li>بناء صفحة ويب كاملة متجاوبة باستخدام Flexbox</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة الثالثة</span><p>✔ طرق ربط CSS: Inline | Internal | External (المُفضَّل)</p><p>✔ المحددات: Element, Class, ID, Pseudo-classes, Pseudo-elements</p><p>✔ الأولوية: !important &gt; Inline &gt; ID(100) &gt; Class(10) &gt; Element(1)</p><p>✔ الألوان: HEX, RGB, RGBA, HSL, linear-gradient</p><p>✔ Box Model: Content → Padding → Border → Margin | box-sizing: border-box</p><p>✔ Display: block, inline, inline-block, none</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">❓</span><h2>الجزء الأول: لماذا Flexbox؟ المشكلة والحل</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>مشكلة التخطيط التقليدي</h3></div><p class="blk-para">قبل Flexbox، كان المطوّرون يعانون كثيراً لإنجاز مهام بسيطة مثل:</p><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المشكلة</th><th>الحل القديم المُعقَّد</th></tr></thead><tbody><tr><td>توسيط عنصر أفقياً وعمودياً</td><td>margin: auto + position absolute + transform (معقد جداً)</td></tr><tr><td>وضع عناصر بجانب بعضها</td><td>float + clearfix (هشّ وصعب التحكم)</td></tr><tr><td>توزيع المساحة بالتساوي</td><td>حساب النسب يدوياً بالبيكسل (% غير دقيق)</td></tr><tr><td>ترتيب العناصر دون تغيير HTML</td><td>مستحيل أو يتطلب JavaScript</td></tr><tr><td>تخطيط متجاوب (Responsive)</td><td>تعليمات media query معقدة جداً</td></tr></tbody></table></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* ❌ الطريقة القديمة لتوسيط عنصر — مؤلمة */
+.old-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ✅ الطريقة الحديثة مع Flexbox — سطران فقط! */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>ما هو Flexbox؟</h3></div><p class="blk-para">Flexbox (Flexible Box Layout) هو نظام تخطيط أحادي البُعد في CSS — يُنظّم العناصر في صف أو عمود واحد مع التحكم الكامل في التوزيع والمحاذاة والمساحة.</p><div class="callout tip"><span class="callout-title">💡 Flexbox أحادي البُعد — CSS Grid ثنائي الأبعاد</span><p>Flexbox: ممتاز لتخطيط صف أو عمود واحد — شريط التنقل، قائمة البطاقات، مجموعة الأزرار</p><p>CSS Grid: ممتاز لتخطيط الصفحة الكاملة بصفوف وأعمدة — سنتعلمه في الجلسة الخامسة</p><p>الفرق ليس تنافساً — كلاهما يُكمّل الآخر في المشروع الواحد</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🧱</span><h2>الجزء الثاني: المفاهيم الأساسية لـ Flexbox</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>الحاوية والعناصر (Container &amp; Items)</h3></div><p class="blk-para">Flexbox يعتمد على مستويين: الحاوية الأم التي تتحكم في التخطيط، والعناصر الأبناء التي تُرتَّب بداخلها:</p><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+    </div>
+    <pre><code data-role="html-code">&lt;!-- HTML --&gt;
+&lt;div class="container"&gt;   &lt;!-- الحاوية (Flex Container) --&gt;
+  &lt;div class="item"&gt;1&lt;/div&gt;  &lt;!-- عنصر (Flex Item) --&gt;
+  &lt;div class="item"&gt;2&lt;/div&gt;  &lt;!-- عنصر (Flex Item) --&gt;
+  &lt;div class="item"&gt;3&lt;/div&gt;  &lt;!-- عنصر (Flex Item) --&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+  <div class="code-block" data-lang="css">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot css"></span>CSS</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="css-code">/* CSS */
+.container {
+  display: flex;  /* هذا السطر الوحيد يُفعّل Flexbox */
+  /* الآن جميع الأبناء المباشرين أصبحوا Flex Items */
+}
+
+/* ملاحظة: فقط الأبناء المباشرون يتأثرون */
+/* الأحفاد (أبناء الأبناء) لا يتأثرون */</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>المحاور (Axes)</h3></div><p class="blk-para">Flexbox يعمل على محورين — فهمهما هو مفتاح فهم كل خصائص Flexbox:</p><div class="callout info"><span class="callout-title">📐 محاور Flexbox</span><pre class="ascii-diagram">  flex-direction: row (الافتراضي)
+  ┌─────────────────────────────────────┐
+  │  Main Axis (المحور الرئيسي) ───────→ │
+  │  ┌─────┐  ┌─────┐  ┌─────┐         │
+  │  │  1  │  │  2  │  │  3  │   ↕     │
+  │  └─────┘  └─────┘  └─────┘         │
+  │                          Cross Axis  │
+  └─────────────────────────────────────┘
+  flex-direction: column
+  ┌────────────────────┐
+  │  ┌──────────────┐  │  ↕ Main Axis
+  │  │      1       │  │
+  │  └──────────────┘  │
+  │  ┌──────────────┐  │
+  │  │      2       │  │
+  │  └──────────────┘  │
+  │  Cross Axis ──────→ │
+  └────────────────────┘</pre></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المصطلح</th><th>المعنى</th></tr></thead><tbody><tr><td>Main Axis (المحور الرئيسي)</td><td>اتجاه تدفق العناصر — يتحدد بـ flex-direction</td></tr><tr><td>Cross Axis (المحور العرضي)</td><td>المحور العمودي على المحور الرئيسي</td></tr><tr><td>Main Start / Main End</td><td>بداية ونهاية المحور الرئيسي</td></tr><tr><td>Cross Start / Cross End</td><td>بداية ونهاية المحور العرضي</td></tr><tr><td>justify-content</td><td>توزيع العناصر على المحور الرئيسي</td></tr><tr><td>align-items</td><td>محاذاة العناصر على المحور العرضي</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🏠</span><h2>الجزء الثالث: خصائص الحاوية (Container Properties)</h2></div><p class="blk-para">هذه الخصائص تُكتب على الحاوية الأم (العنصر الذي لديه display: flex).</p><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>flex-direction (اتجاه المحور الرئيسي)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.container {
+  display: flex;
+
+  flex-direction: row;            /* ← الافتراضي: عناصر بجانب بعضها من اليسار لليمين */
+  flex-direction: row-reverse;    /* ← عناصر بجانب بعضها من اليمين لليسار */
+  flex-direction: column;         /* ← عناصر فوق بعضها من الأعلى للأسفل */
+  flex-direction: column-reverse; /* ← عناصر فوق بعضها من الأسفل للأعلى */
+}</code></pre>
+</div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>القيمة</th><th>النتيجة البصرية</th></tr></thead><tbody><tr><td>row</td><td>[ 1 ][ 2 ][ 3 ]  ← الأكثر استخداماً لشريط التنقل</td></tr><tr><td>row-reverse</td><td>[ 3 ][ 2 ][ 1 ]  ← مفيد للغات RTL أحياناً</td></tr><tr><td>column</td><td>[ 1 ] فوق [ 2 ] فوق [ 3 ]  ← للقوائم العمودية</td></tr><tr><td>column-reverse</td><td>[ 3 ] فوق [ 2 ] فوق [ 1 ]  ← نادر الاستخدام</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>justify-content (توزيع على المحور الرئيسي)</h3></div><p class="blk-para">تتحكم في كيفية توزيع العناصر على المحور الرئيسي (أفقياً في row، عمودياً في column):</p><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.container {
+  display: flex;
+
+  justify-content: flex-start;    /* |[1][2][3]          | الافتراضي — بداية المحور */
+  justify-content: flex-end;      /* |          [1][2][3]| نهاية المحور */
+  justify-content: center;        /* |    [1][2][3]      | توسيط */
+  justify-content: space-between; /* |[1]    [2]    [3]  | مسافات بين العناصر */
+  justify-content: space-around;  /* | [1]  [2]  [3]     | مسافات حول العناصر */
+  justify-content: space-evenly;  /* |  [1]  [2]  [3]    | مسافات متساوية تماماً */
+}</code></pre>
+</div><div class="callout info"><span class="callout-title">🔀 justify-content — التوزيع على المحور الرئيسي</span><pre class="ascii-diagram">flex-start:    │█ █ █ ·  ·  ·  ·  ·│
+flex-end:      │·  ·  ·  ·  · █ █ █│
+center:        │·  ·   █ █ █   ·  ·│
+space-between: │█ ·  ·  · █ ·  ·  · █│
+space-around:  │· █ ·  ·  █ ·  ·  █ ·│
+space-evenly:  │·  █  ·  █  ·  █  ·│</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.3</span><h3>align-items (محاذاة على المحور العرضي)</h3></div><p class="blk-para">تتحكم في محاذاة العناصر على المحور العرضي (عمودياً في row، أفقياً في column):</p><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.container {
+  display: flex;
+  height: 200px; /* مهم لرؤية تأثير align-items */
+
+  align-items: stretch;     /* ← الافتراضي: تمتد لملء ارتفاع الحاوية */
+  align-items: flex-start;  /* ← تلتصق بأعلى الحاوية */
+  align-items: flex-end;    /* ← تلتصق بأسفل الحاوية */
+  align-items: center;      /* ← توسط عمودي */
+  align-items: baseline;    /* ← محاذاة خطوط قاعدة النص */
+}</code></pre>
+</div><div class="callout info"><span class="callout-title">↕️ align-items — المحاذاة على المحور العرضي</span><pre class="ascii-diagram">← الأعمدة تملأ كامل الارتفاع
+stretch:    ┌────┬────┬────┐  
+            │    │    │    │
+            └────┴────┴────┘
+flex-start: ┌────┬────┬────┐
+            │ 1  │ 2  │ 3  │
+            │    │    │    │
+flex-end:   │    │    │    │
+            │ 1  │ 2  │ 3  │
+            └────┴────┴────┘
+
+← في المنتصف
+
+center:     │    │    │    │
+            │ 1  │ 2  │ 3  │  
+            │    │    │    │</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.4</span><h3>flex-wrap (التفاف العناصر)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.container {
+  display: flex;
+
+  flex-wrap: nowrap;       /* الافتراضي — كل العناصر في سطر واحد (قد تضغط) */
+  flex-wrap: wrap;         /* العناصر تنتقل لسطر جديد عند الحاجة ✅ */
+  flex-wrap: wrap-reverse; /* تلتف لكن من الأسفل للأعلى */
+}
+
+/* مثال شبكة بطاقات متجاوبة */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card {
+  width: 300px; /* كل بطاقة 300px — تلتف تلقائياً عند الحاجة */
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.5</span><h3>gap (المسافة بين العناصر)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.container {
+  display: flex;
+
+  gap: 20px;           /* مسافة 20px بين جميع العناصر (صفوفاً وأعمدةً) */
+  gap: 10px 20px;      /* 10px بين الصفوف | 20px بين الأعمدة */
+  row-gap: 10px;       /* مسافة بين الصفوف فقط */
+  column-gap: 20px;    /* مسافة بين الأعمدة فقط */
+}
+
+/* gap أفضل من margin للمسافات داخل Flexbox */
+/* لأنه لا يُضيف مسافة خارج الحاوية */</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.6</span><h3>align-content (توزيع الصفوف المتعددة)</h3></div><p class="blk-para">تعمل فقط عند وجود flex-wrap: wrap وأكثر من صف واحد:</p><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.container {
+  display: flex;
+  flex-wrap: wrap;
+  height: 400px;
+
+  align-content: flex-start;    /* الصفوف تلتصق بالأعلى */
+  align-content: flex-end;      /* الصفوف تلتصق بالأسفل */
+  align-content: center;        /* الصفوف في المنتصف */
+  align-content: space-between; /* الصفوف موزعة */
+  align-content: space-around;  /* مسافات حول الصفوف */
+  align-content: stretch;       /* الافتراضي: الصفوف تمتد */
+}</code></pre>
+</div><div class="callout info"><span class="callout-title">📌 ملخص سريع: justify-content مقابل align-content مقابل align-items</span><p>justify-content: توزيع العناصر على المحور الرئيسي (دائماً يعمل)</p><p>align-items: محاذاة عناصر صف واحد على المحور العرضي (دائماً يعمل)</p><p>align-content: توزيع الصفوف المتعددة على المحور العرضي (يعمل فقط مع flex-wrap: wrap)</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎛️</span><h2>الجزء الرابع: خصائص العناصر (Item Properties)</h2></div><p class="blk-para">هذه الخصائص تُكتب على عناصر Flex Items الأبناء — لا على الحاوية.</p><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>flex-grow (النمو)</h3></div><p class="blk-para">يحدد كم يأخذ العنصر من المساحة الفارغة المتبقية — القيمة الافتراضية: 0 (لا ينمو):</p><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.container { display: flex; }
+
+/* مثال 1: عنصر واحد ينمو */
+.item-a { flex-grow: 0; }  /* لا ينمو — يبقى بحجمه الطبيعي */
+.item-b { flex-grow: 1; }  /* يأخذ كل المساحة الفارغة */
+.item-c { flex-grow: 0; }  /* لا ينمو */
+
+/* مثال 2: توزيع نسبي */
+.sidebar  { flex-grow: 1; }  /* يأخذ ثلث المساحة */
+.main     { flex-grow: 2; }  /* يأخذ ثلثي المساحة */
+
+/* مثال 3: توزيع متساوٍ لجميع العناصر */
+.nav-item { flex-grow: 1; }  /* جميع عناصر القائمة بحجم متساوٍ */</code></pre>
+</div><div class="callout info"><span class="callout-title">📏 flex-grow — توزيع المساحة الفارغة</span><pre class="ascii-diagram">flex-grow: 0 (الافتراضي)
+┌──────┬──────┬──────┬─────────────────┐
+│  A   │  B   │  C   │  مساحة فارغة    │
+└──────┴──────┴──────┴─────────────────┘
+A:0, B:1, C:0
+┌──────┬───────────────────────┬──────┐
+│  A   │           B           │  C   │
+└──────┴───────────────────────┴──────┘
+A:1, B:2, C:1  (النسب: 1:2:1)
+┌────────┬──────────────────┬────────┐
+│   A    │        B         │   A    │
+└────────┴──────────────────┴────────┘</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>flex-shrink (الانكماش)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* flex-shrink يحدد كم ينكمش العنصر عند ضيق المساحة */
+/* القيمة الافتراضية: 1 (ينكمش بالتساوي مع الآخرين) */
+
+.item-important {
+  flex-shrink: 0;  /* لا ينكمش أبداً — يحافظ على حجمه */
+}
+
+.item-flexible {
+  flex-shrink: 2;  /* ينكمش بمعدل ضعف الآخرين */
+}
+
+/* استخدام شائع: الشعار في الشريط لا ينكمش */
+.logo {
+  flex-shrink: 0;
+  width: 150px;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.3</span><h3>flex-basis (الحجم الأساسي)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* flex-basis يحدد الحجم الابتدائي للعنصر قبل توزيع المساحة */
+/* يشبه width في row، وheight في column */
+
+.item {
+  flex-basis: auto;    /* الافتراضي — يعتمد على المحتوى */
+  flex-basis: 200px;   /* حجم ثابت كنقطة انطلاق */
+  flex-basis: 30%;     /* نسبة مئوية من الحاوية */
+  flex-basis: 0;       /* يبدأ من الصفر — flex-grow يتحكم بالكامل */
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.4</span><h3>الخاصية المختصرة: flex</h3></div><p class="blk-para">flex هي الاختصار لـ flex-grow + flex-shrink + flex-basis معاً:</p><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* flex: grow shrink basis */
+.item {
+  flex: 1;          /* = flex: 1 1 0%  — ينمو وينكمش بحرية */
+  flex: 2;          /* = flex: 2 1 0%  — ينمو بضعف الآخرين */
+  flex: auto;       /* = flex: 1 1 auto */
+  flex: none;       /* = flex: 0 0 auto — لا ينمو ولا ينكمش */
+  flex: 0 0 200px;  /* حجم ثابت 200px لا يتغير أبداً */
+}
+
+/* المثال الأكثر شيوعاً: توزيع متساوٍ */
+.nav-item {
+  flex: 1;  /* جميع العناصر تأخذ مساحة متساوية */
+}
+
+/* تخطيط sidebar + main content */
+.sidebar { flex: 0 0 280px; }  /* sidebar ثابت 280px */
+.main    { flex: 1; }          /* main يأخذ الباقي */</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.5</span><h3>align-self (محاذاة عنصر واحد)</h3></div><p class="blk-para">يتجاوز align-items للحاوية ويُطبَّق على عنصر واحد فقط:</p><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.container {
+  display: flex;
+  align-items: center;  /* جميع العناصر في المنتصف */
+  height: 200px;
+}
+
+.item-special {
+  align-self: flex-start;  /* هذا العنصر فقط في الأعلى */
+  /* align-self: flex-end | center | stretch | baseline | auto */
+}
+
+/* مثال: زر في أسفل بطاقة */
+.card {
+  display: flex;
+  flex-direction: column;
+}
+.card-button {
+  align-self: flex-end;  /* الزر في يسار البطاقة */
+  margin-top: auto;      /* يدفع الزر لأسفل البطاقة */
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.6</span><h3>order (ترتيب العرض)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* order يغيّر ترتيب ظهور العنصر دون تغيير HTML */
+/* القيمة الافتراضية: 0 */
+/* العناصر مرتبة من أصغر قيمة order إلى أكبرها */
+
+.item-a { order: 2; }   /* يظهر ثالثاً */
+.item-b { order: 0; }   /* يظهر أولاً (الافتراضي) */
+.item-c { order: 1; }   /* يظهر ثانياً */
+.item-d { order: -1; }  /* يظهر قبل الجميع (قيمة سالبة) */
+
+/* النتيجة: item-d, item-b, item-c, item-a */
+
+/* استخدام شائع: تغيير الترتيب في الجوال */
+@media (max-width: 768px) {
+  .hero-image { order: -1; } /* الصورة تأتي أولاً في الجوال */
+  .hero-text  { order: 1; }  /* النص يأتي ثانياً */
+}</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">📋</span><h2>الجزء الخامس: جدول مرجع شامل لـ Flexbox</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>خصائص الحاوية (Container)</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الخاصية</th><th>القيم المتاحة</th><th>الوظيفة</th></tr></thead><tbody><tr><td>display</td><td>flex | inline-flex</td><td>تفعيل Flexbox</td></tr><tr><td>flex-direction</td><td>row | row-reverse | column | column-reverse</td><td>اتجاه المحور الرئيسي</td></tr><tr><td>justify-content</td><td>flex-start | flex-end | center | space-between | space-around | space-evenly</td><td>توزيع على المحور الرئيسي</td></tr><tr><td>align-items</td><td>stretch | flex-start | flex-end | center | baseline</td><td>محاذاة على المحور العرضي</td></tr><tr><td>flex-wrap</td><td>nowrap | wrap | wrap-reverse</td><td>التفاف عند الضيق</td></tr><tr><td>align-content</td><td>flex-start | flex-end | center | space-between | space-around | stretch</td><td>توزيع الصفوف المتعددة</td></tr><tr><td>gap</td><td>قيمة | قيمتان</td><td>المسافة بين العناصر</td></tr><tr><td>row-gap</td><td>قيمة</td><td>المسافة بين الصفوف</td></tr><tr><td>column-gap</td><td>قيمة</td><td>المسافة بين الأعمدة</td></tr><tr><td>flex-flow</td><td>direction wrap</td><td>اختصار direction + wrap</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>خصائص العناصر (Items)</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الخاصية</th><th>القيم</th><th>الوظيفة</th></tr></thead><tbody><tr><td>flex-grow</td><td>رقم (0 افتراضي)</td><td>كم ينمو لملء المساحة الفارغة</td></tr><tr><td>flex-shrink</td><td>رقم (1 افتراضي)</td><td>كم ينكمش عند الضيق</td></tr><tr><td>flex-basis</td><td>auto | 0 | قيمة | نسبة%</td><td>الحجم الابتدائي قبل النمو/الانكماش</td></tr><tr><td>flex</td><td>grow shrink basis</td><td>اختصار للثلاثة السابقة</td></tr><tr><td>align-self</td><td>auto | flex-start | flex-end | center | stretch | baseline</td><td>محاذاة فردية تتجاوز align-items</td></tr><tr><td>order</td><td>رقم (0 افتراضي)</td><td>ترتيب العرض (الأصغر أولاً)</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎨</span><h2>الجزء السادس: أنماط Flexbox الشائعة</h2></div><p class="blk-para">هذه هي الوصفات الجاهزة التي ستستخدمها مراراً في مشاريعك الحقيقية:</p><div class="subsection"><div class="sub-head"><h3>النمط 1 — التوسيط الكامل (أفقياً وعمودياً)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* ✅ أسهل طريقة لتوسيط أي شيء في CSS */
+.centered-container {
+  display: flex;
+  justify-content: center;  /* توسيط أفقي */
+  align-items: center;      /* توسيط عمودي */
+  min-height: 100vh;        /* ارتفاع كامل الشاشة */
+}
+
+/* مثال: شاشة تسجيل الدخول */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1A3C5E, #2E75B6);
+}
+
+.login-card {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  width: 400px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><h3>النمط 2 — شريط التنقل (Navbar)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* شريط تنقل: الشعار يساراً، الروابط يميناً */
+.navbar {
+  display: flex;
+  justify-content: space-between;  /* شعار + روابط على الطرفين */
+  align-items: center;             /* محاذاة عمودية في المنتصف */
+  padding: 16px 40px;
+  background-color: #1A3C5E;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-logo {
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  flex-shrink: 0;  /* الشعار لا ينكمش */
+}
+
+.navbar-links {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.navbar-links a:hover {
+  background-color: rgba(255,255,255,0.15);
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><h3>النمط 3 — شبكة البطاقات (Cards Grid)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* شبكة بطاقات تلتف تلقائياً */
+.cards-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 40px;
+}
+
+.card {
+  flex: 1 1 280px;  /* الحد الأدنى 280px، تنمو لتملأ المساحة */
+  max-width: 380px; /* حد أقصى لمنع التمدد المفرط */
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;  /* محتوى البطاقة عمودي */
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1A3C5E;
+  margin-bottom: 12px;
+}
+
+.card-body {
+  flex: 1;             /* يأخذ المساحة المتبقية */
+  color: #5A6A7A;
+  line-height: 1.7;
+}
+
+.card-btn {
+  margin-top: 20px;    /* يدفع الزر للأسفل */
+  align-self: flex-start;
+  padding: 10px 20px;
+  background-color: #2E75B6;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><h3>النمط 4 — التخطيط ثنائي العمود (Sidebar + Main)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* تخطيط كلاسيكي: شريط جانبي + محتوى رئيسي */
+.page-layout {
+  display: flex;
+  min-height: calc(100vh - 70px); /* ارتفاع الصفحة - ارتفاع navbar */
+  gap: 0;
+}
+
+.sidebar {
+  flex: 0 0 260px;          /* عرض ثابت 260px — لا ينمو ولا ينكمش */
+  background-color: #1A3C5E;
+  padding: 30px 20px;
+  color: white;
+}
+
+.main-content {
+  flex: 1;                   /* يأخذ كل المساحة المتبقية */
+  padding: 40px;
+  background-color: #F0F6FF;
+  overflow-y: auto;
+}
+
+/* شريط جانبي لليمين */
+.page-layout-right {
+  display: flex;
+  flex-direction: row-reverse; /* عكس الترتيب */
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><h3>النمط 5 — شريط الأزرار (Button Group)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.button-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #2E75B6;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #1A3C5E;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(46,117,182,0.4);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 2px solid #2E75B6;
+  color: #2E75B6;
+}
+
+.btn-outline:hover {
+  background-color: #2E75B6;
+  color: white;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><h3>النمط 6 — Footer متعدد الأعمدة</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.footer {
+  background-color: #1A1A2E;
+  color: #CDD6F4;
+  padding: 60px 40px 30px;
+}
+
+.footer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.footer-col {
+  flex: 1 1 200px;  /* الحد الأدنى 200px لكل عمود */
+}
+
+.footer-col h3 {
+  color: #E8A020;
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+
+.footer-col a {
+  display: block;
+  color: #8FBCBB;
+  text-decoration: none;
+  margin-bottom: 8px;
+  transition: color 0.3s;
+}
+
+.footer-col a:hover { color: white; }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 14px;
+  color: #5A6A7A;
+}</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السابع: المشروع التطبيقي — موقع أكاديمية التقنية</h2></div><div class="project-box"><p class="blk-para">سنبني صفحة رئيسية كاملة باستخدام Flexbox — مع navbar ثابت وقسم Hero وشبكة كورسات وفوتر متعدد الأعمدة.</p><div class="subsection"><div class="sub-head"><h3>ملف index.html</h3></div><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="html-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="ar" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;أكاديمية التقنية — Front-End Master&lt;/title&gt;
+  &lt;link rel="preconnect" href="https://fonts.googleapis.com" /&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&amp;display=swap" rel="stylesheet" /&gt;
+  &lt;link rel="stylesheet" href="style.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- ══ Navbar ══ --&gt;
+  &lt;header class="navbar"&gt;
+    &lt;div class="navbar-logo"&gt;🎓 أكاديمية التقنية&lt;/div&gt;
+    &lt;nav class="navbar-links"&gt;
+      &lt;a href="#courses"&gt;الكورسات&lt;/a&gt;
+      &lt;a href="#about"&gt;من نحن&lt;/a&gt;
+      &lt;a href="#contact"&gt;تواصل&lt;/a&gt;
+      &lt;a href="#" class="btn-nav"&gt;سجّل الآن&lt;/a&gt;
+    &lt;/nav&gt;
+  &lt;/header&gt;
+
+  &lt;!-- ══ Hero ══ --&gt;
+  &lt;section class="hero"&gt;
+    &lt;div class="hero-content"&gt;
+      &lt;h1&gt;ابدأ مسيرتك في تطوير الويب&lt;/h1&gt;
+      &lt;p&gt;تعلّم HTML وCSS وJavaScript وReact مع مدربين محترفين&lt;/p&gt;
+      &lt;div class="hero-buttons"&gt;
+        &lt;a href="#" class="btn btn-primary"&gt;ابدأ مجاناً 🚀&lt;/a&gt;
+        &lt;a href="#" class="btn btn-outline"&gt;شاهد الكورسات&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="hero-image"&gt;
+      &lt;img src="https://via.placeholder.com/500x400" alt="تطوير الويب" /&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ══ Stats ══ --&gt;
+  &lt;section class="stats"&gt;
+    &lt;div class="stat-item"&gt;
+      &lt;span class="stat-number"&gt;+2000&lt;/span&gt;
+      &lt;span class="stat-label"&gt;طالب مسجل&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="stat-item"&gt;
+      &lt;span class="stat-number"&gt;45&lt;/span&gt;
+      &lt;span class="stat-label"&gt;جلسة تدريبية&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="stat-item"&gt;
+      &lt;span class="stat-number"&gt;98%&lt;/span&gt;
+      &lt;span class="stat-label"&gt;نسبة الرضا&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="stat-item"&gt;
+      &lt;span class="stat-number"&gt;+500&lt;/span&gt;
+      &lt;span class="stat-label"&gt;مشروع مكتمل&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ══ Courses ══ --&gt;
+  &lt;section id="courses" class="courses-section"&gt;
+    &lt;h2&gt;كورساتنا المتاحة&lt;/h2&gt;
+    &lt;div class="courses-grid"&gt;
+
+      &lt;article class="course-card"&gt;
+        &lt;div class="card-icon"&gt;🌐&lt;/div&gt;
+        &lt;h3&gt;HTML الأساسي والمتقدم&lt;/h3&gt;
+        &lt;p&gt;بناء هيكل صفحات الويب من الصفر&lt;/p&gt;
+        &lt;div class="card-footer"&gt;
+          &lt;span class="duration"&gt;⏱ 10 جلسات&lt;/span&gt;
+          &lt;a href="#" class="card-link"&gt;اعرف المزيد ←&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+
+      &lt;article class="course-card"&gt;
+        &lt;div class="card-icon"&gt;🎨&lt;/div&gt;
+        &lt;h3&gt;CSS والتصميم المتجاوب&lt;/h3&gt;
+        &lt;p&gt;Flexbox وGrid والأنيميشن والتصميم الاحترافي&lt;/p&gt;
+        &lt;div class="card-footer"&gt;
+          &lt;span class="duration"&gt;⏱ 10 جلسات&lt;/span&gt;
+          &lt;a href="#" class="card-link"&gt;اعرف المزيد ←&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+
+      &lt;article class="course-card"&gt;
+        &lt;div class="card-icon"&gt;⚙️&lt;/div&gt;
+        &lt;h3&gt;JavaScript التفاعلي&lt;/h3&gt;
+        &lt;p&gt;DOM والأحداث وAPIs والتخزين المحلي&lt;/p&gt;
+        &lt;div class="card-footer"&gt;
+          &lt;span class="duration"&gt;⏱ 15 جلسات&lt;/span&gt;
+          &lt;a href="#" class="card-link"&gt;اعرف المزيد ←&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+
+      &lt;article class="course-card"&gt;
+        &lt;div class="card-icon"&gt;⚛️&lt;/div&gt;
+        &lt;h3&gt;React الحديث&lt;/h3&gt;
+        &lt;p&gt;Components وHooks وRouting وAPI Integration&lt;/p&gt;
+        &lt;div class="card-footer"&gt;
+          &lt;span class="duration"&gt;⏱ 10 جلسات&lt;/span&gt;
+          &lt;a href="#" class="card-link"&gt;اعرف المزيد ←&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ══ Footer ══ --&gt;
+  &lt;footer class="footer"&gt;
+    &lt;div class="footer-grid"&gt;
+      &lt;div class="footer-col"&gt;
+        &lt;h3&gt;🎓 أكاديمية التقنية&lt;/h3&gt;
+        &lt;p&gt;نبني مطوّرين المستقبل بأساليب تدريبية حديثة ومحتوى عربي احترافي.&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="footer-col"&gt;
+        &lt;h3&gt;الكورسات&lt;/h3&gt;
+        &lt;a href="#"&gt;HTML&lt;/a&gt;
+        &lt;a href="#"&gt;CSS&lt;/a&gt;
+        &lt;a href="#"&gt;JavaScript&lt;/a&gt;
+        &lt;a href="#"&gt;React&lt;/a&gt;
+      &lt;/div&gt;
+      &lt;div class="footer-col"&gt;
+        &lt;h3&gt;تواصل معنا&lt;/h3&gt;
+        &lt;a href="mailto:info@academy.com"&gt;📧 info@academy.com&lt;/a&gt;
+        &lt;a href="tel:+966501234567"&gt;📞 +966 50 123 4567&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="footer-bottom"&gt;
+      &lt;p&gt;© 2025 أكاديمية التقنية — جميع الحقوق محفوظة&lt;/p&gt;
+      &lt;p&gt;Eng. Hasan Hajjar&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div></div><div class="subsection"><div class="sub-head"><h3>ملف style.css</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* ══ CSS Reset &amp; Base ══ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Cairo", sans-serif;
+  background-color: #F0F6FF;
+  color: #1A1A2E;
+  direction: rtl;
+}
+
+/* ══ Navbar ══ */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 60px;
+  background: linear-gradient(135deg, #1A3C5E, #2E75B6);
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+}
+.navbar-logo { color: white; font-size: 22px; font-weight: 700; flex-shrink: 0; }
+.navbar-links { display: flex; align-items: center; gap: 6px; list-style: none; }
+.navbar-links a { color: rgba(255,255,255,0.9); text-decoration: none;
+  padding: 8px 16px; border-radius: 6px; transition: background 0.3s; }
+.navbar-links a:hover { background: rgba(255,255,255,0.15); }
+.btn-nav { background: #E8A020 !important; color: #1A1A2E !important;
+  font-weight: 700 !important; border-radius: 8px !important; }
+
+/* ══ Hero ══ */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 80px 60px;
+  background: linear-gradient(135deg, #1A3C5E 0%, #2E75B6 100%);
+  color: white;
+  min-height: 500px;
+}
+.hero-content { flex: 1; max-width: 600px; }
+.hero-content h1 { font-size: 48px; font-weight: 900; line-height: 1.3; margin-bottom: 20px; }
+.hero-content p { font-size: 20px; opacity: 0.9; margin-bottom: 36px; line-height: 1.7; }
+.hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+.hero-image { flex: 0 0 480px; }
+.hero-image img { width: 100%; border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+
+/* ══ Buttons ══ */
+.btn { padding: 14px 28px; border-radius: 10px; text-decoration: none;
+  font-size: 16px; font-weight: 700; transition: all 0.3s ease; }
+.btn-primary { background: #E8A020; color: #1A1A2E; }
+.btn-primary:hover { background: #d4911c; transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(232,160,32,0.5); }
+.btn-outline { border: 2px solid white; color: white; background: transparent; }
+.btn-outline:hover { background: white; color: #1A3C5E; transform: translateY(-3px); }
+
+/* ══ Stats ══ */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 50px 60px;
+  background: white;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+.stat-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.stat-number { font-size: 42px; font-weight: 900; color: #1A3C5E; }
+.stat-label { font-size: 16px; color: #5A6A7A; font-weight: 600; }
+
+/* ══ Courses ══ */
+.courses-section { padding: 80px 60px; }
+.courses-section h2 { font-size: 36px; font-weight: 700; color: #1A3C5E;
+  text-align: center; margin-bottom: 50px; }
+.courses-grid { display: flex; flex-wrap: wrap; gap: 28px; justify-content: center; }
+.course-card {
+  flex: 1 1 260px; max-width: 320px;
+  background: white; border-radius: 16px; padding: 30px;
+  display: flex; flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-top: 4px solid #2E75B6;
+}
+.course-card:hover { transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.14); }
+.card-icon { font-size: 40px; margin-bottom: 16px; }
+.course-card h3 { font-size: 20px; color: #1A3C5E;
+  font-weight: 700; margin-bottom: 10px; }
+.course-card p { color: #5A6A7A; line-height: 1.7; flex: 1; margin-bottom: 20px; }
+.card-footer { display: flex; justify-content: space-between;
+  align-items: center; margin-top: auto; }
+.duration { font-size: 13px; color: #5A6A7A; font-weight: 600; }
+.card-link { color: #2E75B6; font-weight: 700; text-decoration: none;
+  font-size: 15px; transition: color 0.3s; }
+.card-link:hover { color: #E8A020; }
+
+/* ══ Footer ══ */
+.footer { background: #1A1A2E; color: #CDD6F4; padding: 60px 60px 30px; }
+.footer-grid { display: flex; flex-wrap: wrap; gap: 40px; margin-bottom: 40px; }
+.footer-col { flex: 1 1 200px; }
+.footer-col h3 { color: #E8A020; font-size: 18px; margin-bottom: 16px; }
+.footer-col p { color: #8FBCBB; line-height: 1.8; font-size: 14px; }
+.footer-col a { display: block; color: #8FBCBB; text-decoration: none;
+  margin-bottom: 10px; font-size: 14px; transition: color 0.3s; }
+.footer-col a:hover { color: white; }
+.footer-bottom { display: flex; justify-content: space-between;
+  align-items: center; padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 13px; color: #5A6A7A; }</code></pre>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثامن: تمارين الجلسة الرابعة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — التوسيط والمحاذاة<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">أنشئ صفحة فيها:</p><ul class="mini-list"><li>مربع 200×200px في مركز الشاشة تماماً (أفقياً وعمودياً)</li><li>5 أزرار موزّعة بالتساوي في شريط أفقي (space-evenly)</li><li>3 بطاقات: الأولى في الأعلى، الثانية في المنتصف، الثالثة في الأسفل (align-self)</li><li>قائمة أفقية من 4 روابط مع justify-content: space-between</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — flex-grow وflex-shrink<span class="ex-time">20 دقيقة</span></h4><p class="blk-para">أنشئ تخطيط صفحة مقالة يحتوي على:</p><ul class="mini-list"><li>Sidebar ثابت بعرض 250px (flex: 0 0 250px) لا ينكمش أبداً</li><li>Main content يأخذ كل المساحة المتبقية (flex: 1)</li><li>داخل Main: عنوان + 3 فقرات + قسم تعليقات</li><li>داخل Sidebar: قائمة بـ 5 روابط + بطاقة إعلانية صغيرة</li><li>استخدم gap: 30px بين الـ sidebar والـ main</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — شبكة بطاقات متجاوبة<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ قسم «فريق العمل» يحتوي على:</p><ul class="mini-list"><li>6 بطاقات لأعضاء الفريق (اسم + مسمى + صورة placeholder)</li><li>البطاقات تلتف تلقائياً: 3 في الصف الكبير، 2 في المتوسط، 1 في الصغير</li><li>كل بطاقة: flex-direction column + توسيط align-items center</li><li>hover effect: ارتفاع خفيف مع تغيير ظل (transition: 0.3s)</li><li>order: اجعل مدير الفريق يظهر أولاً بغض النظر عن ترتيبه في HTML</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الرابعة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>مشكلة التخطيط التقليدي</td><td>float وposition كانا معقدَين — Flexbox الحل الحديث</td></tr><tr><td>تفعيل Flexbox</td><td>display: flex — يُحوّل الأبناء المباشرين لـ Flex Items</td></tr><tr><td>المحاور</td><td>Main Axis (اتجاه flex-direction) + Cross Axis (العمودي عليه)</td></tr><tr><td>flex-direction</td><td>row | row-reverse | column | column-reverse</td></tr><tr><td>justify-content</td><td>flex-start | flex-end | center | space-between | space-around | space-evenly</td></tr><tr><td>align-items</td><td>stretch | flex-start | flex-end | center | baseline</td></tr><tr><td>flex-wrap</td><td>nowrap | wrap — لالتفاف العناصر عند الضيق</td></tr><tr><td>gap</td><td>مسافة بين العناصر — أفضل من margin للـ Flex</td></tr><tr><td>align-content</td><td>توزيع الصفوف المتعددة (مع flex-wrap فقط)</td></tr><tr><td>flex-grow</td><td>كم ينمو العنصر لملء المساحة الفارغة</td></tr><tr><td>flex-shrink</td><td>كم ينكمش عند الضيق (1 افتراضي)</td></tr><tr><td>flex-basis</td><td>الحجم الابتدائي قبل النمو/الانكماش</td></tr><tr><td>flex</td><td>اختصار: grow shrink basis — flex: 1 الأكثر شيوعاً</td></tr><tr><td>align-self</td><td>محاذاة عنصر واحد تتجاوز align-items</td></tr><tr><td>order</td><td>ترتيب العرض دون تغيير HTML</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الخامسة: CSS Grid</span><p>✦ ما هو CSS Grid والفرق بينه وبين Flexbox</p><p>✦ تعريف الأعمدة والصفوف: grid-template-columns / rows</p><p>✦ وحدة fr (fraction) والدالة repeat()</p><p>✦ وضع العناصر: grid-column وgrid-row</p><p>✦ دالة minmax() للمرونة الكاملة</p><p>✦ grid-template-areas لتخطيط الصفحة بشكل مرئي</p><p>✦ مشروع: بناء تخطيط مجلة رقمية بـ CSS Grid</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الرابعة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الخامسة</span><p>يُرسَل مجلد المشروع (HTML + CSS) مضغوطاً عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: لوحة تحكم إدارية (Dashboard)</h3></div><p class="blk-para">أنشئ صفحة لوحة تحكم بسيطة تُشبه لوحات إدارة المواقع (Admin Dashboard) باستخدام Flexbox حصراً:</p><h4 class="mini-head">◆ 🧩 هيكل الصفحة المطلوب:</h4><div class="code-block" data-lang="layout">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Layout</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>┌──────────────────────────────────────────────────┐
+│                   Top Navbar                     │
+│  [Logo]          [Search]     [User] [Notif]     │
+├───────────────┬──────────────────────────────────┤
+│               │   Stats: 4 cards أفقية          │
+│    Sidebar    ├──────────────────────────────────┤
+│               │   Charts / Tables area           │
+│  ● Dashboard  ├──────────────────────────────────┤
+│  ● Users      │   Recent Activity List           │
+│  ● Reports    │                                  │
+│  ● Settings   │                                  │
+└───────────────┴──────────────────────────────────┘</code></pre>
+</div><h4 class="mini-head">◆ 📋 المتطلبات التفصيلية:</h4><ul class="mini-list"><li>Top Navbar: شعار + عناصر يمين (بحث + أيقونة تنبيه + اسم المستخدم) — justify-content: space-between</li><li>Sidebar ثابت العرض 220px: قائمة روابط عمودية + hover effect</li><li>Main Area: flex-direction column</li><li>Stats Row: 4 بطاقات إحصائية بالتساوي (flex: 1 لكل منها) — رقم + عنوان + أيقونة</li><li>جدول أحدث المستخدمين: 5 صفوف بـ Flexbox (بدلاً من HTML table) — كل صف flex + space-between</li><li>قائمة آخر النشاطات: 5 عناصر بتصميم Flexbox</li><li>ألوان احترافية واستخدام Google Fonts عربي</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>هيكل Flexbox صحيح للصفحة الكاملة</td><td>25 نقطة</td></tr><tr><td>Navbar وSidebar بخصائص flex صحيحة</td><td>20 نقطة</td></tr><tr><td>Stats cards بتوزيع متساوٍ</td><td>15 نقطة</td></tr><tr><td>flex-grow وflex-shrink وflex-basis صحيحة</td><td>20 نقطة</td></tr><tr><td>التصميم والألوان والاحترافية</td><td>20 نقاط</td></tr></tbody></table></div></div></div>
+<div class="closing-banner">
+  <h3>🧩 أحسنت! صفحاتك الآن مرنة واحترافية بـ Flexbox 🧩</h3>
+  
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 04</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-03.html"><small>السابق</small><span>الجلسة 03 — مقدمة إلى CSS</span></a>
+        <a class="nav-arrow next" href="lesson-05.html"><small>التالي</small><span>الجلسة 05 — CSS Grid</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

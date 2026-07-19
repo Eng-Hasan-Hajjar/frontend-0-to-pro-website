@@ -9,12 +9,12 @@
   const SESSIONS = [
     { id: '01', emoji: '🌐', title: 'مقدمة إلى HTML وأدوات التطوير', href: 'lesson-01.html', ready: true },
     { id: '02', emoji: '🌐', title: 'HTML المتقدم', href: 'lesson-02.html', ready: true },
-    { id: '03', emoji: '🎨', title: 'مقدمة إلى CSS', href: 'lesson-03.html', ready: false },
-    { id: '04', emoji: '🧩', title: 'CSS Flexbox', href: 'lesson-04.html', ready: false },
-    { id: '05', emoji: '🗂️', title: 'CSS Grid', href: 'lesson-05.html', ready: false },
-    { id: '06', emoji: '📱', title: 'التصميم المتجاوب', href: 'lesson-06.html', ready: false },
-    { id: '07', emoji: '🎬', title: 'CSS Animations', href: 'lesson-07.html', ready: false },
-    { id: '08', emoji: '🏆', title: 'المشروع الشامل', href: 'lesson-08.html', ready: false },
+    { id: '03', emoji: '🎨', title: 'مقدمة إلى CSS', href: 'lesson-03.html', ready: true },
+    { id: '04', emoji: '🧩', title: 'CSS Flexbox', href: 'lesson-04.html', ready: true },
+    { id: '05', emoji: '🗂️', title: 'CSS Grid', href: 'lesson-05.html', ready: true },
+    { id: '06', emoji: '📱', title: 'التصميم المتجاوب', href: 'lesson-06.html', ready: true },
+    { id: '07', emoji: '🎬', title: 'CSS Animations', href: 'lesson-07.html', ready: true },
+    { id: '08', emoji: '🏆', title: 'المشروع الشامل', href: 'lesson-08.html', ready: true },
   ];
   window.FEMB_SESSIONS = SESSIONS;
 

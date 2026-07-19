@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 07 — CSS Animations | Front-End Master Book</title>
+<meta name="description" content="CSS Animations — Transitions • Transforms • Keyframes • التأثيرات الاحترافية">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="07">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>مسار HTML &amp; CSS · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">✨</span>
+    <div>
+      <div class="session-tag">Session 07 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة السابعة — CSS Animations</h1>
+  <p class="tags-line">Transitions • Transforms • Keyframes • التأثيرات الاحترافية</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة السابعة</h2>
+  <ul class="goal-list"><li>فهم الفرق بين Transitions وAnimations واستخدام كل منهما في موضعه الصحيح</li><li>كتابة transition بجميع خصائصها وتطبيق دوال التسهيل (Easing Functions)</li><li>استخدام transform بجميع دوالها: translate, rotate, scale, skew, matrix</li><li>دمج Transform مع Transition لإنشاء تأثيرات تفاعلية احترافية</li><li>كتابة Keyframe Animations بـ @keyframes من البداية</li><li>التحكم في Animation بخصائصها الثماني: duration, delay, iteration, direction, fill-mode, timing, play-state</li><li>بناء تأثيرات عملية: بطاقة تنقلب، أزرار ذكية، قائمة تنزلق، loading spinner</li><li>فهم أفضل ممارسات الأداء: ما يُحرَّك وما يُتجنَّب تحريكه</li><li>بناء صفحة هبوط (Landing Page) احترافية بتأثيرات CSS خالصة</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة السادسة</span><p>✔ Mobile-First: الجوال أولاً بـ min-width</p><p>✔ Breakpoints: 480px, 768px, 1024px, 1280px</p><p>✔ وحدات: rem, em, vw, vh, %, calc(), clamp()</p><p>✔ CSS Variables: :root { --name: value } | var(--name)</p><p>✔ Dark Mode: @media (prefers-color-scheme: dark)</p><p>✔ Hamburger Menu + JavaScript toggle</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🎬</span><h2>الجزء الأول: الانتقالات (CSS Transitions)</h2></div><p class="blk-para">Transitions تُحوّل التغييرات الفورية في CSS إلى تغييرات سلسة وجميلة. بدلاً من أن يتغيّر لون الزر فجأة عند hover، يتدرّج تدريجياً.</p><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>بنية transition</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* الصيغة المختصرة */
+/* transition: property duration timing-function delay; */
+
+.btn {
+  background-color: #2E75B6;
+  transition: background-color 0.3s ease 0s;
+  /*          الخاصية       المدة  التسهيل  التأخير */
+}
+
+.btn:hover {
+  background-color: #1A3C5E;
+  /* الآن التغيير يحدث بسلاسة خلال 0.3 ثانية */
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>خصائص transition التفصيلية</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الخاصية</th><th>الوصف والقيم</th></tr></thead><tbody><tr><td>transition-property</td><td>الخاصية التي تُطبَّق عليها — all | color | transform | ...</td></tr><tr><td>transition-duration</td><td>مدة الانتقال — 0.3s | 300ms | 1s</td></tr><tr><td>transition-timing-function</td><td>دالة التسهيل — ease, linear, ease-in, ease-out, ease-in-out, cubic-bezier()</td></tr><tr><td>transition-delay</td><td>التأخير قبل البدء — 0s | 0.2s | 500ms</td></tr></tbody></table></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* تفصيلي */
+.element {
+  transition-property: background-color, transform, box-shadow;
+  transition-duration: 0.3s, 0.4s, 0.3s;
+  transition-timing-function: ease, ease-out, ease;
+  transition-delay: 0s, 0.1s, 0s;
+}
+
+/* مختصر — أكثر من خاصية */
+.element {
+  transition:
+    background-color 0.3s ease,
+    transform 0.4s ease-out 0.1s,
+    box-shadow 0.3s ease;
+}
+
+/* all — يُطبَّق على كل الخصائص (استخدم بحذر) */
+.element {
+  transition: all 0.3s ease;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>دوال التسهيل (Timing Functions / Easing)</h3></div><p class="blk-para">دوال التسهيل تتحكم في سرعة الحركة خلال فترة الانتقال:</p><div class="callout info"><span class="callout-title">📈 دوال التسهيل — كيف تتصرف</span><p>  ease:         بطيء → سريع → بطيء  (الأكثر استخداماً) ✅</p><p>  linear:       سرعة ثابتة طوال الانتقال</p><p>  ease-in:      بطيء → يتسارع (كالكرة تسقط)</p><p>  ease-out:     سريع → يتباطأ (كالكرة ترتطم بالأرض) ✅</p><p>  ease-in-out:  بطيء → سريع → بطيء (أكثر نعومة من ease)</p><p>  cubic-bezier(x1, y1, x2, y2)  — تحكم كامل مخصص</p><p>  cubic-bezier(0.68, -0.55, 0.27, 1.55)  → تأثير نابض (bounce)</p><p>  cubic-bezier(0.4, 0, 0.2, 1)           → Material Design ✅</p><p>  cubic-bezier(0, 0, 0.2, 1)             → تسارع ثم توقف ناعم</p><p>  steps(4, end)  → حركة مقطّعة (sprite animation)</p><p>  steps(1)       → تغيير فوري بدون انتقال</p></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* استخدام cubic-bezier — أداة مفيدة: cubic-bezier.com */
+
+/* زر ينبض عند hover */
+.btn-bounce {
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+.btn-bounce:hover { transform: scale(1.15); }
+
+/* تأثير Material Design الرسمي */
+.material-btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* حركة مقطّعة (مثل الساعة العقارب) */
+.clock-hand {
+  transition: transform 1s steps(60, end);
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.4</span><h3>أمثلة تطبيقية على Transitions</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* ══ 1. زر احترافي ══ */
+.btn {
+  background: #2E75B6;
+  color: white;
+  padding: 0.75rem 1.75rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+.btn:hover {
+  background: #1A3C5E;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(46,117,182,0.45);
+}
+.btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46,117,182,0.3);
+}
+
+/* ══ 2. بطاقة مع hover مبهر ══ */
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.18);
+}
+
+/* ══ 3. رابط قائمة مع خط سفلي ══ */
+.nav-link {
+  position: relative;
+  text-decoration: none;
+  color: white;
+  padding-bottom: 4px;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 0;
+  height: 2px;
+  background: #E8A020;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
+/* ══ 4. صورة مع تأثير تكبير ══ */
+.img-wrapper {
+  overflow: hidden;
+  border-radius: 12px;
+}
+.img-wrapper img {
+  width: 100%;
+  transition: transform 0.5s ease;
+}
+.img-wrapper:hover img { transform: scale(1.08); }</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔄</span><h2>الجزء الثاني: التحويلات (CSS Transforms)</h2></div><p class="blk-para">transform تُغيّر شكل العنصر وموضعه وحجمه بصرياً دون التأثير على تدفق الصفحة. هي الخاصية المُفضّلة للتحريك لأنها تستخدم GPU وأداؤها ممتاز.</p><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>translate (الإزاحة)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* الإزاحة الأفقية والعمودية */
+.element {
+  transform: translateX(50px);    /* إزاحة أفقية 50px لليسار */
+  transform: translateY(-20px);   /* إزاحة عمودية 20px للأعلى */
+  transform: translate(50px, -20px); /* أفقي وعمودي معاً */
+
+  /* بالنسبة المئوية — نسبة لحجم العنصر نفسه */
+  transform: translateX(100%);   /* يتحرك بعرضه الكامل */
+  transform: translateY(-100%);  /* يتحرك بارتفاعه للأعلى */
+
+  /* 3D */
+  transform: translateZ(50px);
+  transform: translate3d(50px, 20px, 10px);
+}
+
+/* الاستخدام الأشهر: توسيط مطلق */
+.centered {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%); /* تراجع بنصف الحجم */
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>rotate (التدوير)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.element {
+  transform: rotate(45deg);      /* تدوير 45 درجة باتجاه عقارب الساعة */
+  transform: rotate(-90deg);     /* تدوير 90 درجة عكس العقارب */
+  transform: rotate(0.5turn);    /* نصف دورة = 180 درجة */
+  transform: rotate(1turn);      /* دورة كاملة 360 درجة */
+
+  /* 3D */
+  transform: rotateX(45deg);     /* تدوير حول المحور X (يميل للخلف) */
+  transform: rotateY(180deg);    /* تدوير حول المحور Y (ينقلب) */
+  transform: rotateZ(30deg);     /* = rotate(30deg) */
+}
+
+/* مثال: زر القائمة الهامبرغر يتحول لـ X */
+.hamburger { transition: transform 0.3s ease; }
+.hamburger.open { transform: rotate(90deg); }
+
+/* أيقونة سهم في قائمة منسدلة */
+.arrow { transition: transform 0.3s ease; }
+.open &gt; .arrow { transform: rotate(180deg); }</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.3</span><h3>scale (التكبير والتصغير)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.element {
+  transform: scale(1.2);         /* تكبير 120% في الاتجاهين */
+  transform: scale(0.8);         /* تصغير إلى 80% */
+  transform: scaleX(1.5);        /* تمديد أفقي فقط */
+  transform: scaleY(0.5);        /* تنصيف عمودي فقط */
+  transform: scale(1.2, 0.8);    /* تكبير أفقي + تصغير عمودي */
+  transform: scale(-1);          /* انعكاس كامل (مرآة) */
+  transform: scaleX(-1);         /* انعكاس أفقي فقط */
+}
+
+/* مثال: زر ينكمش عند الضغط */
+.btn { transition: transform 0.15s ease; }
+.btn:hover  { transform: scale(1.05); }
+.btn:active { transform: scale(0.96); }
+
+/* مثال: صورة تكبر عند hover */
+.photo { overflow: hidden; }
+.photo img { transition: transform 0.4s ease; }
+.photo:hover img { transform: scale(1.1); }</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.4</span><h3>skew (الانحراف)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>.element {
+  transform: skewX(15deg);       /* انحراف أفقي */
+  transform: skewY(10deg);       /* انحراف عمودي */
+  transform: skew(15deg, 5deg);  /* أفقي وعمودي */
+}
+
+/* مثال: زر بشكل مائل أنيق */
+.skew-btn {
+  display: inline-block;
+  background: #E8A020;
+  padding: 12px 30px;
+  transform: skewX(-12deg);
+}
+.skew-btn span {
+  display: inline-block;
+  transform: skewX(12deg); /* تصحيح انحراف النص */
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.5</span><h3>دمج Transforms المتعددة</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* دمج عدة transforms في تصريح واحد */
+/* الترتيب مهم جداً! */
+.element {
+  /* translate أولاً ثم rotate */
+  transform: translateX(100px) rotate(45deg);
+
+  /* rotate أولاً ثم translate (نتيجة مختلفة!) */
+  transform: rotate(45deg) translateX(100px);
+}
+
+/* مثال كامل: بطاقة منبثقة */
+.popup-card {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.popup-card:hover {
+  transform: translateY(-12px) scale(1.03) rotate(-1deg);
+}
+
+/* تحكم في نقطة الأصل (pivot point) */
+.element {
+  transform-origin: center;      /* الافتراضي */
+  transform-origin: top right;   /* من الزاوية العلوية اليمنى */
+  transform-origin: 0% 50%;      /* من المنتصف الأيمن */
+  transform-origin: 100px 50px;  /* نقطة مخصصة */
+}
+
+/* مثال: ورقة تُفتح */
+.page {
+  transform-origin: right center; /* تنقلب من الجهة اليمنى */
+  transition: transform 0.6s ease;
+}
+.page:hover { transform: rotateY(-20deg); }</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.6</span><h3>perspective والـ 3D</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* perspective تُعطي إحساساً بالعمق ثلاثي الأبعاد */
+/* تُكتب على الأب */
+.scene {
+  perspective: 800px;  /* كلما قلّت، زاد تأثير العمق */
+}
+
+/* بطاقة تنقلب ثلاثية الأبعاد */
+.card-3d {
+  width: 300px; height: 400px;
+  position: relative;
+  transform-style: preserve-3d; /* مهم لـ 3D */
+  transition: transform 0.7s ease;
+}
+
+.card-3d:hover {
+  transform: rotateY(180deg);  /* ينقلب 180 درجة */
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%; height: 100%;
+  backface-visibility: hidden; /* يخفي الوجه الخلفي */
+  border-radius: 16px;
+}
+
+.card-back {
+  transform: rotateY(180deg); /* مقلوب مسبقاً */
+  background: #1A3C5E;
+  color: white;
+}</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎞️</span><h2>الجزء الثالث: الأنيميشن بـ @keyframes</h2></div><p class="blk-para">@keyframes تُتيح تعريف تسلسل الحركة بدقة من خطوة إلى خطوة — أقوى بكثير من transition لأنها لا تحتاج تفاعل المستخدم.</p><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>تعريف Keyframes</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* الطريقة 1: from و to (بداية ونهاية) */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* الطريقة 2: نسب مئوية (أكثر تحكماً) */
+@keyframes slideInRight {
+  0%   { transform: translateX(100px); opacity: 0; }
+  60%  { transform: translateX(-15px); opacity: 1; }
+  80%  { transform: translateX(8px); }
+  100% { transform: translateX(0); }
+}
+
+/* نقاط متعددة بنفس التأثير */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.1); }
+}
+
+/* تحريك اللون بتسلسل */
+@keyframes colorCycle {
+  0%   { background: #1A3C5E; }
+  33%  { background: #2E75B6; }
+  66%  { background: #E8A020; }
+  100% { background: #1A3C5E; }
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>خصائص animation</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الخاصية</th><th>الوصف والقيم الشائعة</th></tr></thead><tbody><tr><td>animation-name</td><td>اسم الـ @keyframes المُعرَّف</td></tr><tr><td>animation-duration</td><td>مدة دورة واحدة — 0.5s | 1s | 2000ms</td></tr><tr><td>animation-timing-function</td><td>دالة التسهيل — ease, linear, ease-in-out, cubic-bezier()</td></tr><tr><td>animation-delay</td><td>تأخير قبل البدء — 0s | 0.5s | -1s (يبدأ من المنتصف)</td></tr><tr><td>animation-iteration-count</td><td>عدد التكرار — 1 | 3 | infinite</td></tr><tr><td>animation-direction</td><td>normal | reverse | alternate | alternate-reverse</td></tr><tr><td>animation-fill-mode</td><td>none | forwards | backwards | both — حالة العنصر قبل/بعد</td></tr><tr><td>animation-play-state</td><td>running | paused — للتحكم بـ JavaScript</td></tr></tbody></table></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* الصيغة المختصرة */
+/* animation: name duration timing delay iteration direction fill-mode; */
+
+.element {
+  animation: fadeIn 0.8s ease 0.2s 1 normal forwards;
+/*           الاسم  المدة  التسهيل التأخير التكرار الاتجاه fill-mode */
+}
+
+/* أمثلة شائعة */
+.fade-in     { animation: fadeIn 0.6s ease forwards; }
+.pulse       { animation: pulse 1.5s ease-in-out infinite; }
+.spin        { animation: spin 1s linear infinite; }
+.bounce-in   { animation: bounceIn 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
+/* أنيميشنات متعددة على نفس العنصر */
+.special {
+  animation:
+    fadeIn 0.5s ease forwards,
+    pulse 2s ease 0.5s infinite;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.3</span><h3>animation-fill-mode بالتفصيل</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>@keyframes slideDown {
+  from { transform: translateY(-30px); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+/* none: العنصر يعود لحالته الأصلية بعد الانتهاء */
+.el { animation: slideDown 0.5s ease none; }
+
+/* forwards: يبقى عند آخر نقطة (to/100%) بعد الانتهاء ✅ */
+.el { animation: slideDown 0.5s ease forwards; }
+
+/* backwards: يبدأ من أول نقطة حتى أثناء التأخير */
+.el { animation: slideDown 0.5s ease 1s backwards; }
+
+/* both: forwards + backwards معاً ✅ (الأفضل عادةً) */
+.el { animation: slideDown 0.5s ease 1s both; }</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.4</span><h3>animation-direction</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* normal: من 0% → 100% (الافتراضي) */
+.el { animation: slideIn 1s linear infinite normal; }
+
+/* reverse: من 100% → 0% (معكوس) */
+.el { animation: slideIn 1s linear infinite reverse; }
+
+/* alternate: 0%→100% ثم 100%→0% بالتناوب ✅ */
+.el { animation: pulse 1s ease infinite alternate; }
+
+/* alternate-reverse: 100%→0% ثم 0%→100% */
+.el { animation: pulse 1s ease infinite alternate-reverse; }
+
+/* مثال حركة نبض مستمرة وناعمة */
+@keyframes heartbeat {
+  from { transform: scale(1); }
+  to   { transform: scale(1.15); }
+}
+.heart {
+  animation: heartbeat 0.6s ease-in-out infinite alternate;
+}</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">⚡</span><h2>الجزء الرابع: تأثيرات عملية احترافية</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>Loading Spinner (دوار التحميل)</h3></div><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+    </div>
+    <pre><code data-role="html-code">&lt;!-- HTML --&gt;
+&lt;div class="spinner"&gt;&lt;/div&gt;
+&lt;div class="spinner-dots"&gt;
+  &lt;div class="dot"&gt;&lt;/div&gt;
+  &lt;div class="dot"&gt;&lt;/div&gt;
+  &lt;div class="dot"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+  <div class="code-block" data-lang="css">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot css"></span>CSS</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="css-code">/* ══ Spinner دائري ══ */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  width: 50px; height: 50px;
+  border: 4px solid #EBF3FB;
+  border-top-color: #2E75B6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ══ نقاط متحركة ══ */
+@keyframes bounce-dot {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+  40%           { transform: scale(1); opacity: 1; }
+}
+
+.spinner-dots { display: flex; gap: 8px; }
+.dot {
+  width: 14px; height: 14px;
+  background: #2E75B6;
+  border-radius: 50%;
+  animation: bounce-dot 1.4s ease-in-out infinite;
+}
+.dot:nth-child(2) { animation-delay: 0.16s; }
+.dot:nth-child(3) { animation-delay: 0.32s; }</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>Skeleton Loading (هيكل التحميل)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #EBF3FB 25%,
+    #D0E4F5 50%,
+    #EBF3FB 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 8px;
+}
+
+.skeleton-title { height: 24px; width: 70%; margin-bottom: 12px; }
+.skeleton-text  { height: 16px; width: 100%; margin-bottom: 8px; }
+.skeleton-img   { height: 200px; width: 100%; }</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.3</span><h3>بطاقة تنقلب ثلاثية الأبعاد (Flip Card)</h3></div><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+    </div>
+    <pre><code data-role="html-code">&lt;!-- HTML --&gt;
+&lt;div class="flip-scene"&gt;
+  &lt;div class="flip-card"&gt;
+    &lt;div class="flip-front"&gt;
+      &lt;h3&gt;الوجه الأمامي&lt;/h3&gt;
+      &lt;p&gt;مرّر الماوس للكشف&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="flip-back"&gt;
+      &lt;h3&gt;الوجه الخلفي&lt;/h3&gt;
+      &lt;p&gt;معلومات إضافية هنا&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+  <div class="code-block" data-lang="css">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot css"></span>CSS</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="css-code">.flip-scene {
+  perspective: 1000px;
+  width: 300px; height: 400px;
+}
+
+.flip-card {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flip-scene:hover .flip-card {
+  transform: rotateY(180deg);
+}
+
+.flip-front, .flip-back {
+  position: absolute;
+  width: 100%; height: 100%;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 30px;
+}
+
+.flip-front {
+  background: linear-gradient(135deg, #1A3C5E, #2E75B6);
+  color: white;
+}
+
+.flip-back {
+  background: linear-gradient(135deg, #E8A020, #f0b832);
+  color: #1A1A2E;
+  transform: rotateY(180deg);
+}</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.4</span><h3>شريط تقدم متحرك (Progress Bar)</h3></div><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+    </div>
+    <pre><code data-role="html-code">&lt;!-- HTML --&gt;
+&lt;div class="skill"&gt;
+  &lt;div class="skill-label"&gt;
+    &lt;span&gt;HTML &amp; CSS&lt;/span&gt;
+    &lt;span&gt;90%&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="progress-track"&gt;
+    &lt;div class="progress-fill" style="--target: 90%"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+  <div class="code-block" data-lang="css">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot css"></span>CSS</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="css-code">@keyframes growBar {
+  from { width: 0; }
+  to   { width: var(--target); }
+}
+
+.progress-track {
+  background: #EBF3FB;
+  border-radius: 999px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2E75B6, #E8A020);
+  border-radius: 999px;
+  animation: growBar 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.3s;
+}
+
+.skill-label {
+  display: flex; justify-content: space-between;
+  margin-bottom: 8px; font-weight: 600;
+  color: #1A3C5E;
+}</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.5</span><h3>قائمة تنسدل (Dropdown Animation)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>@keyframes dropDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scaleY(0.92);
+    transform-origin: top;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+    transform-origin: top;
+  }
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%; right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  min-width: 200px;
+  overflow: hidden;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+  animation: dropDown 0.25s ease forwards;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.6</span><h3>Typewriter Effect (كتابة تدريجية)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>@keyframes typing {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@keyframes blink-cursor {
+  0%, 100% { border-right-color: transparent; }
+  50%       { border-right-color: #E8A020; }
+}
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid #E8A020;
+  width: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1A3C5E;
+  animation:
+    typing 3s steps(30, end) 0.5s forwards,
+    blink-cursor 0.75s step-end infinite;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.7</span><h3>تأثيرات Entrance (دخول العناصر عند التمرير)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* عناصر تظهر عند التمرير — مع Intersection Observer بالجافاسكريبت */
+
+/* تعريف الـ keyframes */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* الحالة الابتدائية — مخفي */
+.animate-on-scroll {
+  opacity: 0;
+}
+
+/* عندما يُضاف class 'visible' بالجافاسكريبت */
+.animate-on-scroll.visible {
+  animation: fadeInUp 0.7s ease both;
+}
+
+/* تأخير متتالي للبطاقات */
+.card:nth-child(1) { animation-delay: 0s; }
+.card:nth-child(2) { animation-delay: 0.1s; }
+.card:nth-child(3) { animation-delay: 0.2s; }
+.card:nth-child(4) { animation-delay: 0.3s; }</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🚀</span><h2>الجزء الخامس: أداء الأنيميشن — أفضل الممارسات</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>الخصائص الآمنة للتحريك (GPU-Accelerated)</h3></div><p class="blk-para">المتصفح يُفوّض تحريك بعض الخصائص للـ GPU مباشرة — هذه الخصائص لا تُسبّب إعادة حساب تخطيط الصفحة:</p><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الخاصية</th><th>الاستخدام</th></tr></thead><tbody><tr><td>transform: translate()</td><td>✅ التحريك والإزاحة — استخدم بدلاً من top/left</td></tr><tr><td>transform: scale()</td><td>✅ التكبير والتصغير — استخدم بدلاً من width/height</td></tr><tr><td>transform: rotate()</td><td>✅ التدوير — آمن تماماً</td></tr><tr><td>opacity</td><td>✅ الشفافية — آمن تماماً</td></tr><tr><td>filter: blur()</td><td>✅ نسبياً — أحياناً يُسبّب ضغطاً</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>الخصائص المكلفة — تجنّبها في الأنيميشن</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>تجنّب تحريك هذه الخصائص</th><th>السبب</th></tr></thead><tbody><tr><td>width, height</td><td>❌ يُعيد حساب تخطيط الصفحة (Layout Reflow)</td></tr><tr><td>top, left, right, bottom</td><td>❌ يُعيد حساب الموضع — استخدم transform بدلاً</td></tr><tr><td>margin, padding</td><td>❌ يُؤثر على الـ Layout</td></tr><tr><td>font-size</td><td>❌ يُعيد رسم النص والتخطيط</td></tr><tr><td>border-width</td><td>❌ يُعيد حساب الـ Layout</td></tr><tr><td>box-shadow (بحذر)</td><td>⚠️ مكلف — استخدم باعتدال أو filter: drop-shadow</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.3</span><h3>will-change للتحسين المسبق</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* will-change يُخبر المتصفح مسبقاً بما سيتغير */
+/* فيُهيّئ طبقة GPU مسبقاً */
+
+.card {
+  will-change: transform, opacity;
+}
+
+/* استخدم will-change فقط على عناصر ستتحرك فعلاً */
+/* لا تضعه على كل العناصر — يستهلك ذاكرة */
+
+/* الأفضل: أضفه عند hover وأزله بعد الانتهاء بالجافاسكريبت */
+.btn:hover { will-change: transform; }
+.btn:not(:hover) { will-change: auto; }</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.4</span><h3>احترام تفضيلات المستخدم</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* بعض المستخدمين يعانون من دوخة بسبب الحركة الكثيرة */
+/* prefers-reduced-motion يحترم إعداداتهم */
+
+@media (prefers-reduced-motion: reduce) {
+  /* إلغاء جميع الأنيميشنات */
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* أو تبسيطها بدلاً من إلغائها */
+@media (prefers-reduced-motion: reduce) {
+  .animated-card {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">📋</span><h2>الجزء السادس: جداول مرجعية شاملة</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>دوال Transform كاملة</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الدالة</th><th>المعاملات</th><th>الوظيفة</th></tr></thead><tbody><tr><td>translate(x, y)</td><td>px, %, rem</td><td>إزاحة أفقية وعمودية</td></tr><tr><td>translateX(x)</td><td>قيمة</td><td>إزاحة أفقية فقط</td></tr><tr><td>translateY(y)</td><td>قيمة</td><td>إزاحة عمودية فقط</td></tr><tr><td>translateZ(z)</td><td>قيمة</td><td>إزاحة عمقية (3D)</td></tr><tr><td>translate3d(x,y,z)</td><td>3 قيم</td><td>إزاحة ثلاثية الأبعاد</td></tr><tr><td>rotate(angle)</td><td>deg, turn, rad</td><td>تدوير ثنائي الأبعاد</td></tr><tr><td>rotateX(angle)</td><td>زاوية</td><td>تدوير حول المحور X</td></tr><tr><td>rotateY(angle)</td><td>زاوية</td><td>تدوير حول المحور Y</td></tr><tr><td>rotateZ(angle)</td><td>زاوية</td><td>= rotate()</td></tr><tr><td>scale(x, y)</td><td>رقم (1 = طبيعي)</td><td>تكبير أو تصغير</td></tr><tr><td>scaleX(x)</td><td>رقم</td><td>تكبير أفقي فقط</td></tr><tr><td>scaleY(y)</td><td>رقم</td><td>تكبير عمودي فقط</td></tr><tr><td>skew(x, y)</td><td>deg</td><td>انحراف أفقي وعمودي</td></tr><tr><td>skewX(x)</td><td>deg</td><td>انحراف أفقي فقط</td></tr><tr><td>skewY(y)</td><td>deg</td><td>انحراف عمودي فقط</td></tr><tr><td>matrix(a,b,c,d,e,f)</td><td>6 أرقام</td><td>تحويل رياضي كامل</td></tr><tr><td>perspective(d)</td><td>px</td><td>عمق ثلاثي الأبعاد</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.2</span><h3>خصائص animation الكاملة</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الخاصية</th><th>القيم المتاحة</th></tr></thead><tbody><tr><td>animation-name</td><td>اسم الـ @keyframes | none</td></tr><tr><td>animation-duration</td><td>0s | 0.5s | 1s | 2000ms</td></tr><tr><td>animation-timing-function</td><td>ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier() | steps()</td></tr><tr><td>animation-delay</td><td>0s | 0.3s | -0.5s (سالب = يبدأ من المنتصف)</td></tr><tr><td>animation-iteration-count</td><td>1 | 3 | infinite</td></tr><tr><td>animation-direction</td><td>normal | reverse | alternate | alternate-reverse</td></tr><tr><td>animation-fill-mode</td><td>none | forwards | backwards | both</td></tr><tr><td>animation-play-state</td><td>running | paused</td></tr><tr><td>animation (مختصر)</td><td>name duration timing delay count direction fill</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السابع: المشروع التطبيقي — Landing Page بتأثيرات احترافية</h2></div><div class="project-box"><p class="blk-para">سنبني صفحة هبوط (Landing Page) كاملة لأكاديمية التقنية مع تأثيرات CSS خالصة لا تحتاج JavaScript.</p><div class="subsection"><div class="sub-head"><h3>ملف index.html</h3></div><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="html-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="ar" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;أكاديمية التقنية — Landing Page&lt;/title&gt;
+  &lt;link rel="preconnect" href="https://fonts.googleapis.com" /&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&amp;display=swap"
+    rel="stylesheet" /&gt;
+  &lt;link rel="stylesheet" href="style.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- ══ Navbar ══ --&gt;
+  &lt;header class="navbar"&gt;
+    &lt;div class="container navbar-inner"&gt;
+      &lt;div class="logo animate-fadeInLeft"&gt;🎓 أكاديمية التقنية&lt;/div&gt;
+      &lt;nav class="nav-links animate-fadeInRight"&gt;
+        &lt;a href="#features" class="nav-link"&gt;المميزات&lt;/a&gt;
+        &lt;a href="#courses" class="nav-link"&gt;الكورسات&lt;/a&gt;
+        &lt;a href="#skills" class="nav-link"&gt;المهارات&lt;/a&gt;
+        &lt;a href="#" class="btn btn-nav"&gt;ابدأ الآن&lt;/a&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;!-- ══ Hero ══ --&gt;
+  &lt;section class="hero"&gt;
+    &lt;div class="container hero-inner"&gt;
+      &lt;div class="hero-text"&gt;
+        &lt;h1 class="hero-title"&gt;
+          ابدأ مسيرتك في
+          &lt;span class="typewriter"&gt;تطوير الويب&lt;/span&gt;
+        &lt;/h1&gt;
+        &lt;p class="hero-subtitle animate-fadeInUp"&gt;
+          تعلّم HTML وCSS وJavaScript وReact من الصفر حتى الاحتراف
+        &lt;/p&gt;
+        &lt;div class="hero-btns animate-fadeInUp" style="animation-delay:0.4s"&gt;
+          &lt;a href="#" class="btn btn-primary btn-glow"&gt;ابدأ مجاناً 🚀&lt;/a&gt;
+          &lt;a href="#" class="btn btn-outline"&gt;شاهد الفيديو ▶&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class="hero-stats animate-fadeInUp" style="animation-delay:0.6s"&gt;
+          &lt;div class="stat"&gt;&lt;span class="count"&gt;+2000&lt;/span&gt;&lt;span&gt;طالب&lt;/span&gt;&lt;/div&gt;
+          &lt;div class="stat"&gt;&lt;span class="count"&gt;98%&lt;/span&gt;&lt;span&gt;رضا&lt;/span&gt;&lt;/div&gt;
+          &lt;div class="stat"&gt;&lt;span class="count"&gt;45&lt;/span&gt;&lt;span&gt;جلسة&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="hero-visual animate-fadeInRight"&gt;
+        &lt;div class="floating-card card-html"&gt;HTML5 🌐&lt;/div&gt;
+        &lt;div class="floating-card card-css"&gt;CSS3 🎨&lt;/div&gt;
+        &lt;div class="floating-card card-js"&gt;JavaScript ⚙️&lt;/div&gt;
+        &lt;div class="floating-card card-react"&gt;React ⚛️&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ══ Skills ══ --&gt;
+  &lt;section id="skills" class="skills-section"&gt;
+    &lt;div class="container"&gt;
+      &lt;h2 class="section-title"&gt;مهاراتك بعد الكورس&lt;/h2&gt;
+      &lt;div class="skills-list"&gt;
+        &lt;div class="skill-item"&gt;
+          &lt;div class="skill-label"&gt;&lt;span&gt;HTML5&lt;/span&gt;&lt;span&gt;95%&lt;/span&gt;&lt;/div&gt;
+          &lt;div class="progress-track"&gt;&lt;div class="progress-fill" style="--target:95%"&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="skill-item"&gt;
+          &lt;div class="skill-label"&gt;&lt;span&gt;CSS3 &amp; Flexbox &amp; Grid&lt;/span&gt;&lt;span&gt;90%&lt;/span&gt;&lt;/div&gt;
+          &lt;div class="progress-track"&gt;&lt;div class="progress-fill" style="--target:90%;animation-delay:0.2s"&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="skill-item"&gt;
+          &lt;div class="skill-label"&gt;&lt;span&gt;JavaScript&lt;/span&gt;&lt;span&gt;80%&lt;/span&gt;&lt;/div&gt;
+          &lt;div class="progress-track"&gt;&lt;div class="progress-fill" style="--target:80%;animation-delay:0.4s"&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="skill-item"&gt;
+          &lt;div class="skill-label"&gt;&lt;span&gt;React&lt;/span&gt;&lt;span&gt;75%&lt;/span&gt;&lt;/div&gt;
+          &lt;div class="progress-track"&gt;&lt;div class="progress-fill" style="--target:75%;animation-delay:0.6s"&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ══ Features — Flip Cards ══ --&gt;
+  &lt;section id="features" class="features-section"&gt;
+    &lt;div class="container"&gt;
+      &lt;h2 class="section-title"&gt;لماذا نحن؟&lt;/h2&gt;
+      &lt;div class="flip-grid"&gt;
+        &lt;div class="flip-scene"&gt;&lt;div class="flip-card"&gt;
+          &lt;div class="flip-front"&gt;&lt;div class="icon"&gt;🎯&lt;/div&gt;&lt;h3&gt;منهج منظّم&lt;/h3&gt;&lt;/div&gt;
+          &lt;div class="flip-back"&gt;&lt;p&gt;45 جلسة تدريبية مُرتَّبة من الأساسي للمتقدم بشكل تدريجي محكم&lt;/p&gt;&lt;/div&gt;
+        &lt;/div&gt;&lt;/div&gt;
+        &lt;div class="flip-scene"&gt;&lt;div class="flip-card"&gt;
+          &lt;div class="flip-front"&gt;&lt;div class="icon"&gt;💻&lt;/div&gt;&lt;h3&gt;مشاريع حقيقية&lt;/h3&gt;&lt;/div&gt;
+          &lt;div class="flip-back"&gt;&lt;p&gt;كل جلسة تنتهي بمشروع قابل للإضافة لمحفظتك الاحترافية فوراً&lt;/p&gt;&lt;/div&gt;
+        &lt;/div&gt;&lt;/div&gt;
+        &lt;div class="flip-scene"&gt;&lt;div class="flip-card"&gt;
+          &lt;div class="flip-front"&gt;&lt;div class="icon"&gt;🏆&lt;/div&gt;&lt;h3&gt;شهادة معتمدة&lt;/h3&gt;&lt;/div&gt;
+          &lt;div class="flip-back"&gt;&lt;p&gt;شهادة إتمام رسمية معترف بها من كبرى شركات التقنية في المنطقة&lt;/p&gt;&lt;/div&gt;
+        &lt;/div&gt;&lt;/div&gt;
+        &lt;div class="flip-scene"&gt;&lt;div class="flip-card"&gt;
+          &lt;div class="flip-front"&gt;&lt;div class="icon"&gt;🤝&lt;/div&gt;&lt;h3&gt;دعم مستمر&lt;/h3&gt;&lt;/div&gt;
+          &lt;div class="flip-back"&gt;&lt;p&gt;مجتمع طلاب نشط ومدرب دائم الحضور للإجابة على جميع أسئلتك&lt;/p&gt;&lt;/div&gt;
+        &lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ══ CTA ══ --&gt;
+  &lt;section class="cta-section"&gt;
+    &lt;div class="container"&gt;
+      &lt;h2 class="cta-title"&gt;جاهز لتبدأ رحلتك؟&lt;/h2&gt;
+      &lt;p&gt;انضم لأكثر من 2000 طالب يبنون مستقبلهم التقني الآن&lt;/p&gt;
+      &lt;a href="#" class="btn btn-primary btn-glow btn-large"&gt;سجّل مجاناً الآن 🚀&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ══ Footer ══ --&gt;
+  &lt;footer class="footer"&gt;
+    &lt;div class="container"&gt;
+      &lt;p&gt;© 2025 أكاديمية التقنية — Eng. Hasan Hajjar&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div></div><div class="subsection"><div class="sub-head"><h3>ملف style.css</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>:root {
+  --primary: #1A3C5E; --secondary: #2E75B6; --accent: #E8A020;
+  --bg: #F0F6FF; --text: #1A1A2E; --white: #FFFFFF;
+  --font: 'Cairo', sans-serif;
+  --radius: 16px; --shadow: 0 8px 30px rgba(0,0,0,0.1);
+  --transition: 0.3s ease;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); direction: rtl; }
+.container { width: 90%; max-width: 1280px; margin-inline: auto; }
+
+/* ══ Keyframes ══ */
+@keyframes fadeInUp    { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeInLeft  { from{opacity:0;transform:translateX(-40px)} to{opacity:1;transform:translateX(0)} }
+@keyframes fadeInRight { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+@keyframes pulse-glow { 0%,100%{box-shadow:0 0 0 0 rgba(232,160,32,0.7)} 70%{box-shadow:0 0 0 14px rgba(232,160,32,0)} }
+@keyframes spin { to{transform:rotate(360deg)} }
+@keyframes growBar { from{width:0} to{width:var(--target)} }
+@keyframes typing { from{width:0} to{width:100%} }
+@keyframes blink { 0%,100%{border-right-color:transparent} 50%{border-right-color:var(--accent)} }
+
+/* ══ Entrance Animations ══ */
+.animate-fadeInUp    { animation: fadeInUp 0.7s ease both; }
+.animate-fadeInLeft  { animation: fadeInLeft 0.7s ease both; }
+.animate-fadeInRight { animation: fadeInRight 0.7s ease both; }
+
+/* ══ Navbar ══ */
+.navbar { background: var(--primary); position: sticky; top:0; z-index:100;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.2); }
+.navbar-inner { display:flex; justify-content:space-between; align-items:center; padding:1rem 0; }
+.logo { color:white; font-size:1.3rem; font-weight:700; }
+.nav-links { display:flex; gap:6px; }
+.nav-link { color:rgba(255,255,255,0.85); text-decoration:none; padding:8px 14px;
+  border-radius:8px; position:relative; transition: color var(--transition); }
+.nav-link::after { content:''; position:absolute; bottom:4px; right:14px;
+  width:0; height:2px; background:var(--accent); transition:width var(--transition); }
+.nav-link:hover::after { width:calc(100% - 28px); }
+
+/* ══ Buttons ══ */
+.btn { display:inline-block; padding:0.75rem 1.75rem; border-radius:10px;
+  font-weight:700; text-decoration:none; font-size:1rem;
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition); }
+.btn-primary { background:var(--accent); color:var(--text); }
+.btn-primary:hover { transform:translateY(-3px); filter:brightness(1.08); }
+.btn-outline { border:2px solid white; color:white; }
+.btn-outline:hover { background:white; color:var(--primary); transform:translateY(-3px); }
+.btn-nav { background:var(--accent); color:var(--text) !important; font-size:0.9rem; }
+.btn-glow { animation: pulse-glow 2s infinite; }
+.btn-large { font-size:1.2rem; padding:1rem 2.5rem; }
+
+/* ══ Hero ══ */
+.hero { background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:white; padding:5rem 0; min-height:90vh;
+  display:flex; align-items:center; }
+.hero-inner { display:flex; gap:3rem; align-items:center; }
+.hero-text { flex:1; }
+.hero-title { font-size:clamp(2rem,4vw,3.5rem); font-weight:900; line-height:1.3;
+  margin-bottom:1.25rem; animation:fadeInLeft 0.8s ease both; }
+.typewriter { display:block; color:var(--accent); overflow:hidden; white-space:nowrap;
+  border-right:3px solid var(--accent); width:0;
+  animation: typing 2s steps(8,end) 0.8s forwards, blink 0.75s step-end infinite; }
+.hero-subtitle { font-size:1.1rem; opacity:0.9; margin-bottom:2rem;
+  animation:fadeInUp 0.7s ease 0.3s both; }
+.hero-btns { display:flex; gap:1rem; margin-bottom:2.5rem; flex-wrap:wrap; }
+.hero-stats { display:flex; gap:2rem; }
+.stat { display:flex; flex-direction:column; align-items:center; }
+.count { font-size:2rem; font-weight:900; color:var(--accent); }
+
+/* ══ Floating Cards ══ */
+.hero-visual { flex:0 0 420px; display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.floating-card { background:rgba(255,255,255,0.12); backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.2); border-radius:14px;
+  padding:20px; text-align:center; font-weight:700; font-size:1.1rem; color:white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.floating-card:hover { transform:translateY(-8px) scale(1.04);
+  box-shadow:0 16px 40px rgba(0,0,0,0.2); }
+.card-html  { animation:float 3.0s ease-in-out infinite; }
+.card-css   { animation:float 3.5s ease-in-out 0.5s infinite; }
+.card-js    { animation:float 4.0s ease-in-out 1.0s infinite; }
+.card-react { animation:float 3.2s ease-in-out 1.5s infinite; }
+
+/* ══ Skills ══ */
+.skills-section { padding:5rem 0; background:white; }
+.section-title { font-size:clamp(1.5rem,3vw,2rem); font-weight:700; color:var(--primary);
+  text-align:center; margin-bottom:3rem; }
+.skills-list { max-width:700px; margin:0 auto; display:flex; flex-direction:column; gap:24px; }
+.skill-label { display:flex; justify-content:space-between; font-weight:600; color:var(--primary); margin-bottom:8px; }
+.progress-track { background:#EBF3FB; border-radius:999px; height:14px; overflow:hidden; }
+.progress-fill { height:100%;
+  background:linear-gradient(90deg,var(--secondary),var(--accent));
+  border-radius:999px; width:0;
+  animation:growBar 1.5s cubic-bezier(0.4,0,0.2,1) forwards; }
+
+/* ══ Flip Cards ══ */
+.features-section { padding:5rem 0; background:var(--bg); }
+.flip-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:28px; }
+.flip-scene { perspective:1000px; height:220px; cursor:pointer; }
+.flip-card { width:100%; height:100%; position:relative;
+  transform-style:preserve-3d; transition:transform 0.7s cubic-bezier(0.4,0,0.2,1); }
+.flip-scene:hover .flip-card { transform:rotateY(180deg); }
+.flip-front, .flip-back { position:absolute; width:100%; height:100%;
+  backface-visibility:hidden; border-radius:var(--radius);
+  display:flex; flex-direction:column; justify-content:center;
+  align-items:center; padding:24px; text-align:center; }
+.flip-front { background:white; box-shadow:var(--shadow); }
+.flip-front .icon { font-size:2.5rem; margin-bottom:12px; }
+.flip-front h3 { color:var(--primary); font-weight:700; font-size:1.1rem; }
+.flip-back { background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:white; transform:rotateY(180deg); }
+.flip-back p { line-height:1.7; font-size:0.95rem; }
+
+/* ══ CTA ══ */
+.cta-section { background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:white; padding:5rem 0; text-align:center; }
+.cta-title { font-size:clamp(1.8rem,4vw,2.5rem); font-weight:900; margin-bottom:1rem; }
+.cta-section p { font-size:1.1rem; opacity:0.9; margin-bottom:2rem; }
+
+/* ══ Footer ══ */
+.footer { background:var(--primary); color:rgba(255,255,255,0.7);
+  padding:1.5rem 0; text-align:center; font-size:0.9rem; }
+
+/* ══ prefers-reduced-motion ══ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}</code></pre>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثامن: تمارين الجلسة السابعة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — Transitions<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">أنشئ مجموعة أزرار بتأثيرات مختلفة:</p><ul class="mini-list"><li>زر 1: يتغير لونه بسلاسة مع ظل عند hover</li><li>زر 2: يرتفع ويتكبر قليلاً عند hover وينكمش عند :active</li><li>زر 3: يتغير border وcolor عند hover (outline button)</li><li>زر 4: تأثير نابض باستخدام cubic-bezier(0.68, -0.55, 0.27, 1.55)</li><li>رابط قائمة: خط سفلي ينمو من اليمين لليسار عند hover</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — Keyframe Animations<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ صفحة تحتوي على:</p><ul class="mini-list"><li>Loading spinner دائري يدور باستمرار</li><li>3 نقاط تقفز بتأخيرات متتالية (loading dots)</li><li>عنوان يكتب نفسه تدريجياً (typewriter effect)</li><li>بطاقة تظهر من الأسفل (fadeInUp) عند تحميل الصفحة</li><li>شريط تقدم يمتلئ تدريجياً من 0 إلى 85%</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — بطاقة 3D تنقلب<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ بطاقة تعريفية تنقلب عند hover:</p><ul class="mini-list"><li>الوجه الأمامي: صورة avatar + اسم + مسمى وظيفي</li><li>الوجه الخلفي: ملخص + أيقونات التواصل الاجتماعي</li><li>انتقال ناعم rotateY(180deg) مع preserve-3d</li><li>أضف تأثير float خفيف على بطاقة ترحيبية في Hero</li><li>أضف shimmer skeleton loading على بطاقة قبل تحميل المحتوى</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة السابعة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>Transitions</td><td>transition: property duration timing delay | all 0.3s ease</td></tr><tr><td>Timing Functions</td><td>ease, linear, ease-in/out, ease-in-out, cubic-bezier(), steps()</td></tr><tr><td>Transform — translate</td><td>translateX/Y/Z() | translate(x,y) | -50% للتوسيط المطلق</td></tr><tr><td>Transform — rotate</td><td>rotate(deg) | rotateX/Y/Z | turn</td></tr><tr><td>Transform — scale</td><td>scale(1.1) | scaleX/Y | scale(-1) للانعكاس</td></tr><tr><td>Transform — skew</td><td>skewX/Y/() — انحراف</td></tr><tr><td>transform-origin</td><td>تحديد نقطة الأصل للدوران والتكبير</td></tr><tr><td>perspective + 3D</td><td>perspective() | transform-style: preserve-3d | backface-visibility</td></tr><tr><td>@keyframes</td><td>from/to | 0%, 50%, 100% | نقاط وسيطة متعددة</td></tr><tr><td>animation properties</td><td>name, duration, timing, delay, iteration, direction, fill-mode, play-state</td></tr><tr><td>fill-mode</td><td>forwards: يبقى عند النهاية | both: الأفضل</td></tr><tr><td>direction</td><td>alternate: ذهاباً وإياباً ناعماً</td></tr><tr><td>تأثيرات عملية</td><td>Spinner, Skeleton, Flip Card, Progress Bar, Typewriter, Dropdown</td></tr><tr><td>الأداء</td><td>حرّك transform وopacity فقط | تجنّب top/left/width/height</td></tr><tr><td>will-change</td><td>تحسين مسبق للـ GPU — استخدم باعتدال</td></tr><tr><td>Accessibility</td><td>@media (prefers-reduced-motion: reduce) لاحترام المستخدمين</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الثامنة: مشروع HTML &amp; CSS الشامل</span><p>✦ مراجعة شاملة لكل ما تعلمناه في HTML وCSS (جلسات 1-7)</p><p>✦ بناء موقع متكامل من الصفر: صفحات متعددة مترابطة</p><p>✦ تطبيق: Semantic HTML + Grid + Flexbox + Responsive + Variables + Animations</p><p>✦ تقنيات CSS متقدمة: Custom Scrollbar, Selection Styles, Print CSS</p><p>✦ نشر الموقع على الإنترنت مجاناً بـ GitHub Pages</p><p>✦ مراجعة كود الطلاب وتقديم ملاحظات تفصيلية</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة السابعة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الثامنة</span><p>يُرسَل مجلد المشروع (HTML + CSS) مضغوطاً عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: صفحة Portfolio شخصية بتأثيرات احترافية</h3></div><p class="blk-para">أنشئ صفحة Portfolio شخصية واحدة كاملة مع تأثيرات CSS خالصة تُعرض لصاحب العمل:</p><h4 class="mini-head">◆ 📋 أقسام الصفحة المطلوبة:</h4><ul class="mini-list"><li>Hero Section: اسمك كـ typewriter + مسماك الوظيفي يظهر بـ fadeInUp + زر glow متحرك</li><li>About Section: صورتك الشخصية تدور أو تكبر عند hover + نص تعريفي</li><li>Skills Section: أشرطة تقدم (progress bars) بها اسم المهارة ونسبتها تملأ تدريجياً</li><li>Projects Section: بطاقات مشاريع تنقلب (flip cards) — الأمامي: صورة المشروع | الخلفي: وصف + رابط</li><li>Contact Section: أيقونات تواصل اجتماعي مع hover effects</li><li>Footer: مع animation نبض بسيط على حرف القلب ❤️</li></ul><h4 class="mini-head">◆ ⭐ نقاط إضافية:</h4><ul class="mini-list"><li>أضف @media (prefers-reduced-motion: reduce) لإلغاء الأنيميشنات</li><li>استخدم will-change: transform على العناصر المتحركة</li><li>استخدم CSS Variables لجميع الألوان والمدد</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>Typewriter + entrance animations في Hero</td><td>20 نقطة</td></tr><tr><td>Progress bars تعمل بشكل صحيح مع CSS Variables</td><td>20 نقطة</td></tr><tr><td>Flip cards ثلاثية الأبعاد سليمة</td><td>20 نقطة</td></tr><tr><td>Hover effects احترافية على جميع العناصر التفاعلية</td><td>20 نقطة</td></tr><tr><td>prefers-reduced-motion + will-change + أداء جيد</td><td>10 نقاط</td></tr><tr><td>الإبداع والتميز في التأثيرات</td><td>10 نقاط</td></tr></tbody></table></div></div></div>
+<div class="closing-banner">
+  <h3>✨ أحسنت! موقعك الآن حيّ ومتحرك ومبهر ✨</h3>
+  
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 07</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-06.html"><small>السابق</small><span>الجلسة 06 — التصميم المتجاوب (Responsive Design)</span></a>
+        <a class="nav-arrow next" href="lesson-08.html"><small>التالي</small><span>الجلسة 08 — المشروع الشامل</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

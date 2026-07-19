@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 06 — التصميم المتجاوب | Front-End Master Book</title>
+<meta name="description" content="التصميم المتجاوب — Mobile-First • Media Queries • CSS Variables • وحدات القياس المرنة">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="06">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>مسار HTML &amp; CSS · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">📱</span>
+    <div>
+      <div class="session-tag">Session 06 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة السادسة — التصميم المتجاوب</h1>
+  <p class="tags-line">Mobile-First • Media Queries • CSS Variables • وحدات القياس المرنة</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة السادسة</h2>
+  <ul class="goal-list"><li>فهم مفهوم التصميم المتجاوب (Responsive Design) وأهميته</li><li>تطبيق منهجية Mobile-First في كتابة CSS</li><li>استخدام viewport meta tag بشكل صحيح</li><li>إتقان جميع وحدات القياس المرنة: rem, em, vw, vh, vmin, vmax, %</li><li>كتابة Media Queries بطرق مختلفة واستخدام النقاط الفاصلة الصحيحة</li><li>جعل الصور والوسائط متجاوبة تلقائياً</li><li>تعريف واستخدام CSS Variables (Custom Properties) لتنظيم المشروع</li><li>استخدام دوال CSS الحديثة: clamp(), min(), max()</li><li>تحويل موقع ثابت إلى موقع متجاوب كامل يعمل على جميع الأجهزة</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلستين الرابعة والخامسة</span><p>✔ Flexbox: display flex | justify-content | align-items | flex-wrap | gap</p><p>✔ flex-grow, flex-shrink, flex-basis | align-self | order</p><p>✔ CSS Grid: display grid | grid-template-columns/rows/areas</p><p>✔ وحدة fr | repeat() | minmax() | الوصفة الذهبية: auto-fit + minmax</p><p>✔ grid-column/row | span | 1/-1 | grid-area</p><p>✔ Flexbox للعناصر الداخلية + Grid للتخطيط الخارجي</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">📱</span><h2>الجزء الأول: ما هو التصميم المتجاوب ولماذا هو ضروري؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>إحصائيات الأجهزة المحمولة</h3></div><p class="blk-para">في عام 2025، تجاوز استخدام الإنترنت عبر الهواتف الذكية 65% من إجمالي الاستخدام العالمي. موقع لا يعمل على الجوال = موقع يخسر أكثر من نصف زواره!</p><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الجهاز</th><th>متوسط العرض الشائع</th></tr></thead><tbody><tr><td>📱 هاتف صغير</td><td>320px — 375px  (iPhone SE, Galaxy A)</td></tr><tr><td>📱 هاتف متوسط</td><td>390px — 414px  (iPhone 14, Pixel 7)</td></tr><tr><td>📱 هاتف كبير</td><td>430px — 480px  (iPhone Plus, Galaxy Ultra)</td></tr><tr><td>📟 تابلت صغير</td><td>600px — 768px  (iPad Mini, Galaxy Tab)</td></tr><tr><td>📟 تابلت كبير</td><td>800px — 1024px (iPad Air, iPad Pro)</td></tr><tr><td>💻 لابتوب صغير</td><td>1024px — 1280px</td></tr><tr><td>🖥️ سطح مكتب</td><td>1280px — 1440px</td></tr><tr><td>🖥️ شاشة واسعة</td><td>1440px — 1920px+</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>ثلاثة مبادئ التصميم المتجاوب</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المبدأ</th><th>التطبيق</th></tr></thead><tbody><tr><td>1 — Fluid Grids (الشبكات المرنة)</td><td>استخدام % وfr وauto-fit بدلاً من px الثابتة</td></tr><tr><td>2 — Flexible Images (الصور المرنة)</td><td>max-width: 100% لكل الصور والوسائط</td></tr><tr><td>3 — Media Queries (استعلامات الوسائط)</td><td>CSS مختلف لكل حجم شاشة</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>viewport meta tag — الخطوة الأولى الإلزامية</h3></div><p class="blk-para">هذا الوسم يُخبر المتصفح بأن يعرض الصفحة بعرض الجهاز الفعلي لا بعرض الكمبيوتر:</p><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="html-code">&lt;!-- يجب وضعه في &lt;head&gt; في كل صفحة HTML --&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+
+&lt;!-- width=device-width: اجعل العرض = عرض الجهاز الفعلي --&gt;
+&lt;!-- initial-scale=1.0: لا تُصغّر الصفحة عند فتحها --&gt;
+
+&lt;!-- ❌ بدون هذا الوسم: المتصفح يُصغّر الصفحة لتبدو مثل الكمبيوتر --&gt;
+&lt;!-- ✅ مع هذا الوسم: الصفحة تُعرض بحجم الجهاز الحقيقي --&gt;</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div><div class="callout warning"><span class="callout-title">⚠️ تنبيه مهم</span><p>بدون viewport meta tag، Media Queries لن تعمل بشكل صحيح على الجوال.</p><p>هذا الوسم إلزامي في كل مشروع ويب حديث — لا تنساه أبداً!</p><p>VS Code يُضيفه تلقائياً عند كتابة ! + Tab (Emmet).</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">📏</span><h2>الجزء الثاني: وحدات القياس المرنة</h2></div><p class="blk-para">اختيار الوحدة الصحيحة هو أساس التصميم المتجاوب. كل وحدة لها دورها الصحيح:</p><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>وحدات مطلقة مقابل نسبية</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>النوع</th><th>الوحدات وخصائصها</th></tr></thead><tbody><tr><td>مطلقة (Absolute)</td><td>px — ثابتة لا تتغير — مناسبة للحدود والظلال الدقيقة</td></tr><tr><td>نسبية (Relative)</td><td>%, rem, em, vw, vh — تتغير بالسياق — مثالية للتجاوب</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>rem (Root Em) — الوحدة المُوصى بها للنصوص</h3></div><p class="blk-para">rem = نسبة إلى حجم الخط الجذري (root) — وهو عادةً 16px في المتصفحات:</p><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* حجم الخط الجذري = 16px (الافتراضي في المتصفح) */
+html { font-size: 16px; }
+
+/* حسابات rem */
+/* 1rem  = 16px */
+/* 1.5rem = 24px */
+/* 2rem  = 32px */
+/* 0.75rem = 12px */
+
+/* خدعة 62.5% — تجعل 1rem = 10px للحساب الأسهل */
+html { font-size: 62.5%; }  /* 16px × 62.5% = 10px */
+body { font-size: 1.6rem; } /* 1.6 × 10 = 16px */
+h1   { font-size: 3.6rem; } /* 3.6 × 10 = 36px */
+h2   { font-size: 2.4rem; } /* 2.4 × 10 = 24px */
+
+/* ميزة rem: عند تغيير html font-size تتغير كل القيم تلقائياً */
+/* مثالي للمستخدمين الذين يغيرون حجم الخط في المتصفح */</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.3</span><h3>em — نسبة إلى الأب</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* em = نسبة إلى font-size الأب المباشر */
+.parent {
+  font-size: 20px;
+}
+
+.child {
+  font-size: 1.5em;   /* 1.5 × 20px = 30px */
+  padding: 1em;       /* 1 × 20px = 20px */
+  margin: 0.5em;      /* 0.5 × 20px = 10px */
+}
+
+/* em مفيد للـ padding وmargin النسبية للخط */
+.btn {
+  font-size: 1rem;
+  padding: 0.75em 1.5em; /* يتناسب مع حجم النص تلقائياً */
+}
+
+/* تحذير: em يتراكم في العناصر المتداخلة */
+.outer { font-size: 1.2em; }   /* = 19.2px */
+.inner { font-size: 1.2em; }   /* = 23px (تضاعف!) */
+/* rem لا يتراكم — هذا هو سبب تفضيله */</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.4</span><h3>vw و vh — نسبة إلى الشاشة</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* vw = Viewport Width — 1vw = 1% من عرض الشاشة */
+/* vh = Viewport Height — 1vh = 1% من ارتفاع الشاشة */
+
+/* قسم Hero يملأ الشاشة كاملاً */
+.hero {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* عنوان يكبر وينكمش مع حجم الشاشة */
+.responsive-title {
+  font-size: 5vw;  /* 5% من عرض الشاشة */
+  /* على 1200px: 60px | على 768px: 38px | على 375px: 19px */
+}
+
+/* ارتفاع كامل الصفحة ناقص الـ navbar */
+.page-content {
+  min-height: calc(100vh - 70px);
+}
+
+/* vmin = أصغر قيمة من vw وvh */
+/* vmax = أكبر قيمة من vw وvh */
+.square {
+  width: 50vmin;   /* مربع يتناسب مع أصغر بُعد للشاشة */
+  height: 50vmin;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.5</span><h3>النسبة المئوية % ودالة calc()</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* % — نسبة إلى الأب */
+.container {
+  width: 90%;          /* 90% من عرض الأب */
+  max-width: 1280px;   /* حد أقصى */
+  margin: 0 auto;      /* توسيط أفقي */
+}
+
+/* calc() — حسابات مخلوطة */
+.sidebar {
+  width: calc(300px + 2rem);
+}
+
+.main {
+  width: calc(100% - 300px - 30px); /* 100% - sidebar - gap */
+}
+
+.hero {
+  height: calc(100vh - 70px); /* ارتفاع الشاشة - الـ navbar */
+  padding: calc(2rem + 20px);
+}
+
+/* calc() تقبل: +  -  *  / */
+/* يمكن مزج الوحدات: px + % + rem + vw */</code></pre>
+</div><p class="blk-para">2.6 — دوال CSS الحديثة: clamp() وmin() وmax()</p><p class="blk-para">هذه الدوال تُلغي الحاجة لكثير من استعلامات الوسائط وتجعل القيم تتقدر الأقلم تلقائياً:</p><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* clamp(minimum, preferred, maximum) */
+/* تضمن أن القيمة لا تقل عن minimum ولا تزيد عن maximum */
+
+h1 {
+  /* لا تقل عن 24px، تفضيلياً 5vw، لا تزيد عن 56px */
+  font-size: clamp(24px, 5vw, 56px);
+}
+
+.container {
+  /* عرض مرن بين 320px و1280px */
+  width: clamp(320px, 90%, 1280px);
+  margin: 0 auto;
+}
+
+.hero-text {
+  font-size: clamp(1.5rem, 3vw + 1rem, 3rem);
+  /* على الجوال: ~1.5rem | على الكمبيوتر: ~3rem */
+}
+
+/* min() — تأخذ الأصغر من القيمتين */
+.box {
+  width: min(500px, 90%); /* إما 500px أو 90% أيهما أصغر */
+}
+
+/* max() — تأخذ الأكبر من القيمتين */
+.text {
+  font-size: max(1rem, 2vw); /* لا تقل أبداً عن 1rem */
+}</code></pre>
+</div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الوحدة / الدالة</th><th>متى تستخدمها؟</th></tr></thead><tbody><tr><td>px</td><td>الحدود، الظلال، القيم الدقيقة الثابتة</td></tr><tr><td>rem</td><td>الخطوط والـ padding الرئيسية — الأكثر توصية</td></tr><tr><td>em</td><td>الـ padding وmargin النسبية للعنصر نفسه</td></tr><tr><td>% </td><td>العروض النسبية للحاويات</td></tr><tr><td>vw / vh</td><td>قسم Hero الكامل، عناوين تتناسب مع الشاشة</td></tr><tr><td>fr</td><td>الأعمدة والصفوف في CSS Grid</td></tr><tr><td>calc()</td><td>مزج وحدات مختلفة في حسابة واحدة</td></tr><tr><td>clamp()</td><td>قيم مرنة بحدود دنيا وعليا — تُغني عن Media Queries</td></tr><tr><td>min() / max()</td><td>تقييد الحد الأدنى أو الأقصى بمرونة</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">📡</span><h2>الجزء الثالث: Media Queries — استعلامات الوسائط</h2></div><p class="blk-para">Media Queries هي آلية CSS التي تُطبّق أنماطاً مختلفة بناءً على خصائص الجهاز أو الشاشة.</p><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>بنية Media Query</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* البنية الأساسية */
+@media media-type and (condition) {
+  /* CSS يُطبَّق فقط عند تحقق الشرط */
+}
+
+/* أمثلة */
+@media screen and (max-width: 768px) {
+  /* للشاشات بعرض أقل من أو يساوي 768px */
+}
+
+@media screen and (min-width: 1024px) {
+  /* للشاشات بعرض أكبر من أو يساوي 1024px */
+}
+
+@media print {
+  /* عند طباعة الصفحة — إخفاء الـ nav والإعلانات */
+}
+
+@media (orientation: landscape) {
+  /* عند الوضع الأفقي للجهاز */
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>Mobile-First مقابل Desktop-First</h3></div><p class="blk-para">Mobile-First هو المعيار الحديث: نكتب CSS الجوال أولاً ثم نُضيف تعديلات للشاشات الأكبر:</p><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* ════════════════════════════════════════ */
+/* ❌ Desktop-First (القديم) — لا يُنصح به */
+/* ════════════════════════════════════════ */
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* كمبيوتر */
+}
+
+@media (max-width: 1024px) { /* تابلت */ }
+@media (max-width: 768px)  { /* جوال كبير */ }
+@media (max-width: 480px)  { /* جوال صغير */ }
+
+/* ════════════════════════════════════════ */
+/* ✅ Mobile-First (الحديث) — المُوصى به   */
+/* ════════════════════════════════════════ */
+.container {
+  display: grid;
+  grid-template-columns: 1fr; /* جوال — عمود واحد */
+}
+
+@media (min-width: 600px) {
+  .container {
+    grid-template-columns: 1fr 1fr; /* تابلت — عمودان */
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    grid-template-columns: 1fr 1fr 1fr; /* كمبيوتر — 3 أعمدة */
+  }
+}</code></pre>
+</div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>Mobile-First ✅</th><th>Desktop-First ❌</th></tr></thead><tbody><tr><td>يبدأ بـ min-width</td><td>يبدأ بـ max-width</td></tr><tr><td>يُحمّل أقل CSS على الجوال</td><td>يُحمّل CSS الكمبيوتر على الجوال أيضاً</td></tr><tr><td>أداء أفضل على الأجهزة الضعيفة</td><td>أداء أسوأ</td></tr><tr><td>يُجبرك على التفكير بالجوال أولاً</td><td>الجوال يأتي كفكرة لاحقة</td></tr><tr><td>معيار Google للـ SEO</td><td>قديم ومهجور تدريجياً</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.3</span><h3>النقاط الفاصلة القياسية (Breakpoints)</h3></div><div class="callout info"><span class="callout-title">📐 نقاط التوقف القياسية — Mobile First</span><pre class="ascii-diagram">  /* الجوال أولاً — لا يحتاج Media Query */
+  .element { /* 0px → ∞ */ }
+  @media (min-width: 480px) { /* sm — جوال كبير */ }
+  @media (min-width: 768px) { /* md — تابلت      */ }
+  @media (min-width: 1024px){ /* lg — لابتوب     */ }
+  @media (min-width: 1280px){ /* xl — كمبيوتر    */ }
+  @media (min-width: 1536px){ /* 2xl — شاشة واسعة*/ }
+  ──────────────────────────────────────────────
+  0px    480px   768px   1024px  1280px  1536px
+  |──────|───────|───────|───────|───────|────→
+  📱جوال │ sm    │ md    │ lg    │  xl   │  2xl</pre></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* نظام نقاط التوقف الاحترافي — Mobile First */
+
+/* Breakpoints كـ CSS Variables */
+:root {
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+}
+
+/* الجوال (الافتراضي) */
+.nav-links { display: none; }
+.hamburger { display: block; }
+
+/* تابلت: 768px+ */
+@media (min-width: 768px) {
+  .nav-links  { display: flex; }
+  .hamburger  { display: none; }
+}
+
+/* كمبيوتر: 1024px+ */
+@media (min-width: 1024px) {
+  .container { max-width: 960px; }
+}
+
+/* شاشة واسعة: 1280px+ */
+@media (min-width: 1280px) {
+  .container { max-width: 1200px; }
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.4</span><h3>Media Queries المتقدمة</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* شرطان معاً — AND */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* للتابلت فقط بين 768px و1024px */
+}
+
+/* أحد الشرطين — OR (فاصلة) */
+@media (max-width: 480px), (orientation: portrait) {
+  /* للجوال الصغير أو الوضع العمودي */
+}
+
+/* نفي شرط — NOT */
+@media not screen {
+  /* لكل شيء ما عدا الشاشة */
+}
+
+/* كشف الـ hover (لا يدعمه الجوال) */
+@media (hover: hover) {
+  .btn:hover { background: #E8A020; }
+  /* يُطبَّق فقط على أجهزة تدعم hover (ماوس) */
+}
+
+/* وضع الطباعة */
+@media print {
+  .navbar, .sidebar, .ads { display: none; }
+  body { font-size: 12pt; color: black; }
+  a { color: black; text-decoration: none; }
+  a[href]::after { content: ' (' attr(href) ')'; }
+}
+
+/* تفضيل تقليل الحركة (Accessibility) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* الوضع الداكن */
+@media (prefers-color-scheme: dark) {
+  body { background: #1A1A2E; color: #CDD6F4; }
+}</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🖼️</span><h2>الجزء الرابع: الصور والوسائط المتجاوبة</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>الصورة المتجاوبة الأساسية</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* القاعدة الذهبية للصور المتجاوبة */
+img {
+  max-width: 100%;   /* لا تتجاوز عرض الحاوية أبداً */
+  height: auto;      /* الارتفاع يتناسب تلقائياً مع العرض */
+  display: block;    /* يُلغي المسافة السفلية الافتراضية */
+}
+
+/* تطبيق عام في بداية كل مشروع */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>object-fit للصور في حاويات ذات أبعاد ثابتة</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* object-fit يتحكم في كيفية ملء الصورة للحاوية */
+.card-image {
+  width: 100%;
+  height: 220px;          /* ارتفاع ثابت */
+  object-fit: cover;      /* تغطي الحاوية دون تشوه — الأكثر استخداماً */
+  object-fit: contain;    /* تظهر كاملة — قد تترك مساحة فارغة */
+  object-fit: fill;       /* تملأ ولكن قد تتشوه */
+  object-fit: none;       /* حجمها الطبيعي */
+  object-position: center top; /* تحديد موضع الصورة */
+}
+
+/* أيقونة دائرية */
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.3</span><h3>وسم &lt;picture&gt; لصور مختلفة لكل جهاز</h3></div><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="html-code">&lt;!-- صور مختلفة لأجهزة مختلفة --&gt;
+&lt;picture&gt;
+  &lt;!-- للشاشات الكبيرة: صورة واسعة --&gt;
+  &lt;source media="(min-width: 1024px)" srcset="hero-desktop.jpg" /&gt;
+
+  &lt;!-- للتابلت: صورة متوسطة --&gt;
+  &lt;source media="(min-width: 768px)" srcset="hero-tablet.jpg" /&gt;
+
+  &lt;!-- الجوال والافتراضي: صورة صغيرة --&gt;
+  &lt;img src="hero-mobile.jpg" alt="صورة الغلاف" /&gt;
+&lt;/picture&gt;
+
+&lt;!-- srcset للدقة المختلفة (Retina) --&gt;
+&lt;img
+  src="logo.png"
+  srcset="logo.png 1x, logo@2x.png 2x, logo@3x.png 3x"
+  alt="الشعار"
+/&gt;</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.4</span><h3>الفيديو المتجاوب</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* فيديو متجاوب */
+video {
+  width: 100%;
+  height: auto;
+}
+
+/* حاوية فيديو YouTube بنسبة 16:9 */
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 9/16 = 56.25% */
+  height: 0;
+  overflow: hidden;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+}</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎨</span><h2>الجزء الخامس: CSS Variables (المتغيرات المخصصة)</h2></div><p class="blk-para">CSS Variables (أو Custom Properties) تُتيح تخزين قيم قابلة لإعادة الاستخدام في CSS — مثل المتغيرات في لغات البرمجة تماماً.</p><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>تعريف واستخدام المتغيرات</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* تعريف المتغيرات في :root (النطاق العام) */
+:root {
+  /* ═══ نظام الألوان ═══ */
+  --color-primary:    #1A3C5E;
+  --color-secondary:  #2E75B6;
+  --color-accent:     #E8A020;
+  --color-bg:         #F0F6FF;
+  --color-text:       #1A1A2E;
+  --color-text-muted: #5A6A7A;
+  --color-white:      #FFFFFF;
+
+  /* ═══ الخطوط ═══ */
+  --font-main:   "Cairo", sans-serif;
+  --font-size-xs:   0.75rem;   /* 12px */
+  --font-size-sm:   0.875rem;  /* 14px */
+  --font-size-base: 1rem;      /* 16px */
+  --font-size-lg:   1.125rem;  /* 18px */
+  --font-size-xl:   1.25rem;   /* 20px */
+  --font-size-2xl:  1.5rem;    /* 24px */
+  --font-size-3xl:  1.875rem;  /* 30px */
+  --font-size-4xl:  2.25rem;   /* 36px */
+
+  /* ═══ المسافات ═══ */
+  --space-1:  0.25rem;  /* 4px  */
+  --space-2:  0.5rem;   /* 8px  */
+  --space-3:  0.75rem;  /* 12px */
+  --space-4:  1rem;     /* 16px */
+  --space-5:  1.25rem;  /* 20px */
+  --space-6:  1.5rem;   /* 24px */
+  --space-8:  2rem;     /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+
+  /* ═══ الحدود والظلال ═══ */
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
+  --radius-full: 9999px;
+
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md:  0 4px 20px rgba(0,0,0,0.10);
+  --shadow-lg:  0 8px 40px rgba(0,0,0,0.15);
+  --shadow-xl:  0 16px 60px rgba(0,0,0,0.20);
+
+  /* ═══ الانتقالات ═══ */
+  --transition-fast:   0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow:   0.5s ease;
+
+  /* ═══ نقاط التوقف ═══ */
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+
+  /* ═══ الحاوية ═══ */
+  --container-max: 1280px;
+  --container-padding: var(--space-8);
+}
+
+/* استخدام المتغيرات بـ var() */
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+}
+
+.btn-primary {
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-normal);
+}
+
+.card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-md);
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>القيمة الاحتياطية (Fallback)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* var(--variable, fallback) */
+.element {
+  /* إذا لم يُعرَّف --color-accent تُستخدم #E8A020 */
+  color: var(--color-accent, #E8A020);
+
+  /* متغير داخل متغير */
+  background: var(--color-primary, var(--color-secondary, #1A3C5E));
+}</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.3</span><h3>الوضع الداكن (Dark Mode) باستخدام CSS Variables</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* تعريف ألوان الوضع الفاتح */
+:root {
+  --bg-color:   #F0F6FF;
+  --text-color: #1A1A2E;
+  --card-bg:    #FFFFFF;
+  --border:     #D0E4F5;
+}
+
+/* الوضع الداكن — يُعيّن تلقائياً أو بـ class */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color:   #0D1117;
+    --text-color: #CDD6F4;
+    --card-bg:    #1E1E2E;
+    --border:     #2D3748;
+  }
+}
+
+/* أو عبر class يُضاف بـ JavaScript */
+[data-theme='dark'] {
+  --bg-color:   #0D1117;
+  --text-color: #CDD6F4;
+  --card-bg:    #1E1E2E;
+}
+
+/* الآن جميع العناصر تتغير تلقائياً! */
+body { background: var(--bg-color); color: var(--text-color); }
+.card { background: var(--card-bg); border: 1px solid var(--border); }</code></pre>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.4</span><h3>تعديل المتغيرات بـ JavaScript</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* تعديل متغير CSS من JavaScript */
+const root = document.documentElement;
+
+/* تغيير اللون الرئيسي */
+root.style.setProperty('--color-primary', '#2D6A4F');
+
+/* قراءة قيمة متغير */
+const primaryColor = getComputedStyle(root)
+  .getPropertyValue('--color-primary').trim();
+
+/* مثال: زر تبديل الوضع الداكن */
+const toggleBtn = document.querySelector('#theme-toggle');
+toggleBtn.addEventListener('click', () =&gt; {
+  document.documentElement.toggleAttribute('data-theme');
+  // أو:
+  document.body.classList.toggle('dark-mode');
+});</code></pre>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السادس: المشروع التطبيقي — موقع أكاديمية التقنية المتجاوب</h2></div><div class="project-box"><p class="blk-para">سنبني موقع أكاديمية كامل متجاوب يعمل على الجوال والتابلت والكمبيوتر، باستخدام CSS Variables وMobile-First وMedia Queries.</p><div class="subsection"><div class="sub-head"><h3>ملف index.html</h3></div><div class="preview-group">
+  <div class="code-block" data-lang="html">
+    <div class="code-head">
+      <span class="code-lang"><span class="cdot html"></span>HTML</span>
+      <div class="code-actions">
+        <button class="code-btn preview-btn">👁 معاينة حيّة</button>
+        <button class="code-btn copy-btn">📋 نسخ</button>
+      </div>
+    </div>
+    <pre><code data-role="html-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="ar" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;أكاديمية التقنية — Front-End&lt;/title&gt;
+  &lt;link rel="preconnect" href="https://fonts.googleapis.com" /&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&amp;display=swap"
+    rel="stylesheet" /&gt;
+  &lt;link rel="stylesheet" href="style.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- ══ Navbar ══ --&gt;
+  &lt;header class="navbar"&gt;
+    &lt;div class="container navbar-inner"&gt;
+      &lt;div class="navbar-logo"&gt;🎓 أكاديمية التقنية&lt;/div&gt;
+      &lt;button class="hamburger" id="hamburger" aria-label="القائمة"&gt;☰&lt;/button&gt;
+      &lt;nav class="nav-links" id="nav-links"&gt;
+        &lt;a href="#hero"&gt;الرئيسية&lt;/a&gt;
+        &lt;a href="#courses"&gt;الكورسات&lt;/a&gt;
+        &lt;a href="#features"&gt;المميزات&lt;/a&gt;
+        &lt;a href="#contact"&gt;تواصل&lt;/a&gt;
+        &lt;a href="#" class="btn-nav"&gt;سجّل الآن&lt;/a&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;!-- ══ Hero ══ --&gt;
+  &lt;section class="hero" id="hero"&gt;
+    &lt;div class="container hero-inner"&gt;
+      &lt;div class="hero-text"&gt;
+        &lt;h1&gt;ابدأ مسيرتك في &lt;span&gt;تطوير الويب&lt;/span&gt;&lt;/h1&gt;
+        &lt;p&gt;تعلّم HTML وCSS وJavaScript وReact مع مدربين محترفين من أي مكان&lt;/p&gt;
+        &lt;div class="hero-btns"&gt;
+          &lt;a href="#" class="btn btn-primary"&gt;ابدأ مجاناً 🚀&lt;/a&gt;
+          &lt;a href="#courses" class="btn btn-outline"&gt;استعرض الكورسات&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="hero-img"&gt;
+        &lt;img src="https://via.placeholder.com/500x380" alt="تطوير الويب" /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ══ Features ══ --&gt;
+  &lt;section class="features" id="features"&gt;
+    &lt;div class="container"&gt;
+      &lt;h2 class="section-title"&gt;لماذا أكاديمية التقنية؟&lt;/h2&gt;
+      &lt;div class="features-grid"&gt;
+        &lt;div class="feature-card"&gt;
+          &lt;div class="icon"&gt;🎯&lt;/div&gt;
+          &lt;h3&gt;منهج منظّم&lt;/h3&gt;
+          &lt;p&gt;45 جلسة تدريبية مُرتَّبة بعناية من الأساسي للمتقدم&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="feature-card"&gt;
+          &lt;div class="icon"&gt;👨‍🏫&lt;/div&gt;
+          &lt;h3&gt;مدرب خبير&lt;/h3&gt;
+          &lt;p&gt;Eng. Hasan Hajjar بخبرة 8 سنوات في التطوير والتدريب&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="feature-card"&gt;
+          &lt;div class="icon"&gt;💻&lt;/div&gt;
+          &lt;h3&gt;مشاريع حقيقية&lt;/h3&gt;
+          &lt;p&gt;كل جلسة تنتهي بمشروع تطبيقي قابل للإضافة لمحفظتك&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="feature-card"&gt;
+          &lt;div class="icon"&gt;🏆&lt;/div&gt;
+          &lt;h3&gt;شهادة معتمدة&lt;/h3&gt;
+          &lt;p&gt;شهادة إتمام رسمية معترف بها من الشركات الكبرى&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ══ Courses ══ --&gt;
+  &lt;section class="courses" id="courses"&gt;
+    &lt;div class="container"&gt;
+      &lt;h2 class="section-title"&gt;كورساتنا المتاحة&lt;/h2&gt;
+      &lt;div class="courses-grid"&gt;
+        &lt;article class="course-card"&gt;&lt;div class="course-icon"&gt;🌐&lt;/div&gt;
+          &lt;h3&gt;HTML الشامل&lt;/h3&gt;&lt;p&gt;من الصفر حتى Semantic HTML&lt;/p&gt;
+          &lt;div class="course-meta"&gt;&lt;span&gt;10 جلسات&lt;/span&gt;&lt;a href="#"&gt;ابدأ ←&lt;/a&gt;&lt;/div&gt;
+        &lt;/article&gt;
+        &lt;article class="course-card"&gt;&lt;div class="course-icon"&gt;🎨&lt;/div&gt;
+          &lt;h3&gt;CSS المتقدم&lt;/h3&gt;&lt;p&gt;Flexbox وGrid والتصميم المتجاوب&lt;/p&gt;
+          &lt;div class="course-meta"&gt;&lt;span&gt;10 جلسات&lt;/span&gt;&lt;a href="#"&gt;ابدأ ←&lt;/a&gt;&lt;/div&gt;
+        &lt;/article&gt;
+        &lt;article class="course-card"&gt;&lt;div class="course-icon"&gt;⚙️&lt;/div&gt;
+          &lt;h3&gt;JavaScript&lt;/h3&gt;&lt;p&gt;DOM والأحداث وAPIs&lt;/p&gt;
+          &lt;div class="course-meta"&gt;&lt;span&gt;15 جلسات&lt;/span&gt;&lt;a href="#"&gt;ابدأ ←&lt;/a&gt;&lt;/div&gt;
+        &lt;/article&gt;
+        &lt;article class="course-card"&gt;&lt;div class="course-icon"&gt;⚛️&lt;/div&gt;
+          &lt;h3&gt;React الحديث&lt;/h3&gt;&lt;p&gt;Components وHooks وRouting&lt;/p&gt;
+          &lt;div class="course-meta"&gt;&lt;span&gt;10 جلسات&lt;/span&gt;&lt;a href="#"&gt;ابدأ ←&lt;/a&gt;&lt;/div&gt;
+        &lt;/article&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ══ Footer ══ --&gt;
+  &lt;footer class="footer" id="contact"&gt;
+    &lt;div class="container footer-inner"&gt;
+      &lt;div class="footer-brand"&gt;
+        &lt;h3&gt;🎓 أكاديمية التقنية&lt;/h3&gt;
+        &lt;p&gt;نبني مطوّرين المستقبل بأساليب حديثة ومحتوى عربي احترافي.&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="footer-links"&gt;
+        &lt;h4&gt;روابط سريعة&lt;/h4&gt;
+        &lt;a href="#"&gt;الرئيسية&lt;/a&gt;&lt;a href="#"&gt;الكورسات&lt;/a&gt;
+        &lt;a href="#"&gt;من نحن&lt;/a&gt;&lt;a href="#"&gt;تواصل&lt;/a&gt;
+      &lt;/div&gt;
+      &lt;div class="footer-contact"&gt;
+        &lt;h4&gt;تواصل معنا&lt;/h4&gt;
+        &lt;a href="mailto:info@academy.com"&gt;📧 info@academy.com&lt;/a&gt;
+        &lt;a href="tel:+966501234567"&gt;📞 +966 50 123 4567&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="footer-bottom container"&gt;
+      &lt;p&gt;© 2025 أكاديمية التقنية — Eng. Hasan Hajjar&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/footer&gt;
+
+  &lt;script&gt;
+    // Hamburger Menu Toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () =&gt; {
+      navLinks.classList.toggle('open');
+    });
+  &lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+  <div class="live-preview-wrap">
+    <div class="live-preview-bar"><span>👁 المعاينة الحيّة</span><button class="live-preview-close">✕ إغلاق</button></div>
+    <iframe class="live-preview-frame" title="معاينة حيّة"></iframe>
+  </div>
+</div></div><div class="subsection"><div class="sub-head"><h3>ملف style.css (Mobile-First)</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot css"></span>CSS</span>
+    <div class="code-actions"><button class="code-btn copy-btn">📋 نسخ</button></div>
+  </div>
+  <pre><code>/* ══════════════════════════════════ */
+/* CSS Variables                     */
+/* ══════════════════════════════════ */
+:root {
+  --color-primary:    #1A3C5E;
+  --color-secondary:  #2E75B6;
+  --color-accent:     #E8A020;
+  --color-bg:         #F0F6FF;
+  --color-text:       #1A1A2E;
+  --color-muted:      #5A6A7A;
+  --color-white:      #FFFFFF;
+  --color-dark:       #1A1A2E;
+  --font-main: 'Cairo', sans-serif;
+  --radius-md:  10px;
+  --radius-lg:  16px;
+  --shadow-md:  0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg:  0 8px 40px rgba(0,0,0,0.14);
+  --transition: 0.3s ease;
+  --container-max: 1280px;
+}
+
+/* ══ Reset ══ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+img, video { max-width: 100%; height: auto; display: block; }
+body { font-family: var(--font-main); background: var(--color-bg);
+  color: var(--color-text); direction: rtl; line-height: 1.7; }
+
+/* ══ Container ══ */
+.container {
+  width: 90%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+}
+
+/* ══ Navbar ══ */
+.navbar {
+  background: var(--color-primary);
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.2);
+}
+.navbar-inner { display: flex; justify-content: space-between;
+  align-items: center; padding: 1rem 0; flex-wrap: wrap; gap: 0.5rem; }
+.navbar-logo { color: var(--color-white); font-size: 1.2rem; font-weight: 700; }
+
+/* ══ Hamburger (Jوال فقط) ══ */
+.hamburger { display: block; background: none; border: 2px solid rgba(255,255,255,0.5);
+  color: white; font-size: 1.2rem; padding: 4px 10px; border-radius: 6px; cursor: pointer; }
+
+/* ══ Nav Links (مخفي في الجوال) ══ */
+.nav-links { display: none; width: 100%; flex-direction: column; gap: 4px;
+  padding: 0.75rem 0; }
+.nav-links.open { display: flex; }
+.nav-links a { color: rgba(255,255,255,0.85); text-decoration: none;
+  padding: 8px 14px; border-radius: 6px; transition: background var(--transition); }
+.nav-links a:hover { background: rgba(255,255,255,0.15); }
+.btn-nav { background: var(--color-accent); color: var(--color-dark) !important;
+  font-weight: 700; text-align: center; }
+
+/* ══ Hero (الجوال) ══ */
+.hero { background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: var(--color-white); padding: 3rem 0; }
+.hero-inner { display: flex; flex-direction: column; gap: 2rem; align-items: center; }
+.hero-text { text-align: center; }
+.hero-text h1 { font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 1rem; }
+.hero-text h1 span { color: var(--color-accent); }
+.hero-text p { font-size: clamp(1rem, 2vw, 1.2rem); opacity: 0.9; margin-bottom: 1.5rem; }
+.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+.hero-img img { border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+
+/* ══ Buttons ══ */
+.btn { padding: 0.75rem 1.5rem; border-radius: var(--radius-md); text-decoration: none;
+  font-weight: 700; font-size: 1rem; transition: all var(--transition); display: inline-block; }
+.btn-primary { background: var(--color-accent); color: var(--color-dark); }
+.btn-primary:hover { filter: brightness(1.1); transform: translateY(-2px); }
+.btn-outline { border: 2px solid white; color: white; }
+.btn-outline:hover { background: white; color: var(--color-primary); }
+
+/* ══ Sections ══ */
+.features, .courses { padding: 4rem 0; }
+.features { background: var(--color-white); }
+.section-title { font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 700;
+  color: var(--color-primary); text-align: center; margin-bottom: 2.5rem; }
+
+/* ══ Features Grid (الجوال: 1 عمود) ══ */
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+.feature-card { background: var(--color-bg); border-radius: var(--radius-lg);
+  padding: 2rem; text-align: center; box-shadow: var(--shadow-md);
+  transition: transform var(--transition); }
+.feature-card:hover { transform: translateY(-5px); }
+.feature-card .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.feature-card h3 { color: var(--color-primary); font-weight: 700; margin-bottom: 0.5rem; }
+.feature-card p { color: var(--color-muted); font-size: 0.9rem; }
+
+/* ══ Courses Grid (الجوال: 1 عمود) ══ */
+.courses-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+.course-card { background: var(--color-white); border-radius: var(--radius-lg);
+  padding: 1.5rem; box-shadow: var(--shadow-md);
+  border-top: 4px solid var(--color-secondary); transition: all var(--transition); }
+.course-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.course-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+.course-card h3 { color: var(--color-primary); font-weight: 700; margin-bottom: 0.5rem; }
+.course-card p { color: var(--color-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+.course-meta { display: flex; justify-content: space-between; align-items: center; }
+.course-meta span { color: var(--color-muted); font-size: 0.85rem; }
+.course-meta a { color: var(--color-secondary); font-weight: 700; text-decoration: none; }
+
+/* ══ Footer ══ */
+.footer { background: var(--color-dark); color: #CDD6F4; padding: 3rem 0 1rem; }
+.footer-inner { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 2rem; }
+.footer-brand h3 { color: var(--color-accent); margin-bottom: 0.75rem; }
+.footer-brand p { color: #8FBCBB; font-size: 0.9rem; line-height: 1.8; }
+.footer-links h4, .footer-contact h4 { color: var(--color-accent); margin-bottom: 1rem; }
+.footer-links a, .footer-contact a { display: block; color: #8FBCBB;
+  text-decoration: none; font-size: 0.9rem; margin-bottom: 0.5rem;
+  transition: color var(--transition); }
+.footer-links a:hover, .footer-contact a:hover { color: white; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 1.5rem; text-align: center; color: var(--color-muted); font-size: 0.85rem; }
+
+/* ════════════════════════════════════ */
+/* TABLET: 768px+                       */
+/* ════════════════════════════════════ */
+@media (min-width: 768px) {
+  /* Navbar */
+  .hamburger { display: none; }
+  .nav-links { display: flex !important; width: auto;
+    flex-direction: row; padding: 0; }
+
+  /* Hero */
+  .hero-inner { flex-direction: row; justify-content: space-between; align-items: center; }
+  .hero-text { text-align: right; flex: 1; }
+  .hero-btns { justify-content: flex-start; }
+  .hero-img { flex: 0 0 45%; }
+
+  /* Features: 2 أعمدة */
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Courses: 2 أعمدة */
+  .courses-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Footer: 3 أعمدة */
+  .footer-inner { grid-template-columns: 2fr 1fr 1fr; }
+}
+
+/* ════════════════════════════════════ */
+/* DESKTOP: 1024px+                     */
+/* ════════════════════════════════════ */
+@media (min-width: 1024px) {
+  /* Features: 4 أعمدة */
+  .features-grid { grid-template-columns: repeat(4, 1fr); }
+
+  /* Courses: 4 أعمدة */
+  .courses-grid { grid-template-columns: repeat(4, 1fr); }
+
+  /* Hero أكبر */
+  .hero { padding: 5rem 0; }
+}</code></pre>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء السابع: تمارين الجلسة السادسة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — وحدات القياس<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">أنشئ صفحة اختبار الوحدات:</p><ul class="mini-list"><li>خدعة 62.5%: html { font-size: 62.5% } ثم حوّل جميع font-size لـ rem</li><li>قسم hero بارتفاع 100vh ومحتواه في المنتصف</li><li>عنوان بـ font-size: clamp(1.5rem, 4vw, 3rem) — جرّب تغيير حجم النافذة</li><li>حاوية بـ width: clamp(300px, 90%, 1200px) تتكيف تلقائياً</li><li>زر بـ padding: 0.75em 1.5em — جرّب تغيير font-size وراقب الـ padding</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — Media Queries Mobile-First<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ صفحة Portfolio بثلاثة مراحل:</p><ul class="mini-list"><li>الجوال (افتراضي): بطاقات عمود واحد، nav مخفية، hamburger ظاهر</li><li>التابلت (768px+): بطاقات عمودان، nav أفقية، hamburger مخفي</li><li>الكمبيوتر (1024px+): بطاقات 3 أعمدة، تخطيط sidebar + main</li><li>اختبر بأدوات المطوّر في Chrome: F12 → رمز الجوال → اختر الأجهزة المختلفة</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — CSS Variables وDark Mode<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ نظام ألوان كاملاً بـ CSS Variables:</p><ul class="mini-list"><li>عرّف 12 متغيراً في :root: ألوان + خطوط + مسافات + ظلال</li><li>طبّق المتغيرات على جميع عناصر الصفحة (لا تستخدم قيماً مباشرة)</li><li>أضف Dark Mode بـ @media (prefers-color-scheme: dark)</li><li>أضف زر تبديل الوضع الداكن/الفاتح باستخدام JavaScript بسيط</li><li>تحقق: قيمة واحدة تتغير → تتغير الصفحة كلها تلقائياً</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة السادسة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>التصميم المتجاوب</td><td>3 مبادئ: شبكات مرنة + صور مرنة + Media Queries</td></tr><tr><td>viewport meta tag</td><td>إلزامي في كل صفحة — بدونه المتصفح يُصغّر الصفحة</td></tr><tr><td>rem</td><td>نسبة للجذر (16px) — أفضل وحدة للخطوط والمسافات</td></tr><tr><td>em</td><td>نسبة للأب — مناسب للـ padding النسبية</td></tr><tr><td>vw / vh</td><td>نسبة للشاشة — لأقسام Hero والعناوين الكبيرة</td></tr><tr><td>calc()</td><td>مزج الوحدات: calc(100% - 280px - 30px)</td></tr><tr><td>clamp()</td><td>clamp(min, preferred, max) — تُغني عن Media Queries</td></tr><tr><td>min() / max()</td><td>قيود مرنة بدون Media Query</td></tr><tr><td>Mobile-First</td><td>الجوال أولاً بـ min-width — المعيار الحديث</td></tr><tr><td>Breakpoints</td><td>480px, 768px, 1024px, 1280px</td></tr><tr><td>Media Queries متقدمة</td><td>hover, print, prefers-color-scheme, prefers-reduced-motion</td></tr><tr><td>CSS Variables</td><td>:root { --name: value } | var(--name) | fallback value</td></tr><tr><td>Dark Mode</td><td>@media (prefers-color-scheme: dark) | [data-theme='dark']</td></tr><tr><td>JavaScript + Variables</td><td>root.style.setProperty('--var', value)</td></tr><tr><td>الصور المتجاوبة</td><td>max-width: 100% + object-fit: cover + &lt;picture&gt;</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة السابعة: CSS Animations والتأثيرات البصرية</span><p>✦ Transitions — تأثيرات انتقال سلسة بين الحالات</p><p>✦ Transforms — التحريك والتدوير والتكبير والانعكاس</p><p>✦ Keyframe Animations — تحريك كامل بـ @keyframes</p><p>✦ Animation Properties: duration, delay, iteration, direction</p><p>✦ تأثيرات عملية: بطاقة تنقلب، زر ينبض، شريط تقدم، loading spinner</p><p>✦ أفضل ممارسات الأداء: will-change وtransform بدلاً من top/left</p><p>✦ مشروع: صفحة هبوط (Landing Page) بتأثيرات احترافية</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة السادسة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة السابعة</span><p>يُرسَل مجلد المشروع (HTML + CSS) مضغوطاً عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: تحويل موقع الشركة لتصميم متجاوب كامل</h3></div><p class="blk-para">خذ مشروع «موقع الشركة» من الجلسة الثانية أو الثالثة وحوّله لموقع متجاوب احترافي:</p><h4 class="mini-head">◆ 📋 المتطلبات:</h4><ul class="mini-list"><li>إضافة viewport meta tag وCSS Reset كاملاً في بداية الملف</li><li>تعريف نظام CSS Variables كامل في :root (ألوان + خطوط + مسافات + ظلال)</li><li>كتابة CSS بمنهجية Mobile-First (الجوال أولاً بلا Media Queries)</li><li>إضافة 3 نقاط توقف: 480px, 768px, 1024px</li><li>Hamburger Menu يعمل بالجوال ويختفي بالتابلت (بـ JavaScript بسيط)</li><li>استخدام clamp() لحجم العناوين وعرض الحاوية</li><li>جميع الصور: max-width: 100% + height: auto + object-fit: cover</li><li>اختبار الموقع على: iPhone SE (375px) + iPad (768px) + Desktop (1280px)</li></ul><h4 class="mini-head">◆ 🔍 كيفية الاختبار على Chrome:</h4><ul class="mini-list"><li>افتح الموقع في Chrome</li><li>اضغط F12 لفتح DevTools</li><li>اضغط على أيقونة الجوال (Toggle Device Toolbar) أو Ctrl+Shift+M</li><li>اختر الجهاز من القائمة المنسدلة: iPhone SE, iPad, Galaxy S20</li><li>تحقق من أن كل المحتوى يظهر بشكل صحيح في كل جهاز</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>CSS Variables كاملة في :root وتطبيقها صحيحاً</td><td>20 نقطة</td></tr><tr><td>Mobile-First + 3 نقاط توقف صحيحة</td><td>25 نقطة</td></tr><tr><td>Hamburger Menu يعمل بالجوال</td><td>15 نقطة</td></tr><tr><td>clamp() للعناوين والحاوية</td><td>15 نقطة</td></tr><tr><td>الصور متجاوبة بالكامل</td><td>10 نقاط</td></tr><tr><td>جودة التصميم واختبار 3 أجهزة</td><td>15 نقطة</td></tr></tbody></table></div></div></div>
+<div class="closing-banner">
+  <h3>📱 أحسنت! موقعك الآن يعمل باحترافية على كل الأجهزة 📱</h3>
+  
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 06</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-05.html"><small>السابق</small><span>الجلسة 05 — CSS Grid</span></a>
+        <a class="nav-arrow next" href="lesson-07.html"><small>التالي</small><span>الجلسة 07 — CSS Animations</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
