@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 23 — Nested Routes وLayouts في React Router | Front-End Master Book</title>
+<meta name="description" content="Nested Routes وLayouts في React Router — المسارات المتداخلة • Outlet • Layout Route • Index Route • Protected Routes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="23">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🪆</span>
+    <div>
+      <div class="session-tag">Session 23 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة الثالثة والعشرون — Nested Routes وLayouts في React Router</h1>
+  <p class="tags-line">المسارات المتداخلة • Outlet • Layout Route • Index Route • Protected Routes</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة الثالثة والعشرين</h2>
+  <ul class="goal-list"><li>فهم مفهوم المسارات المتداخلة (Nested Routes) ومتى نحتاجها</li><li>استخدام Outlet لعرض المسارات الفرعية داخل تخطيط مشترك</li><li>بناء Layout Route بشريط تنقّل وتذييل ثابتين ومحتوى متغيّر</li><li>استخدام Index Route لتحديد الصفحة الافتراضية عند مسار أب</li><li>بناء آلية حماية مسارات (Protected Routes) لصفحات تتطلّب تسجيل دخول</li><li>دمج كل هذه المفاهيم في مشروع لوحة تحكّم (Dashboard) متكامل</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة الثانية والعشرين</span><p>BrowserRouter يُغلِّف التطبيق بالكامل، وRoutes/Route تُعرِّف كل مسار ومكوّنه</p><p>Link وNavLink تنقّل فوري بلا إعادة تحميل، وNavLink يُنسِّق الرابط النشط تلقائياً</p><p>Route Parameters (:id) تسمح بصفحات ديناميكية، تُقرَأ عبر useParams</p><p>useNavigate يُتيح التنقّل البرمجي بعد أحداث (نموذج، تسجيل دخول...)</p></div><div class="callout success"><span class="callout-title">🎓 أهلاً بالتخطيطات المشتركة!</span><p>لاحظت أن كل صفحة في مشروعك السابق أعادت كتابة Navbar وFooter بنفسها؟ اليوم نحلّ هذا نهائياً.</p><p>Nested Routes تسمح بتعريف "تخطيط" واحد (Navbar + Footer + مساحة محتوى) يُشارَك بين عدة صفحات، بينما يتغيّر المحتوى الداخلي فقط حسب المسار.</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🪆</span><h2>الجزء الأول: ما هي Nested Routes ولماذا نحتاجها؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>المشكلة: تكرار التخطيط في كل صفحة</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ❌ بدون Nested Routes: Navbar وFooter مكرَّران في كل صفحة!
+function Home() {
+  return (
+    &lt;&gt;
+      &lt;Navbar /&gt;
+      &lt;h1&gt;الرئيسية&lt;/h1&gt;
+      &lt;Footer /&gt;
+    &lt;/&gt;
+  );
+}
+
+function About() {
+  return (
+    &lt;&gt;
+      &lt;Navbar /&gt;
+      &lt;h1&gt;من نحن&lt;/h1&gt;
+      &lt;Footer /&gt;
+    &lt;/&gt;
+  );
+}
+// أي تعديل على Navbar يتطلّب مراجعة كل صفحة على حدة!</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>الحل: مسار أب بتخطيط مشترك، ومسارات فرعية بداخله</h3></div><p class="blk-para">React Router يسمح بتعريف Route "أب" يحتوي عنصر تخطيط (Layout)، وRoutes فرعية بداخله تُعرَض تلقائياً في المكان المخصَّص من هذا التخطيط.</p></div></div><div class="part"><div class="part-head"><span class="p-icon">🕳️</span><h2>الجزء الثاني: Outlet</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>Outlet: أين تُعرض المسارات الفرعية</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// src/layouts/MainLayout.jsx
+import { Outlet } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+
+function MainLayout() {
+  return (
+    &lt;&gt;
+      &lt;Navbar /&gt;
+      &lt;main&gt;
+        &lt;Outlet /&gt; {/* هنا بالضبط يُعرض المسار الفرعي المطابق للرابط الحالي */}
+      &lt;/main&gt;
+      &lt;Footer /&gt;
+    &lt;/&gt;
+  );
+}
+
+export default MainLayout;</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>ربط MainLayout بالمسارات الفرعية</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// src/App.jsx
+import { Routes, Route } from 'react-router-dom';
+import MainLayout from './layouts/MainLayout';
+import About from './pages/About';
+
+function App() {
+  return (
+    &lt;Routes&gt;
+      &lt;Route path="/" element={&lt;MainLayout /&gt;}&gt;
+        &lt;Route path="about" element={&lt;About /&gt;} /&gt;
+        {/* أي مسار هنا يُعرض تلقائياً داخل &lt;Outlet /&gt; في MainLayout */}
+      &lt;/Route&gt;
+    &lt;/Routes&gt;
+  );
+}
+// الآن Navbar وFooter يُكتَبان مرة واحدة فقط في MainLayout!</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🏠</span><h2>الجزء الثالث: Index Route</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>المشكلة: أي صفحة تظهر عند "/" بالضبط؟</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ❌ بدون index: زيارة "/" بالضبط لا تعرض أي محتوى داخل Outlet!
+&lt;Route path="/" element={&lt;MainLayout /&gt;}&gt;
+  &lt;Route path="about" element={&lt;About /&gt;} /&gt;
+&lt;/Route&gt;</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>Index Route كحل</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ✅ Index Route: المسار الافتراضي عند "/" بالضبط
+&lt;Route path="/" element={&lt;MainLayout /&gt;}&gt;
+  &lt;Route index element={&lt;Home /&gt;} /&gt; {/* index بدل path */}
+  &lt;Route path="about" element={&lt;About /&gt;} /&gt;
+&lt;/Route&gt;</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔒</span><h2>الجزء الرابع: حماية المسارات (Protected Routes)</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>مكوّن غلاف يتحقّق من تسجيل الدخول</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// src/components/ProtectedRoute.jsx
+import { Navigate, Outlet } from 'react-router-dom';
+
+function ProtectedRoute({ isLoggedIn }) {
+  if (!isLoggedIn) {
+    return &lt;Navigate to="/login" replace /&gt;; // توجيه تلقائي، بلا إمكانية رجوع للصفحة المحمية
+  }
+  return &lt;Outlet /&gt;; // مُسجَّل الدخول: اعرض المسار الفرعي المطلوب
+}
+
+export default ProtectedRoute;</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>استخدامه لحماية مجموعة مسارات</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function App() {
+  const isLoggedIn = useAuth(); // Custom Hook افتراضي لحالة الدخول
+
+  return (
+    &lt;Routes&gt;
+      &lt;Route path="/" element={&lt;MainLayout /&gt;}&gt;
+        &lt;Route index element={&lt;Home /&gt;} /&gt;
+        &lt;Route path="login" element={&lt;Login /&gt;} /&gt;
+
+        &lt;Route element={&lt;ProtectedRoute isLoggedIn={isLoggedIn} /&gt;}&gt;
+          &lt;Route path="dashboard" element={&lt;Dashboard /&gt;} /&gt;
+          &lt;Route path="settings" element={&lt;Settings /&gt;} /&gt;
+        &lt;/Route&gt;
+      &lt;/Route&gt;
+    &lt;/Routes&gt;
+  );
+}
+// dashboard وsettings محميّان: أي وصول بلا تسجيل دخول يُعاد توجيهه لـ /login تلقائياً</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء الخامس: المشروع — لوحة تحكّم (Dashboard) متكاملة</h2></div><div class="project-box"><p class="blk-para">نجمع كل المفاهيم: تخطيط رئيسي، تخطيط فرعي خاص بلوحة التحكّم، حماية مسارات، وIndex Route.</p><div class="subsection"><div class="sub-head"><h3>src/layouts/DashboardLayout.jsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { Outlet, NavLink } from 'react-router-dom';
+
+function DashboardLayout() {
+  return (
+    &lt;div className="dashboard-layout"&gt;
+      &lt;aside className="sidebar"&gt;
+        &lt;NavLink to="/dashboard" end&gt;نظرة عامة&lt;/NavLink&gt;
+        &lt;NavLink to="/dashboard/orders"&gt;الطلبات&lt;/NavLink&gt;
+        &lt;NavLink to="/dashboard/profile"&gt;الملف الشخصي&lt;/NavLink&gt;
+      &lt;/aside&gt;
+      &lt;div className="content"&gt;
+        &lt;Outlet /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default DashboardLayout;</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div><div class="callout tip"><span class="callout-title">💡 خاصية end في NavLink</span><p>end تضمن أن هذا الرابط "نشط" فقط عند /dashboard بالضبط — لا عند /dashboard/orders أيضاً. بدونها، سيبقى رابط "نظرة عامة" مُنسَّقاً كنشط في كل صفحات اللوحة!</p></div></div><div class="subsection"><div class="sub-head"><h3>src/App.jsx — الربط الكامل (مسارات متداخلة داخل مسارات محمية)</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { Routes, Route } from 'react-router-dom';
+import MainLayout from './layouts/MainLayout';
+import DashboardLayout from './layouts/DashboardLayout';
+import ProtectedRoute from './components/ProtectedRoute';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Overview from './pages/dashboard/Overview';
+import Orders from './pages/dashboard/Orders';
+import Profile from './pages/dashboard/Profile';
+
+function App() {
+  const isLoggedIn = true; // بيانات وهمية للتبسيط
+
+  return (
+    &lt;Routes&gt;
+      &lt;Route path="/" element={&lt;MainLayout /&gt;}&gt;
+        &lt;Route index element={&lt;Home /&gt;} /&gt;
+        &lt;Route path="login" element={&lt;Login /&gt;} /&gt;
+
+        &lt;Route element={&lt;ProtectedRoute isLoggedIn={isLoggedIn} /&gt;}&gt;
+          &lt;Route path="dashboard" element={&lt;DashboardLayout /&gt;}&gt;
+            &lt;Route index element={&lt;Overview /&gt;} /&gt;
+            &lt;Route path="orders" element={&lt;Orders /&gt;} /&gt;
+            &lt;Route path="profile" element={&lt;Profile /&gt;} /&gt;
+          &lt;/Route&gt;
+        &lt;/Route&gt;
+      &lt;/Route&gt;
+    &lt;/Routes&gt;
+  );
+}
+
+export default App;</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div><div class="callout info"><span class="callout-title">🏛️ لاحظ التداخل الكامل</span><p>DashboardLayout نفسه مُتداخل داخل ProtectedRoute (حماية)، والذي بدوره متداخل داخل MainLayout (التخطيط العام) — ثلاث طبقات من Nested Routes تعمل معاً بسلاسة.</p></div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء السادس: تمارين الجلسة الثالثة والعشرين</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — Layout أساسي<span class="ex-time">15 دقيقة</span></h4><ul class="mini-list"><li>أنشئ MainLayout بـ Navbar وFooter وOutlet</li><li>3 صفحات فرعية (الرئيسية كـ Index، من نحن، تواصل) تُعرَض جميعها داخله</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — Index Route ومسارات متداخلة إضافية<span class="ex-time">20 دقيقة</span></h4><ul class="mini-list"><li>أنشئ قسم "المنتجات" بتخطيط فرعي خاص به (ProductsLayout بشريط تصنيفات جانبي)</li><li>مسارات فرعية: /products (index — كل المنتجات)، /products/electronics، /products/clothing</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — حماية مسار كاملة<span class="ex-time">25 دقيقة</span></h4><ul class="mini-list"><li>صفحة تسجيل دخول وهمية بـ checkbox "أنا مسجّل الدخول" يُحدِّث State</li><li>ProtectedRoute يحمي صفحة "الملف الشخصي" فعلياً بناءً على تلك الحالة</li><li>محاولة الوصول المباشر للصفحة المحمية بلا تسجيل دخول يجب أن تُعيد التوجيه لصفحة الدخول</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الثالثة والعشرين</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>Nested Routes</td><td>مسار أب بتخطيط مشترك، ومسارات فرعية تُعرَض بداخله</td></tr><tr><td>Outlet</td><td>العنصر الذي يُحدِّد مكان عرض المسار الفرعي داخل التخطيط</td></tr><tr><td>Layout Route</td><td>Route بلا path يُعرِّف فقط عنصر التخطيط (Navbar/Footer ثابتان)</td></tr><tr><td>Index Route</td><td>المسار الافتراضي عند زيارة مسار الأب بالضبط، عبر index بدل path</td></tr><tr><td>Protected Route</td><td>مكوّن غلاف يتحقّق من شرط (تسجيل دخول) قبل عرض Outlet</td></tr><tr><td>Navigate</td><td>توجيه تلقائي بلا إمكانية رجوع، مناسب لحالات الحماية</td></tr><tr><td>خاصية end في NavLink</td><td>تمنع التنسيق النشط الخاطئ للروابط الأب عند وجود مسارات فرعية</td></tr><tr><td>المشروع</td><td>Dashboard بثلاث طبقات متداخلة: عام، حماية، وتخطيط لوحة التحكّم</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الرابعة والعشرون: الأداء في React — memo وuseMemo وuseCallback</span><p>✦ لماذا تُعاد رسمة مكوّنات لا داعي لإعادة رسمها</p><p>✦ React.memo — منع إعادة رسم مكوّن لم تتغيّر Props الخاصة به</p><p>✦ useMemo — تخزين نتيجة حساب مكلف بين الرسومات</p><p>✦ useCallback — تخزين دالة بذات المرجع بين الرسومات</p><p>✦ متى تستحق هذه الأدوات فعلاً استخدامها (وليس كل مكان!)</p><p>✦ مشروع: قائمة ضخمة محسَّنة الأداء بالكامل</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الثالثة والعشرون</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الرابعة والعشرين</span><p>يُرسَل رابط GitHub أو ملف مضغوط لمشروع Vite عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: لوحة إدارة مهام محمية بالكامل</h3></div><p class="blk-para">أنشئ تطبيق React بـ Vite للوحة إدارة مهام، بتخطيط Dashboard كامل ومحمي خلف تسجيل دخول:</p><h4 class="mini-head">◆ المتطلبات الوظيفية:</h4><ul class="mini-list"><li>صفحة تسجيل دخول وهمية (بلا خادم فعلي — تحقّق بسيط في الواجهة كافٍ)</li><li>DashboardLayout بشريط جانبي (Sidebar) بمسارات فرعية: كل المهام، المهام المكتملة، الإحصائيات</li><li>كل مسارات اللوحة محمية بالكامل عبر ProtectedRoute</li><li>زر "تسجيل خروج" يُعيد التوجيه لصفحة تسجيل الدخول</li></ul><h4 class="mini-head">◆ متطلبات تقنية:</h4><ul class="mini-list"><li>استخدام Index Route لصفحة "نظرة عامة" الافتراضية داخل اللوحة</li><li>NavLink مع خاصية end حيث يلزم لتجنّب تنسيق خاطئ للرابط النشط</li><li>تنظيم الملفات: src/layouts/، src/pages/dashboard/، src/components/</li></ul></div></div>
+<div class="closing-banner">
+  <h3>🪆 أحسنت! أنت الآن تبني تخطيطات احترافية متداخلة</h3>
+  <p>Nested Routes وProtected Routes هما أساس أي تطبيق React حقيقي متعدد الصفحات</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 23</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-22.html"><small>السابق</small><span>الجلسة 22 — React Router — التنقل بين الصفحات</span></a>
+        <a class="nav-arrow next" href="lesson-24.html"><small>التالي</small><span>الجلسة 24 — الأداء في React — memo وuseMemo وuseCallback</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

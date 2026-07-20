@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 22 — React Router: التنقل بين الصفحات | Front-End Master Book</title>
+<meta name="description" content="React Router — التنقل بين الصفحات — react-router-dom • Routes وRoute • Link وNavLink • Route Parameters • useNavigate">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="22">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🧭</span>
+    <div>
+      <div class="session-tag">Session 22 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة الثانية والعشرون — React Router — التنقل بين الصفحات</h1>
+  <p class="tags-line">react-router-dom • Routes وRoute • Link وNavLink • Route Parameters • useNavigate</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة الثانية والعشرين</h2>
+  <ul class="goal-list"><li>فهم مفهوم Single Page Application (SPA) ولماذا يحتاج Router خاصاً به</li><li>تثبيت وإعداد react-router-dom في مشروع Vite</li><li>تعريف مسارات التطبيق باستخدام BrowserRouter وRoutes وRoute</li><li>التنقل بين الصفحات بـ Link وNavLink دون إعادة تحميل الصفحة بالكامل</li><li>بناء صفحات ديناميكية عبر Route Parameters وuseParams</li><li>التعامل مع صفحة "غير موجودة" (404) بمسار Catch-All</li><li>استخدام useNavigate للتنقل البرمجي بعد أحداث معيّنة</li><li>بناء موقع متعدد الصفحات متكامل بـ React Router</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة الحادية والعشرين</span><p>Prop Drilling مشكلة تمرير بيانات عبر مكوّنات وسيطة لا تستخدمها</p><p>Context API (createContext + Provider + useContext) يحل هذه المشكلة</p><p>Custom Hook فوق useContext (مثل useTheme) يُبسِّط الاستخدام ويُضيف تحقّقاً واضحاً</p><p>Context مناسب لبيانات مشتركة عبر التطبيق (Theme، المستخدم، اللغة)، لا لكل حالة محلية</p></div><div class="callout success"><span class="callout-title">🎓 أهلاً بتطبيقات متعددة الصفحات!</span><p>كل تطبيقاتنا حتى الآن كانت "صفحة واحدة" فعلياً — واجهة واحدة تتغيّر محتوياتها.</p><p>لكن أي موقع حقيقي يحتاج عناوين URL مختلفة لكل صفحة (/about، /products/42...). اليوم نتعلّم React Router: المكتبة الرسمية شبه القياسية للتنقّل في تطبيقات React.</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🧭</span><h2>الجزء الأول: لماذا نحتاج Router؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>ما هو Single Page Application (SPA)؟</h3></div><p class="blk-para">تطبيقات React عادةً هي "صفحة واحدة" حقيقةً — ملف HTML واحد فقط يُحمَّل مرة، وJavaScript يتولّى تبديل المحتوى المعروض دون أي إعادة تحميل من الخادم.</p></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>المشكلة بدون Router</h3></div><ul class="mini-list"><li>وسم &lt;a href="..."&gt; العادي يُعيد تحميل الصفحة بالكامل من الخادم — تفقد كل حالة React (State، Context، كل شيء!)</li><li>بلا Router، لا يوجد عنوان URL مختلف لكل "صفحة" — لا يمكن مشاركة رابط مباشر لصفحة منتج معيّن مثلاً</li><li>زر "رجوع" في المتصفح لن يعمل بشكل متوقَّع</li></ul><div class="callout tip"><span class="callout-title">💡 الحل</span><p>React Router يُراقب عنوان URL في المتصفح، ويعرض المكوّن المناسب له — كل ذلك عبر JavaScript فقط، بلا أي طلب جديد للخادم.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">📦</span><h2>الجزء الثاني: التثبيت والإعداد</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>تثبيت react-router-dom</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>npm install react-router-dom</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>BrowserRouter: تغليف التطبيق بالكامل</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// src/main.jsx
+import { BrowserRouter } from 'react-router-dom';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  &lt;BrowserRouter&gt;
+    &lt;App /&gt;
+  &lt;/BrowserRouter&gt;
+);</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div><div class="callout tip"><span class="callout-title">💡 لماذا في main.jsx؟</span><p>BrowserRouter يجب أن يُحيط التطبيق بالكامل من الأعلى، تماماً مثل أي Context Provider، حتى تتمكّن كل المكوّنات الداخلية من استخدام أدوات التنقّل.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🛣️</span><h2>الجزء الثالث: Routes وRoute</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>تعريف المسارات الأساسية</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// src/App.jsx
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import About from './pages/About';
+import Contact from './pages/Contact';
+
+function App() {
+  return (
+    &lt;Routes&gt;
+      &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+      &lt;Route path="/about" element={&lt;About /&gt;} /&gt;
+      &lt;Route path="/contact" element={&lt;Contact /&gt;} /&gt;
+    &lt;/Routes&gt;
+  );
+}
+
+export default App;</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div><div class="callout tip"><span class="callout-title">💡 كيف تعمل</span><p>Routes تفحص عنوان URL الحالي، وتعرض أول Route يُطابق path — element هو المكوّن الذي يظهر لهذا المسار بالذات.</p></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>صفحة 404 (Not Found)</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import NotFound from './pages/NotFound';
+
+function App() {
+  return (
+    &lt;Routes&gt;
+      &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+      &lt;Route path="/about" element={&lt;About /&gt;} /&gt;
+      &lt;Route path="*" element={&lt;NotFound /&gt;} /&gt; {/* أي مسار غير معرَّف أعلاه */}
+    &lt;/Routes&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔗</span><h2>الجزء الرابع: Link وNavLink</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>لماذا لا نستخدم وسم &lt;a&gt; عادي</h3></div><div class="code-block" data-lang="html">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot html"></span>HTML</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>&lt;!-- ❌ يُعيد تحميل الصفحة بالكامل من الخادم — تفقد كل حالة React! --&gt;
+&lt;a href="/about"&gt;من نحن&lt;/a&gt;</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ✅ Link من react-router-dom: تنقّل فوري بلا إعادة تحميل
+import { Link } from 'react-router-dom';
+
+function Navbar() {
+  return (
+    &lt;nav&gt;
+      &lt;Link to="/"&gt;الرئيسية&lt;/Link&gt;
+      &lt;Link to="/about"&gt;من نحن&lt;/Link&gt;
+      &lt;Link to="/contact"&gt;تواصل معنا&lt;/Link&gt;
+    &lt;/nav&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>NavLink: تنسيق الرابط النشط تلقائياً</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { NavLink } from 'react-router-dom';
+
+function Navbar() {
+  const linkClass = ({ isActive }) =&gt; (isActive ? 'link-active' : '');
+
+  return (
+    &lt;nav&gt;
+      &lt;NavLink to="/" className={linkClass}&gt;الرئيسية&lt;/NavLink&gt;
+      &lt;NavLink to="/about" className={linkClass}&gt;من نحن&lt;/NavLink&gt;
+    &lt;/nav&gt;
+  );
+}
+// isActive تُصبح true تلقائياً عندما يكون هذا الرابط مطابقاً للمسار الحالي</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔢</span><h2>الجزء الخامس: Route Parameters وuseParams</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>تعريف مسار ديناميكي</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>&lt;Routes&gt;
+  &lt;Route path="/products" element={&lt;ProductsList /&gt;} /&gt;
+  &lt;Route path="/products/:id" element={&lt;ProductDetails /&gt;} /&gt; {/* :id معامل ديناميكي */}
+&lt;/Routes&gt;</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>قراءة المعامل بـ useParams</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// src/pages/ProductDetails.jsx
+import { useParams } from 'react-router-dom';
+
+function ProductDetails() {
+  const { id } = useParams(); // يقرأ القيمة الفعلية من عنوان URL الحالي
+
+  return &lt;h1&gt;تفاصيل المنتج رقم: {id}&lt;/h1&gt;;
+}
+// زيارة /products/42 في المتصفح → useParams() تُعيد { id: '42' }</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🚀</span><h2>الجزء السادس: useNavigate — التنقل البرمجي</h2></div><p class="blk-para">أحياناً نحتاج التنقّل نتيجة حدث برمجي (بعد إرسال نموذج، بعد تسجيل دخول ناجح) لا نتيجة ضغط رابط مباشرة.</p><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>مثال: التنقل بعد تسجيل الدخول</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { useNavigate } from 'react-router-dom';
+
+function LoginForm() {
+  const navigate = useNavigate();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    // ... تحقّق من بيانات الدخول هنا
+    navigate('/dashboard'); // تنقّل برمجي بعد نجاح تسجيل الدخول
+  }
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      {/* حقول النموذج */}
+      &lt;button type="submit"&gt;دخول&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-10"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السابع: المشروع — موقع متعدد الصفحات</h2></div><div class="project-box"><p class="blk-para">موقع متجر بسيط: صفحة رئيسية، قائمة منتجات، صفحة تفاصيل منتج بمعامل ديناميكي، وصفحة 404.</p><div class="subsection"><div class="sub-head"><h3>src/App.jsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import Products from './pages/Products';
+import ProductDetails from './pages/ProductDetails';
+import NotFound from './pages/NotFound';
+
+function App() {
+  return (
+    &lt;&gt;
+      &lt;Navbar /&gt;
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+        &lt;Route path="/products" element={&lt;Products /&gt;} /&gt;
+        &lt;Route path="/products/:id" element={&lt;ProductDetails /&gt;} /&gt;
+        &lt;Route path="*" element={&lt;NotFound /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/&gt;
+  );
+}
+
+export default App;</code></pre>
+  <div class="output-box" id="out-11"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>src/components/Navbar.jsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { NavLink } from 'react-router-dom';
+
+function Navbar() {
+  const linkClass = ({ isActive }) =&gt; (isActive ? 'nav-link active' : 'nav-link');
+
+  return (
+    &lt;nav className="navbar"&gt;
+      &lt;NavLink to="/" className={linkClass}&gt;الرئيسية&lt;/NavLink&gt;
+      &lt;NavLink to="/products" className={linkClass}&gt;المنتجات&lt;/NavLink&gt;
+    &lt;/nav&gt;
+  );
+}
+
+export default Navbar;</code></pre>
+  <div class="output-box" id="out-12"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>src/pages/Products.jsx وProductDetails.jsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// src/pages/Products.jsx
+import { Link } from 'react-router-dom';
+
+const products = [
+  { id: 1, name: 'لابتوب' },
+  { id: 2, name: 'هاتف ذكي' },
+  { id: 3, name: 'سماعات' },
+];
+
+function Products() {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;🛍️ المنتجات&lt;/h1&gt;
+      &lt;ul&gt;
+        {products.map((p) =&gt; (
+          &lt;li key={p.id}&gt;
+            &lt;Link to={`/products/${p.id}`}&gt;{p.name}&lt;/Link&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default Products;
+
+// src/pages/ProductDetails.jsx
+import { useParams, Link } from 'react-router-dom';
+
+function ProductDetails() {
+  const { id } = useParams();
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;تفاصيل المنتج #{id}&lt;/h1&gt;
+      &lt;Link to="/products"&gt;⬅ العودة للمنتجات&lt;/Link&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default ProductDetails;</code></pre>
+  <div class="output-box" id="out-13"></div>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثامن: تمارين الجلسة الثانية والعشرين</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — مسارات أساسية<span class="ex-time">15 دقيقة</span></h4><ul class="mini-list"><li>أنشئ 3 صفحات: الرئيسية، من نحن، تواصل معنا</li><li>Navbar بروابط Link تنقل بينها بلا إعادة تحميل</li><li>صفحة 404 تظهر لأي مسار غير معرَّف</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — NavLink ومعاملات المسار<span class="ex-time">20 دقيقة</span></h4><ul class="mini-list"><li>صفحة "المدونة" بقائمة مقالات (عنوان + id لكل مقال)</li><li>كل مقال رابط Link لمسار /blog/:id</li><li>صفحة تفاصيل المقال تعرض العنوان المطابق للمعامل عبر useParams</li><li>استخدم NavLink في شريط التنقل مع تنسيق واضح للرابط النشط</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — useNavigate عملي<span class="ex-time">25 دقيقة</span></h4><ul class="mini-list"><li>نموذج بسيط (اسم + بريد إلكتروني)</li><li>عند الإرسال: تحقّق بسيط من الحقول، ثم انتقل تلقائياً لصفحة "/thank-you" بـ useNavigate</li><li>صفحة الشكر تعرض رسالة ترحيبية وزر "العودة للرئيسية"</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الثانية والعشرين</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>SPA</td><td>تطبيق صفحة واحدة يُبدِّل المحتوى عبر JavaScript بلا إعادة تحميل من الخادم</td></tr><tr><td>BrowserRouter</td><td>يُغلِّف التطبيق بالكامل من main.jsx ليُفعِّل التنقّل</td></tr><tr><td>Routes وRoute</td><td>تعريف كل مسار وربطه بمكوّن عبر path وelement</td></tr><tr><td>path="*"</td><td>مسار Catch-All لعرض صفحة 404 لأي رابط غير معرَّف</td></tr><tr><td>Link وNavLink</td><td>تنقّل فوري بلا إعادة تحميل؛ NavLink يُضيف تنسيقاً للرابط النشط تلقائياً</td></tr><tr><td>Route Parameters</td><td>:id في المسار لصفحات ديناميكية</td></tr><tr><td>useParams</td><td>قراءة قيمة المعامل الفعلية من عنوان URL الحالي</td></tr><tr><td>useNavigate</td><td>تنقّل برمجي بعد أحداث معيّنة (إرسال نموذج، تسجيل دخول)</td></tr><tr><td>المشروع</td><td>موقع متجر بصفحات متعددة ومسار ديناميكي لتفاصيل كل منتج</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الثالثة والعشرون: Nested Routes وLayouts في React Router</span><p>✦ المسارات المتداخلة (Nested Routes) لصفحات ذات تخطيط مشترك</p><p>✦ Outlet — مكان عرض المسارات الفرعية</p><p>✦ Layout Route: شريط تنقّل وتذييل ثابتين مع محتوى متغيّر</p><p>✦ Index Route — المسار الافتراضي عند عدم تحديد فرعي</p><p>✦ حماية المسارات (Protected Routes) لصفحات تتطلّب تسجيل دخول</p><p>✦ مشروع: لوحة تحكّم (Dashboard) بتخطيط ثابت ومسارات فرعية متعددة</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الثانية والعشرون</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الثالثة والعشرين</span><p>يُرسَل رابط GitHub أو ملف مضغوط لمشروع Vite عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: مدونة شخصية متعددة الصفحات</h3></div><p class="blk-para">أنشئ تطبيق React بـ Vite لمدونة شخصية كاملة باستخدام React Router:</p><h4 class="mini-head">◆ الصفحات المطلوبة:</h4><ul class="mini-list"><li>الرئيسية: نبذة قصيرة + آخر 3 مقالات</li><li>كل المقالات: قائمة كاملة بكل المقالات (بيانات وهمية في مصفوفة)</li><li>مقال فردي (/articles/:id): يعرض المحتوى الكامل حسب المعامل</li><li>من أنا: نبذة عن الكاتب</li><li>تواصل: نموذج بسيط ينتقل لصفحة شكر بعد الإرسال (useNavigate)</li><li>صفحة 404 مخصَّصة</li></ul><h4 class="mini-head">◆ متطلبات تقنية:</h4><ul class="mini-list"><li>Navbar بروابط NavLink مع تنسيق واضح للصفحة الحالية</li><li>استخدام useParams لصفحة المقال الفردي</li><li>تنظيم الصفحات في مجلد src/pages/ والمكوّنات المشتركة في src/components/</li></ul></div></div>
+<div class="closing-banner">
+  <h3>🧭 أحسنت! أنت الآن تبني مواقع متعددة الصفحات كالمحترفين</h3>
+  <p>React Router هو الأداة التي تُحوِّل تطبيقك من واجهة واحدة إلى موقع حقيقي متكامل</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 22</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-21.html"><small>السابق</small><span>الجلسة 21 — useContext وإدارة الحالة المشتركة</span></a>
+        <a class="nav-arrow next" href="lesson-23.html"><small>التالي</small><span>الجلسة 23 — Nested Routes وLayouts في React Router</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

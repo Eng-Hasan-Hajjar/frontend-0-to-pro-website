@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 29 — مقدمة إلى TypeScript | Front-End Master Book</title>
+<meta name="description" content="مقدمة إلى TypeScript — لماذا TypeScript • الأنواع الأساسية • Interfaces • TypeScript مع React">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="29">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🔷</span>
+    <div>
+      <div class="session-tag">Session 29 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة التاسعة والعشرون — مقدمة إلى TypeScript</h1>
+  <p class="tags-line">لماذا TypeScript • الأنواع الأساسية • Interfaces • TypeScript مع React</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة التاسعة والعشرين</h2>
+  <ul class="goal-list"><li>فهم ما هو TypeScript ولماذا نضيف نظام أنواع فوق JavaScript</li><li>التفريق بين أخطاء تظهر وقت الكتابة (TypeScript) وأخطاء لا تظهر إلا وقت التشغيل (JavaScript)</li><li>إعداد بيئة TypeScript وفهم عملية التحويل (Compilation) إلى JavaScript خالص</li><li>استخدام الأنواع الأساسية: string وnumber وboolean وarray وtuple</li><li>فهم الفرق بين any وunknown ولماذا نتجنّب any قدر الإمكان</li><li>وصف شكل الكائنات عبر Interfaces وType Aliases</li><li>كتابة دوال بأنواع محدَّدة للمعاملات والقيمة المُعادة</li><li>استخدام TypeScript مع React: Props وState بأنواع محدَّدة بدقة</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة الثامنة والعشرين</span><p>أكملنا مرحلة React وNext.js بالكامل (الجلسات 17-28)، من أول JSX حتى تطبيق منشور فعلياً على Vercel</p><p>تعلّمنا كل Hooks الأساسية (useState، useEffect، useRef، useContext، useReducer)</p><p>بنينا مواقع متعددة الصفحات بـ React Router، وتطبيقات كاملة بـ Next.js وAPI Routes</p></div><div class="callout success"><span class="callout-title">🎓 أهلاً بمرحلة TypeScript!</span><p>كل الكود الذي كتبناه حتى الآن كان JavaScript خالصاً — مرناً وسريع الكتابة، لكنه لا يُخبرك بأخطائك إلا وقت التشغيل، أحياناً بعد أن يصل الخطأ لمستخدم حقيقي!</p><p>TypeScript يُضيف "نظام أنواع" فوق JavaScript، يكتشف فئة كاملة من الأخطاء وأنت تكتب الكود، قبل أي تشغيل إطلاقاً. اليوم نأخذ أولى خطواتنا فيه.</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🤔</span><h2>الجزء الأول: لماذا TypeScript؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>المشكلة: أخطاء لا تظهر إلا وقت التشغيل</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// JavaScript عادي — هذا الخطأ لن يظهر إلا وقت التشغيل!
+function calculateTotal(price, quantity) {
+  return price * quantity;
+}
+
+calculateTotal(10, "خمسة"); // NaN — لا يوجد أي تحذير حتى وقت التشغيل!</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>الحل: نظام أنواع يكتشف الخطأ فوراً</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// TypeScript — الخطأ يظهر فوراً أثناء الكتابة، قبل أي تشغيل!
+function calculateTotal(price: number, quantity: number): number {
+  return price * quantity;
+}
+
+calculateTotal(10, "خمسة");
+// ❌ خطأ فوري في المحرّر:
+// Argument of type 'string' is not assignable to parameter of type 'number'</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div><div class="callout tip"><span class="callout-title">💡 الفكرة الجوهرية</span><p>TypeScript لا "يُشغِّل" الكود ليكتشف الخطأ — يكتشفه فقط بقراءة الأنواع، أثناء الكتابة نفسها، غالباً مباشرة داخل المحرّر (VS Code) قبل حفظ الملف حتى.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🛠️</span><h2>الجزء الثاني: الإعداد والتحويل (Compilation)</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>تثبيت TypeScript</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>npm install -g typescript
+tsc --version</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>من .ts إلى .js</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>tsc app.ts
+# ينتج app.js — كود JavaScript خالص قابل للتشغيل في أي متصفح أو Node.js</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div><div class="callout tip"><span class="callout-title">💡 مهم</span><p>المتصفحات لا "تفهم" TypeScript مباشرة أبداً — المُحوِّل (tsc) يُترجمه لـ JavaScript عادي أولاً، وهذا الناتج (app.js) هو ما يعمل فعلياً. في مشاريع Vite أو Next.js، هذا التحويل يحدث تلقائياً في الخلفية.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔤</span><h2>الجزء الثالث: الأنواع الأساسية</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>الأنواع البدائية والمصفوفات</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>let name: string = 'سارة';
+let age: number = 25;
+let isStudent: boolean = true;
+
+let scores: number[] = [90, 85, 78];
+let names: string[] = ['أحمد', 'سارة', 'محمد'];
+
+let point: [number, number] = [10, 20]; // Tuple: طول ثابت وأنواع محدَّدة بالترتيب</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>any مقابل unknown</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>let value: any = 'نص'; // ⚠️ any يُعطّل نظام الأنواع بالكامل — تجنّبه قدر الإمكان
+value = 42; // لا خطأ! any يقبل أي شيء، وهذا يُفقدنا كل فائدة TypeScript
+
+let safeValue: unknown = 'نص'; // ✅ unknown أكثر أماناً
+// safeValue.toUpperCase(); // ❌ خطأ: يجب التحقّق من النوع أولاً
+
+if (typeof safeValue === 'string') {
+  safeValue.toUpperCase(); // ✅ الآن مسموح، بعد التأكد من النوع فعلياً
+}</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div><div class="callout info"><span class="callout-title">⭐ القاعدة الذهبية</span><p>تجنّب any قدر الإمكان — استخدامه يُعيدك عملياً لـ JavaScript الخالص بلا أي حماية. عندما لا تعرف النوع مسبقاً، unknown أكثر أماناً لأنه يُجبرك على التحقّق قبل الاستخدام.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">📐</span><h2>الجزء الرابع: Interfaces وType Aliases</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>وصف شكل كائن بـ interface</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>interface User {
+  name: string;
+  age: number;
+  email?: string; // ? يعني: حقل اختياري
+}
+
+function greetUser(user: User): string {
+  return `مرحباً ${user.name}!`;
+}
+
+greetUser({ name: 'أحمد', age: 30 }); // ✅ صحيح، email اختياري فلا حاجة له
+greetUser({ name: 'أحمد' }); // ❌ خطأ: الحقل age مطلوب ومفقود!</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>type مقابل interface</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>type UserType = {
+  name: string;
+  age: number;
+};
+
+interface UserInterface {
+  name: string;
+  age: number;
+}
+// الفرق الرئيسي: interface يمكن "توسيعها" (extends) بسهولة أكبر، وتُفضَّل لوصف الكائنات
+// type أكثر مرونة لأنواع أخرى (اتحادات Union، تقاطعات Intersection) سنراها لاحقاً</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔧</span><h2>الجزء الخامس: الدوال المكتوبة بأنواع</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>معاملات وقيمة مُعادة</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function add(a: number, b: number): number {
+  return a + b;
+}</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>معاملات اختيارية وقيم افتراضية</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function greet(name: string, greeting: string = 'مرحباً'): string {
+  return `${greeting}، ${name}!`;
+}
+
+function findUser(id: number, includeDeleted?: boolean): string {
+  // includeDeleted معامل اختياري (قد يكون undefined إن لم يُمرَّر)
+  return `بحث عن مستخدم رقم ${id}`;
+}</code></pre>
+  <div class="output-box" id="out-10"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">⚛️</span><h2>الجزء السادس: TypeScript مع React</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>كتابة Props بـ interface</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>interface CardProps {
+  title: string;
+  price: number;
+  onAddToCart: (id: number) =&gt; void;
+}
+
+function ProductCard({ title, price, onAddToCart }: CardProps) {
+  return (
+    &lt;div className="card"&gt;
+      &lt;h3&gt;{title}&lt;/h3&gt;
+      &lt;p&gt;{price} $&lt;/p&gt;
+      &lt;button onClick={() =&gt; onAddToCart(1)}&gt;أضف للسلة&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-11"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.2</span><h3>useState مع أنواع محدَّدة</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState&lt;number&gt;(0); // النوع محدَّد صراحة
+
+  return &lt;button onClick={() =&gt; setCount(count + 1)}&gt;{count}&lt;/button&gt;;
+}</code></pre>
+  <div class="output-box" id="out-12"></div>
+</div><div class="callout tip"><span class="callout-title">💡 Type Inference</span><p>TypeScript غالباً يستنتج النوع تلقائياً من القيمة الابتدائية — useState(0) يكفي عادة ليُستنتَج النوع number بلا كتابته صراحة. التصريح الصريح &lt;number&gt; مفيد للوضوح، أو عند الحاجة لأنواع أكثر تعقيداً.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السابع: المشروع — تحويل مكوّن من JavaScript إلى TypeScript</h2></div><div class="project-box"><p class="blk-para">نأخذ مكوّناً حقيقياً بـ JavaScript ونحوّله بالكامل — Props والبيانات والدوال — إلى TypeScript كامل الأنواع.</p><div class="subsection"><div class="sub-head"><h3>قبل: ProductCard.jsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function ProductCard({ title, price, onAddToCart }) {
+  return (
+    &lt;div className="card"&gt;
+      &lt;h3&gt;{title}&lt;/h3&gt;
+      &lt;p&gt;{price} $&lt;/p&gt;
+      &lt;button onClick={() =&gt; onAddToCart(title)}&gt;أضف للسلة&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default ProductCard;</code></pre>
+  <div class="output-box" id="out-13"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>بعد: ProductCard.tsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>interface ProductCardProps {
+  title: string;
+  price: number;
+  onAddToCart: (title: string) =&gt; void;
+}
+
+function ProductCard({ title, price, onAddToCart }: ProductCardProps) {
+  return (
+    &lt;div className="card"&gt;
+      &lt;h3&gt;{title}&lt;/h3&gt;
+      &lt;p&gt;{price} $&lt;/p&gt;
+      &lt;button onClick={() =&gt; onAddToCart(title)}&gt;أضف للسلة&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default ProductCard;</code></pre>
+  <div class="output-box" id="out-14"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>App.tsx — الاستخدام ببيانات مكتوبة بأنواع</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>interface Product {
+  id: number;
+  title: string;
+  price: number;
+}
+
+const products: Product[] = [
+  { id: 1, title: 'لابتوب', price: 500 },
+  { id: 2, title: 'هاتف ذكي', price: 300 },
+];
+
+function App() {
+  function handleAddToCart(title: string) {
+    console.log(`أُضيف للسلة: ${title}`);
+  }
+
+  return (
+    &lt;div&gt;
+      {products.map((product) =&gt; (
+        &lt;ProductCard
+          key={product.id}
+          title={product.title}
+          price={product.price}
+          onAddToCart={handleAddToCart}
+        /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+  <div class="output-box" id="out-15"></div>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثامن: تمارين الجلسة التاسعة والعشرين</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — أنواع أساسية<span class="ex-time">15 دقيقة</span></h4><ul class="mini-list"><li>اكتب متغيرات بأنواع محدَّدة: اسم (string)، عمر (number)، قائمة مواد دراسية (string[])</li><li>اكتب tuple لإحداثية نقطة [x, y]</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — Interface أول<span class="ex-time">20 دقيقة</span></h4><ul class="mini-list"><li>اكتب interface لـ "كتاب": عنوان، مؤلف، سنة نشر، وعدد صفحات (اختياري)</li><li>اكتب دالة تعرض معلومات الكتاب بشكل نص منسَّق، بمعامل من نوع هذا الـ interface</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — تحويل مكوّن كامل<span class="ex-time">25 دقيقة</span></h4><ul class="mini-list"><li>خُذ أي مكوّن React JavaScript بسيط من جلسة سابقة</li><li>حوّله بالكامل لـ TypeScript: interface للـ Props، وأنواع صريحة لأي useState بداخله</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة التاسعة والعشرين</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>لماذا TypeScript</td><td>يكتشف أخطاء الأنواع وقت الكتابة، قبل أي تشغيل للكود</td></tr><tr><td>tsc</td><td>المُحوِّل الذي يُترجم TypeScript إلى JavaScript خالص قابل للتشغيل</td></tr><tr><td>الأنواع الأساسية</td><td>string وnumber وboolean وarray وtuple</td></tr><tr><td>any مقابل unknown</td><td>تجنّب any (يُعطِّل الحماية)؛ unknown أكثر أماناً ويُجبر على التحقّق أولاً</td></tr><tr><td>interface</td><td>يصف شكل كائن؛ ? يجعل حقلاً اختيارياً</td></tr><tr><td>type مقابل interface</td><td>interface تُفضَّل لوصف الكائنات وتدعم extends بسهولة أكبر</td></tr><tr><td>الدوال المكتوبة بأنواع</td><td>أنواع صريحة لكل معامل وللقيمة المُعادة</td></tr><tr><td>TypeScript مع React</td><td>Props بـ interface، وuseState&lt;Type&gt;() عند الحاجة لأنواع صريحة</td></tr><tr><td>المشروع</td><td>تحويل مكوّن React كامل من .jsx إلى .tsx بأنواع دقيقة لكل شيء</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الثلاثون: TypeScript المتقدم — Generics وUtility Types</span><p>✦ Generics — دوال ومكوّنات تعمل مع أي نوع بأمان</p><p>✦ Union Types وIntersection Types</p><p>✦ Utility Types الجاهزة: Partial وPick وOmit وRecord</p><p>✦ كتابة أنواع دقيقة لـ useReducer وCustom Hooks</p><p>✦ مشروع: مكتبة Hooks مخصَّصة مكتوبة بالكامل بـ TypeScript وGenerics</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة التاسعة والعشرون</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الثلاثين</span><p>يُرسَل رابط GitHub أو ملف مضغوط عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: تحويل تطبيق عربة التسوّق إلى TypeScript كامل</h3></div><p class="blk-para">خُذ تطبيق عربة التسوّق الذي بنيته في جلسة useReducer (الجلسة 25)، وحوّله بالكامل من JavaScript إلى TypeScript:</p><h4 class="mini-head">◆ المتطلبات التقنية:</h4><ul class="mini-list"><li>interface واضح لشكل عنصر المنتج (Product) وعنصر العربة (CartItem)</li><li>كتابة أنواع دقيقة لكل Actions في الـ reducer (type + payload بأنواع محدَّدة لكل حالة)</li><li>كتابة Props بـ interface لكل مكوّن (ProductsGrid، CartSummary)</li><li>استخدام صريح لأنواع useReducer وuseContext (سنراجع كيفية كتابة أنواعهما بدقة في الجلسة القادمة إن احتجت مساعدة إضافية)</li></ul></div></div>
+<div class="closing-banner">
+  <h3>🔷 أحسنت! أنت الآن تكتب كوداً أكثر أماناً وثقة</h3>
+  <p>TypeScript ليس عبئاً إضافياً — إنه شبكة أمان تكتشف أخطاءك قبل أن يراها أي مستخدم</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 29</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-28.html"><small>السابق</small><span>الجلسة 28 — النشر على Vercel ومراجعة شاملة لمرحلة React وNext.js</span></a>
+        <a class="nav-arrow next is-disabled" href="#"><small>التالي</small><span>هذه آخر جلسة حالياً</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

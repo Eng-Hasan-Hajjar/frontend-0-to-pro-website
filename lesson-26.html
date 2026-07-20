@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 26 — مقدمة إلى Next.js | Front-End Master Book</title>
+<meta name="description" content="مقدمة إلى Next.js — لماذا Next.js • File-based Routing • Server مقابل Client Components • SSR وSSG">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="26">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">▲</span>
+    <div>
+      <div class="session-tag">Session 26 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة السادسة والعشرون — مقدمة إلى Next.js</h1>
+  <p class="tags-line">لماذا Next.js • File-based Routing • Server مقابل Client Components • SSR وSSG</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة السادسة والعشرين</h2>
+  <ul class="goal-list"><li>فهم ما هو Next.js ولماذا نبني فوقه بدل React وVite مباشرة</li><li>التفريق بين React (مكتبة واجهات) وNext.js (إطار عمل متكامل)</li><li>إنشاء مشروع Next.js جديد وفهم هيكل مجلداته الأساسية</li><li>فهم File-based Routing — كيف تتحوّل الملفات والمجلدات إلى مسارات تلقائياً</li><li>التفريق بين Server Components وClient Components ومتى نحتاج "use client"</li><li>فهم الفكرة المبسّطة لـ SSR وSSG ولماذا تُهمّان الأداء وSEO</li><li>بناء أول تطبيق Next.js كامل بعدة صفحات ومسار ديناميكي</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة الخامسة والعشرين</span><p>useReducer يُجمِّع منطق تحديث الحالة المعقّدة في دالة reducer مركزية واحدة</p><p>الأكشنات (Actions) كائنات بحقل type وpayload اختياري</p><p>دمج useReducer مع useContext يمنح نمط إدارة حالة قوياً بلا مكتبات خارجية</p><p>بهذا نكون أنهينا ثلاثية إدارة الحالة الكاملة في React: useState، useContext، useReducer</p></div><div class="callout success"><span class="callout-title">🎓 أهلاً بعالم Next.js!</span><p>حتى الآن بنينا كل تطبيقاتنا بـ React وVite — قوي ومرن، لكنه يتطلّب إعداد كل شيء بأنفسنا: Routing، تحسين الأداء، حتى SEO.</p><p>Next.js إطار عمل (Framework) مبني فوق React نفسه، يمنحك كل هذه الأشياء جاهزة افتراضياً. اليوم نأخذ أول خطواتنا فيه.</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">⚡</span><h2>الجزء الأول: ما هو Next.js ولماذا نحتاجه؟</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الميزة</th><th>React + Vite وحده</th><th>Next.js</th></tr></thead><tbody><tr><td>التنقّل (Routing)</td><td>تثبيت react-router-dom وإعداده يدوياً</td><td>جاهز تلقائياً عبر File-based Routing</td></tr><tr><td>SSR / SEO</td><td>إعداد يدوي معقّد، أو غير متاح غالباً</td><td>مدمج افتراضياً في كل صفحة</td></tr><tr><td>تحسين الصور</td><td>يدوي بالكامل</td><td>مكوّن Image مدمج يُحسِّن تلقائياً</td></tr><tr><td>خادم خلفي بسيط</td><td>يحتاج مشروعاً منفصلاً بالكامل</td><td>API Routes مدمجة في نفس المشروع</td></tr><tr><td>الأداء الافتراضي</td><td>يعتمد على إعدادك الخاص</td><td>تقسيم الكود (Code Splitting) تلقائي</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>React مكتبة، Next.js إطار عمل</h3></div><p class="blk-para">React نفسه مكتبة (Library) تُركِّز فقط على بناء الواجهات — كل شيء آخر (التنقّل، الخادم، الأداء) تختاره وتُعِدُّه بنفسك. Next.js إطار عمل (Framework) متكامل يبني فوق React ويوفّر كل هذه الأشياء جاهزة بقرارات مدروسة مسبقاً.</p></div></div><div class="part"><div class="part-head"><span class="p-icon">🛠️</span><h2>الجزء الثاني: إنشاء مشروع Next.js</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>أمر الإنشاء</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>npx create-next-app@latest my-app
+cd my-app
+npm run dev</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>هيكل المشروع الأساسي</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>my-app/
+├── app/
+│   ├── layout.js       ← التخطيط العام (مشترك لكل الصفحات)
+│   ├── page.js         ← الصفحة الرئيسية (المسار /)
+│   └── globals.css
+├── public/              ← ملفات ثابتة (صور، أيقونات)
+├── next.config.js
+└── package.json</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">📁</span><h2>الجزء الثالث: File-based Routing</h2></div><p class="blk-para">في Next.js، بنية المجلدات داخل app/ تُحدِّد مسارات موقعك مباشرة — بلا أي إعداد Router يدوي كما فعلنا سابقاً بـ react-router-dom.</p><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>البنية والمسارات الناتجة</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>app/
+├── page.js                → المسار: /
+├── about/
+│   └── page.js              → المسار: /about
+├── blog/
+│   ├── page.js                → المسار: /blog
+│   └── [slug]/
+│       └── page.js             → المسار: /blog/أي-قيمة (مسار ديناميكي)</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>أمثلة كود لكل صفحة</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// app/page.js
+export default function HomePage() {
+  return &lt;h1&gt;الصفحة الرئيسية 🏠&lt;/h1&gt;;
+}</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// app/about/page.js
+export default function AboutPage() {
+  return &lt;h1&gt;من نحن 📖&lt;/h1&gt;;
+}</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// app/blog/[slug]/page.js
+export default function BlogPost({ params }) {
+  return &lt;h1&gt;مقال: {params.slug}&lt;/h1&gt;;
+}
+// زيارة /blog/react-hooks في المتصفح → params.slug === 'react-hooks'</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🖥️</span><h2>الجزء الرابع: Server Components مقابل Client Components</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>الافتراضي: Server Component</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// app/page.js — Server Component افتراضياً، بلا أي تصريح خاص
+async function getData() {
+  const res = await fetch('https://api.example.com/posts');
+  return res.json();
+}
+
+export default async function HomePage() {
+  const posts = await getData();
+  return (
+    &lt;div&gt;
+      {posts.map((post) =&gt; &lt;p key={post.id}&gt;{post.title}&lt;/p&gt;)}
+    &lt;/div&gt;
+  );
+}
+// يُنفَّذ هذا الكود بالكامل على الخادم — لا يصل لمتصفح المستخدم كـ JavaScript إطلاقاً!</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>"use client": متى نحتاجه</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// app/components/Counter.js
+'use client'; // ← يُخبر Next.js: هذا المكوّن يحتاج تفاعلاً داخل متصفح المستخدم
+
+import { useState } from 'react';
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+  return &lt;button onClick={() =&gt; setCount(count + 1)}&gt;{count}&lt;/button&gt;;
+}</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div><div class="callout tip"><span class="callout-title">💡 القاعدة</span><p>"use client" في أول سطر من الملف يُحوِّل المكوّن (وكل ما يستورده) إلى Client Component. أي مكوّن يستخدم useState أو useEffect أو أحداثاً كـ onClick يحتاج هذا التصريح — لأنها لا تعمل إلا داخل متصفح المستخدم.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🏗️</span><h2>الجزء الخامس: أساسيات SSR وSSG</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المفهوم</th><th>الفكرة المبسّطة</th><th>يناسب</th></tr></thead><tbody><tr><td>SSR (Server-Side Rendering)</td><td>الصفحة تُبنى على الخادم مع كل طلب، ثم تُرسَل جاهزة للمتصفح</td><td>محتوى يتغيّر باستمرار (لوحة تحكّم، بيانات حيّة)</td></tr><tr><td>SSG (Static Site Generation)</td><td>الصفحة تُبنى مرة واحدة وقت النشر، وتُقدَّم كملف جاهز للجميع</td><td>محتوى لا يتغيّر كثيراً (مدونة، صفحة "من نحن")</td></tr></tbody></table></div><div class="callout tip"><span class="callout-title">💡 لماذا هذا مهم؟</span><p>محركات البحث مثل Google تقرأ محتوى HTML الجاهز مباشرة (تحسين SEO حقيقي)، والمستخدم يرى المحتوى فوراً بلا انتظار تحميل JavaScript أولاً — بعكس React وحده حيث تبدأ الصفحة فارغة تماماً حتى يكتمل تحميل JavaScript وتنفيذه.</p></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السادس: المشروع — أول تطبيق Next.js</h2></div><div class="project-box"><p class="blk-para">مدونة بسيطة بأربع صفحات: تخطيط عام مشترك، رئيسية، من نحن، وقسم مدونة بمسار ديناميكي لكل مقال.</p><div class="subsection"><div class="sub-head"><h3>app/layout.js</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import './globals.css';
+
+export const metadata = {
+  title: 'مدونتي الأولى بـ Next.js',
+  description: 'أول تطبيق Next.js كامل',
+};
+
+export default function RootLayout({ children }) {
+  return (
+    &lt;html lang="ar" dir="rtl"&gt;
+      &lt;body&gt;
+        &lt;nav&gt;
+          &lt;a href="/"&gt;الرئيسية&lt;/a&gt;
+          &lt;a href="/about"&gt;من نحن&lt;/a&gt;
+          &lt;a href="/blog"&gt;المدونة&lt;/a&gt;
+        &lt;/nav&gt;
+        &lt;main&gt;{children}&lt;/main&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>app/page.js وapp/about/page.js</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// app/page.js
+export default function HomePage() {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;🏠 مرحباً بك في مدونتي&lt;/h1&gt;
+      &lt;p&gt;هذا أول تطبيق Next.js أبنيه بنفسي!&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+// app/about/page.js
+export default function AboutPage() {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;📖 من أنا&lt;/h1&gt;
+      &lt;p&gt;مطوّر ويب شغوف بتعلّم React وNext.js.&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-10"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>app/blog/page.js وapp/blog/[slug]/page.js</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// app/blog/page.js
+const posts = [
+  { slug: 'react-hooks', title: 'مقدمة إلى React Hooks' },
+  { slug: 'nextjs-intro', title: 'لماذا Next.js؟' },
+];
+
+export default function BlogPage() {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;📝 المدونة&lt;/h1&gt;
+      &lt;ul&gt;
+        {posts.map((post) =&gt; (
+          &lt;li key={post.slug}&gt;
+            &lt;a href={`/blog/${post.slug}`}&gt;{post.title}&lt;/a&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+
+// app/blog/[slug]/page.js
+export default function BlogPostPage({ params }) {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;مقال: {params.slug}&lt;/h1&gt;
+      &lt;p&gt;محتوى المقال هنا...&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-11"></div>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء السابع: تمارين الجلسة السادسة والعشرين</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — صفحات أساسية<span class="ex-time">15 دقيقة</span></h4><ul class="mini-list"><li>أنشئ مشروع Next.js جديد</li><li>أضف صفحتي /contact و/services كل منها بملف page.js منفصل</li><li>أضف روابط لهما في التخطيط العام (layout.js)</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — مسار ديناميكي<span class="ex-time">20 دقيقة</span></h4><ul class="mini-list"><li>أنشئ قسم /products بصفحة رئيسية تعرض قائمة منتجات (بيانات وهمية)</li><li>أنشئ /products/[id] تعرض params.id</li><li>اربط كل منتج في القائمة برابط لصفحته الديناميكية</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — Server مقابل Client<span class="ex-time">25 دقيقة</span></h4><ul class="mini-list"><li>ابنِ مكوّن عدّاد تفاعلي (Client Component بـ "use client" وuseState)</li><li>ابنِ مكوّناً آخر يعرض نصاً ثابتاً فقط (Server Component بلا أي تصريح)</li><li>استخدم الاثنين معاً في نفس الصفحة، ولاحظ أن أحدهما فقط يحتاج "use client"</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة السادسة والعشرين</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>Next.js</td><td>إطار عمل متكامل فوق React، يوفّر Routing وSSR وتحسينات جاهزة افتراضياً</td></tr><tr><td>إنشاء المشروع</td><td>npx create-next-app@latest ثم npm run dev</td></tr><tr><td>File-based Routing</td><td>بنية المجلدات داخل app/ تُحدِّد المسارات مباشرة، بلا Router يدوي</td></tr><tr><td>[slug]</td><td>مجلد بأقواس مربّعة ينشئ مساراً ديناميكياً، يُقرَأ عبر params</td></tr><tr><td>Server Component</td><td>الافتراضي في Next.js — يعمل على الخادم، لا يصل كـ JS للمتصفح</td></tr><tr><td>"use client"</td><td>تصريح إلزامي لأي مكوّن يستخدم useState أو أحداثاً تفاعلية</td></tr><tr><td>SSR وSSG</td><td>بناء الصفحة عند كل طلب (SSR) أو مرة واحدة وقت النشر (SSG) — يخدمان SEO والأداء</td></tr><tr><td>المشروع</td><td>مدونة بأربع صفحات وتخطيط مشترك ومسار ديناميكي لكل مقال</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة السابعة والعشرون: Next.js المتقدم — Data Fetching وAPI Routes</span><p>✦ جلب البيانات في Server Components مباشرة بـ async/await</p><p>✦ التخزين المؤقت (Caching) والتحقّق منه (Revalidation)</p><p>✦ API Routes — بناء نقاط نهاية (Endpoints) داخل مشروع Next.js نفسه</p><p>✦ معالجة طلبات GET وPOST في API Routes</p><p>✦ ربط Client Component بـ API Route داخلي</p><p>✦ مشروع: تطبيق كامل بواجهة أمامية وAPI خلفي في مشروع واحد</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة السادسة والعشرون</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة السابعة والعشرين</span><p>يُرسَل رابط GitHub أو ملف مضغوط لمشروع Next.js عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: موقع بورتفوليو شخصي بـ Next.js</h3></div><p class="blk-para">أنشئ موقع بورتفوليو شخصي كامل باستخدام Next.js وFile-based Routing:</p><h4 class="mini-head">◆ الصفحات المطلوبة:</h4><ul class="mini-list"><li>الرئيسية: نبذة ترحيبية قصيرة</li><li>من أنا: نبذة أطول + المهارات</li><li>المشاريع: قائمة مشاريع (بيانات وهمية) + صفحة تفاصيل ديناميكية /projects/[id]</li><li>تواصل: نموذج بسيط (اسم، بريد، رسالة) كـ Client Component</li></ul><h4 class="mini-head">◆ متطلبات تقنية:</h4><ul class="mini-list"><li>layout.js واحد مشترك بشريط تنقّل يظهر في كل الصفحات</li><li>تحديد أي مكوّن يحتاج "use client" بدقّة (فقط ما يستخدم useState أو أحداثاً فعلياً)</li><li>استخدام metadata في layout.js لعنوان ووصف الموقع</li></ul></div></div>
+<div class="closing-banner">
+  <h3>▲ أحسنت! أنت الآن تبني بإطار عمل احترافي كامل</h3>
+  <p>Next.js يفتح لك أبواب الإنتاج الحقيقي — من مشروع تدريبي إلى تطبيق جاهز للنشر</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 26</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-25.html"><small>السابق</small><span>الجلسة 25 — useReducer — إدارة حالة معقدة بمنطق مركزي</span></a>
+        <a class="nav-arrow next" href="lesson-27.html"><small>التالي</small><span>الجلسة 27 — Next.js المتقدم — Data Fetching وAPI Routes</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 17 — مقدمة إلى React | Front-End Master Book</title>
+<meta name="description" content="مقدمة إلى React — ما هو React • Vite • JSX • Components • Props • أول مشروع">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="17">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">⚛️</span>
+    <div>
+      <div class="session-tag">Session 17 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة السابعة عشرة — مقدمة إلى React</h1>
+  <p class="tags-line">ما هو React • Vite • JSX • Components • Props • أول مشروع</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة السابعة عشرة</h2>
+  <ul class="goal-list"><li>فهم ما هو React ولماذا أصبح الأكثر استخداماً في صناعة تطوير الويب</li><li>معرفة الفرق بين Library وFramework وموضع React في هذا التصنيف</li><li>تهيئة مشروع React حديث باستخدام Vite بخطوات عملية</li><li>فهم JSX وكيف يُحوَّل لـ JavaScript خالص</li><li>كتابة أول مكوّن React (Component) وظيفي (Functional Component)</li><li>استخدام Props لتمرير البيانات بين المكوّنات</li><li>تطبيق مبدأ Component Composition لبناء واجهات معقدة من مكوّنات بسيطة</li><li>استخدام Conditional Rendering وList Rendering</li><li>فهم أين يضع React العناصر في DOM الحقيقي (React Root)</li><li>بناء أول تطبيق React: بطاقة شخصية تفاعلية كاملة</li></ul>
+</div><div class="callout success"><span class="callout-title">🎓 أهلاً بمرحلة React!</span><p>تهانينا على إتمام مرحلة JavaScript بنجاح!</p><p>الآن تبدأ الرحلة الأكثر إثارة: React — المكتبة التي تستخدمها Meta وNetflix وAirbnb وغيرها.</p><p>React ستُحوّل تفكيرك البرمجي: من التعامل مع DOM يدوياً إلى التفكير بالمكوّنات والحالة.</p><p>كل ما تعلمته في JavaScript سيُستخدَم هنا — React هي JavaScript بطريقة أفضل!</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">⚛️</span><h2>الجزء الأول: ما هو React ولماذا نستخدمه؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>تعريف React</h3></div><p class="blk-para">React هي مكتبة JavaScript مفتوحة المصدر طوّرتها Meta (فيسبوك) عام 2013. تُستخدَم لبناء واجهات المستخدم (User Interfaces) بطريقة تعتمد على المكوّنات (Component-Based).</p><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الخاصية</th><th>التفصيل</th></tr></thead><tbody><tr><td>النوع</td><td>مكتبة (Library) وليست Framework — تعتني بواجهة المستخدم فقط</td></tr><tr><td>المطوّر</td><td>Meta (Facebook) — مفتوحة المصدر</td></tr><tr><td>الإصدار الحالي</td><td>React 19 (2025) — أحدث إصدار</td></tr><tr><td>اللغة الأساسية</td><td>JavaScript (وTypeScript للمشاريع الكبيرة)</td></tr><tr><td>الاستخدام</td><td>الأكثر انتشاراً في السوق — 40%+ من مطوّري الويب</td></tr><tr><td>npm downloads</td><td>أكثر من 20 مليون تنزيل أسبوعياً</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>Library مقابل Framework</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الفئة</th><th>React (Library)</th><th>Angular (Framework)</th></tr></thead><tbody><tr><td>التحكم</td><td>أنت تتحكم في الهيكل</td><td>الـ Framework يُحدّد الهيكل</td></tr><tr><td>المرونة</td><td>عالية جداً ✅</td><td>محدودة نسبياً</td></tr><tr><td>منحنى التعلم</td><td>أسهل في البدء</td><td>أصعب — يتطلب TypeScript</td></tr><tr><td>الحجم</td><td>خفيف جداً ✅</td><td>أثقل</td></tr><tr><td>الاستخدام</td><td>مع أي مكتبة أخرى</td><td>يجب اتباع نمط Angular</td></tr><tr><td>مَن يستخدمه؟</td><td>Meta, Netflix, Airbnb</td><td>Google, Microsoft</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>مشكلة الطريقة التقليدية (Vanilla JS)</h3></div><p class="blk-para">لماذا ظهر React؟ لأن إدارة DOM يدوياً في التطبيقات الكبيرة يُصبح كابوساً:</p><div class="callout info"><span class="callout-title">مشاكل Vanilla JS في تطبيقات كبيرة</span><p> 1. إدارة الحالة — يجب تتبع كل التغييرات يدوياً</p><p> 2. عدم التزامن — الـ DOM قد يصبح غير متزامن مع البيانات</p><p> 3. الكود المتكرر — renderUser() مكررة في كل صفحة</p><p> 4. صعوبة الاختبار — صعب اختبار كود مرتبط بـ DOM</p><p> الحل الذي يقدمه React:</p><p> ← أخبر React بشكل الواجهة عند حالة معينة</p><p> ← React يُحدّث DOM تلقائياً عند تغيير الحالة</p></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.4</span><h3>Virtual DOM — كيف يعمل React</h3></div><div class="callout info"><span class="callout-title">Virtual DOM — كيف يعمل React</span><p> 1. State/Props تتغير في التطبيق</p><p> ↓</p><p> 2. React يُنشئ Virtual DOM جديداً (في الذاكرة — سريع)</p><p> ↓</p><p> 3. React يُقارن Virtual DOM الجديد بالقديم (Diffing)</p><p> ↓</p><p> 4. React يُحدّد الفروق (Patches) بدقة</p><p> ↓</p><p> 5. React يُطبّق الفروق فقط على DOM الحقيقي (Reconciliation)</p><p> المبدأ الأساسي: أنت تصف كيف يجب أن تبدو الواجهة</p><p> React يتولى التحديثات الفعلية للـ DOM</p></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.5</span><h3>React مقابل Vue مقابل Angular</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المعيار</th><th>React ⚛️</th><th>Vue.js 🟩</th></tr></thead><tbody><tr><td>النوع</td><td>Library</td><td>Progressive Framework</td></tr><tr><td>منحنى التعلم</td><td>متوسط</td><td>سهل جداً</td></tr><tr><td>أداء</td><td>ممتاز ✅</td><td>ممتاز</td></tr><tr><td>المجتمع</td><td>الأكبر ✅</td><td>نشط وكبير</td></tr><tr><td>سوق العمل</td><td>الأعلى طلباً ✅</td><td>جيد خاصة في آسيا</td></tr><tr><td>شركات كبرى</td><td>Meta, Netflix, Airbnb</td><td>Alibaba, GitLab</td></tr><tr><td>JSX</td><td>نعم</td><td>لا — Template syntax</td></tr><tr><td>الاختيار للمبتدئين</td><td>✅ (سوق عمل)</td><td>✅ (أسهل تعلماً)</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🛠️</span><h2>الجزء الثاني: إعداد بيئة React مع Vite</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>ما هو Vite؟</h3></div><p class="blk-para">Vite هو أداة بناء حديثة وسريعة للغاية. يُقارَن بـ Create React App (CRA) القديم لكنه أسرع منه بعشرات المرات:</p><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المعيار</th><th>Vite vs Create React App</th></tr></thead><tbody><tr><td>سرعة بدء التشغيل</td><td>Vite: &lt; 1 ثانية | CRA: 30+ ثانية</td></tr><tr><td>سرعة Hot Reload</td><td>Vite: فورية | CRA: ثوانٍ</td></tr><tr><td>الحجم</td><td>Vite: خفيف | CRA: ثقيل (مُهمَل رسمياً)</td></tr><tr><td>الدعم الرسمي</td><td>React توصي بـ Vite أو Next.js</td></tr><tr><td>دعم الأطر</td><td>React, Vue, Svelte, Vanilla JS</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>إنشاء مشروع React بـ Vite</h3></div><ul class="mini-list"><li>تأكد أن Node.js مثبّت: node --version (يجب أن يكون 18+)</li><li>افتح Terminal في المجلد الذي تريد إنشاء المشروع فيه</li><li>نفّذ الأمر التالي:</li></ul><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code># إنشاء مشروع React جديد بـ Vite
+npm create vite@latest my-react-app -- --template react
+
+# الدخول لمجلد المشروع
+cd my-react-app
+
+# تثبيت الـ dependencies
+npm install
+
+# تشغيل خادم التطوير
+npm run dev
+
+# افتح المتصفح على: http://localhost:5173</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.3</span><h3>هيكل مشروع React/Vite</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>my-react-app/
+├── public/                  ← ملفات ثابتة
+├── src/                     ← كل كودك هنا
+│   ├── assets/              ← صور وأيقونات
+│   ├── components/          ← مكوّناتك
+│   ├── App.jsx              ← المكوّن الجذر
+│   ├── App.css
+│   ├── main.jsx             ← نقطة الدخول
+│   └── index.css
+├── index.html               ← الصفحة الرئيسية
+├── package.json
+└── vite.config.js</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.4</span><h3>فهم ملفات البداية</h3></div><div class="code-block" data-lang="html">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot html"></span>HTML</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// index.html — React تُحقَن داخل div#root
+&lt;div id="root"&gt;&lt;/div&gt;
+&lt;script type="module" src="/src/main.jsx"&gt;&lt;/script&gt;</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// src/main.jsx — نقطة الدخول
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  &lt;React.StrictMode&gt;
+    &lt;App /&gt;
+  &lt;/React.StrictMode&gt;,
+)
+// React.StrictMode: يُظهر تحذيرات إضافية في بيئة التطوير فقط</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// src/App.jsx — المكوّن الجذر
+import { useState } from 'react'
+import './App.css'
+
+function App() {
+  const [count, setCount] = useState(0)
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;أهلاً بـ React!&lt;/h1&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
+        العدد: {count}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default App</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">📝</span><h2>الجزء الثالث: JSX — كتابة HTML داخل JavaScript</h2></div><p class="blk-para">JSX (JavaScript XML) هي امتداد لـ JavaScript تُتيح كتابة HTML-like code مباشرة في JS. تُحوَّل إلى JavaScript عادي بواسطة Babel/Vite.</p><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>JSX vs HTML — الفروق المهمة</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>HTML</th><th>JSX</th></tr></thead><tbody><tr><td>class='btn'</td><td>className='btn' — class كلمة محجوزة في JS</td></tr><tr><td>for='name'</td><td>htmlFor='name' — for كلمة محجوزة في JS</td></tr><tr><td>&lt;br&gt;</td><td>&lt;br /&gt; — يجب إغلاق الوسوم الفارغة</td></tr><tr><td>&lt;input&gt;</td><td>&lt;input /&gt; — إغلاق ذاتي</td></tr><tr><td>onclick='fn()'</td><td>onClick={fn} — أسلوب camelCase</td></tr><tr><td>style='color:red'</td><td>style={{color: 'red'}} — كائن JS</td></tr><tr><td>تعليق HTML</td><td>تعليق JSX بـ {/* تعليق */}</td></tr><tr><td>عنصران متجاورة</td><td>يجب wrapper واحد أو Fragment (&lt;&gt;&lt;/&gt;)</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>قواعد JSX الأساسية</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// القاعدة 1: عنصر جذر واحد فقط
+// استخدام Fragment — لا يُضيف عنصر HTML
+return (
+  &lt;&gt;
+    &lt;h1&gt;عنوان&lt;/h1&gt;
+    &lt;p&gt;فقرة&lt;/p&gt;
+  &lt;/&gt;
+)
+
+// القاعدة 2: التعبيرات داخل {}
+const name = 'أحمد';
+const score = 95;
+
+return (
+  &lt;div&gt;
+    &lt;h2&gt;مرحباً يا {name}!&lt;/h2&gt;
+    &lt;p&gt;درجتك: {score}/100&lt;/p&gt;
+    &lt;p&gt;تقديرك: {score &gt;= 90 ? 'ممتاز' : 'جيد'}&lt;/p&gt;
+    &lt;p&gt;{new Date().toLocaleDateString('ar-SA')}&lt;/p&gt;
+    &lt;p&gt;{score &gt; 50 &amp;&amp; &lt;strong&gt;ناجح&lt;/strong&gt;}&lt;/p&gt;
+  &lt;/div&gt;
+)
+
+// القاعدة 3: className وhtmlFor
+return (
+  &lt;div className='container'&gt;
+    &lt;button className='btn btn-primary'&gt;إرسال&lt;/button&gt;
+    &lt;label htmlFor='email'&gt;البريد&lt;/label&gt;
+    &lt;input id='email' type='email' /&gt;
+  &lt;/div&gt;
+)
+
+// القاعدة 4: style كـ Object
+const styles = {
+  color: '#1A3C5E',
+  fontSize: '1.2rem',
+  fontWeight: 700,
+  marginBottom: '16px',
+}
+
+return &lt;div style={styles}&gt;&lt;p style={{color:'red'}}&gt;نص&lt;/p&gt;&lt;/div&gt;</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.3</span><h3>List Rendering والـ key</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>const courses = [
+  { id:1, name:'HTML', level:'مبتدئ' },
+  { id:2, name:'CSS',  level:'مبتدئ' },
+  { id:3, name:'React',level:'متوسط' },
+]
+
+function CourseList() {
+  return (
+    &lt;ul&gt;
+      {courses.map(course =&gt; (
+        // key يجب أن يكون فريداً وثابتاً — استخدم id وليس index
+        &lt;li key={course.id}&gt;
+          &lt;strong&gt;{course.name}&lt;/strong&gt; — {course.level}
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  )
+}
+
+// القائمة الفارغة
+function EmptyAwareList({ items }) {
+  if (items.length === 0) return &lt;p&gt;لا توجد عناصر&lt;/p&gt;
+  return (
+    &lt;ul&gt;
+      {items.map(item =&gt; &lt;li key={item.id}&gt;{item.name}&lt;/li&gt;)}
+    &lt;/ul&gt;
+  )
+}
+
+// لماذا key مهم؟
+// React يستخدمه لتحديد العناصر التي تغيّرت
+// بدونه: إعادة رسم القائمة كاملاً (أبطأ وأخطاء)
+// key خاطئ: استخدام index في القوائم الديناميكية</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.4</span><h3>JSX داخلياً</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// JSX تُحوَّل تلقائياً بـ Babel/Vite
+
+// الكود الذي تكتبه (JSX)
+const element = (
+  &lt;div className='card'&gt;
+    &lt;h2&gt;أحمد محمد&lt;/h2&gt;
+    &lt;p&gt;مطوّر Front-End&lt;/p&gt;
+  &lt;/div&gt;
+)
+
+// ما يُحوَّل إليه (JavaScript خالص)
+const element = React.createElement(
+  'div',
+  { className: 'card' },
+  React.createElement('h2', null, 'أحمد محمد'),
+  React.createElement('p',  null, 'مطوّر Front-End')
+)
+
+// لذلك: لا تحتاج import React في React 17+ لـ JSX فقط
+// لكن تحتاجه لـ React.StrictMode, React.createContext, etc.</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🧱</span><h2>الجزء الرابع: المكوّنات (Components)</h2></div><p class="blk-para">المكوّن هو اللبنة الأساسية في React — دالة JavaScript تُعيد JSX. فكّر فيه كـ custom HTML element قابل لإعادة الاستخدام.</p><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>Functional Components</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// مكوّن بسيط — القاعدة: يبدأ بحرف كبير!
+function Welcome() {
+  return &lt;h1&gt;أهلاً بك في React!&lt;/h1&gt;
+}
+
+// Arrow Function مكوّن
+const Welcome = () =&gt; &lt;h1&gt;أهلاً بك في React!&lt;/h1&gt;
+
+// مكوّن بـ JSX متعدد الأسطر
+function UserCard() {
+  const currentDate = new Date().toLocaleDateString('ar-SA')
+  return (
+    &lt;div className='user-card'&gt;
+      &lt;div className='user-card__avatar'&gt;👤&lt;/div&gt;
+      &lt;div className='user-card__info'&gt;
+        &lt;h2 className='user-card__name'&gt;أحمد محمد&lt;/h2&gt;
+        &lt;p className='user-card__role'&gt;مطوّر Front-End&lt;/p&gt;
+        &lt;p className='user-card__date'&gt;انضم: {currentDate}&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+// تصدير المكوّن
+export default UserCard;  // Default export
+export { UserCard };      // Named export
+
+// استخدام المكوّن
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Welcome /&gt;
+      &lt;UserCard /&gt;  {/* يمكن استخدامه أكثر من مرة */}
+      &lt;UserCard /&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default App</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>قواعد المكوّنات</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>القاعدة</th><th>التفصيل</th></tr></thead><tbody><tr><td>الاسم بحرف كبير</td><td>function MyCard() — React يميّزه عن HTML elements</td></tr><tr><td>يُعيد JSX واحداً</td><td>استخدم &lt;&gt;&lt;/&gt; Fragment إذا احتجت عناصر متعددة</td></tr><tr><td>دالة نقية</td><td>لا تُعدّل متغيرات خارجية — استخدم useState للحالة</td></tr><tr><td>ملف .jsx</td><td>كل مكوّن في ملفه الخاص في مجلد components/</td></tr><tr><td>التصدير</td><td>export default للمكوّن الرئيسي في الملف</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">📨</span><h2>الجزء الخامس: Props — تمرير البيانات</h2></div><p class="blk-para">Props (Properties) هي الطريقة لتمرير البيانات من مكوّن أب لمكوّن ابن. Props للقراءة فقط — لا يمكن تعديلها من الابن.</p><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>تمرير Props واستقبالها</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// تمرير Props
+function App() {
+  return (
+    &lt;UserCard
+      name='أحمد محمد'
+      role='مطوّر Front-End'
+      isVerified={true}
+      score={95}
+      skills={['React', 'JavaScript', 'CSS']}
+    /&gt;
+  )
+}
+
+// استقبال Props بـ Destructuring (الأفضل)
+function UserCard({ name, role, isVerified = false, score = 0, skills = [] }) {
+  //                               قيم افتراضية
+  return (
+    &lt;div className='user-card'&gt;
+      &lt;h2&gt;{name}&lt;/h2&gt;
+      &lt;p&gt;{role}&lt;/p&gt;
+      {isVerified &amp;&amp; &lt;span&gt;✅ موثّق&lt;/span&gt;}
+      &lt;p&gt;الدرجة: {score}/100&lt;/p&gt;
+      {skills.length &gt; 0 &amp;&amp; (
+        &lt;ul&gt;
+          {skills.map((skill, i) =&gt; &lt;li key={i}&gt;{skill}&lt;/li&gt;)}
+        &lt;/ul&gt;
+      )}
+    &lt;/div&gt;
+  )
+}
+
+export default UserCard</code></pre>
+  <div class="output-box" id="out-10"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>Children Prop</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// children هو ما يُوضَع بين وسوم المكوّن
+function Card({ title, children, className = '' }) {
+  return (
+    &lt;div className={'card ' + className}&gt;
+      {title &amp;&amp; &lt;h3 className='card__title'&gt;{title}&lt;/h3&gt;}
+      &lt;div className='card__body'&gt;{children}&lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+// استخدام Card بـ children
+function App() {
+  return (
+    &lt;&gt;
+      &lt;Card title='بطاقة بسيطة'&gt;
+        &lt;p&gt;هذا محتوى البطاقة&lt;/p&gt;
+      &lt;/Card&gt;
+
+      &lt;Card title='بطاقة معقدة' className='card--featured'&gt;
+        &lt;img src='/photo.jpg' alt='صورة' /&gt;
+        &lt;p&gt;وصف طويل...&lt;/p&gt;
+        &lt;button&gt;اقرأ المزيد&lt;/button&gt;
+      &lt;/Card&gt;
+    &lt;/&gt;
+  )
+}
+
+// مكوّن Button بـ children
+function Button({ children, variant = 'primary', onClick, disabled = false }) {
+  return (
+    &lt;button
+      className={'btn btn--' + variant}
+      onClick={onClick}
+      disabled={disabled}
+    &gt;
+      {children}
+    &lt;/button&gt;
+  )
+}
+
+// استخدام:
+// &lt;Button onClick={() =&gt; alert('تم!')}&gt;إرسال&lt;/Button&gt;
+// &lt;Button variant='danger'&gt;حذف&lt;/Button&gt;</code></pre>
+  <div class="output-box" id="out-11"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.3</span><h3>أنواع Props الشائعة</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>نوع البيانات</th><th>مثال في JSX</th></tr></thead><tbody><tr><td>String</td><td>name='أحمد' أو name={'أحمد'}</td></tr><tr><td>Number</td><td>score={95} — يجب {} للأرقام</td></tr><tr><td>Boolean</td><td>isActive={true} أو isActive (= true ضمنياً)</td></tr><tr><td>Array</td><td>skills={['React', 'JS']}</td></tr><tr><td>Object</td><td>user={{ name:'أحمد', age:25 }}</td></tr><tr><td>Function</td><td>onClick={handleClick}</td></tr><tr><td>JSX/ReactNode</td><td>icon={&lt;StarIcon /&gt;}</td></tr><tr><td>undefined/null</td><td>يُخفي المحتوى عادةً</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎨</span><h2>الجزء السادس: Component Composition</h2></div><p class="blk-para">تركيب المكوّنات هو جوهر React — بناء واجهات معقدة من مكوّنات بسيطة قابلة لإعادة الاستخدام.</p><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>نظام مكوّنات قابلة لإعادة الاستخدام</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// مكوّن Badge — شارة صغيرة
+function Badge({ text, color = 'blue' }) {
+  var colorMap = {
+    blue:   { bg: '#EBF3FB', text: '#2E75B6' },
+    green:  { bg: '#EAF7EE', text: '#1E6B3C' },
+    orange: { bg: '#FFF3E0', text: '#B85C00' },
+    red:    { bg: '#FFF3F3', text: '#CC0000' },
+  }
+  var style = colorMap[color] || colorMap.blue
+
+  return (
+    &lt;span style={{
+      backgroundColor: style.bg,
+      color: style.text,
+      padding: '2px 10px',
+      borderRadius: '20px',
+      fontSize: '0.8rem',
+      fontWeight: 700,
+    }}&gt;
+      {text}
+    &lt;/span&gt;
+  )
+}
+
+// مكوّن Avatar — صورة دائرية
+function Avatar({ src, name, size = 60 }) {
+  var fallback = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&amp;size=' + size + '&amp;background=2E75B6&amp;color=fff'
+  return (
+    &lt;img
+      src={src || fallback}
+      alt={name}
+      style={{
+        width: size, height: size,
+        borderRadius: '50%',
+        objectFit: 'cover',
+      }}
+      onError={function(e){ e.target.src = fallback }}
+    /&gt;
+  )
+}
+
+// مكوّن RatingStars
+function RatingStars({ rating = 0, max = 5 }) {
+  return (
+    &lt;div style={{ display: 'flex', gap: '2px' }}&gt;
+      {Array.from({ length: max }, function(_, i) {
+        return (
+          &lt;span key={i} style={{ color: i &lt; rating ? '#E8A020' : '#D0E4F5' }}&gt;★&lt;/span&gt;
+        )
+      })}
+    &lt;/div&gt;
+  )
+}
+
+// مكوّن ProductCard يُركّب المكوّنات الأصغر
+function ProductCard({ product }) {
+  var name=product.name, price=product.price, category=product.category
+  var rating=product.rating, inStock=product.inStock, isNew=product.isNew
+  return (
+    &lt;article className='product-card'&gt;
+      &lt;div className='product-card__badges'&gt;
+        {isNew &amp;&amp; &lt;Badge text='جديد' color='green' /&gt;}
+        {!inStock &amp;&amp; &lt;Badge text='نفد المخزون' color='orange' /&gt;}
+      &lt;/div&gt;
+      &lt;Badge text={category} /&gt;
+      &lt;h3&gt;{name}&lt;/h3&gt;
+      &lt;RatingStars rating={Math.round(rating)} /&gt;
+      &lt;p&gt;{price.toLocaleString('ar')} ر.س&lt;/p&gt;
+      &lt;button disabled={!inStock}&gt;
+        {inStock ? 'أضف للسلة' : 'غير متوفر'}
+      &lt;/button&gt;
+    &lt;/article&gt;
+  )
+}
+
+export { Badge, Avatar, RatingStars, ProductCard }</code></pre>
+  <div class="output-box" id="out-12"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السابع: المشروع — بطاقة شخصية تفاعلية</h2></div><div class="project-box"><p class="blk-para">سنبني تطبيق React يعرض بطاقات شخصية لمطوّرين مع استخدام Props والتركيب.</p><div class="subsection"><div class="sub-head"><h3>هيكل المشروع</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>src/
+├── components/
+│   ├── ProfileCard.jsx
+│   ├── Avatar.jsx
+│   ├── Badge.jsx
+│   ├── SkillTag.jsx
+│   └── ContactLink.jsx
+├── data/
+│   └── profiles.js
+├── App.jsx
+└── App.css</code></pre>
+  <div class="output-box" id="out-13"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>src/data/profiles.js</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>export const profiles = [
+  {
+    id: 1,
+    name: 'أحمد محمد الشمري',
+    title: 'مطوّر Full-Stack',
+    bio: 'متحمّس لتقنيات الويب الحديثة.',
+    avatar: '',
+    location: 'الرياض، السعودية',
+    skills: ['React', 'Node.js', 'TypeScript'],
+    badges: [
+      { text: 'React Expert', color: 'blue' },
+      { text: 'Open Source', color: 'green' },
+    ],
+    links: [
+      { icon: '🐙', label: 'GitHub',   url: '#' },
+      { icon: '💼', label: 'LinkedIn', url: '#' },
+    ],
+    stats: { projects: 42, followers: 380, stars: 156 },
+    available: true,
+  },
+  {
+    id: 2,
+    name: 'سارة القحطاني',
+    title: 'مصممة UI/UX',
+    bio: 'أصنع تجارب مستخدم لا تُنسى.',
+    avatar: '',
+    location: 'جدة، السعودية',
+    skills: ['Figma', 'Adobe XD', 'CSS'],
+    badges: [{ text: 'UI/UX Lead', color: 'orange' }],
+    links: [
+      { icon: '🎨', label: 'Dribbble', url: '#' },
+    ],
+    stats: { projects: 67, followers: 1200, stars: 89 },
+    available: false,
+  },
+]</code></pre>
+  <div class="output-box" id="out-14"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>src/components/ProfileCard.jsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import Avatar from './Avatar'
+import Badge from './Badge'
+
+function StatBox({ value, label }) {
+  return (
+    &lt;div className='stat-box'&gt;
+      &lt;span className='stat-box__value'&gt;{value.toLocaleString('ar')}&lt;/span&gt;
+      &lt;span className='stat-box__label'&gt;{label}&lt;/span&gt;
+    &lt;/div&gt;
+  )
+}
+
+function ProfileCard({ profile }) {
+  var name=profile.name, title=profile.title, bio=profile.bio
+  var avatar=profile.avatar, location=profile.location
+  var skills=profile.skills, badges=profile.badges
+  var links=profile.links, stats=profile.stats, available=profile.available
+
+  return (
+    &lt;article className='profile-card'&gt;
+      &lt;header className='profile-card__header'&gt;
+        &lt;div className='profile-card__avatar-wrapper'&gt;
+          &lt;Avatar src={avatar} name={name} size={100} /&gt;
+          {available &amp;&amp; &lt;span className='profile-card__available-dot' /&gt;}
+        &lt;/div&gt;
+        &lt;div&gt;
+          &lt;h2&gt;{name}&lt;/h2&gt;
+          &lt;p&gt;{title}&lt;/p&gt;
+          &lt;p&gt;{location}&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+
+      &lt;div className='profile-card__badges'&gt;
+        {badges.map(function(b, i) { return &lt;Badge key={i} text={b.text} color={b.color} /&gt; })}
+        {available &amp;&amp; &lt;Badge text='متاح للعمل' color='green' /&gt;}
+      &lt;/div&gt;
+
+      &lt;p className='profile-card__bio'&gt;{bio}&lt;/p&gt;
+
+      &lt;div className='profile-card__skills'&gt;
+        &lt;h3&gt;المهارات&lt;/h3&gt;
+        &lt;div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}&gt;
+          {skills.map(function(skill, i) {
+            return &lt;span key={i} className='skill-tag'&gt;{skill}&lt;/span&gt;
+          })}
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div className='profile-card__stats'&gt;
+        &lt;StatBox value={stats.projects}  label='مشروع' /&gt;
+        &lt;StatBox value={stats.followers} label='متابع' /&gt;
+        &lt;StatBox value={stats.stars}     label='نجمة' /&gt;
+      &lt;/div&gt;
+
+      &lt;footer className='profile-card__footer'&gt;
+        {links.map(function(link, i) {
+          return (
+            &lt;a key={i} href={link.url} target='_blank' rel='noreferrer'&gt;
+              {link.icon} {link.label}
+            &lt;/a&gt;
+          )
+        })}
+      &lt;/footer&gt;
+    &lt;/article&gt;
+  )
+}
+
+export default ProfileCard</code></pre>
+  <div class="output-box" id="out-15"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>src/App.jsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { profiles } from './data/profiles'
+import ProfileCard from './components/ProfileCard'
+import './App.css'
+
+function App() {
+  return (
+    &lt;div className='app' dir='rtl'&gt;
+
+      &lt;header className='app-header'&gt;
+        &lt;h1&gt;👥 دليل المطوّرين&lt;/h1&gt;
+        &lt;p&gt;تعرّف على أفضل المواهب التقنية&lt;/p&gt;
+      &lt;/header&gt;
+
+      &lt;main className='app-main'&gt;
+        &lt;div className='profiles-grid'&gt;
+          {profiles.map(function(profile) {
+            return &lt;ProfileCard key={profile.id} profile={profile} /&gt;
+          })}
+        &lt;/div&gt;
+      &lt;/main&gt;
+
+      &lt;footer className='app-footer'&gt;
+        &lt;p&gt;مبني بـ React + Vite — Eng. Hasan Hajjar&lt;/p&gt;
+      &lt;/footer&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default App</code></pre>
+  <div class="output-box" id="out-16"></div>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثامن: تمارين الجلسة السابعة عشرة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — JSX الأساسي<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">افتح مشروع Vite الجديد وجرّب:</p><ul class="mini-list"><li>عدّل App.jsx وأضف: اسمك في h1، تخصصك في p، مهاراتك في ul</li><li>أضف style مضمّن لعنوان رئيسي: لون أزرق، حجم 2rem، توسيط</li><li>أضف متغير isOnline = true واستخدم &amp;&amp; لعرض (متصل الآن)</li><li>أنشئ مصفوفة courses واعرضها في قائمة بـ map مع key صحيح</li><li>استخدم Fragment بدلاً من div وتأكد أنه لا يظهر في DOM</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — Components وProps<span class="ex-time">20 دقيقة</span></h4><ul class="mini-list"><li>أنشئ مكوّن Greeting يأخذ name وtimeOfDay وتُعيد تحية مناسبة</li><li>أنشئ مكوّن AlertBanner يأخذ type (success/error/warning) وmessage بلون مختلف</li><li>أنشئ مكوّن ProgressBar يأخذ percent (0-100) ولون</li><li>أنشئ مكوّن CourseCard: title, instructor, duration, level, price</li><li>في App.jsx: استخدم الأربعة مكوّنات مع بيانات مختلفة</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — Component Composition<span class="ex-time">25 دقيقة</span></h4><ul class="mini-list"><li>أنشئ Navbar: يأخذ logo وlinks[] — يعرض شريط تنقل</li><li>أنشئ HeroSection: title وsubtitle وbtnText</li><li>أنشئ FeatureCard: icon وtitle وdescription</li><li>أنشئ Footer: companyName وlinks[] وcopyright</li><li>ركّب الأربعة في App.jsx لبناء Landing Page كاملة</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة السابعة عشرة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>ما هو React</td><td>مكتبة JS لبناء UI — Component-Based — Virtual DOM</td></tr><tr><td>Library vs Framework</td><td>React: مرن لا يُقيّد | Angular/Next.js: إطار كامل</td></tr><tr><td>Virtual DOM</td><td>تمثيل في الذاكرة — يُحدّث الفروق فقط — أسرع</td></tr><tr><td>Vite</td><td>أداة بناء سريعة — npm create vite — بديل CRA الرسمي</td></tr><tr><td>هيكل المشروع</td><td>src/ | components/ | main.jsx | App.jsx</td></tr><tr><td>JSX</td><td>HTML-like في JavaScript — يُحوَّل لـ React.createElement()</td></tr><tr><td>قواعد JSX</td><td>className | htmlFor | إغلاق الوسوم | عنصر جذر واحد</td></tr><tr><td>التعبيرات</td><td>{}  للقيم | {cond &amp;&amp; &lt;El&gt;} | {cond ? a : b}</td></tr><tr><td>map في JSX</td><td>{items.map(i =&gt; &lt;El key={i.id}&gt;{i.name}&lt;/El&gt;)}</td></tr><tr><td>Components</td><td>دالة تبدأ بحرف كبير + تُعيد JSX | ملف .jsx</td></tr><tr><td>Props</td><td>بيانات من الأب للابن | للقراءة فقط | Destructuring</td></tr><tr><td>children</td><td>المحتوى بين وسوم المكوّن | لبناء Containers</td></tr><tr><td>Component Composition</td><td>مكوّنات صغيرة تُركَّب ببعض لواجهات معقدة</td></tr><tr><td>key في القوائم</td><td>فريد وثابت — يساعد React في Reconciliation</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الثامنة عشرة: React State وuseState Hook</span><p>✦ ما هي الحالة (State) ولماذا نحتاجها</p><p>✦ useState Hook — أهم Hook في React</p><p>✦ الفرق بين State وProps</p><p>✦ State يُعيد تصيير المكوّن (Re-render)</p><p>✦ تحديث State بشكل صحيح — Immutability</p><p>✦ State في النماذج (Controlled Inputs)</p><p>✦ رفع الحالة للأعلى (Lifting State Up)</p><p>✦ مشروع: قائمة مهام تفاعلية بـ useState</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة السابعة عشرة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الثامنة عشرة</span><p>يُرسَل رابط GitHub + رابط GitHub Pages عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: موقع Portfolio بـ React (Props ومكوّنات فقط)</h3></div><p class="blk-para">أنشئ موقع Portfolio شخصي كامل باستخدام React وVite — Props ومكوّنات فقط:</p><h4 class="mini-head">◆ المكوّنات المطلوبة:</h4><ul class="mini-list"><li>Navbar: شعار + روابط تنقل + زر CTA</li><li>HeroSection: اسمك + لقبك + وصف + زران</li><li>AboutSection: قصتك + مهاراتك بـ ProgressBar</li><li>ProjectCard: title + description + technologies[] + رابطان</li><li>ProjectsGrid: يأخذ projects[] ويعرض ProjectCard</li><li>ContactSection: معلومات التواصل + أيقونات السوشيال</li><li>Footer: Copyright + روابط</li></ul><h4 class="mini-head">◆ متطلبات تقنية:</h4><ul class="mini-list"><li>كل مكوّن في ملف .jsx منفصل في مجلد src/components/</li><li>البيانات في ملف src/data/portfolioData.js منفصل</li><li>استخدام .map() مع key صحيح في جميع القوائم</li><li>Conditional Rendering: عرض (متاح للعمل) إذا isAvailable=true</li><li>Props Destructuring في جميع المكوّنات مع قيم افتراضية</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>7 مكوّنات تعمل بشكل صحيح</td><td>30 نقطة</td></tr><tr><td>Props Destructuring + قيم افتراضية</td><td>15 نقطة</td></tr><tr><td>map مع key صحيح في كل القوائم</td><td>15 نقطة</td></tr><tr><td>Conditional Rendering يعمل</td><td>10 نقاط</td></tr><tr><td>البيانات في ملف منفصل</td><td>10 نقاط</td></tr><tr><td>التصميم والـ CSS الاحترافي</td><td>10 نقاط</td></tr><tr><td>GitHub Pages يعمل</td><td>10 نقاط</td></tr></tbody></table></div></div></div>
+<div class="closing-banner">
+  <h3>أحسنت! أنت الآن تفكر بطريقة React</h3>
+  <p>المكوّنات + Props = بناء أي واجهة مستخدم بأناقة</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 17</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-16.html"><small>السابق</small><span>الجلسة 16 — مراجعة JavaScript الشاملة والمشروع النهائي</span></a>
+        <a class="nav-arrow next" href="lesson-18.html"><small>التالي</small><span>الجلسة 18 — React State وuseState Hook</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

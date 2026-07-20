@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 25 — useReducer: إدارة حالة معقدة بمنطق مركزي | Front-End Master Book</title>
+<meta name="description" content="useReducer — إدارة حالة معقدة بمنطق مركزي — useReducer • state وdispatch وreducer • Actions • useState مقابل useReducer • دمجه مع Context">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="25">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🎛️</span>
+    <div>
+      <div class="session-tag">Session 25 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة الخامسة والعشرون — useReducer — إدارة حالة معقدة بمنطق مركزي</h1>
+  <p class="tags-line">useReducer • state وdispatch وreducer • Actions • useState مقابل useReducer • دمجه مع Context</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة الخامسة والعشرين</h2>
+  <ul class="goal-list"><li>فهم متى تُصبح useState غير كافية لحالة معقدة مترابطة</li><li>استخدام useReducer الأساسي: state، dispatch، reducer function</li><li>كتابة أكشنات (Actions) بنمط type + payload</li><li>معرفة الفرق العملي بين useState وuseReducer، ومتى نختار كلاً منهما</li><li>دمج useReducer مع useContext لإدارة حالة تطبيق متكاملة</li><li>بناء عربة تسوّق كاملة بمنطق useReducer مركزي بدل دوال متبعثرة</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة الرابعة والعشرين</span><p>React.memo يمنع إعادة رسم مكوّن لم تتغيّر Props الخاصة به (مقارنة سطحية)</p><p>useMemo يُخزِّن نتيجة حساب مكلف، useCallback يُبقي نفس مرجع الدالة</p><p>كائنات/دوال جديدة تُنشأ كل رسم تكسر memo رغم تطابق المحتوى منطقياً</p><p>القاعدة الذهبية: قِس الأداء أولاً، ثم حسِّن — لا تُفرِط في التحسين بلا داعٍ</p></div><div class="callout success"><span class="callout-title">🎓 أهلاً بإدارة الحالة الاحترافية!</span><p>لاحظت أن عربة التسوّق أو أي حالة معقّدة تحتاج عدة دوال منفصلة بـ useState (إضافة، حذف، تعديل، تفريغ)؟</p><p>اليوم نتعلّم useReducer: طريقة تُجمِّع كل منطق التحديث في مكان واحد مركزي (Reducer)، بدل تبعثره — تماماً كالمنطق الذي رأيناه في مصفوفات setState(prev =&gt; ...) لكن بشكل أكثر تنظيماً وقابلية للاختبار.</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🤹</span><h2>الجزء الأول: متى تُصبح useState غير كافية؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>مثال: عربة تسوّق بعدة عمليات مترابطة</h3></div><div class="code-block" data-lang="react">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>React</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function Cart() {
+  const [items, setItems] = useState([]);
+
+  function addItem(product) {
+    setItems([...items, { ...product, quantity: 1 }]);
+  }
+
+  function removeItem(id) {
+    setItems(items.filter((i) =&gt; i.id !== id));
+  }
+
+  function updateQuantity(id, quantity) {
+    setItems(items.map((i) =&gt; (i.id === id ? { ...i, quantity } : i)));
+  }
+
+  function clearCart() {
+    setItems([]);
+  }
+
+  // ... أربع دوال منفصلة، كل واحدة تُعيد بناء نفس المصفوفة بطريقتها الخاصة
+}</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>المشكلة</h3></div><ul class="mini-list"><li>منطق التحديث موزَّع في أربع دوال مختلفة داخل المكوّن نفسه</li><li>كل دالة "تعرف" شكل بيانات items وتتعامل معه بأسلوبها الخاص — تكرار وتشتّت</li><li>صعوبة اختبار هذا المنطق بمعزل عن الواجهة (كل دالة مربوطة بـ setState داخل المكوّن)</li><li>كلما زادت العمليات (خصم، عرض ترويجي، حد أقصى للكمية...) زاد التعقيد داخل المكوّن نفسه</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">🎛️</span><h2>الجزء الثاني: useReducer الأساسي</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>الأجزاء الثلاثة</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { useReducer } from 'react';
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return state + 1;
+    case 'decrement':
+      return state - 1;
+    case 'reset':
+      return 0;
+    default:
+      return state;
+  }
+}
+
+function Counter() {
+  const [count, dispatch] = useReducer(reducer, 0);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;{count}&lt;/p&gt;
+      &lt;button onClick={() =&gt; dispatch({ type: 'increment' })}&gt;+&lt;/button&gt;
+      &lt;button onClick={() =&gt; dispatch({ type: 'decrement' })}&gt;−&lt;/button&gt;
+      &lt;button onClick={() =&gt; dispatch({ type: 'reset' })}&gt;إعادة تعيين&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div><div class="callout tip"><span class="callout-title">💡 الأجزاء الثلاثة</span><p>count: الحالة الحالية (نتيجة reducer). dispatch: الطريقة الوحيدة لطلب تغيير — لا تُغيِّر الحالة مباشرة، بل "تُرسِل" أكشناً. reducer: دالة خالصة تُقرِّر شكل الحالة الجديدة بناءً على الحالة القديمة ونوع الأكشن.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">📨</span><h2>الجزء الثالث: الأكشنات (Actions)</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>نمط type + payload</h3></div><p class="blk-para">كل أكشن هو كائن JavaScript عادي، بحقل type يُحدِّد "ماذا نريد أن يحدث"، وpayload اختياري يحمل البيانات اللازمة.</p></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>reducer بعدة أنواع أكشنات</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function cartReducer(state, action) {
+  switch (action.type) {
+    case 'ADD_ITEM':
+      return [...state, { ...action.payload, quantity: 1 }];
+
+    case 'REMOVE_ITEM':
+      return state.filter((item) =&gt; item.id !== action.payload.id);
+
+    case 'UPDATE_QUANTITY':
+      return state.map((item) =&gt;
+        item.id === action.payload.id
+          ? { ...item, quantity: action.payload.quantity }
+          : item
+      );
+
+    case 'CLEAR_CART':
+      return [];
+
+    default:
+      return state;
+  }
+}</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div><div class="callout info"><span class="callout-title">⭐ لاحظ</span><p>كل منطق التحديث الآن مُجمَّع في دالة واحدة (cartReducer)، بدل أربع دوال متفرِّقة — أسهل للقراءة، وللاختبار بمعزل تام عن أي واجهة React.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">⚖️</span><h2>الجزء الرابع: useState مقابل useReducer</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المعيار</th><th>useState</th><th>useReducer</th></tr></thead><tbody><tr><td>بساطة الحالة</td><td>قيمة بسيطة (رقم، نص، boolean)</td><td>كائن/مصفوفة بعدة عمليات تحديث مترابطة</td></tr><tr><td>عدد طرق التحديث</td><td>طريقة أو طريقتان</td><td>عدة أنواع تحديث مختلفة (Actions)</td></tr><tr><td>سهولة الاختبار</td><td>جيدة للحالات البسيطة</td><td>ممتازة — reducer دالة خالصة تُختبَر بمعزل عن الواجهة</td></tr><tr><td>مكان المنطق</td><td>مُبعثر بين دوال متعددة داخل المكوّن</td><td>مُركَّز بالكامل في دالة reducer واحدة</td></tr></tbody></table></div></div><div class="part"><div class="part-head"><span class="p-icon">🌐</span><h2>الجزء الخامس: دمج useReducer مع useContext</h2></div><p class="blk-para">دمج useReducer مع Context يمنحك نمطاً شبيهاً بمكتبات إدارة الحالة الكبيرة (مثل Redux)، لكن مدمج بالكامل في React نفسه بلا أي مكتبة خارجية.</p><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>CartContext بمنطق useReducer</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// context/CartContext.jsx
+import { createContext, useContext, useReducer } from 'react';
+
+const CartContext = createContext(null);
+
+function cartReducer(state, action) {
+  switch (action.type) {
+    case 'ADD_ITEM':
+      return [...state, { ...action.payload, quantity: 1 }];
+    case 'REMOVE_ITEM':
+      return state.filter((item) =&gt; item.id !== action.payload.id);
+    case 'UPDATE_QUANTITY':
+      return state.map((item) =&gt;
+        item.id === action.payload.id ? { ...item, quantity: action.payload.quantity } : item
+      );
+    case 'CLEAR_CART':
+      return [];
+    default:
+      return state;
+  }
+}
+
+export function CartProvider({ children }) {
+  const [items, dispatch] = useReducer(cartReducer, []);
+  return (
+    &lt;CartContext.Provider value={{ items, dispatch }}&gt;
+      {children}
+    &lt;/CartContext.Provider&gt;
+  );
+}
+
+export function useCart() {
+  const context = useContext(CartContext);
+  if (!context) throw new Error('useCart يجب أن يُستخدَم داخل CartProvider');
+  return context;
+}</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div><div class="callout tip"><span class="callout-title">💡 القوة هنا</span><p>أي مكوّن في التطبيق يستطيع dispatch أكشنات لتعديل العربة أو قراءة items، بلا Prop Drilling وبلا تبعثر منطق — كل قواعد التحديث مُجمَّعة في cartReducer وحده.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السادس: المشروع — عربة تسوّق كاملة</h2></div><div class="project-box"><p class="blk-para">تطبيق متجر بمكوّنين منفصلين (عرض المنتجات وملخّص العربة)، يتشاركان حالة واحدة مُدارة بالكامل عبر useReducer وContext.</p><div class="subsection"><div class="sub-head"><h3>src/App.jsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { CartProvider } from './context/CartContext';
+import ProductsGrid from './components/ProductsGrid';
+import CartSummary from './components/CartSummary';
+
+function App() {
+  return (
+    &lt;CartProvider&gt;
+      &lt;ProductsGrid /&gt;
+      &lt;CartSummary /&gt;
+    &lt;/CartProvider&gt;
+  );
+}
+
+export default App;</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>src/components/ProductsGrid.jsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { useCart } from '../context/CartContext';
+
+const products = [
+  { id: 1, name: 'لابتوب', price: 500 },
+  { id: 2, name: 'هاتف ذكي', price: 300 },
+  { id: 3, name: 'سماعات', price: 50 },
+];
+
+function ProductsGrid() {
+  const { dispatch } = useCart();
+
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;🛍️ المنتجات&lt;/h2&gt;
+      {products.map((product) =&gt; (
+        &lt;div key={product.id} className="product-card"&gt;
+          &lt;span&gt;{product.name} — {product.price} $&lt;/span&gt;
+          &lt;button onClick={() =&gt; dispatch({ type: 'ADD_ITEM', payload: product })}&gt;
+            أضف للعربة
+          &lt;/button&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+export default ProductsGrid;</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>src/components/CartSummary.jsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { useCart } from '../context/CartContext';
+
+function CartSummary() {
+  const { items, dispatch } = useCart();
+  const total = items.reduce((sum, item) =&gt; sum + item.price * item.quantity, 0);
+
+  return (
+    &lt;div className="cart-summary"&gt;
+      &lt;h2&gt;🛒 العربة ({items.length})&lt;/h2&gt;
+      &lt;ul&gt;
+        {items.map((item) =&gt; (
+          &lt;li key={item.id}&gt;
+            {item.name} × {item.quantity}
+            &lt;button
+              onClick={() =&gt;
+                dispatch({
+                  type: 'UPDATE_QUANTITY',
+                  payload: { id: item.id, quantity: item.quantity + 1 },
+                })
+              }
+            &gt;
+              +
+            &lt;/button&gt;
+            &lt;button onClick={() =&gt; dispatch({ type: 'REMOVE_ITEM', payload: { id: item.id } })}&gt;
+              🗑️
+            &lt;/button&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+      &lt;p&gt;الإجمالي: {total} $&lt;/p&gt;
+      &lt;button onClick={() =&gt; dispatch({ type: 'CLEAR_CART' })}&gt;تفريغ العربة&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default CartSummary;</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء السابع: تمارين الجلسة الخامسة والعشرين</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — useReducer بسيط<span class="ex-time">15 دقيقة</span></h4><ul class="mini-list"><li>ابنِ reducer لإشارة مرور: أحمر ← أصفر ← أخضر ← أحمر...</li><li>أكشن واحد فقط بنوع "NEXT" ينقل للحالة التالية في الدورة</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — أكشنات متعددة<span class="ex-time">20 دقيقة</span></h4><ul class="mini-list"><li>ابنِ reducer لنموذج تسجيل بحقول متعددة (اسم، بريد، كلمة مرور)</li><li>ثلاثة أنواع أكشنات على الأقل: تحديث حقل، إعادة تعيين النموذج، تفعيل/تعطيل حالة التحميل</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — دمج مع Context<span class="ex-time">25 دقيقة</span></h4><ul class="mini-list"><li>خُذ أي Context بُني سابقاً بـ useState (مثل CartContext من جلسة سابقة إن وُجد)</li><li>حوِّله بالكامل ليستخدم useReducer بدلاً من useState، بلا تغيير في الواجهة الخارجية المُستخدَمة من useCart</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الخامسة والعشرين</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>متى نحتاج useReducer</td><td>حالة معقّدة بعدة عمليات تحديث مترابطة (لا مجرد قيمة بسيطة)</td></tr><tr><td>useReducer</td><td>const [state, dispatch] = useReducer(reducer, initialState)</td></tr><tr><td>reducer</td><td>دالة خالصة (state, action) =&gt; newState، تُقرِّر التحديث بناءً على النوع</td></tr><tr><td>dispatch</td><td>الطريقة الوحيدة لطلب تغيير — يُرسِل أكشناً، لا يُغيِّر الحالة مباشرة</td></tr><tr><td>Action</td><td>كائن بحقل type إلزامي، وpayload اختياري يحمل البيانات</td></tr><tr><td>useState مقابل useReducer</td><td>الأول لحالة بسيطة، والثاني لمنطق تحديث معقّد مركزي</td></tr><tr><td>useReducer + Context</td><td>نمط قوي لإدارة حالة تطبيق متكاملة بلا مكتبات خارجية</td></tr><tr><td>المشروع</td><td>عربة تسوّق كاملة بمنطق تحديث مركزي واحد بدل دوال متبعثرة</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة السادسة والعشرون: مقدمة إلى Next.js</span><p>✦ ما هو Next.js ولماذا نبني فوق React مباشرة</p><p>✦ File-based Routing — الصفحات كملفات ومجلدات</p><p>✦ Server-Side Rendering (SSR) وStatic Site Generation (SSG) ببساطة</p><p>✦ مكوّنات Server مقابل مكوّنات Client</p><p>✦ مشروع: أول تطبيق Next.js كامل</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الخامسة والعشرون</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة السادسة والعشرين</span><p>يُرسَل رابط GitHub أو ملف مضغوط لمشروع Vite عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: لوحة مهام Kanban مصغّرة</h3></div><p class="blk-para">أنشئ تطبيق React بـ Vite للوحة مهام بنمط Kanban (أعمدة: قيد الانتظار، جارٍ العمل، مكتمل)، بمنطق useReducer مركزي كامل:</p><h4 class="mini-head">◆ المتطلبات الوظيفية:</h4><ul class="mini-list"><li>إضافة مهمة جديدة لعمود "قيد الانتظار"</li><li>نقل مهمة بين الأعمدة الثلاثة (زر "التالي" ينقلها للعمود التالي)</li><li>حذف مهمة من أي عمود</li><li>عدّاد لعدد المهام في كل عمود</li></ul><h4 class="mini-head">◆ متطلبات تقنية:</h4><ul class="mini-list"><li>reducer واحد مركزي بأكشنات: ADD_TASK، MOVE_TASK، DELETE_TASK على الأقل</li><li>Context لمشاركة الحالة بين الأعمدة الثلاثة (كل عمود مكوّن منفصل)</li><li>استخدام Immutability الصحيح في كل حالة (بلا أي تعديل مباشر على المصفوفات)</li></ul></div></div>
+<div class="closing-banner">
+  <h3>🎛️ أحسنت! أنت الآن تُدير حالة معقّدة بمنطق مركزي منظَّم</h3>
+  <p>useReducer + Context هو أقرب ما يصل إليه React لأنماط إدارة الحالة الاحترافية الكبيرة</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 25</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-24.html"><small>السابق</small><span>الجلسة 24 — الأداء في React — memo وuseMemo وuseCallback</span></a>
+        <a class="nav-arrow next" href="lesson-26.html"><small>التالي</small><span>الجلسة 26 — مقدمة إلى Next.js</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 20 — useRef وCustom Hooks | Front-End Master Book</title>
+<meta name="description" content="useRef وCustom Hooks — useRef • الوصول لـ DOM • useState مقابل useRef • بناء Custom Hooks • useFetch • useLocalStorage">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="20">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🧩</span>
+    <div>
+      <div class="session-tag">Session 20 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة العشرون — useRef وCustom Hooks</h1>
+  <p class="tags-line">useRef • الوصول لـ DOM • useState مقابل useRef • بناء Custom Hooks • useFetch • useLocalStorage</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة العشرين</h2>
+  <ul class="goal-list"><li>فهم ما هو useRef ولماذا يختلف جذرياً عن useState</li><li>الوصول المباشر لعناصر DOM باستخدام useRef (كالتركيز التلقائي على حقل)</li><li>استخدام useRef لحفظ قيم تبقى بين عمليات إعادة الرسم دون التسبب برسم جديد</li><li>معرفة متى بالضبط نستخدم useState ومتى نستخدم useRef</li><li>بناء أول Custom Hook خاص بنا لاستخراج منطق متكرر</li><li>بناء useFetch Hook قابل لإعادة الاستخدام في أي مكوّن</li><li>بناء useLocalStorage Hook يُزامن الحالة تلقائياً مع التخزين المحلي</li><li>دمج عدة Custom Hooks معاً في مشروع واحد متكامل</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة التاسعة عشرة</span><p>useEffect ينفِّذ كوداً بعد كل عملية رسم، ويُستخدَم للتأثيرات الجانبية (Side Effects)</p><p>مصفوفة الاعتماديات تتحكّم بتوقيت إعادة تشغيل التأثير: [] مرة واحدة، [قيم] عند تغيّرها</p><p>دالة التنظيف (return () =&gt; {...}) ضرورية لإلغاء المؤقّتات والمستمعين</p><p>جلب البيانات يحتاج ثلاث حالات: loading وerror وdata</p><p>لا نجعل دالة useEffect نفسها async — نُعرِّف دالة داخلية ونستدعيها</p></div><div class="callout success"><span class="callout-title">🎓 أهلاً بعالم إعادة الاستخدام!</span><p>لاحظت في الجلسات الماضية أننا كتبنا نفس منطق "التحميل/الخطأ/البيانات" أكثر من مرة؟ اليوم نحلّ هذا نهائياً.</p><p>سنتعلّم useRef أولاً — أداة تُشبه useState لكن بدون إعادة رسم، ثم نبني Custom Hooks: دوالنا الخاصة القابلة لإعادة الاستخدام في أي مكوّن.</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🎯</span><h2>الجزء الأول: useRef — الوصول المباشر لعناصر DOM</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>المشكلة: كيف نصل لعنصر HTML مباشرة؟</h3></div><p class="blk-para">في JavaScript الخالص كنا نستخدم document.querySelector للوصول لعنصر. لكن React يدير DOM بنفسه، ولا يجوز التدخّل المباشر فيه بهذه الطريقة داخل مكوّن.</p></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>useRef الأساسي وسمة ref</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { useRef } from 'react';
+
+function TextInput() {
+  const inputRef = useRef(null);
+
+  function handleClick() {
+    inputRef.current.focus(); // وصول مباشر وآمن للعنصر الحقيقي في DOM!
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;input ref={inputRef} type="text" /&gt;
+      &lt;button onClick={handleClick}&gt;ركّز على الحقل&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div><div class="callout tip"><span class="callout-title">💡 كيف تعمل</span><p>useRef(null) يُنشئ "صندوقاً" ثابتاً {current: null}. ربطه بسمة ref={inputRef} على عنصر JSX يجعل React يملأ inputRef.current بالعنصر الحقيقي بعد الرسم — دون أي إعادة رسم إضافية.</p></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>مثال: التركيز التلقائي عند التحميل</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function SearchBox() {
+  const inputRef = useRef(null);
+
+  useEffect(() =&gt; {
+    inputRef.current.focus(); // يركّز تلقائياً فور ظهور المكوّن أول مرة
+  }, []);
+
+  return &lt;input ref={inputRef} placeholder="ابحث هنا..." /&gt;;
+}</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💾</span><h2>الجزء الثاني: useRef لحفظ قيم بين الرسومات</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المعيار</th><th>useState</th><th>useRef</th></tr></thead><tbody><tr><td>يُسبِّب إعادة رسم عند التغيير؟</td><td>نعم</td><td>لا أبداً</td></tr><tr><td>طريقة القراءة</td><td>المتغيّر مباشرة</td><td>عبر .current</td></tr><tr><td>تبقى القيمة محفوظة بين الرسومات؟</td><td>نعم</td><td>نعم</td></tr><tr><td>الاستخدام النموذجي</td><td>بيانات تظهر في الواجهة</td><td>الوصول لـ DOM، أو قيم لا تحتاج عرضاً</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>مثال: عدّاد إعادة الرسم</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function RenderCounter() {
+  const [text, setText] = useState('');
+  const renderCount = useRef(0);
+
+  renderCount.current = renderCount.current + 1; // لا يُسبِّب إعادة رسم!
+
+  return (
+    &lt;div&gt;
+      &lt;input value={text} onChange={(e) =&gt; setText(e.target.value)} /&gt;
+      &lt;p&gt;عدد مرات إعادة الرسم: {renderCount.current}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div><div class="callout warning"><span class="callout-title">⚠️ لماذا ليس useState هنا؟</span><p>لو استخدمنا useState لعدّاد الرسم، لدخلنا في حلقة لا نهائية: تحديث العدّاد → إعادة رسم → تحديث العدّاد مجدداً... useRef يتجنّب هذا تماماً لأنه لا "يُخبر" React بأي تغيير.</p></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>نمط القيمة السابقة (Previous Value)</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() =&gt; {
+    ref.current = value; // يُحفَظ "بعد" كل رسم، فيحمل القيمة السابقة خلال الرسم التالي
+  });
+  return ref.current;
+}
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  const prevCount = usePrevious(count);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;الحالي: {count}، السابق: {prevCount ?? '—'}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;زيادة&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">⚖️</span><h2>الجزء الثالث: متى نستخدم useState ومتى useRef؟</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>السؤال</th><th>الإجابة</th></tr></thead><tbody><tr><td>هل القيمة يجب أن تظهر في الواجهة (JSX)؟</td><td>✅ استخدم useState</td></tr><tr><td>هل تغيّر القيمة يجب أن يُحدِّث الشاشة فوراً؟</td><td>✅ استخدم useState</td></tr><tr><td>هل تحتاج فقط "تذكّر" قيمة بصمت دون عرضها؟</td><td>🔧 استخدم useRef</td></tr><tr><td>هل تحتاج الوصول المباشر لعنصر DOM؟</td><td>🔧 استخدم useRef</td></tr></tbody></table></div></div><div class="part"><div class="part-head"><span class="p-icon">🧩</span><h2>الجزء الرابع: بناء أول Custom Hook</h2></div><p class="blk-para">Custom Hook هو دالة JavaScript عادية تبدأ اسمها بـ use، وتستخدم Hooks أخرى بداخلها لاستخراج منطق متكرر يمكن مشاركته بين عدة مكوّنات.</p><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>القاعدة الأساسية</h3></div><ul class="mini-list"><li>الاسم يجب أن يبدأ بـ use (useToggle، useFetch...) — هذا يُخبر React وESLint أنها Hook فعلية</li><li>يمكنها استدعاء Hooks أخرى بداخلها (useState، useEffect، useRef...)</li><li>تخضع لنفس قواعد الـ Hooks: لا شروط، لا حلقات، القمة فقط</li></ul></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>مثال بسيط: useToggle</h3></div><div class="code-block" data-lang="react">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>React</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// hooks/useToggle.js
+import { useState } from 'react';
+
+function useToggle(initialValue = false) {
+  const [value, setValue] = useState(initialValue);
+
+  function toggle() {
+    setValue((prev) =&gt; !prev);
+  }
+
+  return [value, toggle];
+}
+
+export default useToggle;</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// الاستخدام في أي مكوّن
+function DarkModeButton() {
+  const [isDark, toggleDark] = useToggle(false);
+
+  return (
+    &lt;button onClick={toggleDark}&gt;
+      {isDark ? '🌙 داكن' : '☀️ فاتح'}
+    &lt;/button&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🌐</span><h2>الجزء الخامس: useFetch — Custom Hook لجلب البيانات</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>بناء useFetch كامل</h3></div><div class="code-block" data-lang="react">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>React</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// hooks/useFetch.js
+import { useState, useEffect } from 'react';
+
+function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    setLoading(true);
+    setError(null);
+
+    fetch(url)
+      .then((res) =&gt; {
+        if (!res.ok) throw new Error('فشل الطلب');
+        return res.json();
+      })
+      .then((data) =&gt; setData(data))
+      .catch((err) =&gt; setError(err.message))
+      .finally(() =&gt; setLoading(false));
+  }, [url]);
+
+  return { data, loading, error };
+}
+
+export default useFetch;</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>استخدامه في عدة مكوّنات</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function UserProfile({ userId }) {
+  const { data: user, loading, error } = useFetch(`https://api.example.com/users/${userId}`);
+  if (loading) return &lt;p&gt;⏳ جارٍ التحميل...&lt;/p&gt;;
+  if (error) return &lt;p&gt;❌ {error}&lt;/p&gt;;
+  return &lt;h2&gt;{user.name}&lt;/h2&gt;;
+}
+
+function PostsList() {
+  const { data: posts, loading } = useFetch('https://api.example.com/posts');
+  if (loading) return &lt;p&gt;⏳ جارٍ التحميل...&lt;/p&gt;;
+  return &lt;ul&gt;{posts.map((p) =&gt; &lt;li key={p.id}&gt;{p.title}&lt;/li&gt;)}&lt;/ul&gt;;
+}
+// نفس منطق التحميل والخطأ، بلا أي تكرار للكود بين المكوّنين!</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💾</span><h2>الجزء السادس: useLocalStorage — Custom Hook للتخزين المحلي</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>بناء useLocalStorage</h3></div><div class="code-block" data-lang="react">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>React</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// hooks/useLocalStorage.js
+import { useState, useEffect } from 'react';
+
+function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() =&gt; {
+    const saved = localStorage.getItem(key);
+    return saved !== null ? JSON.parse(saved) : initialValue;
+  });
+
+  useEffect(() =&gt; {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}
+
+export default useLocalStorage;</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.2</span><h3>استخدامه لحفظ تفضيل المستخدم</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function App() {
+  const [darkMode, setDarkMode] = useLocalStorage('darkMode', false);
+
+  return (
+    &lt;div className={darkMode ? 'dark' : 'light'}&gt;
+      &lt;button onClick={() =&gt; setDarkMode(!darkMode)}&gt;
+        {darkMode ? '☀️ وضع فاتح' : '🌙 وضع داكن'}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+// darkMode يُحفَظ تلقائياً في localStorage، ويبقى كما هو حتى بعد تحديث الصفحة بالكامل</code></pre>
+  <div class="output-box" id="out-10"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السابع: المشروع — لوحة مقالات بـ Custom Hooks متعددة</h2></div><div class="project-box"><p class="blk-para">نجمع كل ما تعلمناه: useFetch لجلب المقالات، useLocalStorage لحفظ المفضّلة، وuseRef لحقل البحث — في تطبيق واحد متكامل.</p><div class="subsection"><div class="sub-head"><h3>src/App.jsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { useRef } from 'react';
+import useFetch from './hooks/useFetch';
+import useLocalStorage from './hooks/useLocalStorage';
+
+function App() {
+  const [favorites, setFavorites] = useLocalStorage('favorites', []);
+  const { data: posts, loading, error } = useFetch(
+    'https://jsonplaceholder.typicode.com/posts?_limit=10'
+  );
+  const searchRef = useRef(null);
+
+  function toggleFavorite(id) {
+    setFavorites((prev) =&gt;
+      prev.includes(id) ? prev.filter((f) =&gt; f !== id) : [...prev, id]
+    );
+  }
+
+  if (loading) return &lt;p&gt;⏳ جارٍ تحميل المقالات...&lt;/p&gt;;
+  if (error) return &lt;p&gt;❌ {error}&lt;/p&gt;;
+
+  return (
+    &lt;div className="dashboard"&gt;
+      &lt;h1&gt;📰 لوحة المقالات&lt;/h1&gt;
+      &lt;input ref={searchRef} placeholder="ابحث..." /&gt;
+      &lt;p&gt;⭐ المفضّلة: {favorites.length}&lt;/p&gt;
+
+      &lt;ul&gt;
+        {posts.map((post) =&gt; (
+          &lt;li key={post.id}&gt;
+            &lt;span&gt;{post.title}&lt;/span&gt;
+            &lt;button onClick={() =&gt; toggleFavorite(post.id)}&gt;
+              {favorites.includes(post.id) ? '⭐' : '☆'}
+            &lt;/button&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+  <div class="output-box" id="out-11"></div>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثامن: تمارين الجلسة العشرين</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — useRef عملي<span class="ex-time">15 دقيقة</span></h4><ul class="mini-list"><li>مشغّل صوت/فيديو بسيط: زرا تشغيل وإيقاف يتحكّمان بعنصر &lt;audio&gt; أو &lt;video&gt; عبر ref</li><li>عدّاد نقرات لا يظهر في الواجهة — اطبعه في الكونسول فقط عندما يتجاوز 10 (بدون useState)</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — أول Custom Hook<span class="ex-time">20 دقيقة</span></h4><ul class="mini-list"><li>ابنِ useCounter Hook يُعيد [count, increment, decrement, reset]</li><li>ابنِ useWindowSize Hook يُعيد العرض والارتفاع الحاليين للنافذة ويتحدَّث مع resize</li><li>استخدم كليهما في مكوّن واحد للتأكد من عملهما</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — Custom Hooks متقدمة<span class="ex-time">25 دقيقة</span></h4><ul class="mini-list"><li>ابنِ useDebounce Hook يؤخِّر تحديث قيمة معينة بمقدار زمني محدَّد</li><li>ادمجه مع حقل بحث فعلي: النتائج لا تُصفَّى إلا بعد توقّف المستخدم عن الكتابة</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة العشرين</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>useRef</td><td>صندوق {current} يحفظ قيمة بين الرسومات دون التسبب بإعادة رسم</td></tr><tr><td>الوصول لـ DOM</td><td>ref={myRef} على عنصر JSX، ثم myRef.current للوصول للعنصر الحقيقي</td></tr><tr><td>useState مقابل useRef</td><td>useState لما يظهر في الواجهة، useRef لما لا يحتاج عرضاً</td></tr><tr><td>Custom Hook</td><td>دالة تبدأ بـ use، تستخدم Hooks أخرى، تُستخرَج لإعادة الاستخدام</td></tr><tr><td>useFetch</td><td>Hook مخصَّص يُغلِّف منطق التحميل/الخطأ/البيانات في مكان واحد</td></tr><tr><td>useLocalStorage</td><td>Hook مخصَّص يُزامن State تلقائياً مع localStorage</td></tr><tr><td>المشروع</td><td>لوحة مقالات تجمع useFetch وuseLocalStorage وuseRef معاً</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الحادية والعشرون: useContext وإدارة الحالة المشتركة</span><p>✦ مشكلة Prop Drilling — تمرير Props عبر طبقات كثيرة</p><p>✦ Context API: createContext وProvider وuseContext</p><p>✦ متى نستخدم Context ومتى تكفي Props وLifting State Up</p><p>✦ دمج useContext مع useState لإدارة حالة مشتركة كاملة</p><p>✦ مشروع: نظام Theme (فاتح/داكن) عبر التطبيق بالكامل بـ Context</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة العشرون</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الحادية والعشرين</span><p>يُرسَل رابط GitHub أو ملف مضغوط لمشروع Vite عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: لوحة ملاحظات بـ Custom Hooks</h3></div><p class="blk-para">أنشئ تطبيق React بـ Vite للملاحظات الشخصية، يجمع Custom Hooks متعددة:</p><h4 class="mini-head">◆ المتطلبات الوظيفية:</h4><ul class="mini-list"><li>useFetch لجلب قائمة ملاحظات أولية من API تجريبي (JSONPlaceholder مثلاً)</li><li>useLocalStorage لحفظ أي ملاحظة يُضيفها المستخدم يدوياً بحيث تبقى بعد تحديث الصفحة</li><li>useRef للتركيز التلقائي على حقل إضافة الملاحظة عند تحميل الصفحة</li><li>Custom Hook إضافي من اختيارك (useToggle لوضع داكن، أو useCounter لعدد الملاحظات)</li></ul><h4 class="mini-head">◆ متطلبات تقنية:</h4><ul class="mini-list"><li>كل Custom Hook في ملف منفصل داخل src/hooks/</li><li>استخدام صحيح لمصفوفات الاعتماديات بلا تحذيرات في الكونسول</li><li>تحديث آمن للمصفوفات والكائنات (Immutability) في كل مكان</li></ul></div></div>
+<div class="closing-banner">
+  <h3>🧩 أحسنت! أنت الآن تكتب Hooks خاصة بك كالمحترفين</h3>
+  <p>useRef وCustom Hooks هما مفتاح الكود النظيف القابل لإعادة الاستخدام في React</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 20</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-19.html"><small>السابق</small><span>الجلسة 19 — useEffect Hook والتعامل مع Side Effects</span></a>
+        <a class="nav-arrow next" href="lesson-21.html"><small>التالي</small><span>الجلسة 21 — useContext وإدارة الحالة المشتركة</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

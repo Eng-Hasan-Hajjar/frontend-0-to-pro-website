@@ -23,6 +23,19 @@
     { id: '14', emoji: '🏛️', title: 'البرمجة الكائنية OOP', href: 'lesson-14.html', ready: true },
     { id: '15', emoji: '🔧', title: 'JavaScript المتقدم', href: 'lesson-15.html', ready: true },
     { id: '16', emoji: '🏆', title: 'مراجعة JavaScript الشاملة والمشروع النهائي', href: 'lesson-16.html', ready: true },
+    { id: '17', emoji: '⚛️', title: 'مقدمة إلى React', href: 'lesson-17.html', ready: true },
+    { id: '18', emoji: '🎣', title: 'React State وuseState Hook', href: 'lesson-18.html', ready: true },
+    { id: '19', emoji: '🌊', title: 'useEffect Hook والتعامل مع Side Effects', href: 'lesson-19.html', ready: true },
+    { id: '20', emoji: '🧩', title: 'useRef وCustom Hooks', href: 'lesson-20.html', ready: true },
+    { id: '21', emoji: '🌳', title: 'useContext وإدارة الحالة المشتركة', href: 'lesson-21.html', ready: true },
+    { id: '22', emoji: '🧭', title: 'React Router — التنقل بين الصفحات', href: 'lesson-22.html', ready: true },
+    { id: '23', emoji: '🪆', title: 'Nested Routes وLayouts في React Router', href: 'lesson-23.html', ready: true },
+    { id: '24', emoji: '⚡', title: 'الأداء في React — memo وuseMemo وuseCallback', href: 'lesson-24.html', ready: true },
+    { id: '25', emoji: '🎛️', title: 'useReducer — إدارة حالة معقدة بمنطق مركزي', href: 'lesson-25.html', ready: true },
+    { id: '26', emoji: '▲', title: 'مقدمة إلى Next.js', href: 'lesson-26.html', ready: true },
+    { id: '27', emoji: '🔌', title: 'Next.js المتقدم — Data Fetching وAPI Routes', href: 'lesson-27.html', ready: true },
+    { id: '28', emoji: '🚀', title: 'النشر على Vercel ومراجعة شاملة لمرحلة React وNext.js', href: 'lesson-28.html', ready: true },
+    { id: '29', emoji: '🔷', title: 'مقدمة إلى TypeScript', href: 'lesson-29.html', ready: true },
   ];
   window.FEMB_SESSIONS = SESSIONS;
 
@@ -177,7 +190,7 @@
         codeEl.innerHTML = highlightHTML(raw);
       } else if (lang === 'css') {
         codeEl.innerHTML = highlightCSS(raw);
-      } else if (lang === 'javascript') {
+      } else if (lang === 'javascript' || lang === 'jsx' || lang === 'react' || lang === 'typescript') {
         codeEl.innerHTML = highlightJS(raw);
       } else {
         codeEl.innerHTML = escapeHtml(raw);
@@ -313,22 +326,35 @@
     if (!el) return;
     const htmlLines = [
       '<div class="card">',
-      '  <img src="avatar.jpg" class="avatar">',
-      '  <h3>ريم حسن</h3>',
-      '  <p>مطوّرة Front-End 🚀</p>',
+      '  <span class="badge">✨ أول مشروع</span>',
+      '  <h3>مرحباً أيها المطوّر!</h3>',
+      '  <p>من هنا تبدأ رحلتك في تطوير الويب</p>',
+      '  <div class="tags">',
+      '    <span>HTML</span>',
+      '    <span>CSS</span>',
+      '    <span>JS</span>',
+      '  </div>',
       '</div>',
     ];
     const cssLines = [
       '.card {',
       '  text-align: center;',
-      '  padding: 24px;',
-      '  border-radius: 16px;',
+      '  padding: 32px 28px;',
+      '  border-radius: 18px;',
       '  background: linear-gradient(135deg,#eef4ff,#fff);',
       '  box-shadow: 0 10px 30px rgba(20,40,80,.12);',
       '}',
-      '.avatar {',
-      '  width: 64px; height: 64px;',
-      '  border-radius: 50%;',
+      '.badge {',
+      '  display: inline-block;',
+      '  background: #fef3e2; color: #b45309;',
+      '  font-size: 12px; font-weight: 700;',
+      '  padding: 5px 12px; border-radius: 100px;',
+      '}',
+      '.tags { display: flex; gap: 8px; justify-content: center; }',
+      '.tags span {',
+      '  background: #eef2ff; color: #4338ca;',
+      '  font-size: 12px; font-weight: 700;',
+      '  padding: 4px 10px; border-radius: 8px;',
       '}',
     ];
     const full = htmlLines.join('\n') + '\n\n' + cssLines.join('\n');
@@ -348,8 +374,8 @@
           frame.srcdoc = `<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><style>
             body{display:flex;align-items:center;justify-content:center;height:100vh;margin:0;
             font-family:'IBM Plex Sans Arabic',sans-serif;background:#fafcff;}
-            .avatar{background:#c7d6f5 url() center/cover;}
-            h3{margin:12px 0 4px;color:#101826;} p{color:#6b7280;font-size:13px;margin:0;}
+            .card h3{margin:14px 0 6px;color:#101826;font-size:19px;}
+            .card p{color:#6b7280;font-size:13px;margin:0 0 16px;}
             ${cssOnly}</style></head><body>${htmlOnly}</body></html>`;
         }
         setTimeout(() => { i = 0; tick(); }, 3200);
@@ -380,6 +406,19 @@
       '14': 'Classes • Encapsulation • Inheritance • Polymorphism',
       '15': 'ES Modules • Map & Set • Symbol • Iterators • Generators',
       '16': 'مراجعة شاملة • ES2023/2024 • المشروع النهائي',
+      '17': 'JSX • Components • Props • Vite • Virtual DOM',
+      '18': 'useState • State مقابل Props • Immutability • Controlled Inputs • Lifting State Up',
+      '19': 'useEffect • Dependency Array • Cleanup Function • جلب البيانات (Fetch)',
+      '20': 'useRef • useState مقابل useRef • Custom Hooks • useFetch • useLocalStorage',
+      '21': 'Prop Drilling • Context API • Provider • useContext • نظام Theme',
+      '22': 'react-router-dom • Routes/Route • Link/NavLink • Route Parameters • useNavigate',
+      '23': 'Nested Routes • Outlet • Layout Route • Index Route • Protected Routes',
+      '24': 'React.memo • useMemo • useCallback • Shallow Comparison • متى نُحسِّن فعلاً',
+      '25': 'useReducer • state/dispatch/reducer • Actions • useReducer + Context',
+      '26': 'File-based Routing • Server Components • Client Components • SSR/SSG',
+      '27': 'Data Fetching • Caching/Revalidation • API Routes • GET/POST',
+      '28': 'Vercel Deployment • Environment Variables • مراجعة شاملة • مشروع التخرّج',
+      '29': 'لماذا TypeScript • الأنواع الأساسية • Interfaces • TypeScript مع React',
     };
     grid.innerHTML = SESSIONS.map(s => {
       const done = !!progress[s.id];

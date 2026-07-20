@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 28 — النشر على Vercel ومراجعة شاملة | Front-End Master Book</title>
+<meta name="description" content="النشر على Vercel ومراجعة شاملة لمرحلة React وNext.js — التحضير للنشر • GitHub وVercel • متغيرات البيئة • مراجعة شاملة (17-27) • مشروع تخرّج المرحلة">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="28">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🚀</span>
+    <div>
+      <div class="session-tag">Session 28 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة الثامنة والعشرون — النشر على Vercel ومراجعة شاملة لمرحلة React وNext.js</h1>
+  <p class="tags-line">التحضير للنشر • GitHub وVercel • متغيرات البيئة • مراجعة شاملة (17-27) • مشروع تخرّج المرحلة</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة الثامنة والعشرين</h2>
+  <ul class="goal-list"><li>فحص جاهزية مشروع Next.js للنشر عبر بناء محلي (npm run build) وقراءة أخطائه</li><li>رفع مشروع كامل على GitHub بأوامر git الأساسية</li><li>ربط المستودع بحساب Vercel ونشر التطبيق برابط حقيقي على الإنترنت</li><li>إعداد متغيرات البيئة (Environment Variables) بأمان في بيئة الإنتاج</li><li>مراجعة شاملة لكل مفاهيم مرحلة React وNext.js من الجلسة 17 حتى 27</li><li>إنجاز مشروع تخرّج كامل لمرحلة React/Next.js، منشور فعلياً وقابل للمشاركة</li></ul>
+</div><div class="callout success"><span class="callout-title">🎓 ملخص رحلة React وNext.js — الجلسات 17 إلى 27</span><p>✔ الجلسة 17: React وJSX والمكوّنات وProps</p><p>✔ الجلسة 18: State وuseState</p><p>✔ الجلسة 19: useEffect وSide Effects</p><p>✔ الجلسة 20: useRef وCustom Hooks</p><p>✔ الجلسة 21: useContext وإدارة الحالة المشتركة</p><p>✔ الجلسة 22: React Router — التنقل بين الصفحات</p><p>✔ الجلسة 23: Nested Routes وLayouts وحماية المسارات</p><p>✔ الجلسة 24: الأداء — memo وuseMemo وuseCallback</p><p>✔ الجلسة 25: useReducer وإدارة الحالة المعقّدة</p><p>✔ الجلسة 26: مقدمة إلى Next.js وFile-based Routing</p><p>✔ الجلسة 27: Data Fetching وAPI Routes</p></div><div class="callout success"><span class="callout-title">🎓 أهلاً بلحظة النشر!</span><p>كل ما بنيته حتى الآن كان يعمل على جهازك فقط. اليوم نأخذ الخطوة الأخيرة والأهم: نشر تطبيق حقيقي يراه أي شخص في العالم برابط واحد.</p><p>ثم نراجع الرحلة كاملة من أول JSX حتى API Routes — لنتأكد أن كل قطعة في مكانها الصحيح قبل مشروع التخرّج.</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🔍</span><h2>الجزء الأول: التحضير للنشر</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>فحص البناء المحلي</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>npm run build</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div><div class="callout tip"><span class="callout-title">💡 لماذا هذه الخطوة إلزامية</span><p>npm run build يُنفِّذ نفس عملية البناء التي ستحدث على خادم النشر — إن نجحت محلياً، فالنشر شبه مضمون النجاح. إن فشلت، من الأفضل معرفة ذلك الآن لا بعد رفع الموقع فعلياً.</p></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>أخطاء شائعة عند البناء</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الخطأ</th><th>السبب الشائع</th><th>الحل</th></tr></thead><tbody><tr><td>Module not found</td><td>استيراد ملف بمسار خاطئ أو بحالة أحرف مختلفة</td><td>تحقّق من المسار وحالة الأحرف بدقة (Linux حسّاس لحالة الأحرف)</td></tr><tr><td>'useState' is not defined</td><td>نسيان "use client" في مكوّن يستخدم Hooks</td><td>أضف 'use client' في أول سطر من الملف</td></tr><tr><td>Hydration Mismatch</td><td>اختلاف بين ما يُرسَم على الخادم وما يُرسَم في المتصفح (مثل Date.now() مباشرة في JSX)</td><td>انقل القيم غير الحتمية لتُحسَب داخل useEffect بدل الرسم المباشر</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">📤</span><h2>الجزء الثاني: رفع المشروع على GitHub</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>التأكد من .gitignore</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code># .gitignore الأساسي (Next.js ينشئه تلقائياً عند إنشاء المشروع)
+node_modules/
+.next/
+.env.local</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div><div class="callout warning"><span class="callout-title">⚠️ تحذير أمني</span><p>لا تسمح أبداً بأن يُرفَع ملف .env.local إلى GitHub — فهو يحوي أسراراً (مفاتيح API، كلمات مرور قواعد بيانات) يجب أن تبقى خاصة تماماً.</p></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>أوامر git الأساسية</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>git init
+git add .
+git commit -m "أول نسخة من المشروع"
+git branch -M main
+git remote add origin https://github.com/username/my-app.git
+git push -u origin main</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">▲</span><h2>الجزء الثالث: النشر على Vercel</h2></div><p class="blk-para">Vercel هي الشركة التي تطوّر Next.js نفسه، ولذلك النشر عليها هو الأسهل والأكثر توافقاً بلا أي إعداد إضافي تقريباً.</p><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>خطوات النشر</h3></div><ul class="mini-list"><li>افتح vercel.com وسجّل الدخول بحساب GitHub نفسه</li><li>اضغط "Add New Project"</li><li>اختر المستودع (Repository) الذي رفعته في الجزء السابق</li><li>اترك كل الإعدادات الافتراضية — Vercel يكتشف أنه مشروع Next.js تلقائياً</li><li>اضغط "Deploy" وانتظر دقيقة إلى دقيقتين</li></ul><div class="callout success"><span class="callout-title">🎉 النتيجة</span><p>ستحصل على رابط حقيقي فوراً، بصيغة شبيهة بـ my-app.vercel.app — قابل للمشاركة مع أي شخص في العالم فوراً.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔐</span><h2>الجزء الرابع: متغيرات البيئة في الإنتاج</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>محلياً مقابل الإنتاج</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code># .env.local (محلياً فقط، لا يُرفَع لـ GitHub أبداً بفضل .gitignore)
+NEXT_PUBLIC_API_URL=https://api.example.com
+DATABASE_SECRET=my-secret-key</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// الاستخدام داخل الكود
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div><div class="callout tip"><span class="callout-title">💡 قاعدة مهمة</span><p>المتغيرات التي تبدأ بـ NEXT_PUBLIC_ تصل إلى متصفح المستخدم (Client)، أما البقية فتبقى على الخادم فقط لأسباب أمنية — لا تضع أسراراً حساسة خلف NEXT_PUBLIC_ أبداً.</p></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>إضافتها في Vercel</h3></div><ul class="mini-list"><li>من لوحة تحكّم المشروع في Vercel: Settings → Environment Variables</li><li>أضف نفس المفاتيح والقيم الموجودة في .env.local محلياً</li><li>أعد النشر (Redeploy) بعد أي تعديل على المتغيرات ليأخذ التطبيق القيم الجديدة</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📖</span><h2>الجزء الخامس: مراجعة شاملة — أسئلة وأجوبة</h2></div><div class="subsection"><div class="sub-head"><h3>مراجعة الجلسات 17-19 — React الأساسي</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>السؤال</th><th>الإجابة الصحيحة</th></tr></thead><tbody><tr><td>ما الفرق بين State وProps؟</td><td>State مملوكة للمكوّن نفسه وقابلة للتغيير من الداخل؛ Props تُمرَّر من الأب وللقراءة فقط</td></tr><tr><td>متى نحتاج useEffect؟</td><td>لأي Side Effect: جلب بيانات، مؤقّتات، الاستماع لأحداث المتصفح</td></tr><tr><td>ما الفرق بين useEffect(fn) وuseEffect(fn, [])؟</td><td>الأول بعد كل رسم بلا استثناء؛ الثاني مرة واحدة فقط عند الظهور الأول</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><h3>مراجعة الجلسات 20-22 — Hooks متقدمة وRouting</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>السؤال</th><th>الإجابة الصحيحة</th></tr></thead><tbody><tr><td>متى نستخدم useRef بدل useState؟</td><td>عند حاجتنا لتذكّر قيمة أو الوصول لعنصر DOM دون التسبب بإعادة رسم</td></tr><tr><td>ما فائدة Context API الأساسية؟</td><td>مشاركة بيانات عبر أي عمق من المكوّنات دون Prop Drilling</td></tr><tr><td>ما الفرق بين Link وNavLink؟</td><td>كلاهما تنقّل فوري بلا إعادة تحميل، لكن NavLink يُنسِّق الرابط النشط تلقائياً</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><h3>مراجعة الجلسات 23-25 — Layouts والأداء وuseReducer</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>السؤال</th><th>الإجابة الصحيحة</th></tr></thead><tbody><tr><td>ما فائدة Outlet؟</td><td>تحديد مكان عرض المسار الفرعي داخل تخطيط (Layout) مشترك</td></tr><tr><td>متى يستحق React.memo الاستخدام فعلياً؟</td><td>فقط لمكوّنات ثقيلة، بعد رصد مشكلة أداء حقيقية مُقاسة — لا كتحسين افتراضي</td></tr><tr><td>متى نفضّل useReducer على useState؟</td><td>عند حالة معقّدة بعدة عمليات تحديث مترابطة يصعب تتبّعها بدوال useState منفصلة</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><h3>مراجعة الجلستين 26-27 — Next.js</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>السؤال</th><th>الإجابة الصحيحة</th></tr></thead><tbody><tr><td>ما الفرق بين Server وClient Component؟</td><td>الأول (الافتراضي) يعمل على الخادم فقط؛ الثاني يحتاج "use client" لأي تفاعل (State، أحداث)</td></tr><tr><td>كيف نُنشئ API Route؟</td><td>ملف route.js داخل app/api/يُصدِّر دوال GET/POST وغيرها</td></tr><tr><td>ما فائدة File-based Routing؟</td><td>بنية مجلدات app/ تُحدِّد مسارات الموقع تلقائياً، بلا إعداد Router يدوي</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السادس: المشروع الختامي — انشر تطبيقك فعلياً</h2></div><div class="project-box"><p class="blk-para">خُذ أي مشروع Next.js بنيته في الجلستين 26 أو 27 (أو مشروع البورتفوليو من واجب الجلسة 26)، ونفِّذ خطوات النشر كاملة عليه:</p><ul class="mini-list"><li>1) نفِّذ npm run build محلياً وتأكد من عدم وجود أخطاء</li><li>2) ارفع المشروع على GitHub بأوامر git كاملة</li><li>3) اربطه بـ Vercel وانشره</li><li>4) إن كان يستخدم متغيرات بيئة، أضفها في إعدادات Vercel وأعد النشر</li><li>5) افتح الرابط الحقيقي وتأكد أن كل الصفحات والـ API Routes تعمل كما هو متوقَّع</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء السابع: تمارين الجلسة الثامنة والعشرين</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — فحص محلي<span class="ex-time">15 دقيقة</span></h4><ul class="mini-list"><li>شغّل npm run build على أي مشروع Next.js سابق لديك</li><li>أصلح أي تحذيرات أو أخطاء تظهر قبل المتابعة</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — رفع كامل على GitHub<span class="ex-time">20 دقيقة</span></h4><ul class="mini-list"><li>أنشئ مستودعاً جديداً فارغاً على GitHub</li><li>ارفع مشروعك بالكامل بأوامر git من الصفر (init، add، commit، push)</li><li>تأكد أن .env.local لم يُرفَع (تحقّق من صفحة المستودع على GitHub مباشرة)</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — نشر فعلي<span class="ex-time">25 دقيقة</span></h4><ul class="mini-list"><li>انشر أي مشروع من الجلسات السابقة على Vercel</li><li>شارك الرابط الحقيقي مع زميل وتأكد أنه يعمل من جهازه</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الثامنة والعشرين ونهاية مرحلة React وNext.js</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>npm run build</td><td>يكشف أخطاء الإنتاج محلياً قبل النشر الفعلي</td></tr><tr><td>.gitignore</td><td>يمنع رفع node_modules وrhe.next وأهم شيء: .env.local</td></tr><tr><td>Vercel</td><td>النشر الأسهل لمشاريع Next.js — استيراد من GitHub وضغطة Deploy واحدة</td></tr><tr><td>متغيرات البيئة</td><td>NEXT_PUBLIC_ تصل للمتصفح، الباقي يبقى سرّياً على الخادم فقط</td></tr><tr><td>مراجعة React 17-25</td><td>من JSX والمكوّنات، مروراً بكل الـ Hooks، وصولاً لـ useReducer</td></tr><tr><td>مراجعة Next.js 26-27</td><td>File-based Routing، Server/Client Components، وAPI Routes</td></tr><tr><td>المشروع</td><td>مشروع تخرّج كامل يجمع كل مفاهيم المرحلة، منشور فعلياً وقابل للمشاركة</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة التاسعة والعشرون: مقدمة إلى TypeScript</span><p>✦ لماذا نضيف الأنواع (Types) فوق JavaScript</p><p>✦ الأنواع الأساسية: string وnumber وboolean وarray وغيرها</p><p>✦ Interfaces وTypes لوصف شكل الكائنات</p><p>✦ استخدام TypeScript مع React (Props وState مكتوبان بأنواع محدَّدة)</p><p>✦ مشروع: تحويل مكوّن React بسيط من JavaScript إلى TypeScript كامل</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — مشروع تخرّج مرحلة React وNext.js</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة التاسعة والعشرين</span><p>يُرسَل رابط GitHub بالإضافة إلى رابط النشر الفعلي على Vercel عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>المشروع: منصة مدونة تقنية متكاملة — منشورة فعلياً</h3></div><p class="blk-para">هذا مشروع التخرّج الكامل لمرحلة React وNext.js — يجب أن يجمع كل ما تعلمناه من الجلسة 17 حتى 28:</p><h4 class="mini-head">◆ المتطلبات الوظيفية:</h4><ul class="mini-list"><li>صفحة رئيسية وصفحة "من نحن" وقسم مدونة كامل (File-based Routing)</li><li>صفحة مقال فردي بمسار ديناميكي [slug]</li><li>API Routes لجلب المقالات (GET) وإضافة مقال جديد (POST)</li><li>نموذج تواصل كـ Client Component يُرسل بيانات لـ API Route داخلي</li><li>إدارة حالة مشتركة (Context أو useReducer) لعنصر واحد على الأقل (مثل وضع Theme، أو المفضّلة)</li></ul><h4 class="mini-head">◆ متطلبات تقنية إلزامية:</h4><ul class="mini-list"><li>التمييز الصحيح بين Server وClient Components في كل الملفات</li><li>npm run build ناجح تماماً بلا أخطاء</li><li>مشروع مرفوع على GitHub بـ .gitignore صحيح (لا أسرار مرفوعة)</li><li>منشور فعلياً على Vercel برابط حقيقي يعمل</li></ul></div></div>
+<div class="closing-banner">
+  <h3>🚀 مبروك! أكملت مرحلة React وNext.js بالكامل ونشرت تطبيقك على الإنترنت فعلياً</h3>
+  <p>من أول JSX حتى تطبيق منشور حيّ — رحلة حقيقية نحو الاحتراف</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 28</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-27.html"><small>السابق</small><span>الجلسة 27 — Next.js المتقدم — Data Fetching وAPI Routes</span></a>
+        <a class="nav-arrow next" href="lesson-29.html"><small>التالي</small><span>الجلسة 29 — مقدمة إلى TypeScript</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

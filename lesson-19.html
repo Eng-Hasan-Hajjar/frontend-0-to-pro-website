@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 19 — useEffect Hook والتعامل مع Side Effects | Front-End Master Book</title>
+<meta name="description" content="useEffect Hook والتعامل مع Side Effects — Side Effects • useEffect • Dependency Array • Cleanup Function • جلب البيانات (Data Fetching)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="19">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🌊</span>
+    <div>
+      <div class="session-tag">Session 19 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة التاسعة عشرة — useEffect Hook والتعامل مع Side Effects</h1>
+  <p class="tags-line">Side Effects • useEffect • Dependency Array • Cleanup Function • جلب البيانات (Data Fetching)</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة التاسعة عشرة</h2>
+  <ul class="goal-list"><li>فهم ما هو Side Effect ولماذا يحتاج React آلية خاصة للتعامل معه</li><li>استخدام useEffect الأساسي لتنفيذ كود بعد كل عملية رسم</li><li>التحكم بدقّة في متى يُعاد تشغيل التأثير عبر مصفوفة الاعتماديات (Dependency Array)</li><li>فهم الفروق العملية بين عدم وجود مصفوفة، مصفوفة فارغة، ومصفوفة تحوي قيماً</li><li>كتابة دالة تنظيف (Cleanup) صحيحة لمنع تسرّب الذاكرة (Memory Leaks)</li><li>استخدام useEffect لجلب بيانات من API خارجي مع حالات تحميل وخطأ</li><li>التعامل الصحيح مع async/await داخل useEffect</li><li>بناء تطبيق طقس كامل يجلب بيانات حيّة عند تحميل الصفحة</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة الثامنة عشرة</span><p>State ذاكرة خاصة بالمكوّن، وأي تغيير فيها عبر setState يُعيد تصيير المكوّن</p><p>useState: const [value, setValue] = useState(initial)</p><p>استخدم الشكل الدالي setValue(prev =&gt; ...) عند الاعتماد على القيمة السابقة</p><p>لا تُعدِّل الكائنات والمصفوفات مباشرة — أنشئ دائماً نسخة جديدة (Immutability)</p><p>رفع الحالة للأعلى (Lifting State Up) يُشارك البيانات بين مكوّنات إخوة</p></div><div class="callout success"><span class="callout-title">🎓 أهلاً بعالم Side Effects!</span><p>حتى الآن، كل ما بنيناه كان "نقياً": بيانات تدخل (Props/State) وواجهة تخرج (JSX)، بلا أي تواصل مع العالم الخارجي.</p><p>لكن التطبيقات الحقيقية تحتاج التواصل مع الخارج: جلب بيانات من خادم، ضبط مؤقّت، الاستماع لحدث في المتصفح، تعديل عنوان الصفحة مباشرة.</p><p>هذه العمليات تُسمّى Side Effects، وuseEffect هو الأداة الرسمية في React للتعامل معها بأمان.</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🌊</span><h2>الجزء الأول: ما هو Side Effect؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>التعريف</h3></div><p class="blk-para">Side Effect هو أي عملية "تتفاعل مع العالم خارج المكوّن نفسه" — بعكس حساب واجهة من Props وState فقط:</p><ul class="mini-list"><li>جلب بيانات من خادم (Fetch API)</li><li>ضبط مؤقّت (setTimeout / setInterval)</li><li>الاستماع لأحداث المتصفح (resize، scroll، keydown)</li><li>التعديل المباشر على DOM أو عنوان الصفحة (document.title)</li><li>الاشتراك/إلغاء الاشتراك في خدمات خارجية (WebSocket مثلاً)</li></ul></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>لماذا لا نضع هذه العمليات مباشرة داخل المكوّن؟</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+
+  // ❌ خطأ فادح: fetch يُستدعى مباشرة أثناء تنفيذ دالة المكوّن!
+  fetch(`https://api.example.com/users/${userId}`)
+    .then(res =&gt; res.json())
+    .then(data =&gt; setUser(data)); // setUser تُسبِّب إعادة رسم
+
+  // إعادة الرسم تُنفِّذ الدالة بأكملها من جديد → fetch يُستدعى مجدداً
+  // → setUser تُستدعى مجدداً → إعادة رسم أخرى → حلقة لا نهائية! 🔥
+
+  return &lt;div&gt;{user?.name}&lt;/div&gt;;
+}</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div><div class="callout warning"><span class="callout-title">⚠️ المشكلة</span><p>أي عملية "جانبية" داخل جسم دالة المكوّن مباشرة تُنفَّذ في كل مرة يُعاد فيها الرسم — بلا سيطرة على التوقيت. useEffect يمنحنا هذه السيطرة بالضبط.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎣</span><h2>الجزء الثاني: useEffect الأساسي</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>Syntax الأساسي</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { useEffect, useState } from 'react';
+
+function Component() {
+  useEffect(() =&gt; {
+    // الكود هنا يعمل "بعد" اكتمال عملية الرسم، لا أثناءها
+    console.log('تمّ رسم المكوّن!');
+  });
+
+  return &lt;div&gt;مرحباً&lt;/div&gt;;
+}</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>مثال: تحديث عنوان الصفحة</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function Counter() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() =&gt; {
+    document.title = `عدد النقرات: ${count}`;
+  });
+
+  return &lt;button onClick={() =&gt; setCount(count + 1)}&gt;{count}&lt;/button&gt;;
+}
+// كل ضغطة → إعادة رسم → useEffect يعمل بعدها مباشرة → عنوان تبويب المتصفح يتحدَّث</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">📋</span><h2>الجزء الثالث: مصفوفة الاعتماديات (Dependency Array)</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الشكل</th><th>متى يعمل التأثير</th></tr></thead><tbody><tr><td>useEffect(fn)</td><td>بعد كل عملية رسم، بلا أي استثناء</td></tr><tr><td>useEffect(fn, [])</td><td>مرة واحدة فقط، عند ظهور المكوّن لأول مرة (Mount)</td></tr><tr><td>useEffect(fn, [a, b])</td><td>عند الظهور الأول، وكل مرة تتغيّر فيها a أو b فقط</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>الحالات الثلاث في الكود</h3></div><div class="code-block" data-lang="react">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>React</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>useEffect(() =&gt; {
+  console.log('يعمل بعد كل رسم — بلا استثناء');
+});
+
+useEffect(() =&gt; {
+  console.log('يعمل مرة واحدة فقط، عند ظهور المكوّن أول مرة');
+}, []); // مصفوفة فارغة
+
+useEffect(() =&gt; {
+  console.log('يعمل عند الظهور الأول، وكل مرة تتغيّر فيها userId فقط');
+}, [userId]); // مصفوفة تحوي قيمة</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div><div class="callout info"><span class="callout-title">⭐ القاعدة الذهبية</span><p>ضع في المصفوفة كل قيمة (State أو Props) يستخدمها التأثير من الخارج. نسيان قيمة يُسبِّب أخطاءً منطقية صعبة الاكتشاف (Stale Closures).</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🧹</span><h2>الجزء الرابع: دالة التنظيف (Cleanup Function)</h2></div><p class="blk-para">بعض التأثيرات (مؤقّتات، مستمعو أحداث، اشتراكات) تبقى تعمل في الخلفية حتى بعد اختفاء المكوّن، ما لم نُنظِّفها صراحة.</p><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>مؤقّت (Interval) مع تنظيف صحيح</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function Timer() {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() =&gt; {
+    const id = setInterval(() =&gt; {
+      setSeconds(prev =&gt; prev + 1);
+    }, 1000);
+
+    // دالة التنظيف: تُنفَّذ عند اختفاء المكوّن، أو قبل إعادة تشغيل التأثير
+    return () =&gt; clearInterval(id);
+  }, []); // تشغيل مرة واحدة فقط
+
+  return &lt;p&gt;⏱️ الوقت المنقضي: {seconds} ثانية&lt;/p&gt;;
+}</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div><div class="callout warning"><span class="callout-title">⚠️ بدون تنظيف</span><p>لو غادر المستخدم هذه الصفحة دون clearInterval، سيبقى المؤقّت يعمل في الخلفية للأبد — تسرّب ذاكرة حقيقي، وقد يُسبِّب أخطاءً إن حاول تحديث State لمكوّن لم يعد موجوداً.</p></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>الاستماع لحدث المتصفح مع إزالته</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function WindowWidth() {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() =&gt; {
+    function handleResize() {
+      setWidth(window.innerWidth);
+    }
+    window.addEventListener('resize', handleResize);
+
+    return () =&gt; window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return &lt;p&gt;📐 عرض النافذة الحالي: {width}px&lt;/p&gt;;
+}</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🌐</span><h2>الجزء الخامس: جلب البيانات (Data Fetching) بـ useEffect</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>النمط الأساسي: حالات تحميل وخطأ</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    setLoading(true);
+    setError(null);
+
+    fetch(`https://api.example.com/users/${userId}`)
+      .then(res =&gt; {
+        if (!res.ok) throw new Error('فشل الطلب');
+        return res.json();
+      })
+      .then(data =&gt; setUser(data))
+      .catch(err =&gt; setError(err.message))
+      .finally(() =&gt; setLoading(false));
+  }, [userId]); // يُعاد الجلب فقط عند تغيّر userId
+
+  if (loading) return &lt;p&gt;⏳ جارٍ التحميل...&lt;/p&gt;;
+  if (error) return &lt;p&gt;❌ خطأ: {error}&lt;/p&gt;;
+  return &lt;div&gt;{user.name}&lt;/div&gt;;
+}</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>التعامل مع async/await داخل useEffect</h3></div><div class="code-block" data-lang="react">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>React</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ❌ خطأ: useEffect لا يقبل دالة async مباشرة كوسيط أول
+useEffect(async () =&gt; {
+  const res = await fetch(url);
+  // React يتوقّع من التأثير إما لا شيء أو دالة تنظيف — وليس Promise!
+}, []);</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div><div class="code-block" data-lang="react">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>React</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ✅ الحل: عرِّف دالة async داخلية واستدعها فوراً
+useEffect(() =&gt; {
+  async function fetchData() {
+    const res = await fetch(url);
+    const data = await res.json();
+    setData(data);
+  }
+  fetchData();
+}, [url]);</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السادس: المشروع — تطبيق طقس يجلب بيانات حيّة</h2></div><div class="project-box"><p class="blk-para">تطبيق يجلب بيانات الطقس الفعلية من API مجاني بلا مفتاح (Open-Meteo)، مع حالات تحميل وخطأ، ويُعيد الجلب كلما تغيّرت المدينة.</p><div class="subsection"><div class="sub-head"><h3>src/App.jsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { useState, useEffect } from 'react';
+
+function App() {
+  const [city, setCity] = useState('دمشق');
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    setLoading(true);
+    setError(null);
+
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=33.5&amp;longitude=36.3&amp;current_weather=true')
+      .then(res =&gt; {
+        if (!res.ok) throw new Error('تعذّر جلب بيانات الطقس');
+        return res.json();
+      })
+      .then(data =&gt; setWeather(data.current_weather))
+      .catch(err =&gt; setError(err.message))
+      .finally(() =&gt; setLoading(false));
+  }, [city]);
+
+  return (
+    &lt;div className="weather-app"&gt;
+      &lt;h1&gt;🌤️ تطبيق الطقس&lt;/h1&gt;
+      &lt;input
+        value={city}
+        onChange={(e) =&gt; setCity(e.target.value)}
+        placeholder="اسم المدينة..."
+      /&gt;
+
+      {loading &amp;&amp; &lt;p&gt;⏳ جارٍ التحميل...&lt;/p&gt;}
+      {error &amp;&amp; &lt;p className="error"&gt;❌ {error}&lt;/p&gt;}
+      {weather &amp;&amp; !loading &amp;&amp; (
+        &lt;div className="weather-card"&gt;
+          &lt;h2&gt;{city}&lt;/h2&gt;
+          &lt;p className="temp"&gt;{weather.temperature}°C&lt;/p&gt;
+          &lt;p&gt;سرعة الرياح: {weather.windspeed} كم/س&lt;/p&gt;
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+  <div class="output-box" id="out-10"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>src/App.css</h3></div><div class="code-block" data-lang="css">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>CSS</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>.weather-app { max-width: 380px; margin: 40px auto; font-family: sans-serif; text-align: center; }
+.weather-app input { padding: 10px; width: 80%; border-radius: 8px; border: 1px solid #ddd; margin: 12px 0; }
+.weather-card { background: linear-gradient(135deg,#dbeafe,#fff); border-radius: 16px; padding: 24px; margin-top: 16px; }
+.weather-card .temp { font-size: 42px; font-weight: bold; color: #1d4ed8; margin: 8px 0; }
+.error { color: #dc2626; }</code></pre>
+  <div class="output-box" id="out-11"></div>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء السابع: تمارين الجلسة التاسعة عشرة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — عنوان صفحة ديناميكي<span class="ex-time">15 دقيقة</span></h4><ul class="mini-list"><li>أنشئ State لعدد "إشعارات غير مقروءة"</li><li>استخدم useEffect لتحديث document.title ليعرض العدد بين قوسين، مثل: (3) اسم التطبيق</li><li>أضف زر يزيد العدد ليتأكد الطالب أن العنوان يتحدَّث فوراً</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — Countdown Timer<span class="ex-time">20 دقيقة</span></h4><ul class="mini-list"><li>حقل إدخال لعدد الثواني، وزر "ابدأ"</li><li>عدّاد تنازلي يعمل بـ setInterval داخل useEffect</li><li>يتوقف تلقائياً عند الوصول للصفر، مع رسالة "انتهى الوقت! ⏰"</li><li>تأكد من استخدام دالة تنظيف صحيحة (clearInterval)</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — محرّك بحث حيّ<span class="ex-time">25 دقيقة</span></h4><ul class="mini-list"><li>مصفوفة أسماء طلاب (10 عناصر على الأقل) في State</li><li>حقل بحث يُصفِّي القائمة فوراً أثناء الكتابة</li><li>استخدم useEffect لمحاكاة "تأخير شبكة" بسيط (setTimeout 300ms) قبل عرض النتائج</li><li>اعرض "لا توجد نتائج" عند عدم وجود تطابق</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة التاسعة عشرة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>Side Effect</td><td>أي عملية تتفاعل مع خارج المكوّن: شبكة، مؤقّت، DOM، أحداث المتصفح</td></tr><tr><td>useEffect الأساسي</td><td>يعمل بعد كل عملية رسم افتراضياً</td></tr><tr><td>مصفوفة الاعتماديات</td><td>[] = مرة واحدة فقط، [قيم] = عند تغيّرها، بلا مصفوفة = كل رسم</td></tr><tr><td>Cleanup Function</td><td>return () =&gt; {...} لإلغاء المؤقّتات والمستمعين ومنع تسرّب الذاكرة</td></tr><tr><td>جلب البيانات</td><td>fetch داخل useEffect مع حالات loading/error/data</td></tr><tr><td>async في useEffect</td><td>عرِّف دالة async داخلية واستدعها، لا تجعل التأثير نفسه async</td></tr><tr><td>المشروع</td><td>تطبيق طقس يجلب بيانات حيّة مع تحميل وخطأ ديناميكيين</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة العشرون: useRef وCustom Hooks</span><p>✦ useRef — الوصول المباشر لعناصر DOM دون إعادة رسم</p><p>✦ الفرق بين useRef وuseState</p><p>✦ حالات استخدام useRef: التركيز التلقائي، حفظ قيم بين الرسومات</p><p>✦ بناء Custom Hook خاص بك لأول مرة</p><p>✦ استخراج منطق متكرر (مثل useFetch وuseLocalStorage) لإعادة الاستخدام</p><p>✦ مشروع: Custom Hook كامل قابل لإعادة الاستخدام عبر عدة مكوّنات</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة التاسعة عشرة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة العشرين</span><p>يُرسَل رابط GitHub أو ملف مضغوط لمشروع Vite عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: تطبيق أخبار حيّة بتحديث تلقائي</h3></div><p class="blk-para">أنشئ تطبيق React بـ Vite يجلب مقالات من مصدر بيانات (يمكن استخدام JSONPlaceholder أو أي API مجاني) مع تحديث تلقائي دوري:</p><h4 class="mini-head">◆ المتطلبات الوظيفية:</h4><ul class="mini-list"><li>جلب قائمة مقالات عند تحميل الصفحة (useEffect + [])</li><li>عرض حالة "جارٍ التحميل" أثناء الجلب الأول</li><li>زر "تحديث الآن" يُعيد الجلب يدوياً</li><li>تحديث تلقائي كل 60 ثانية عبر setInterval داخل useEffect</li><li>عرض رسالة خطأ واضحة عند فشل الاتصال</li></ul><h4 class="mini-head">◆ متطلبات تقنية:</h4><ul class="mini-list"><li>دالة تنظيف صحيحة تُلغي المؤقّت الدوري (clearInterval) عند اختفاء المكوّن</li><li>مصفوفة اعتماديات صحيحة في كل useEffect (بلا تحذيرات في الكونسول)</li><li>فصل منطق الجلب في دالة async داخلية منفصلة</li><li>تقسيم الواجهة لمكوّنين على الأقل: App وArticleCard</li></ul></div></div>
+<div class="closing-banner">
+  <h3>🌊 أحسنت! أنت الآن تتحكم بالتأثيرات الجانبية باحتراف</h3>
+  <p>useEffect هو جسرك الآمن بين مكوّنات React والعالم الخارجي</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 19</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-18.html"><small>السابق</small><span>الجلسة 18 — React State وuseState Hook</span></a>
+        <a class="nav-arrow next" href="lesson-20.html"><small>التالي</small><span>الجلسة 20 — useRef وCustom Hooks</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

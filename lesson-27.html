@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 27 — Next.js المتقدم: Data Fetching وAPI Routes | Front-End Master Book</title>
+<meta name="description" content="Next.js المتقدم — Data Fetching وAPI Routes — جلب البيانات في Server Components • Caching وRevalidation • API Routes • GET وPOST">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="27">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🔌</span>
+    <div>
+      <div class="session-tag">Session 27 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة السابعة والعشرون — Next.js المتقدم — Data Fetching وAPI Routes</h1>
+  <p class="tags-line">جلب البيانات في Server Components • Caching وRevalidation • API Routes • GET وPOST</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة السابعة والعشرين</h2>
+  <ul class="goal-list"><li>جلب البيانات مباشرة داخل Server Components بـ async/await بلا useEffect</li><li>فهم آلية التخزين المؤقت (Caching) الافتراضية في Next.js ومتى نحتاج التحقّق منها</li><li>بناء API Routes — نقاط نهاية خلفية كاملة داخل مشروع Next.js نفسه</li><li>معالجة طلبات GET وPOST داخل نفس ملف API Route</li><li>استدعاء API Route داخلي من مكوّن Client بأمان</li><li>بناء تطبيق كامل بواجهة أمامية وAPI خلفي في مشروع Next.js واحد فقط</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة السادسة والعشرين</span><p>Next.js إطار عمل متكامل فوق React يوفّر Routing وSSR جاهزين</p><p>File-based Routing: بنية مجلدات app/ تُحدِّد المسارات مباشرة</p><p>Server Component هو الافتراضي؛ "use client" مطلوب فقط عند الحاجة لـ useState أو أحداث</p><p>SSR يبني الصفحة مع كل طلب، وSSG يبنيها مرة واحدة وقت النشر</p></div><div class="callout success"><span class="callout-title">🎓 أهلاً بالبيانات الحيّة!</span><p>في الجلسة الماضية بنينا صفحات بمحتوى ثابت. اليوم نربطها ببيانات حقيقية — ومفاجأة: Next.js يمنحك أيضاً "خادماً خلفياً" كاملاً داخل نفس المشروع، بلا الحاجة لمشروع Node.js منفصل!</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">📡</span><h2>الجزء الأول: جلب البيانات في Server Components</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>async/await مباشرة داخل المكوّن</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// app/products/page.js — Server Component، بلا useEffect إطلاقاً!
+async function getProducts() {
+  const res = await fetch('https://api.example.com/products');
+  if (!res.ok) throw new Error('فشل جلب المنتجات');
+  return res.json();
+}
+
+export default async function ProductsPage() {
+  const products = await getProducts();
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;🛍️ المنتجات&lt;/h1&gt;
+      &lt;ul&gt;
+        {products.map((p) =&gt; (
+          &lt;li key={p.id}&gt;{p.name} — {p.price} $&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div><div class="callout tip"><span class="callout-title">💡 لاحظ الفرق</span><p>لا حاجة لـ useState أو useEffect أو حالات loading/error يدوية — الدالة نفسها async، وNext.js "ينتظر" اكتمالها على الخادم قبل إرسال الصفحة الجاهزة كاملة للمتصفح.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">💾</span><h2>الجزء الثاني: التخزين المؤقت (Caching) والتحقّق منه</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>السلوك الافتراضي والتحكّم به</h3></div><div class="code-block" data-lang="react">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>React</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// افتراضياً: Next.js يُخزِّن نتيجة fetch مؤقتاً (يشبه SSG لهذا الطلب بالذات)
+const res = await fetch('https://api.example.com/products');
+
+// لتعطيل التخزين المؤقت تماماً (بيانات حيّة في كل طلب، كـ SSR)
+const res2 = await fetch('https://api.example.com/products', {
+  cache: 'no-store',
+});
+
+// إعادة التحقّق (Revalidation) كل 60 ثانية بدل تخزين دائم أو تعطيل كامل
+const res3 = await fetch('https://api.example.com/products', {
+  next: { revalidate: 60 },
+});</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div><div class="callout tip"><span class="callout-title">💡 الفكرة</span><p>هذا يمنحك تحكّماً دقيقاً: بيانات نادرة التغيير (شبيه بـ SSG)، بيانات حيّة تماماً مع كل طلب (شبيه بـ SSR)، أو نقطة وسط بإعادة تحقّق دورية (ISR).</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔌</span><h2>الجزء الثالث: API Routes</h2></div><p class="blk-para">API Routes تسمح ببناء نقاط نهاية خلفية (Backend Endpoints) كاملة داخل مشروع Next.js نفسه، بلا الحاجة لخادم Node.js منفصل.</p><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>إنشاء نقطة نهاية</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>app/
+└── api/
+    └── products/
+        └── route.js   ← نقطة نهاية: /api/products</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>معالجة GET</h3></div><div class="code-block" data-lang="react">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>React</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// app/api/products/route.js
+export async function GET() {
+  const products = [
+    { id: 1, name: 'لابتوب', price: 500 },
+    { id: 2, name: 'هاتف ذكي', price: 300 },
+  ];
+
+  return Response.json(products);
+}</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.3</span><h3>إضافة معالجة POST لنفس الملف</h3></div><div class="code-block" data-lang="react">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>React</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// app/api/products/route.js (بالإضافة إلى GET أعلاه)
+export async function POST(request) {
+  const body = await request.json(); // قراءة بيانات الطلب المُرسَلة
+
+  const newProduct = { id: Date.now(), ...body };
+  // هنا عادة نحفظ في قاعدة بيانات حقيقية — نكتفي بإعادة الكائن للتوضيح
+
+  return Response.json(newProduct, { status: 201 });
+}</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔗</span><h2>الجزء الرابع: ربط Client Component بـ API Route داخلي</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>نموذج يُرسل بيانات لنقطة نهاية داخلية</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// app/components/AddProductForm.js
+'use client';
+
+import { useState } from 'react';
+
+export default function AddProductForm() {
+  const [name, setName] = useState('');
+  const [status, setStatus] = useState('');
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setStatus('جارٍ الإرسال...');
+
+    const res = await fetch('/api/products', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, price: 0 }),
+    });
+
+    if (res.ok) {
+      setStatus('✅ تمت الإضافة بنجاح');
+      setName('');
+    } else {
+      setStatus('❌ حدث خطأ');
+    }
+  }
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input value={name} onChange={(e) =&gt; setName(e.target.value)} placeholder="اسم المنتج" /&gt;
+      &lt;button type="submit"&gt;إضافة&lt;/button&gt;
+      &lt;p&gt;{status}&lt;/p&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div><div class="callout tip"><span class="callout-title">💡 لاحظ</span><p>الرابط النسبي "/api/products" — لا حاجة لعنوان خادم كامل، لأن API Route يعيش داخل نفس مشروع Next.js تماماً.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء الخامس: المشروع — تطبيق ملاحظات كامل</h2></div><div class="project-box"><p class="blk-para">تطبيق ملاحظات بواجهة أمامية (Server Component يجلب البيانات) وAPI خلفي داخلي (GET وPOST) في نفس المشروع.</p><div class="subsection"><div class="sub-head"><h3>app/api/notes/route.js</h3></div><div class="code-block" data-lang="react">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>React</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>let notes = [
+  { id: 1, text: 'أول ملاحظة' },
+];
+
+export async function GET() {
+  return Response.json(notes);
+}
+
+export async function POST(request) {
+  const body = await request.json();
+  const newNote = { id: Date.now(), text: body.text };
+  notes.push(newNote);
+  return Response.json(newNote, { status: 201 });
+}</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>app/notes/page.js</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import AddNoteForm from '../components/AddNoteForm';
+
+async function getNotes() {
+  const res = await fetch('http://localhost:3000/api/notes', { cache: 'no-store' });
+  return res.json();
+}
+
+export default async function NotesPage() {
+  const notes = await getNotes();
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;📝 الملاحظات&lt;/h1&gt;
+      &lt;AddNoteForm /&gt;
+      &lt;ul&gt;
+        {notes.map((note) =&gt; (
+          &lt;li key={note.id}&gt;{note.text}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>app/components/AddNoteForm.js</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+export default function AddNoteForm() {
+  const [text, setText] = useState('');
+  const router = useRouter();
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    await fetch('/api/notes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text }),
+    });
+    setText('');
+    router.refresh(); // يُعيد جلب بيانات Server Component دون فقدان حالة الصفحة
+  }
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input value={text} onChange={(e) =&gt; setText(e.target.value)} placeholder="ملاحظة جديدة..." /&gt;
+      &lt;button type="submit"&gt;إضافة&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div><div class="callout tip"><span class="callout-title">💡 router.refresh()</span><p>من next/navigation — يُعيد جلب بيانات صفحة NotesPage (وهي Server Component) دون إعادة تحميل كامل للمتصفح أو فقدان أي حالة محلية أخرى في الصفحة.</p></div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء السادس: تمارين الجلسة السابعة والعشرين</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — جلب بيانات بسيط<span class="ex-time">15 دقيقة</span></h4><ul class="mini-list"><li>صفحة Server Component تجلب قائمة "اقتباسات" من أي API عام مجاني</li><li>اعرض كل اقتباس في بطاقة منسَّقة</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — API Route أول<span class="ex-time">20 دقيقة</span></h4><ul class="mini-list"><li>أنشئ /api/hello: GET يُعيد رسالة ترحيب بصيغة JSON</li><li>أضف POST لنفس المسار يستقبل اسماً في الطلب ويُعيد تحية باسمه</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — ربط كامل<span class="ex-time">25 دقيقة</span></h4><ul class="mini-list"><li>صفحة "الأسئلة الشائعة" تجلب أسئلة من API Route داخلي (GET)</li><li>نموذج Client Component يُضيف سؤالاً جديداً عبر POST لنفس الـ Route</li><li>استخدم router.refresh() لتحديث القائمة بعد الإضافة</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة السابعة والعشرين</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>جلب البيانات</td><td>async/await مباشرة داخل Server Component، بلا useState أو useEffect</td></tr><tr><td>cache: "no-store"</td><td>تعطيل التخزين المؤقت لبيانات حيّة في كل طلب</td></tr><tr><td>next: { revalidate }</td><td>إعادة تحقّق دورية بدل تخزين دائم أو تعطيل كامل</td></tr><tr><td>API Route</td><td>ملف route.js داخل app/api/ يُصدِّر دوال GET وPOST وغيرها</td></tr><tr><td>Response.json()</td><td>الطريقة القياسية لإعادة بيانات JSON من API Route</td></tr><tr><td>استدعاء API داخلي</td><td>رابط نسبي بسيط مثل "/api/products"، بلا عنوان خادم كامل</td></tr><tr><td>router.refresh()</td><td>يُحدِّث بيانات Server Component بعد تعديل، بلا إعادة تحميل الصفحة بالكامل</td></tr><tr><td>المشروع</td><td>تطبيق ملاحظات بواجهة أمامية وAPI خلفي في مشروع Next.js واحد فقط</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الثامنة والعشرون: النشر على Vercel ومراجعة شاملة لمرحلة Next.js</span><p>✦ رفع مشروع Next.js على GitHub وربطه بـ Vercel</p><p>✦ متغيرات البيئة (Environment Variables) في الإنتاج</p><p>✦ فحص الأداء قبل النشر (Build محلي، معاينة الأخطاء)</p><p>✦ مراجعة شاملة لكل ما تعلمناه في مرحلة Next.js (17-27)</p><p>✦ مشروع ختامي: نشر تطبيق كامل مباشرةً على الإنترنت</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة السابعة والعشرون</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الثامنة والعشرين</span><p>يُرسَل رابط GitHub أو ملف مضغوط لمشروع Next.js عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: لوحة تعليقات (Comments Board)</h3></div><p class="blk-para">أنشئ تطبيق Next.js للوحة تعليقات، بواجهة أمامية وAPI خلفي داخلي كامل:</p><h4 class="mini-head">◆ المتطلبات الوظيفية:</h4><ul class="mini-list"><li>صفحة رئيسية Server Component تجلب كل التعليقات عبر GET من /api/comments</li><li>نموذج Client Component لإضافة تعليق جديد (اسم + نص) عبر POST لنفس المسار</li><li>تحديث القائمة فوراً بعد الإضافة عبر router.refresh()</li><li>عرض عدد التعليقات الإجمالي أعلى الصفحة</li></ul><h4 class="mini-head">◆ متطلبات تقنية:</h4><ul class="mini-list"><li>ملف واحد app/api/comments/route.js يحوي كلاً من GET وPOST</li><li>التحقّق من عدم إرسال نص تعليق فارغ (في الواجهة وفي API Route معاً)</li><li>استخدام cache: "no-store" عند جلب التعليقات لضمان ظهورها فوراً بعد الإضافة</li></ul></div></div>
+<div class="closing-banner">
+  <h3>🔌 أحسنت! أنت الآن تبني تطبيقات متكاملة بواجهة أمامية وAPI خلفي معاً</h3>
+  <p>مشروع Next.js واحد يكفيك الآن لبناء تطبيق حقيقي كامل من الصفر إلى النشر</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 27</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-26.html"><small>السابق</small><span>الجلسة 26 — مقدمة إلى Next.js</span></a>
+        <a class="nav-arrow next" href="lesson-28.html"><small>التالي</small><span>الجلسة 28 — النشر على Vercel ومراجعة شاملة لمرحلة React وNext.js</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
