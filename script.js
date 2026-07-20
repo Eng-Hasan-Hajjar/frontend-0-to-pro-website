@@ -36,8 +36,40 @@
     { id: '27', emoji: '🔌', title: 'Next.js المتقدم — Data Fetching وAPI Routes', href: 'lesson-27.html', ready: true },
     { id: '28', emoji: '🚀', title: 'النشر على Vercel ومراجعة شاملة لمرحلة React وNext.js', href: 'lesson-28.html', ready: true },
     { id: '29', emoji: '🔷', title: 'مقدمة إلى TypeScript', href: 'lesson-29.html', ready: true },
+    { id: '30', emoji: '🧬', title: 'TypeScript المتقدم — Generics وUtility Types', href: 'lesson-30.html', ready: true },
+    { id: '31', emoji: '🎓', title: 'مشروع التخرّج الشامل — React وNext.js وTypeScript معاً', href: 'lesson-31.html', ready: true },
+    { id: '32', emoji: '🧪', title: 'اختبار الكود — Jest وReact Testing Library', href: 'lesson-32.html', ready: true },
   ];
   window.FEMB_SESSIONS = SESSIONS;
+
+  const PHASES = [
+    {
+      id: 'html-css', icon: '🌐', num: 1, title: 'HTML &amp; CSS', range: '01–08', hours: 24,
+      outcome: 'بناء صفحات ويب احترافية متجاوبة من الصفر',
+      sessions: ['01', '02', '03', '04', '05', '06', '07', '08'],
+    },
+    {
+      id: 'javascript', icon: '⚡', num: 2, title: 'JavaScript', range: '09–16', hours: 24,
+      outcome: 'برمجة منطق تفاعلي كامل والتعامل مع DOM وواجهات برمجية خارجية',
+      sessions: ['09', '10', '11', '12', '13', '14', '15', '16'],
+    },
+    {
+      id: 'react-next', icon: '⚛️', num: 3, title: 'React &amp; Next.js', range: '17–28', hours: 36,
+      outcome: 'بناء ونشر تطبيقات ويب حديثة كاملة على الإنترنت فعلياً',
+      sessions: ['17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'],
+    },
+    {
+      id: 'typescript', icon: '🔷', num: 4, title: 'TypeScript', range: '29–30', hours: 6,
+      outcome: 'كتابة كود أكثر أماناً وثقة بنظام أنواع صارم',
+      sessions: ['29', '30'],
+    },
+    {
+      id: 'graduation', icon: '🎓', num: 5, title: 'التخرّج والاختبار', range: '31–32', hours: 6,
+      outcome: 'مشروع متكامل منشور فعلياً، مع أساس اختبار كود احترافي',
+      sessions: ['31', '32'],
+    },
+  ];
+  window.FEMB_PHASES = PHASES;
 
   const STORE_KEY = 'femb_progress_v1';
   const THEME_KEY = 'femb_theme';
@@ -367,6 +399,7 @@
       if (i <= full.length) {
         el.innerHTML = highlightHTML(full.slice(0, Math.min(i, htmlOnly.length))) +
           (i > htmlOnly.length ? '\n\n' + highlightCSS(full.slice(htmlOnly.length + 2, i)) : '') + cursor;
+        if (el.parentElement) el.parentElement.scrollTop = el.parentElement.scrollHeight;
         i += 3;
         setTimeout(tick, 16);
       } else {
@@ -385,9 +418,51 @@
   }
 
   /* ---------- بناء شبكة الدروس في الصفحة الرئيسية ---------- */
+  /* ---------- خريطة المسار (Roadmap) ---------- */
+  function initRoadmap() {
+    const container = document.querySelector('[data-roadmap]');
+    if (!container) return;
+    const progress = getProgress();
+
+    function phaseDone(phase) {
+      return phase.sessions.every(id => !!progress[id]);
+    }
+
+    const parts = [];
+    PHASES.forEach((phase, i) => {
+      const done = phaseDone(phase);
+      parts.push(`
+        <a href="#phase-${phase.id}" class="roadmap-node${done ? ' done' : ''}">
+          <span class="node-circle">${phase.icon}<span class="node-num">${phase.num}</span></span>
+          <span class="node-title">${phase.title}</span>
+          <span class="node-range">${phase.range} · ${phase.hours} س</span>
+        </a>`);
+      if (i < PHASES.length - 1) {
+        parts.push(`<div class="roadmap-line${done ? ' done' : ''}"></div>`);
+      }
+    });
+    container.innerHTML = parts.join('');
+  }
+
+  /* ---------- ملخص التقدّم العام ---------- */
+  function initOverviewProgress() {
+    const el = document.querySelector('[data-overview-progress]');
+    if (!el) return;
+    const progress = getProgress();
+    const doneCount = SESSIONS.filter(s => !!progress[s.id]).length;
+    const pct = Math.round((doneCount / SESSIONS.length) * 100);
+    const track = el.querySelector('.fill');
+    const label = el.querySelector('span');
+    if (track) track.style.width = pct + '%';
+    if (label) label.textContent = doneCount === 0
+      ? `${SESSIONS.length} جلسة أمامك — ابدأ رحلتك الآن`
+      : `أكملت ${doneCount} من ${SESSIONS.length} جلسة (${pct}%)`;
+  }
+
+  /* ---------- شبكة الجلسات مُقسَّمة حسب المرحلة ---------- */
   function initLessonsGrid() {
-    const grid = document.querySelector('[data-lessons-grid]');
-    if (!grid) return;
+    const container = document.querySelector('[data-lessons-grid]');
+    if (!container) return;
     const progress = getProgress();
     const topics = {
       '01': 'كيف يعمل الويب • أدوات VS Code • أول صفحة HTML • العناصر الأساسية',
@@ -419,8 +494,12 @@
       '27': 'Data Fetching • Caching/Revalidation • API Routes • GET/POST',
       '28': 'Vercel Deployment • Environment Variables • مراجعة شاملة • مشروع التخرّج',
       '29': 'لماذا TypeScript • الأنواع الأساسية • Interfaces • TypeScript مع React',
+      '30': 'Generics • Union/Intersection Types • Partial/Pick/Omit/Record • Hooks مخصَّصة',
+      '31': 'مشروع تخرّج شامل • أنواع مشتركة • Context+useReducer • API Routes • نشر نهائي',
+      '32': 'Jest • React Testing Library • fireEvent • jest.fn() • Unit/Integration Tests',
     };
-    grid.innerHTML = SESSIONS.map(s => {
+
+    function renderCard(s) {
       const done = !!progress[s.id];
       const classes = ['lesson-card'];
       if (!s.ready) classes.push('locked');
@@ -431,8 +510,6 @@
       const cta = s.ready
         ? `<a href="${s.href}" class="btn btn-ghost btn-sm">${done ? 'مراجعة الدرس' : 'ابدأ الدرس'} ←</a>`
         : `<span class="btn btn-ghost btn-sm is-disabled">قريباً</span>`;
-      const wrapTag = s.ready ? 'a' : 'div';
-      const hrefAttr = s.ready ? `href="${s.href}"` : '';
       return `
       <div class="${classes.join(' ')}">
         <span class="lesson-check">✓</span>
@@ -448,6 +525,25 @@
         </div>
         ${cta}
       </div>`;
+    }
+
+    container.innerHTML = PHASES.map(phase => {
+      const phaseSessions = phase.sessions
+        .map(id => SESSIONS.find(s => s.id === id))
+        .filter(Boolean);
+      const cardsHtml = phaseSessions.map(renderCard).join('');
+      return `
+      <section id="phase-${phase.id}" class="phase-section">
+        <div class="phase-header">
+          <span class="phase-icon">${phase.icon}</span>
+          <div class="phase-header-text">
+            <span class="phase-eyebrow">المرحلة ${phase.num} · الجلسات ${phase.range} · ${phase.hours} ساعة</span>
+            <h3>${phase.title}</h3>
+            <p class="phase-outcome"><span class="check">✅</span> ستكون قادراً على: ${phase.outcome}</p>
+          </div>
+        </div>
+        <div class="lessons-grid">${cardsHtml}</div>
+      </section>`;
     }).join('');
   }
 
@@ -467,6 +563,8 @@
     initCompleteButton();
     initCodeBlocks();
     initHeroTerminal();
+    initRoadmap();
+    initOverviewProgress();
     initLessonsGrid();
     markActiveNav();
 

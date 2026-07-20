@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 31 — مشروع التخرّج الشامل | Front-End Master Book</title>
+<meta name="description" content="مشروع التخرّج الشامل — React وNext.js وTypeScript معاً — أنواع مشتركة • Context + useReducer بـ TypeScript • API Routes • Server/Client Components • نشر نهائي">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="31">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🎓</span>
+    <div>
+      <div class="session-tag">Session 31 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة الحادية والثلاثون — مشروع التخرّج الشامل — React وNext.js وTypeScript معاً</h1>
+  <p class="tags-line">أنواع مشتركة • Context + useReducer بـ TypeScript • API Routes • Server/Client Components • نشر نهائي</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة الحادية والثلاثين</h2>
+  <ul class="goal-list"><li>دمج React وNext.js وTypeScript في مشروع واحد متكامل من الصفر إلى النشر</li><li>تصميم أنواع (Types) مشتركة تُستخدَم عبر كل طبقات التطبيق دون تكرار</li><li>بناء إدارة حالة مركزية بـ Context وuseReducer معاً بأنواع دقيقة (Discriminated Union)</li><li>بناء API Routes كاملة بـ TypeScript لإدارة بيانات حقيقية</li><li>التمييز الصحيح بين Server وClient Components عبر كل صفحات المشروع</li><li>نشر المشروع الكامل على Vercel كخطوة ختامية لكامل مسار Front-End Master Book</li></ul>
+</div><div class="callout success"><span class="callout-title">🎓 ملخص المسار الكامل — الجلسات 01 إلى 30</span><p>✔ HTML &amp; CSS (01-08): من أول وسم حتى مشروع شامل منشور على GitHub Pages</p><p>✔ JavaScript (09-16): من المتغيرات حتى OOP ومشروع ختامي شامل</p><p>✔ React &amp; Next.js (17-28): من JSX حتى تطبيق كامل منشور فعلياً على Vercel</p><p>✔ TypeScript (29-30): من الأنواع الأساسية حتى Generics وUtility Types</p><p>→ اليوم: كل هذا يجتمع في مشروع واحد حقيقي، من الصفر إلى الإنتاج</p></div><div class="callout success"><span class="callout-title">🎓 هذه ليست جلسة مفاهيم جديدة — هذه لحظة التتويج</span><p>لن نتعلّم اليوم أي مفهوم جديد بالكامل. بدل ذلك، سنبني تطبيق "مدير المهام الاحترافي" من الصفر، مستخدمين كل أداة تعلّمناها معاً في مكانها الصحيح تماماً.</p><p>هذا هو الفرق بين "معرفة المفاهيم" و"بناء منتج حقيقي" — واليوم تعبر هذا الفرق بنفسك.</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">📐</span><h2>الجزء الأول: تصميم الأنواع المشتركة</h2></div><p class="blk-para">نبدأ دائماً بالأنواع في مشروع TypeScript جاد — هي "العقد" الذي تتفق عليه كل أجزاء التطبيق (الواجهة، الحالة، API) قبل كتابة أي منطق.</p><div class="subsection"><div class="sub-head"><h3>types/task.ts</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>export interface Task {
+  id: number;
+  title: string;
+  completed: boolean;
+  priority: 'low' | 'medium' | 'high';
+  createdAt: string;
+}
+
+export type TaskAction =
+  | { type: 'SET_TASKS'; payload: Task[] }
+  | { type: 'ADD_TASK'; payload: Task }
+  | { type: 'TOGGLE_TASK'; payload: { id: number } }
+  | { type: 'DELETE_TASK'; payload: { id: number } };
+
+export interface TaskContextValue {
+  tasks: Task[];
+  dispatch: React.Dispatch&lt;TaskAction&gt;;
+}</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div><div class="callout tip"><span class="callout-title">💡 لاحظ</span><p>priority نوع Union محدود ("low" | "medium" | "high")، وTaskAction نوع Discriminated Union — تماماً كما تعلّمنا في الجلستين 25 و30. هذا الملف الواحد سيُستورَد في كل مكوّن وAPI Route لاحقاً.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎛️</span><h2>الجزء الثاني: إدارة الحالة — Context وuseReducer معاً</h2></div><div class="subsection"><div class="sub-head"><h3>context/TaskContext.tsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>'use client';
+
+import { createContext, useContext, useReducer, ReactNode } from 'react';
+import { Task, TaskAction, TaskContextValue } from '../types/task';
+
+const TaskContext = createContext&lt;TaskContextValue | null&gt;(null);
+
+function taskReducer(state: Task[], action: TaskAction): Task[] {
+  switch (action.type) {
+    case 'SET_TASKS':
+      return action.payload;
+    case 'ADD_TASK':
+      return [...state, action.payload];
+    case 'TOGGLE_TASK':
+      return state.map((t) =&gt;
+        t.id === action.payload.id ? { ...t, completed: !t.completed } : t
+      );
+    case 'DELETE_TASK':
+      return state.filter((t) =&gt; t.id !== action.payload.id);
+    default:
+      return state;
+  }
+}
+
+export function TaskProvider({ children }: { children: ReactNode }) {
+  const [tasks, dispatch] = useReducer(taskReducer, []);
+  return (
+    &lt;TaskContext.Provider value={{ tasks, dispatch }}&gt;
+      {children}
+    &lt;/TaskContext.Provider&gt;
+  );
+}
+
+export function useTasks(): TaskContextValue {
+  const context = useContext(TaskContext);
+  if (!context) throw new Error('useTasks يجب أن يُستخدَم داخل TaskProvider');
+  return context;
+}</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div><div class="callout info"><span class="callout-title">🏛️ هذا بالضبط نمط الجلستين 21 و25 مجتمعتين</span><p>Context (21) يحمل الحالة والتحديث معاً بلا Prop Drilling، وuseReducer (25) يُركِّز كل منطق التحديث في مكان واحد — والآن كلاهما مكتوب بأنواع TypeScript دقيقة (30).</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔌</span><h2>الجزء الثالث: API Routes بـ TypeScript</h2></div><div class="subsection"><div class="sub-head"><h3>app/api/tasks/route.ts</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { NextResponse } from 'next/server';
+import { Task } from '../../../types/task';
+
+let tasks: Task[] = [
+  { id: 1, title: 'تعلّم TypeScript', completed: true, priority: 'high', createdAt: new Date().toISOString() },
+  { id: 2, title: 'بناء مشروع التخرّج', completed: false, priority: 'high', createdAt: new Date().toISOString() },
+];
+
+export async function GET() {
+  return NextResponse.json(tasks);
+}
+
+export async function POST(request: Request) {
+  const body: { title: string; priority: Task['priority'] } = await request.json();
+
+  const newTask: Task = {
+    id: Date.now(),
+    title: body.title,
+    completed: false,
+    priority: body.priority,
+    createdAt: new Date().toISOString(),
+  };
+
+  tasks.push(newTask);
+  return NextResponse.json(newTask, { status: 201 });
+}</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div><div class="callout tip"><span class="callout-title">💡 NextResponse.json</span><p>مشابه لـ Response.json من الجلسة 27، لكنه من next/server ويمنح خيارات إضافية (رؤوس مخصَّصة، حالة أسهل). body مكتوب بنوع دقيق مشتق من Task['priority'] — لا any في أي مكان.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🖥️</span><h2>الجزء الرابع: صفحة Server Component</h2></div><div class="subsection"><div class="sub-head"><h3>app/tasks/page.tsx</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { Task } from '../../types/task';
+import TasksClientView from './TasksClientView';
+
+async function getTasks(): Promise&lt;Task[]&gt; {
+  const res = await fetch('http://localhost:3000/api/tasks', { cache: 'no-store' });
+  return res.json();
+}
+
+export default async function TasksPage() {
+  const initialTasks = await getTasks();
+  return &lt;TasksClientView initialTasks={initialTasks} /&gt;;
+}</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div><div class="callout tip"><span class="callout-title">💡 الحد الفاصل</span><p>TasksPage نفسها Server Component (بلا "use client")، تجلب البيانات فقط ثم تُمرِّرها كـ Prop لمكوّن Client Component الذي سيتولّى كل التفاعل. هذا التقسيم هو جوهر الأداء في Next.js.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🖱️</span><h2>الجزء الخامس: مكوّنات Client Components التفاعلية</h2></div><div class="subsection"><div class="sub-head"><h3>app/tasks/TasksClientView.tsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>'use client';
+
+import { useEffect } from 'react';
+import { TaskProvider, useTasks } from '../../context/TaskContext';
+import { Task } from '../../types/task';
+import AddTaskForm from './AddTaskForm';
+import TaskItem from './TaskItem';
+
+function TasksInner({ initialTasks }: { initialTasks: Task[] }) {
+  const { tasks, dispatch } = useTasks();
+
+  useEffect(() =&gt; {
+    dispatch({ type: 'SET_TASKS', payload: initialTasks });
+  }, [initialTasks, dispatch]);
+
+  return (
+    &lt;div&gt;
+      &lt;AddTaskForm /&gt;
+      &lt;ul&gt;
+        {tasks.map((task) =&gt; (
+          &lt;TaskItem key={task.id} task={task} /&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default function TasksClientView({ initialTasks }: { initialTasks: Task[] }) {
+  return (
+    &lt;TaskProvider&gt;
+      &lt;TasksInner initialTasks={initialTasks} /&gt;
+    &lt;/TaskProvider&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>app/tasks/AddTaskForm.tsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>'use client';
+
+import { useState, FormEvent } from 'react';
+import { useTasks } from '../../context/TaskContext';
+import { Task } from '../../types/task';
+
+export default function AddTaskForm() {
+  const [title, setTitle] = useState&lt;string&gt;('');
+  const { dispatch } = useTasks();
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!title.trim()) return;
+
+    const res = await fetch('/api/tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, priority: 'medium' }),
+    });
+    const newTask: Task = await res.json();
+
+    dispatch({ type: 'ADD_TASK', payload: newTask });
+    setTitle('');
+  }
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input value={title} onChange={(e) =&gt; setTitle(e.target.value)} placeholder="مهمة جديدة..." /&gt;
+      &lt;button type="submit"&gt;إضافة&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>app/tasks/TaskItem.tsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>'use client';
+
+import { Task } from '../../types/task';
+import { useTasks } from '../../context/TaskContext';
+
+export default function TaskItem({ task }: { task: Task }) {
+  const { dispatch } = useTasks();
+
+  return (
+    &lt;li className={task.completed ? 'done' : ''}&gt;
+      &lt;span onClick={() =&gt; dispatch({ type: 'TOGGLE_TASK', payload: { id: task.id } })}&gt;
+        {task.title} ({task.priority})
+      &lt;/span&gt;
+      &lt;button onClick={() =&gt; dispatch({ type: 'DELETE_TASK', payload: { id: task.id } })}&gt;
+        🗑️
+      &lt;/button&gt;
+    &lt;/li&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🧭</span><h2>الجزء السادس: الربط الكامل — Layout والتنقّل</h2></div><div class="subsection"><div class="sub-head"><h3>app/layout.tsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>export const metadata = {
+  title: 'مدير المهام الاحترافي',
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    &lt;html lang="ar" dir="rtl"&gt;
+      &lt;body&gt;
+        &lt;nav&gt;
+          &lt;a href="/"&gt;الرئيسية&lt;/a&gt;
+          &lt;a href="/tasks"&gt;المهام&lt;/a&gt;
+        &lt;/nav&gt;
+        &lt;main&gt;{children}&lt;/main&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+  );
+}</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div><div class="callout info"><span class="callout-title">🏛️ الصورة الكاملة</span><p>File-based Routing (26) حدَّد المسارات، Server Component (26-27) جلب البيانات، Client Components (18-25) تولّت التفاعل، Context+useReducer (21+25) أدارا الحالة، وTypeScript (29-30) غلَّف كل شيء بأمان. هذا تطبيق Next.js حقيقي متكامل.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🚀</span><h2>الجزء السابع: النشر النهائي</h2></div><ul class="mini-list"><li>نفِّذ npm run build محلياً وتأكد من عدم وجود أخطاء TypeScript أو بناء</li><li>ارفع المشروع على GitHub بأوامر git الكاملة (كما في الجلسة 28)</li><li>اربطه بـ Vercel وانشره</li><li>افتح الرابط الحقيقي وجرّب إضافة مهمة، تبديل حالتها، وحذفها فعلياً على الإنترنت</li></ul></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثامن: تمارين الجلسة الحادية والثلاثين</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — توسيع الأنواع<span class="ex-time">15 دقيقة</span></h4><ul class="mini-list"><li>أضف حقل dueDate اختيارياً (?) لنوع Task</li><li>حدِّث الأكشنات والـ reducer إن احتاج الأمر لدعم الحقل الجديد</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — API Route إضافي<span class="ex-time">20 دقيقة</span></h4><ul class="mini-list"><li>أنشئ app/api/tasks/[id]/route.ts</li><li>أضف معالجة DELETE تحذف مهمة حسب المعرّف الممرَّر في المسار</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — فلترة بأنواع دقيقة<span class="ex-time">25 دقيقة</span></h4><ul class="mini-list"><li>أضف مكوّناً يُصفِّي المهام حسب priority</li><li>اكتب دالة الفلترة بأنواع صريحة (Task[] → Task[])، بلا أي any</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص شامل — نهاية المسار الأساسي لسلسلة Front-End Master Book</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المرحلة</th><th>الجلسات</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>HTML &amp; CSS</td><td>01-08</td><td>البنية الدلالية، Flexbox وGrid، التصميم المتجاوب، Git وGitHub Pages</td></tr><tr><td>JavaScript</td><td>09-16</td><td>المتغيرات والدوال، DOM، البرمجة غير المتزامنة، OOP</td></tr><tr><td>React</td><td>17-25</td><td>JSX والمكوّنات، كل الـ Hooks الأساسية، الأداء، useReducer</td></tr><tr><td>Next.js</td><td>26-28</td><td>File-based Routing، Server/Client Components، API Routes، النشر</td></tr><tr><td>TypeScript</td><td>29-30</td><td>الأنواع الأساسية، Interfaces، Generics، Utility Types</td></tr><tr><td>هذه الجلسة</td><td>31</td><td>دمج كل شيء في مشروع واحد حقيقي منشور على الإنترنت</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>خاتمة</h3></div><div class="callout info"><span class="callout-title">🌅 إلى أين بعد الآن؟</span><p>أكملت للتو خارطة الطريق الكاملة لسلسلة Front-End Master Book — من أول وسم HTML حتى تطبيق React/Next.js/TypeScript منشور فعلياً. هذا إنجاز حقيقي يستحق التوقف عنده والاحتفاء به.</p><p>اتجاهات ممكنة للمستقبل (حسب رغبتك): اختبار الكود (Testing) بـ Jest وReact Testing Library، قواعد بيانات حقيقية (PostgreSQL أو MongoDB)، أو مسار كامل جديد مثل React Native للتطبيقات الجوّالة.</p><p>مهما اخترت لاحقاً، الأساس الذي بنيته الآن كافٍ لتعلّم أي تقنية أمامية جديدة بثقة.</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — مشروع التخرّج النهائي لكامل السلسلة</h2></div><div class="callout info"><span class="callout-title">📅 هذا هو الواجب الأهم في المسار بأكمله</span><p>يُرسَل رابط GitHub بالإضافة إلى رابط النشر الفعلي على Vercel</p></div><div class="subsection"><div class="sub-head"><h3>المشروع: معرض أعمال (Portfolio) احترافي متكامل</h3></div><p class="blk-para">هذا مشروعك النهائي — يجب أن يعكس كل ما تعلمته من الجلسة 01 حتى 31، ويكون جاهزاً لعرضه على أصحاب العمل فعلياً:</p><h4 class="mini-head">◆ المتطلبات الوظيفية:</h4><ul class="mini-list"><li>صفحة رئيسية احترافية (تصميم متقن يعكس مهاراتك من مرحلة HTML/CSS)</li><li>قسم مشاريع يعرض كل ما بنيته خلال المسار (حتى لو كروابط لمستودعات GitHub)</li><li>صفحة تفاصيل مشروع بمسار ديناميكي [id]</li><li>نموذج تواصل كـ Client Component يُرسل بيانات لـ API Route داخلي</li><li>إدارة حالة مركزية (Context + useReducer) لعنصر واحد على الأقل من التطبيق</li></ul><h4 class="mini-head">◆ متطلبات تقنية إلزامية:</h4><ul class="mini-list"><li>مبني بالكامل بـ Next.js وTypeScript (بلا أي any)</li><li>أنواع (types/) منظَّمة في ملفات منفصلة، مُشترَكة بين المكوّنات وAPI Routes</li><li>تمييز صحيح بين Server وClient Components في كل ملف</li><li>تصميم متجاوب بالكامل (Responsive) — يعمل على الجوال والحاسوب</li><li>منشور فعلياً على Vercel، برابط تشاركه علناً</li></ul></div></div>
+<div class="closing-banner">
+  <h3>🎓 مبروك حقيقياً — أكملت 31 جلسة من أول &lt;html&gt; حتى تطبيق كامل بـ TypeScript منشور على الإنترنت</h3>
+  <p>من الآن، أنت لست "تتعلّم البرمجة" فقط — أنت مطوّر Front-End حقيقي، وهذا التطبيق دليل ملموس على ذلك</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 31</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-30.html"><small>السابق</small><span>الجلسة 30 — TypeScript المتقدم — Generics وUtility Types</span></a>
+        <a class="nav-arrow next" href="lesson-32.html"><small>التالي</small><span>الجلسة 32 — اختبار الكود — Jest وReact Testing Library</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 30 — TypeScript المتقدم: Generics وUtility Types | Front-End Master Book</title>
+<meta name="description" content="TypeScript المتقدم — Generics وUtility Types — Generics • Union وIntersection Types • Partial/Pick/Omit/Record • أنواع useReducer">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="30">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🧬</span>
+    <div>
+      <div class="session-tag">Session 30 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة الثلاثون — TypeScript المتقدم — Generics وUtility Types</h1>
+  <p class="tags-line">Generics • Union وIntersection Types • Partial/Pick/Omit/Record • أنواع useReducer</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة الثلاثين</h2>
+  <ul class="goal-list"><li>فهم Generics ولماذا نحتاجها لكتابة دوال ومكوّنات تعمل مع أي نوع بأمان</li><li>استخدام Union Types لوصف قيمة قد تكون من عدة أنواع محتملة</li><li>استخدام Intersection Types لدمج عدة أنواع في نوع واحد</li><li>استخدام Utility Types الجاهزة: Partial وPick وOmit وRecord</li><li>كتابة أنواع دقيقة لأكشنات useReducer بنمط Discriminated Union</li><li>كتابة Custom Hook كامل بـ TypeScript وGenerics</li><li>بناء مكتبة Hooks مخصَّصة مكتوبة بالكامل بـ TypeScript</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة التاسعة والعشرين</span><p>TypeScript يكتشف أخطاء الأنواع وقت الكتابة، قبل أي تشغيل للكود</p><p>الأنواع الأساسية: string وnumber وboolean وarray وtuple</p><p>interface يصف شكل كائن؛ ? يجعل حقلاً اختيارياً</p><p>تجنّب any قدر الإمكان — unknown أكثر أماناً ويُجبر على التحقّق من النوع أولاً</p></div><div class="callout success"><span class="callout-title">🎓 أهلاً بالأنواع المتقدمة!</span><p>الأنواع البسيطة تكفي لمتغيّر أو دالة واحدة، لكن ماذا عن دالة تعمل مع أي نوع بيانات، أو حالة قد تكون نصاً أو رقماً؟</p><p>اليوم نتعلّم Generics وUnion Types وUtility Types الجاهزة — الأدوات التي تجعل TypeScript مرناً بقدر JavaScript، لكن بأمان كامل.</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🧬</span><h2>الجزء الأول: Generics — الأساسيات</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>المشكلة: تكرار لكل نوع</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ❌ بدون Generics: نحتاج دالة منفصلة لكل نوع!
+function firstStringElement(arr: string[]): string {
+  return arr[0];
+}
+
+function firstNumberElement(arr: number[]): number {
+  return arr[0];
+}
+// تكرار! ماذا لو أردنا نفس المنطق بالضبط لأي نوع بيانات؟</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>الحل: Generic Function</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// ✅ T يمثّل "أي نوع"، يُحدَّد وقت الاستدعاء
+function firstElement&lt;T&gt;(arr: T[]): T {
+  return arr[0];
+}
+
+firstElement&lt;string&gt;(['أ', 'ب', 'ج']); // T = string
+firstElement&lt;number&gt;([1, 2, 3]); // T = number
+firstElement(['تلقائي']); // TypeScript يستنتج T = string تلقائياً، بلا كتابتها صراحة</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>Generic في الكائنات</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>interface Box&lt;T&gt; {
+  value: T;
+}
+
+const stringBox: Box&lt;string&gt; = { value: 'مرحباً' };
+const numberBox: Box&lt;number&gt; = { value: 42 };
+
+function getValue&lt;T&gt;(box: Box&lt;T&gt;): T {
+  return box.value;
+}</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔀</span><h2>الجزء الثاني: Union Types وIntersection Types</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>Union: قيمة من عدة أنواع محتملة</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function printId(id: string | number) {
+  console.log(`المعرّف: ${id}`);
+}
+
+printId(101); // ✅ صحيح
+printId('A101'); // ✅ صحيح أيضاً
+printId(true); // ❌ خطأ: boolean غير مسموح في هذا الـ Union</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>تضييق النوع (Type Narrowing)</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>function formatId(id: string | number): string {
+  if (typeof id === 'string') {
+    return id.toUpperCase(); // TypeScript يعرف هنا أن id سلسلة نصية بالتأكيد
+  }
+  return id.toFixed(2); // وهنا يعرف أنه رقم بالتأكيد
+}</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div><div class="callout tip"><span class="callout-title">💡 الفكرة</span><p>داخل كل فرع من الشرط، يُضيِّق TypeScript النوع تلقائياً بناءً على فحص typeof — فيسمح باستدعاء طرق خاصة بذلك النوع فقط داخل ذلك الفرع.</p></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.3</span><h3>Intersection: دمج عدة أنواع</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>interface WithId {
+  id: number;
+}
+
+interface WithTimestamp {
+  createdAt: Date;
+}
+
+type Entity = WithId &amp; WithTimestamp; // يجب أن يحقّق الشرطين معاً
+
+const post: Entity = {
+  id: 1,
+  createdAt: new Date(),
+};</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🧰</span><h2>الجزء الثالث: Utility Types الجاهزة</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>Partial: كل الحقول اختيارية</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>interface User {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+}
+
+// Partial: مفيد لتحديث جزئي (Update) — لا حاجة لكل الحقول
+function updateUser(id: number, changes: Partial&lt;User&gt;) {
+  // changes قد تحوي أي مجموعة فرعية من حقول User
+}
+
+updateUser(1, { name: 'اسم جديد' }); // ✅ لا حاجة لبقية الحقول</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>Pick وOmit</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// Pick: اختيار حقول محدَّدة فقط
+type UserPreview = Pick&lt;User, 'id' | 'name'&gt;;
+// UserPreview = { id: number; name: string }
+
+// Omit: كل الحقول ما عدا المحدَّدة
+type UserWithoutEmail = Omit&lt;User, 'email'&gt;;
+// UserWithoutEmail = { id: number; name: string; age: number }</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.3</span><h3>Record: بناء نوع كائن بمفاتيح وقيم محدَّدة</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>type UserRoles = Record&lt;string, 'admin' | 'editor' | 'viewer'&gt;;
+
+const roles: UserRoles = {
+  ahmad: 'admin',
+  sara: 'editor',
+};</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎛️</span><h2>الجزء الرابع: أنواع دقيقة لـ useReducer</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>Discriminated Union للأكشنات</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// كل أكشن له type مميّز، وTypeScript يعرف شكل payload المناسب بناءً عليه
+type CartAction =
+  | { type: 'ADD_ITEM'; payload: { id: number; name: string; price: number } }
+  | { type: 'REMOVE_ITEM'; payload: { id: number } }
+  | { type: 'CLEAR_CART' };</code></pre>
+  <div class="output-box" id="out-10"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.2</span><h3>reducer مكتوب بأنواع صارمة</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+function cartReducer(state: CartItem[], action: CartAction): CartItem[] {
+  switch (action.type) {
+    case 'ADD_ITEM':
+      return [...state, { ...action.payload, quantity: 1 }];
+    case 'REMOVE_ITEM':
+      return state.filter((item) =&gt; item.id !== action.payload.id);
+    case 'CLEAR_CART':
+      return [];
+    default:
+      return state;
+  }
+}</code></pre>
+  <div class="output-box" id="out-11"></div>
+</div><div class="callout tip"><span class="callout-title">💡 الفائدة الحقيقية</span><p>داخل حالة REMOVE_ITEM، لن يسمح TypeScript بالوصول لـ action.payload.name — لأنه غير موجود في ذلك النوع تحديداً. الأخطاء المحتملة تُكتشَف فوراً أثناء الكتابة، لا بعد نشر التطبيق.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🪝</span><h2>الجزء الخامس: Custom Hook بـ Generics</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>useLocalStorage بنوع Generic</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { useState, useEffect } from 'react';
+
+function useLocalStorage&lt;T&gt;(key: string, initialValue: T): [T, (value: T) =&gt; void] {
+  const [value, setValue] = useState&lt;T&gt;(() =&gt; {
+    const saved = localStorage.getItem(key);
+    return saved !== null ? JSON.parse(saved) : initialValue;
+  });
+
+  useEffect(() =&gt; {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}
+
+// الاستخدام: T يُستنتَج تلقائياً من القيمة الابتدائية
+const [darkMode, setDarkMode] = useLocalStorage('darkMode', false); // T = boolean</code></pre>
+  <div class="output-box" id="out-12"></div>
+</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السادس: المشروع — مكتبة Hooks بـ TypeScript</h2></div><div class="project-box"><p class="blk-para">نبني مكتبة Hooks شخصية كاملة، كل واحد مكتوب بأنواع دقيقة، وuseFetch مستخدماً Generics ليعمل مع أي شكل بيانات.</p><div class="subsection"><div class="sub-head"><h3>hooks/useToggle.ts</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { useState } from 'react';
+
+function useToggle(initialValue: boolean = false): [boolean, () =&gt; void] {
+  const [value, setValue] = useState&lt;boolean&gt;(initialValue);
+  const toggle = () =&gt; setValue((prev) =&gt; !prev);
+  return [value, toggle];
+}
+
+export default useToggle;</code></pre>
+  <div class="output-box" id="out-13"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>hooks/useFetch.ts</h3></div><div class="code-block" data-lang="typescript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>TypeScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { useState, useEffect } from 'react';
+
+interface FetchState&lt;T&gt; {
+  data: T | null;
+  loading: boolean;
+  error: string | null;
+}
+
+function useFetch&lt;T&gt;(url: string): FetchState&lt;T&gt; {
+  const [state, setState] = useState&lt;FetchState&lt;T&gt;&gt;({
+    data: null,
+    loading: true,
+    error: null,
+  });
+
+  useEffect(() =&gt; {
+    setState({ data: null, loading: true, error: null });
+
+    fetch(url)
+      .then((res) =&gt; res.json())
+      .then((data: T) =&gt; setState({ data, loading: false, error: null }))
+      .catch((err) =&gt; setState({ data: null, loading: false, error: err.message }));
+  }, [url]);
+
+  return state;
+}
+
+export default useFetch;</code></pre>
+  <div class="output-box" id="out-14"></div>
+</div></div><div class="subsection"><div class="sub-head"><h3>الاستخدام: تحديد T حسب شكل البيانات</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>interface Post {
+  id: number;
+  title: string;
+}
+
+function PostsList() {
+  const { data: posts, loading, error } = useFetch&lt;Post[]&gt;('https://api.example.com/posts');
+
+  if (loading) return &lt;p&gt;⏳ جارٍ التحميل...&lt;/p&gt;;
+  if (error) return &lt;p&gt;❌ {error}&lt;/p&gt;;
+
+  return &lt;ul&gt;{posts?.map((p) =&gt; &lt;li key={p.id}&gt;{p.title}&lt;/li&gt;)}&lt;/ul&gt;;
+}</code></pre>
+  <div class="output-box" id="out-15"></div>
+</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء السابع: تمارين الجلسة الثلاثين</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — Generic أول<span class="ex-time">15 دقيقة</span></h4><ul class="mini-list"><li>اكتب دالة Generic باسم lastElement&lt;T&gt; تُعيد آخر عنصر من أي مصفوفة</li><li>جرّبها مع مصفوفة نصوص ومصفوفة أرقام</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — Union وUtility Types<span class="ex-time">20 دقيقة</span></h4><ul class="mini-list"><li>اكتب Union Type لحالة طلب: "pending" | "success" | "error"</li><li>استخدم Partial لكتابة دالة تُحدِّث حقولاً جزئية من كائن مستخدم</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — Custom Hook بـ Generics<span class="ex-time">25 دقيقة</span></h4><ul class="mini-list"><li>اكتب useDebounce&lt;T&gt; Hook يعمل مع أي نوع بيانات (نص، رقم، أو كائن)</li><li>جرّبه مع حقل بحث نصي لتأخير الفلترة</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الثلاثين</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>Generics</td><td>&lt;T&gt; يمثّل "أي نوع"، يمنح دوالاً ومكوّنات مرنة بأمان كامل</td></tr><tr><td>Union Types</td><td>قيمة قد تكون من عدة أنواع محتملة (string | number)</td></tr><tr><td>Type Narrowing</td><td>تضييق النوع داخل شرط typeof لمعرفة النوع الفعلي بدقة</td></tr><tr><td>Intersection Types</td><td>دمج عدة أنواع في نوع واحد يحقّق كل الشروط معاً (A &amp; B)</td></tr><tr><td>Partial / Pick / Omit</td><td>أدوات جاهزة لتعديل شكل نوع موجود دون إعادة كتابته</td></tr><tr><td>Record</td><td>بناء نوع كائن بمفاتيح وقيم محدَّدة مسبقاً</td></tr><tr><td>Discriminated Union</td><td>أكشنات useReducer بأنواع دقيقة تمنع الوصول لحقول خاطئة</td></tr><tr><td>Custom Hook بـ Generics</td><td>Hook واحد يعمل بأمان مع أي شكل بيانات (useFetch&lt;T&gt;)</td></tr><tr><td>المشروع</td><td>مكتبة Hooks شخصية كاملة، بلا أي استخدام لـ any</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الحادية والثلاثون: مشروع التخرّج الشامل — React وNext.js وTypeScript معاً</span><p>✦ دمج كل ما تعلمناه في مشروع واحد كامل من الصفر</p><p>✦ File-based Routing وServer/Client Components بـ TypeScript</p><p>✦ Context وuseReducer بأنواع دقيقة لإدارة حالة التطبيق بالكامل</p><p>✦ API Routes مكتوبة بـ TypeScript كامل</p><p>✦ النشر النهائي على Vercel وتسليم المشروع الكامل</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الثلاثون</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الحادية والثلاثين</span><p>يُرسَل رابط GitHub أو ملف مضغوط عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: مكتبة Hooks شخصية كاملة بـ TypeScript</h3></div><p class="blk-para">أنشئ مكتبة Hooks خاصة بك، بأربعة Hooks على الأقل، كلها مكتوبة بـ TypeScript كامل الأنواع:</p><h4 class="mini-head">◆ المتطلبات:</h4><ul class="mini-list"><li>useToggle، useFetch&lt;T&gt;، وuseLocalStorage&lt;T&gt; (بنفس الأمثلة المبنية في الجلسة)</li><li>Hook رابع من اختيارك (useDebounce، useCounter، أو أي فكرة خاصة بك) بأنواع دقيقة</li><li>ملف App.tsx تجريبي يستخدم الأربعة معاً في مكوّن واحد</li><li>بلا استخدام any في أي مكان — استخدم Generics أو unknown مع تحقّق عند الحاجة</li></ul></div></div>
+<div class="closing-banner">
+  <h3>🧬 أحسنت! أنت الآن تكتب TypeScript احترافياً بمرونة وأمان معاً</h3>
+  <p>Generics وUtility Types هما ما يفصل بين TypeScript "الأساسي" وTypeScript الاحترافي</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 30</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-29.html"><small>السابق</small><span>الجلسة 29 — مقدمة إلى TypeScript</span></a>
+        <a class="nav-arrow next" href="lesson-31.html"><small>التالي</small><span>الجلسة 31 — مشروع التخرّج الشامل — React وNext.js وTypeScript معاً</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

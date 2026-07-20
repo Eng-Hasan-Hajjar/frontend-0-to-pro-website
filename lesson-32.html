@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجلسة 32 — اختبار الكود: Jest وReact Testing Library | Front-End Master Book</title>
+<meta name="description" content="اختبار الكود — Jest وReact Testing Library — لماذا نختبر • Unit Tests • React Testing Library • محاكاة التفاعل • Mock Functions">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lesson-id="32">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>Front-End Master
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#lessons">الجلسات</a>
+      <a href="index.html#about">عن المدرب</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" aria-label="تبديل الوضع الليلي">
+        <span class="moon">🌙</span><span class="sun">☀️</span>
+      </button>
+      <button class="icon-btn sidebar-toggle-btn" aria-label="فهرس الجلسات">📑</button>
+      <button class="icon-btn nav-toggle" aria-label="القائمة">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu">
+  <a href="index.html">الرئيسية</a>
+  <a href="index.html#lessons">الجلسات</a>
+  <a href="index.html#about">عن المدرب</a>
+</div>
+
+<div class="lesson-shell">
+  <aside class="sidebar">
+    <div class="sidebar-title">فهرس الجلسات</div>
+    <div data-sidebar-list></div>
+    <div class="sidebar-progress">
+      <div class="track"><div class="fill"></div></div>
+      <span></span>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="container">
+      <div class="lesson-header">
+  <div class="top-row">
+    <span class="emoji-badge">🧪</span>
+    <div>
+      <div class="session-tag">Session 32 &middot; 3 Hours</div>
+    </div>
+  </div>
+  <h1>الجلسة الثانية والثلاثون — اختبار الكود — Jest وReact Testing Library</h1>
+  <p class="tags-line">لماذا نختبر • Unit Tests • React Testing Library • محاكاة التفاعل • Mock Functions</p>
+  <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
+</div>
+
+<div class="goals-card">
+  <h2>🎯 أهداف الجلسة الثانية والثلاثين</h2>
+  <ul class="goal-list"><li>فهم لماذا نكتب اختبارات (Tests) للكود بدل التحقّق اليدوي المتكرر</li><li>التفريق بين Unit وIntegration وE2E Testing</li><li>إعداد Jest في مشروع React/Next.js</li><li>كتابة أول اختبار وحدة (Unit Test) لدالة بسيطة، واستخدام Matchers الشائعة</li><li>استخدام React Testing Library لاختبار ظهور محتوى المكوّنات</li><li>محاكاة تفاعل المستخدم (نقر، كتابة) داخل الاختبارات</li><li>استخدام دوال وهمية (Mock Functions) للتحقّق من استدعاء Props من نوع دالة</li><li>كتابة مجموعة اختبارات كاملة لمكوّن حقيقي من مشروع التخرّج</li></ul>
+</div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة الحادية والثلاثين</span><p>أكملنا مشروع التخرّج الشامل: Next.js + TypeScript + Context/useReducer + API Routes معاً</p><p>الفصل بين Server Components (تجلب البيانات) وClient Components (تدير التفاعل) هو جوهر أداء Next.js</p><p>الأنواع المشتركة (types/) تُستخدَم عبر كل طبقات التطبيق دون تكرار</p></div><div class="callout success"><span class="callout-title">🎓 لماذا هذه الجلسة تحديداً الآن؟</span><p>ختام الجلسة الماضية اقترح عدة اتجاهات ممكنة: اختبار الكود، قواعد بيانات، أو React Native. اخترت اختبار الكود لأنه يبني مباشرة على ما بنيته للتو (مشروع مدير المهام) دون أي تقنية أو منصة جديدة كلياً — وهو أيضاً المهارة التي يسألها كل صاحب عمل تقريباً.</p><p>كل مكوّن كتبته في الجلسة 31 (TaskItem، AddTaskForm) سيصبح اليوم مادة اختبارنا الفعلية.</p></div>
+<div class="part"><div class="part-head"><span class="p-icon">🤔</span><h2>الجزء الأول: لماذا نكتب اختبارات؟</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>النوع</th><th>يختبر ماذا</th><th>مثال</th></tr></thead><tbody><tr><td>Unit Test</td><td>دالة أو وحدة منفردة بمعزل عن الباقي</td><td>دالة حسابية، دالة تنسيق تاريخ</td></tr><tr><td>Integration Test</td><td>تفاعل عدة أجزاء معاً</td><td>مكوّن يستدعي API ويعرض النتيجة</td></tr><tr><td>E2E (End-to-End)</td><td>التطبيق كاملاً كما يراه مستخدم حقيقي</td><td>تسجيل دخول ثم إتمام عملية شراء بالكامل</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>المشكلة بدون اختبارات</h3></div><ul class="mini-list"><li>كل تعديل صغير في الكود يتطلّب فتح المتصفح والتحقّق يدوياً من كل شيء لا يزال يعمل</li><li>مع نمو المشروع، يصعب تذكّر كل الحالات التي يجب التحقّق منها</li><li>خطأ في مكوّن قد لا يظهر فوراً، بل بعد أسابيع، عند مستخدم حقيقي</li></ul></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>الحل: اختبارات آلية</h3></div><p class="blk-para">الاختبار الآلي كود يتحقّق من كود آخر — تُشغِّله بأمر واحد، ويُخبرك فوراً بالضبط أي جزء تعطَّل، دون فتح متصفح أو نقر يدوي واحد.</p></div></div><div class="part"><div class="part-head"><span class="p-icon">🛠️</span><h2>الجزء الثاني: إعداد Jest</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>التثبيت</h3></div><div class="code-block" data-lang="shell">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot other"></span>Shell</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>npm install --save-dev jest @testing-library/react @testing-library/jest-dom</code></pre>
+  <div class="output-box" id="out-1"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.2</span><h3>هيكل ملف اختبار بسيط</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// example.test.js
+test('اسم الاختبار يصف بوضوح ما يُتحقَّق منه', () =&gt; {
+  expect(1 + 1).toBe(2);
+});</code></pre>
+  <div class="output-box" id="out-2"></div>
+</div><div class="callout tip"><span class="callout-title">💡 القاعدة</span><p>ملفات الاختبار عادة تنتهي بـ .test.js أو .test.tsx، وJest يكتشفها وينفِّذها تلقائياً بأمر واحد: npx jest</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✅</span><h2>الجزء الثالث: أول اختبار وحدة (Unit Test)</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>اختبار دالة حسابية بسيطة</h3></div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// utils/math.js
+function calculateTotal(price, quantity) {
+  return price * quantity;
+}
+
+module.exports = { calculateTotal };</code></pre>
+  <div class="output-box" id="out-3"></div>
+</div><div class="code-block" data-lang="javascript">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>// utils/math.test.js
+const { calculateTotal } = require('./math');
+
+test('يحسب السعر الإجمالي بشكل صحيح', () =&gt; {
+  expect(calculateTotal(10, 3)).toBe(30);
+});
+
+test('يُعيد صفراً عند الكمية صفر', () =&gt; {
+  expect(calculateTotal(10, 0)).toBe(0);
+});</code></pre>
+  <div class="output-box" id="out-4"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>Matchers شائعة</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>Matcher</th><th>الاستخدام</th></tr></thead><tbody><tr><td>toBe</td><td>مساواة تامة للقيم البدائية (أرقام، نصوص، منطقية)</td></tr><tr><td>toEqual</td><td>مساواة "شكل" الكائنات والمصفوفات، لا نفس المرجع بالذاكرة</td></tr><tr><td>toContain</td><td>التحقّق أن مصفوفة أو نصاً يحتوي عنصراً معيّناً</td></tr><tr><td>toBeTruthy / toBeFalsy</td><td>التحقّق من قيمة صحيحة أو خاطئة منطقياً</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🧪</span><h2>الجزء الرابع: React Testing Library — اختبار المكوّنات</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>render وscreen</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { render, screen } from '@testing-library/react';
+import Welcome from './Welcome';
+
+test('يعرض رسالة الترحيب', () =&gt; {
+  render(&lt;Welcome name="سارة" /&gt;);
+  expect(screen.getByText('مرحباً سارة')).toBeInTheDocument();
+});</code></pre>
+  <div class="output-box" id="out-5"></div>
+</div><div class="callout tip"><span class="callout-title">💡 الفكرة</span><p>render يُصيِّر المكوّن في بيئة اختبار وهمية (لا متصفح حقيقي)، وscreen يمنحك أدوات للبحث عن محتوى داخل ما تمّ تصييره — تماماً كأنك "تنظر" للشاشة.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🖱️</span><h2>الجزء الخامس: محاكاة تفاعل المستخدم</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>fireEvent للنقر</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { render, screen, fireEvent } from '@testing-library/react';
+import Counter from './Counter';
+
+test('يزيد العدّاد عند الضغط على الزر', () =&gt; {
+  render(&lt;Counter /&gt;);
+
+  const button = screen.getByText('زيادة +1');
+  fireEvent.click(button);
+
+  expect(screen.getByText('1')).toBeInTheDocument();
+});</code></pre>
+  <div class="output-box" id="out-6"></div>
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>Mock Functions للتحقّق من الاستدعاء</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { render, screen, fireEvent } from '@testing-library/react';
+import ProductCard from './ProductCard';
+
+test('يستدعي onAddToCart عند الضغط على الزر', () =&gt; {
+  const handleAddToCart = jest.fn(); // دالة وهمية (Mock) لتتبّع الاستدعاء
+
+  render(&lt;ProductCard title="لابتوب" price={500} onAddToCart={handleAddToCart} /&gt;);
+
+  fireEvent.click(screen.getByText('أضف للسلة'));
+
+  expect(handleAddToCart).toHaveBeenCalledTimes(1);
+});</code></pre>
+  <div class="output-box" id="out-7"></div>
+</div><div class="callout tip"><span class="callout-title">💡 jest.fn()</span><p>يُنشئ دالة وهمية "تتذكّر" كل استدعاء لها: كم مرة استُدعيت، وبأي قيم بالضبط — مثالية للتحقّق من أن Props من نوع دالة (onClick، onSubmit...) استُدعيت بالشكل الصحيح.</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔗</span><h2>الجزء السادس: اختبار مكوّن بـ Props كاملة</h2></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { render, screen } from '@testing-library/react';
+import ProductCard from './ProductCard';
+
+test('يعرض اسم المنتج وسعره الممرَّرين كـ Props', () =&gt; {
+  render(&lt;ProductCard title="لابتوب" price={500} onAddToCart={() =&gt; {}} /&gt;);
+
+  expect(screen.getByText('لابتوب')).toBeInTheDocument();
+  expect(screen.getByText('500 $')).toBeInTheDocument();
+});</code></pre>
+  <div class="output-box" id="out-8"></div>
+</div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السابع: المشروع — اختبارات كاملة لمكوّن TaskItem</h2></div><div class="project-box"><p class="blk-para">نختبر TaskItem من مشروع الجلسة 31 بثلاثة اختبارات تغطي العرض والتفاعل معاً.</p><div class="subsection"><div class="sub-head"><h3>TaskItem.test.jsx</h3></div><div class="code-block" data-lang="jsx">
+  <div class="code-head">
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
+    <div class="code-actions">
+      
+      <button class="code-btn copy-btn">📋 نسخ</button>
+    </div>
+  </div>
+  <pre><code>import { render, screen, fireEvent } from '@testing-library/react';
+import TaskItem from './TaskItem';
+
+const mockTask = { id: 1, title: 'تعلّم Jest', completed: false, priority: 'high' };
+
+test('يعرض عنوان المهمة', () =&gt; {
+  render(&lt;TaskItem task={mockTask} onToggle={() =&gt; {}} onDelete={() =&gt; {}} /&gt;);
+  expect(screen.getByText(/تعلّم Jest/)).toBeInTheDocument();
+});
+
+test('يستدعي onToggle بالمعرّف الصحيح عند الضغط على النص', () =&gt; {
+  const handleToggle = jest.fn();
+  render(&lt;TaskItem task={mockTask} onToggle={handleToggle} onDelete={() =&gt; {}} /&gt;);
+
+  fireEvent.click(screen.getByText(/تعلّم Jest/));
+  expect(handleToggle).toHaveBeenCalledWith(mockTask.id);
+});
+
+test('يستدعي onDelete بالمعرّف الصحيح عند الضغط على زر الحذف', () =&gt; {
+  const handleDelete = jest.fn();
+  render(&lt;TaskItem task={mockTask} onToggle={() =&gt; {}} onDelete={handleDelete} /&gt;);
+
+  fireEvent.click(screen.getByText('🗑️'));
+  expect(handleDelete).toHaveBeenCalledWith(mockTask.id);
+});</code></pre>
+  <div class="output-box" id="out-9"></div>
+</div><div class="callout info"><span class="callout-title">✅ النتيجة</span><p>ثلاثة اختبارات صغيرة، كل واحد يتحقّق من سلوك واحد محدَّد بدقة — إن كسر تعديل مستقبلي أياً منها، ستعرف فوراً بالضبط أي جزء تعطَّل، بلا أي فتح للمتصفح.</p></div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثامن: تمارين الجلسة الثانية والثلاثين</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — اختبارات وحدة<span class="ex-time">15 دقيقة</span></h4><ul class="mini-list"><li>اكتب دالة formatCurrency تُنسِّق رقماً كعملة (مثال: 1500 → "1,500 $")</li><li>اكتب 3 اختبارات لها على الأقل (رقم عادي، صفر، رقم كبير)</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — اختبار مكوّن بسيط<span class="ex-time">20 دقيقة</span></h4><ul class="mini-list"><li>ابنِ مكوّن Toggle يبدّل بين "مفعَّل" و"معطَّل" عند الضغط</li><li>اختبر الحالة الابتدائية، ثم اختبر التبديل بعد نقرة واحدة</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — Mock كامل<span class="ex-time">25 دقيقة</span></h4><ul class="mini-list"><li>اختبر AddTaskForm من مشروع الجلسة 31</li><li>تحقّق أن كتابة نص ثم الضغط على "إضافة" يستدعي المنطق الصحيح بالقيمة المكتوبة</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الثانية والثلاثين — وخاتمة المسار الكامل</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>لماذا الاختبارات</td><td>تكتشف الأعطال فوراً بأمر واحد، بلا فتح متصفح أو تحقّق يدوي متكرر</td></tr><tr><td>أنواع الاختبارات</td><td>Unit (وحدة منفردة)، Integration (تفاعل أجزاء)، E2E (التطبيق كاملاً)</td></tr><tr><td>Jest</td><td>أداة تشغيل الاختبارات، تكتشف ملفات .test.js تلقائياً</td></tr><tr><td>Matchers</td><td>toBe للقيم البدائية، toEqual لشكل الكائنات، toContain للبحث ضمن مجموعة</td></tr><tr><td>React Testing Library</td><td>render وscreen لتصيير المكوّنات والبحث في محتواها</td></tr><tr><td>fireEvent</td><td>محاكاة تفاعل المستخدم: نقر، كتابة، وغيرها</td></tr><tr><td>jest.fn()</td><td>دالة وهمية تتذكّر كل استدعاء لها — مثالية لاختبار Props من نوع دالة</td></tr><tr><td>المشروع</td><td>ثلاثة اختبارات كاملة لمكوّن TaskItem من مشروع الجلسة 31</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>خاتمة</h3></div><div class="callout success"><span class="callout-title">🎓 نهاية مسار Front-End Master Book — 32 جلسة كاملة</span><p>من أول وسم &lt;html&gt; في الجلسة 01، حتى اختبار كود React بـ Jest في هذه الجلسة — اكتملت خارطة الطريق بالكامل: HTML &amp; CSS، JavaScript، React &amp; Next.js، TypeScript، ومشروع تخرّج منشور فعلياً.</p><p>لا توجد جلسة تالية مخطَّطة بعد هذه — هذه هي الخاتمة الرسمية للمسار. أفضل خطوة قادمة ليست "درساً جديداً"، بل تطبيق ما تعلمته: أعد بناء مشاريعك، أضِف اختبارات لكل مكوّن كتبته، وشارك مشروع التخرّج مع العالم.</p><p>إن رغبت لاحقاً بمسار جديد كلياً (قواعد بيانات، React Native، أو أي تقنية أخرى)، سيكون بداية مختلفة تماماً، لا امتداداً لهذا المسار.</p></div></div></div>
+<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الثانية والثلاثون</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الثالثة والثلاثين</span><p>يُرسَل رابط GitHub أو ملف مضغوط عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: تغطية اختبارات كاملة لمشروع مدير المهام</h3></div><p class="blk-para">أضف مجموعة اختبارات كاملة (5 اختبارات على الأقل) لمشروع "مدير المهام" من الجلسة 31:</p><h4 class="mini-head">◆ المتطلبات:</h4><ul class="mini-list"><li>اختباران على الأقل لمكوّن TaskItem (عرض + تفاعل)</li><li>اختباران على الأقل لمكوّن AddTaskForm (عرض + إرسال ببيانات صحيحة)</li><li>اختبار واحد على الأقل لدالة من taskReducer مباشرة (بمعزل عن أي مكوّن)</li><li>كل الاختبارات يجب أن تنجح فعلياً عند تشغيل npx jest</li></ul></div></div>
+<div class="closing-banner">
+  <h3>🎓 مبروك! أكملت مسار Front-End Master Book بالكامل — 32 جلسة، من الصفر إلى مطوّر جاهز للعمل</h3>
+  <p>هذه ليست نهاية التعلّم — إنها نهاية الأساس. ابنِ، اختبر، وشارك ما صنعته</p>
+  <p class="attribution">Eng. Hasan Hajjar  |  Front-End Master Book  |  Session 32 — نهاية المسار</p>
+</div>
+
+      <div class="complete-bar">
+        <button class="btn btn-primary" data-complete-btn>أكملت هذا الدرس</button>
+        <span style="color:var(--ink-faint); font-size:.85rem;">يُحفَظ تقدّمك محلياً في متصفحك</span>
+      </div>
+
+      <div class="lesson-nav">
+        <a class="nav-arrow prev" href="lesson-31.html"><small>السابق</small><span>الجلسة 31 — مشروع التخرّج الشامل — React وNext.js وTypeScript معاً</span></a>
+        <a class="nav-arrow next is-disabled" href="#"><small>التالي</small><span>هذه آخر جلسة حالياً</span></a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
