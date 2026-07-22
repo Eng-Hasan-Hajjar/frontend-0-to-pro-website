@@ -17,7 +17,7 @@
     <a href="index.html" class="brand">
       <span class="brand-mark">&lt;/&gt;</span>
       <span>Front-End Master
-        <small>مسار JavaScript · م. حسن حجار</small>
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
       </span>
     </a>
     <div class="nav-links">
@@ -65,11 +65,11 @@
   <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
 </div>
 
-<div class="goals-card">
+<div class="goals-card" id="toc-1">
   <h2>🎯 أهداف الجلسة العاشرة</h2>
   <ul class="goal-list"><li>فهم ما هو DOM وكيف يمثّل صفحة HTML كشجرة من العقد</li><li>تحديد العناصر بجميع الطرق: getElementById, querySelector, querySelectorAll</li><li>قراءة وتعديل المحتوى: innerHTML, textContent, outerHTML</li><li>قراءة وتعديل الخصائص: getAttribute, setAttribute, removeAttribute</li><li>التحكم في تنسيق CSS مباشرة من JavaScript</li><li>إضافة وإزالة وتبديل CSS Classes باستخدام classList</li><li>إنشاء عناصر HTML ديناميكياً وإضافتها للصفحة</li><li>حذف وإعادة ترتيب العناصر في شجرة DOM</li><li>التنقل في شجرة DOM: الأب، الأبناء، الأشقاء</li><li>التعامل مع الأحداث: addEventListener، Event Object، Event Delegation</li><li>بناء تطبيق To-Do List تفاعلي كامل</li></ul>
 </div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة التاسعة</span><p>✔ const وlet وvar — نطاق المتغيرات</p><p>✔ أنواع البيانات: String, Number, Boolean, null, undefined, Object, Array</p><p>✔ العمليات: حسابية, مقارنة (===), منطقية (&amp;&amp;, ||, ??)</p><p>✔ التحكم: if/else, switch, Ternary, for, while</p><p>✔ الدوال: Declaration, Expression, Arrow, Default Params, Rest, Spread</p></div>
-<div class="part"><div class="part-head"><span class="p-icon">🌳</span><h2>الجزء الأول: ما هو DOM؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>تعريف DOM</h3></div><p class="blk-para">DOM (Document Object Model) هو واجهة برمجية تمثّل صفحة HTML كشجرة من العقد (Nodes). كل عنصر HTML يُصبح «عقدة» في هذه الشجرة يمكن لـ JavaScript الوصول إليها وتعديلها.</p><div class="callout info"><span class="callout-title">🌳 شجرة DOM لصفحة HTML بسيطة</span><pre class="ascii-diagram">  document
+<div class="part" id="toc-2"><div class="part-head"><span class="p-icon">🌳</span><h2>الجزء الأول: ما هو DOM؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>تعريف DOM</h3></div><p class="blk-para">DOM (Document Object Model) هو واجهة برمجية تمثّل صفحة HTML كشجرة من العقد (Nodes). كل عنصر HTML يُصبح «عقدة» في هذه الشجرة يمكن لـ JavaScript الوصول إليها وتعديلها.</p><div class="callout info"><span class="callout-title">🌳 شجرة DOM لصفحة HTML بسيطة</span><pre class="ascii-diagram">  document
   └── html
       ├── head
       │   ├── title → 'أكاديمية التقنية'
@@ -85,11 +85,11 @@
           │   │   └── p → 'نص البطل'
           │   └── section#courses
           └── footer
-              └── p → '© 2025'</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>العلاقة بين HTML وDOM</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>HTML</th><th>DOM</th></tr></thead><tbody><tr><td>نص ثابت في ملف .html</td><td>تمثيل حي في ذاكرة المتصفح</td></tr><tr><td>لا يمكن تغييره بعد الحفظ مباشرةً</td><td>يمكن تغييره ديناميكياً بـ JavaScript</td></tr><tr><td>يُقرأ مرة عند التحميل</td><td>يتحدث مع كل تفاعل</td></tr><tr><td>&lt;h1&gt;عنوان&lt;/h1&gt;</td><td>document.querySelector('h1')</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>كائن document</h3></div><p class="blk-para">document هو نقطة الدخول الرئيسية للـ DOM — يمثّل الصفحة كاملة:</p><div class="code-block" data-lang="javascript">
+              └── p → '© 2025'</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>العلاقة بين HTML وDOM</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>HTML</th><th>DOM</th></tr></thead><tbody><tr><td>نص ثابت في ملف .html</td><td>تمثيل حي في ذاكرة المتصفح</td></tr><tr><td>لا يمكن تغييره بعد الحفظ مباشرةً</td><td>يمكن تغييره ديناميكياً بـ JavaScript</td></tr><tr><td>يُقرأ مرة عند التحميل</td><td>يتحدث مع كل تفاعل</td></tr><tr><td>&lt;h1&gt;عنوان&lt;/h1&gt;</td><td>document.querySelector('h1')</td></tr></tbody></table></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>كائن document</h3></div><p class="blk-para">document هو نقطة الدخول الرئيسية للـ DOM — يمثّل الصفحة كاملة:</p><div class="code-block" data-lang="jsx">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -107,7 +107,7 @@ document.title = 'صفحة جديدة';
 // تغيير لون خلفية الصفحة مباشرة
 document.body.style.backgroundColor = '#F0F6FF';</code></pre>
   <div class="output-box" id="out-1"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎯</span><h2>الجزء الثاني: تحديد العناصر (Selecting Elements)</h2></div><p class="blk-para">قبل أن تُعدّل أي عنصر، يجب أن تُحدّده أولاً. JavaScript توفر عدة طرق لذلك:</p><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>querySelector وquerySelectorAll (الأحدث والأقوى ✅)</h3></div><div class="code-block" data-lang="javascript">
+</div></div></div><div class="part" id="toc-3"><div class="part-head"><span class="p-icon">🎯</span><h2>الجزء الثاني: تحديد العناصر (Selecting Elements)</h2></div><p class="blk-para">قبل أن تُعدّل أي عنصر، يجب أن تُحدّده أولاً. JavaScript توفر عدة طرق لذلك:</p><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>querySelector وquerySelectorAll (الأحدث والأقوى ✅)</h3></div><div class="code-block" data-lang="javascript">
   <div class="code-head">
     <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
     <div class="code-actions">
@@ -169,11 +169,11 @@ const allImgs = document.getElementsByTagName('img');
 // getElementsByName — بخاصية name (للنماذج)
 const radioGroup = document.getElementsByName('gender');</code></pre>
   <div class="output-box" id="out-3"></div>
-</div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الطريقة</th><th>ما تُعيده وملاحظات</th></tr></thead><tbody><tr><td>querySelector()</td><td>أول عنصر مطابق | null إذا لم يوجد | يقبل CSS Selectors ✅</td></tr><tr><td>querySelectorAll()</td><td>NodeList بجميع المطابقات | يقبل CSS Selectors ✅</td></tr><tr><td>getElementById()</td><td>عنصر واحد بـ id | أسرع لأن id فريد</td></tr><tr><td>getElementsByClassName()</td><td>HTMLCollection حية | تتحدث عند تغيير DOM</td></tr><tr><td>getElementsByTagName()</td><td>HTMLCollection بجميع عناصر الوسم</td></tr></tbody></table></div><div class="callout tip"><span class="callout-title">💡 أيهما تستخدم؟</span><p>querySelector وquerySelectorAll في 95% من الحالات — أقوى وأكثر مرونة</p><p>getElementById عندما تحتاج أداءً عالياً لعنصر محدد بـ id</p><p>getElementsByClassName وgetElementsByTagName للكود القديم فقط</p></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثالث: قراءة المحتوى وتعديله</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>textContent وinnerHTML وinnerText</h3></div><div class="code-block" data-lang="javascript">
+</div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الطريقة</th><th>ما تُعيده وملاحظات</th></tr></thead><tbody><tr><td>querySelector()</td><td>أول عنصر مطابق | null إذا لم يوجد | يقبل CSS Selectors ✅</td></tr><tr><td>querySelectorAll()</td><td>NodeList بجميع المطابقات | يقبل CSS Selectors ✅</td></tr><tr><td>getElementById()</td><td>عنصر واحد بـ id | أسرع لأن id فريد</td></tr><tr><td>getElementsByClassName()</td><td>HTMLCollection حية | تتحدث عند تغيير DOM</td></tr><tr><td>getElementsByTagName()</td><td>HTMLCollection بجميع عناصر الوسم</td></tr></tbody></table></div><div class="callout tip"><span class="callout-title">💡 أيهما تستخدم؟</span><p>querySelector وquerySelectorAll في 95% من الحالات — أقوى وأكثر مرونة</p><p>getElementById عندما تحتاج أداءً عالياً لعنصر محدد بـ id</p><p>getElementsByClassName وgetElementsByTagName للكود القديم فقط</p></div></div></div><div class="part" id="toc-4"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثالث: قراءة المحتوى وتعديله</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>textContent وinnerHTML وinnerText</h3></div><div class="code-block" data-lang="jsx">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -201,11 +201,11 @@ console.log(el.outerHTML);
 // (لا يُعيد النصوص المخفية بـ CSS)
 console.log(el.innerText);</code></pre>
   <div class="output-box" id="out-4"></div>
-</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>الخصائص (Attributes)</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.2</span><h3>الخصائص (Attributes)</h3></div><div class="code-block" data-lang="jsx">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -250,7 +250,7 @@ console.log(userCard.dataset.userId); // '42'
 console.log(userCard.dataset.role);   // 'admin'
 userCard.dataset.status = 'active';   // يُضيف data-status='active'</code></pre>
   <div class="output-box" id="out-5"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎨</span><h2>الجزء الرابع: التحكم في CSS من JavaScript</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>خاصية style المباشرة</h3></div><div class="code-block" data-lang="javascript">
+</div></div></div><div class="part" id="toc-5"><div class="part-head"><span class="p-icon">🎨</span><h2>الجزء الرابع: التحكم في CSS من JavaScript</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>خاصية style المباشرة</h3></div><div class="code-block" data-lang="javascript">
   <div class="code-head">
     <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
     <div class="code-actions">
@@ -337,11 +337,11 @@ toggleBtn.addEventListener('click', () =&gt; {
   toggleBtn.textContent = isDark ? '☀️ فاتح' : '🌙 داكن';
 });</code></pre>
   <div class="output-box" id="out-7"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔨</span><h2>الجزء الخامس: إنشاء وحذف العناصر</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>إنشاء عناصر جديدة</h3></div><div class="code-block" data-lang="javascript">
+</div></div></div><div class="part" id="toc-6"><div class="part-head"><span class="p-icon">🔨</span><h2>الجزء الخامس: إنشاء وحذف العناصر</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>إنشاء عناصر جديدة</h3></div><div class="code-block" data-lang="jsx">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -391,11 +391,11 @@ container.insertAdjacentHTML('beforeend',
 // 'beforeend'   — داخل العنصر في النهاية ✅
 // 'afterend'    — بعد العنصر</code></pre>
   <div class="output-box" id="out-8"></div>
-</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>طريقة إنشاء عنصر كامل دفعة واحدة</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>طريقة إنشاء عنصر كامل دفعة واحدة</h3></div><div class="code-block" data-lang="jsx">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -467,7 +467,7 @@ const clone = template.cloneNode(true); // true = ينسخ الأبناء أيض
 clone.querySelector('h3').textContent = 'بطاقة جديدة';
 document.querySelector('.grid').appendChild(clone);</code></pre>
   <div class="output-box" id="out-10"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🧭</span><h2>الجزء السادس: التنقل في شجرة DOM (Traversal)</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>خصائص التنقل</h3></div><div class="code-block" data-lang="javascript">
+</div></div></div><div class="part" id="toc-7"><div class="part-head"><span class="p-icon">🧭</span><h2>الجزء السادس: التنقل في شجرة DOM (Traversal)</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>خصائص التنقل</h3></div><div class="code-block" data-lang="javascript">
   <div class="code-head">
     <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
     <div class="code-actions">
@@ -501,11 +501,11 @@ items.forEach((item, index) =&gt; {
   item.style.backgroundColor = index % 2 === 0 ? '#F0F6FF' : 'white';
 });</code></pre>
   <div class="output-box" id="out-11"></div>
-</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.2</span><h3>closest() لإيجاد الأب المطابق</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.2</span><h3>closest() لإيجاد الأب المطابق</h3></div><div class="code-block" data-lang="jsx">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -539,7 +539,7 @@ document.querySelector('table').addEventListener('click', (e) =&gt; {
   }
 });</code></pre>
   <div class="output-box" id="out-12"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🖱️</span><h2>الجزء السابع: الأحداث (Events)</h2></div><p class="blk-para">الأحداث هي طريقة JavaScript للاستجابة لتفاعلات المستخدم: النقر، الكتابة، التمرير، تحريك الماوس، وغيرها.</p><div class="subsection"><div class="sub-head"><span class="sub-num">7.1</span><h3>addEventListener (الطريقة الاحترافية ✅)</h3></div><div class="code-block" data-lang="javascript">
+</div></div></div><div class="part" id="toc-8"><div class="part-head"><span class="p-icon">🖱️</span><h2>الجزء السابع: الأحداث (Events)</h2></div><p class="blk-para">الأحداث هي طريقة JavaScript للاستجابة لتفاعلات المستخدم: النقر، الكتابة، التمرير، تحريك الماوس، وغيرها.</p><div class="subsection"><div class="sub-head"><span class="sub-num">7.1</span><h3>addEventListener (الطريقة الاحترافية ✅)</h3></div><div class="code-block" data-lang="javascript">
   <div class="code-head">
     <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
     <div class="code-actions">
@@ -658,11 +658,11 @@ taskList.addEventListener('click', (e) =&gt; {
 
 // الآن حتى المهام المضافة لاحقاً لها نفس السلوك!</code></pre>
   <div class="output-box" id="out-15"></div>
-</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">7.5</span><h3>DOMContentLoaded وload</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">7.5</span><h3>DOMContentLoaded وload</h3></div><div class="code-block" data-lang="jsx">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -699,7 +699,7 @@ window.addEventListener('resize', () =&gt; {
   console.log(`${window.innerWidth} x ${window.innerHeight}`);
 });</code></pre>
   <div class="output-box" id="out-16"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء الثامن: المشروع التطبيقي — To-Do List تفاعلية كاملة</h2></div><div class="project-box"><p class="blk-para">سنبني تطبيق قائمة مهام (To-Do List) متكامل يُطبّق كل مفاهيم DOM التي تعلمناها.</p><div class="subsection"><div class="sub-head"><h3>ملف index.html</h3></div><div class="code-block" data-lang="html">
+</div></div></div><div class="part" id="toc-9"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء الثامن: المشروع التطبيقي — To-Do List تفاعلية كاملة</h2></div><div class="project-box"><p class="blk-para">سنبني تطبيق قائمة مهام (To-Do List) متكامل يُطبّق كل مفاهيم DOM التي تعلمناها.</p><div class="subsection"><div class="sub-head"><h3>ملف index.html</h3></div><div class="code-block" data-lang="html">
   <div class="code-head">
     <span class="code-lang"><span class="cdot html"></span>HTML</span>
     <div class="code-actions">
@@ -766,11 +766,11 @@ window.addEventListener('resize', () =&gt; {
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
   <div class="output-box" id="out-17"></div>
-</div></div><div class="subsection"><div class="sub-head"><h3>ملف app.js</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><h3>ملف app.js</h3></div><div class="code-block" data-lang="jsx">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -965,8 +965,8 @@ taskInput.addEventListener('keydown', (e) =&gt; {
 renderTasks();
 taskInput.focus();</code></pre>
   <div class="output-box" id="out-18"></div>
-</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء التاسع: تمارين الجلسة العاشرة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — تحديد العناصر وتعديلها<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">في Console المتصفح على أي موقع تختاره:</p><ul class="mini-list"><li>حدّد عنوان الصفحة وغيّر نصه</li><li>أضف class='highlight' لجميع الفقرات بـ querySelectorAll + forEach</li><li>حدّد أول رابط وغيّر href الخاص به</li><li>أضف زر HTML جديد في نهاية body بـ insertAdjacentHTML</li><li>غيّر لون خلفية body عند النقر على الزر باستخدام addEventListener</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — إنشاء وحذف العناصر ديناميكياً<span class="ex-time">20 دقيقة</span></h4><p class="blk-para">أنشئ صفحة بـ HTML وJS تحتوي على:</p><ul class="mini-list"><li>حقل إدخال اسم المهارة + حقل نسبة (0-100) + زر إضافة</li><li>عند النقر: أنشئ div جديد يحتوي على اسم المهارة وشريط تقدم بالنسبة المحددة</li><li>كل شريط تقدم له لون مختلف حسب النسبة: أحمر &lt; 50, أصفر &lt; 75, أخضر ≥ 75</li><li>أضف زر حذف لكل مهارة يحذفها عند النقر</li><li>عدّاد يُظهر عدد المهارات المضافة</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — Event Delegation وأحداث متقدمة<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ جدولاً تفاعلياً لقائمة موظفين:</p><ul class="mini-list"><li>جدول يحتوي 5 موظفين: الاسم، القسم، الراتب، الحالة (نشط/غير نشط)</li><li>زر 'حذف' في كل صف يحذف الصف بـ Event Delegation على الجدول</li><li>النقر على الصف يُبرزه ويُلغي تبرز الصفوف الأخرى</li><li>حقل بحث يُصفّي الصفوف المرئية بـ textContent.includes() عند كل input</li><li>زر 'تصدير' يُطبع أسماء الموظفين في console</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة العاشرة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>DOM</td><td>تمثيل HTML كشجرة عقد قابلة للتعديل — document هو نقطة الدخول</td></tr><tr><td>querySelector</td><td>querySelector() وquerySelectorAll() — يقبلان CSS Selectors ✅</td></tr><tr><td>قراءة المحتوى</td><td>textContent (آمن) | innerHTML (HTML) | outerHTML</td></tr><tr><td>الخصائص</td><td>getAttribute/setAttribute/removeAttribute | الخصائص المباشرة | dataset</td></tr><tr><td>style المباشر</td><td>element.style.property | cssText | getComputedStyle()</td></tr><tr><td>classList</td><td>add, remove, toggle, contains, replace — أفضل من style ✅</td></tr><tr><td>إنشاء العناصر</td><td>createElement + appendChild | insertAdjacentHTML (أسرع) ✅</td></tr><tr><td>حذف العناصر</td><td>element.remove() | removeChild() | innerHTML = ''</td></tr><tr><td>التنقل في DOM</td><td>parentElement | children | firstElementChild | closest() ✅</td></tr><tr><td>addEventListener</td><td>element.addEventListener(event, handler, {once}) — الاحترافي ✅</td></tr><tr><td>Event Object</td><td>e.target | e.preventDefault() | e.key | e.clientX/Y</td></tr><tr><td>Event Delegation</td><td>مستمع واحد على الأب + e.target.closest() — للعناصر الديناميكية ✅</td></tr><tr><td>أحداث الصفحة</td><td>DOMContentLoaded | load | scroll | resize</td></tr><tr><td>أحداث النموذج</td><td>submit + preventDefault | input | change | focus | blur</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الحادية عشرة: المصفوفات والكائنات في JavaScript</span><p>✦ طرق المصفوفات المتقدمة: map, filter, reduce, find, findIndex</p><p>✦ sort وreverse وsome وevery وflat</p><p>✦ التدمير (Destructuring): مصفوفات وكائنات</p><p>✦ تعامل متقدم مع الـ Objects: Object.keys(), values(), entries()</p><p>✦ Spread وRest مع Objects وArrays</p><p>✦ Optional Chaining (?.) وNullish Coalescing (??)</p><p>✦ مشروع: نظام تصفية وترتيب بيانات متقدم</p></div></div></div>
-<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة العاشرة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الحادية عشرة</span><p>يُرسَل مجلد المشروع (HTML + CSS + JS) مضغوطاً أو رابط GitHub</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: تطبيق متجر كتب تفاعلي</h3></div><p class="blk-para">أنشئ تطبيقاً لعرض كتب وإدارتها بالكامل بـ DOM — بدون إعادة تحميل الصفحة:</p><h4 class="mini-head">◆ 📋 البيانات الأولية (كمصفوفة في JS):</h4><ul class="mini-list"><li>10 كتب على الأقل: id, title, author, genre, price, rating, inStock</li></ul><h4 class="mini-head">◆ ⚙️ الوظائف المطلوبة:</h4><ul class="mini-list"><li>عرض جميع الكتب ديناميكياً كبطاقات بـ createElement أو insertAdjacentHTML</li><li>بحث فوري (input event): تصفية الكتب بالعنوان أو المؤلف</li><li>تصفية بالنوع (genre) عبر أزرار فئات</li><li>ترتيب بالسعر تصاعدياً/تنازلياً (زر toggle)</li><li>إضافة كتاب جديد من نموذج HTML مع تحقق من الحقول</li><li>حذف كتاب من واجهة المستخدم بزر X على كل بطاقة</li><li>مفضّلة (Wishlist): زر قلب على كل بطاقة يُضيفها/يحذفها من المفضّلة</li><li>عدّاد: عدد الكتب الكلي + المتاح + في المفضّلة</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>عرض الكتب ديناميكياً بشكل صحيح وجميل</td><td>20 نقطة</td></tr><tr><td>البحث الفوري يعمل مع كل حرف</td><td>15 نقطة</td></tr><tr><td>التصفية والترتيب يعملان بشكل صحيح</td><td>20 نقطة</td></tr><tr><td>إضافة وحذف الكتب مع Event Delegation</td><td>20 نقطة</td></tr><tr><td>نظام المفضّلة والعدّاد يعملان</td><td>15 نقطة</td></tr><tr><td>جودة الكود وتنظيمه وتعليقاته</td><td>10 نقاط</td></tr></tbody></table></div></div></div>
+</div></div></div></div><div class="part" id="toc-10"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء التاسع: تمارين الجلسة العاشرة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — تحديد العناصر وتعديلها<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">في Console المتصفح على أي موقع تختاره:</p><ul class="mini-list"><li>حدّد عنوان الصفحة وغيّر نصه</li><li>أضف class='highlight' لجميع الفقرات بـ querySelectorAll + forEach</li><li>حدّد أول رابط وغيّر href الخاص به</li><li>أضف زر HTML جديد في نهاية body بـ insertAdjacentHTML</li><li>غيّر لون خلفية body عند النقر على الزر باستخدام addEventListener</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — إنشاء وحذف العناصر ديناميكياً<span class="ex-time">20 دقيقة</span></h4><p class="blk-para">أنشئ صفحة بـ HTML وJS تحتوي على:</p><ul class="mini-list"><li>حقل إدخال اسم المهارة + حقل نسبة (0-100) + زر إضافة</li><li>عند النقر: أنشئ div جديد يحتوي على اسم المهارة وشريط تقدم بالنسبة المحددة</li><li>كل شريط تقدم له لون مختلف حسب النسبة: أحمر &lt; 50, أصفر &lt; 75, أخضر ≥ 75</li><li>أضف زر حذف لكل مهارة يحذفها عند النقر</li><li>عدّاد يُظهر عدد المهارات المضافة</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — Event Delegation وأحداث متقدمة<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ جدولاً تفاعلياً لقائمة موظفين:</p><ul class="mini-list"><li>جدول يحتوي 5 موظفين: الاسم، القسم، الراتب، الحالة (نشط/غير نشط)</li><li>زر 'حذف' في كل صف يحذف الصف بـ Event Delegation على الجدول</li><li>النقر على الصف يُبرزه ويُلغي تبرز الصفوف الأخرى</li><li>حقل بحث يُصفّي الصفوف المرئية بـ textContent.includes() عند كل input</li><li>زر 'تصدير' يُطبع أسماء الموظفين في console</li></ul></div></div><div class="part" id="toc-11"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة العاشرة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>DOM</td><td>تمثيل HTML كشجرة عقد قابلة للتعديل — document هو نقطة الدخول</td></tr><tr><td>querySelector</td><td>querySelector() وquerySelectorAll() — يقبلان CSS Selectors ✅</td></tr><tr><td>قراءة المحتوى</td><td>textContent (آمن) | innerHTML (HTML) | outerHTML</td></tr><tr><td>الخصائص</td><td>getAttribute/setAttribute/removeAttribute | الخصائص المباشرة | dataset</td></tr><tr><td>style المباشر</td><td>element.style.property | cssText | getComputedStyle()</td></tr><tr><td>classList</td><td>add, remove, toggle, contains, replace — أفضل من style ✅</td></tr><tr><td>إنشاء العناصر</td><td>createElement + appendChild | insertAdjacentHTML (أسرع) ✅</td></tr><tr><td>حذف العناصر</td><td>element.remove() | removeChild() | innerHTML = ''</td></tr><tr><td>التنقل في DOM</td><td>parentElement | children | firstElementChild | closest() ✅</td></tr><tr><td>addEventListener</td><td>element.addEventListener(event, handler, {once}) — الاحترافي ✅</td></tr><tr><td>Event Object</td><td>e.target | e.preventDefault() | e.key | e.clientX/Y</td></tr><tr><td>Event Delegation</td><td>مستمع واحد على الأب + e.target.closest() — للعناصر الديناميكية ✅</td></tr><tr><td>أحداث الصفحة</td><td>DOMContentLoaded | load | scroll | resize</td></tr><tr><td>أحداث النموذج</td><td>submit + preventDefault | input | change | focus | blur</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الحادية عشرة: المصفوفات والكائنات في JavaScript</span><p>✦ طرق المصفوفات المتقدمة: map, filter, reduce, find, findIndex</p><p>✦ sort وreverse وsome وevery وflat</p><p>✦ التدمير (Destructuring): مصفوفات وكائنات</p><p>✦ تعامل متقدم مع الـ Objects: Object.keys(), values(), entries()</p><p>✦ Spread وRest مع Objects وArrays</p><p>✦ Optional Chaining (?.) وNullish Coalescing (??)</p><p>✦ مشروع: نظام تصفية وترتيب بيانات متقدم</p></div></div></div>
+<div class="part homework" id="toc-12"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة العاشرة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الحادية عشرة</span><p>يُرسَل مجلد المشروع (HTML + CSS + JS) مضغوطاً أو رابط GitHub</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: تطبيق متجر كتب تفاعلي</h3></div><p class="blk-para">أنشئ تطبيقاً لعرض كتب وإدارتها بالكامل بـ DOM — بدون إعادة تحميل الصفحة:</p><h4 class="mini-head">◆ 📋 البيانات الأولية (كمصفوفة في JS):</h4><ul class="mini-list"><li>10 كتب على الأقل: id, title, author, genre, price, rating, inStock</li></ul><h4 class="mini-head">◆ ⚙️ الوظائف المطلوبة:</h4><ul class="mini-list"><li>عرض جميع الكتب ديناميكياً كبطاقات بـ createElement أو insertAdjacentHTML</li><li>بحث فوري (input event): تصفية الكتب بالعنوان أو المؤلف</li><li>تصفية بالنوع (genre) عبر أزرار فئات</li><li>ترتيب بالسعر تصاعدياً/تنازلياً (زر toggle)</li><li>إضافة كتاب جديد من نموذج HTML مع تحقق من الحقول</li><li>حذف كتاب من واجهة المستخدم بزر X على كل بطاقة</li><li>مفضّلة (Wishlist): زر قلب على كل بطاقة يُضيفها/يحذفها من المفضّلة</li><li>عدّاد: عدد الكتب الكلي + المتاح + في المفضّلة</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>عرض الكتب ديناميكياً بشكل صحيح وجميل</td><td>20 نقطة</td></tr><tr><td>البحث الفوري يعمل مع كل حرف</td><td>15 نقطة</td></tr><tr><td>التصفية والترتيب يعملان بشكل صحيح</td><td>20 نقطة</td></tr><tr><td>إضافة وحذف الكتب مع Event Delegation</td><td>20 نقطة</td></tr><tr><td>نظام المفضّلة والعدّاد يعملان</td><td>15 نقطة</td></tr><tr><td>جودة الكود وتنظيمه وتعليقاته</td><td>10 نقاط</td></tr></tbody></table></div></div></div>
 <div class="closing-banner">
   <h3>🌳 أحسنت! أنت الآن تتحكم في صفحاتك بشكل كامل 🌳</h3>
   <p>DOM هو الجسر بين HTML ولغة البرمجة — أتقنته اليوم!</p>
@@ -980,10 +980,12 @@ taskInput.focus();</code></pre>
 
       <div class="lesson-nav">
         <a class="nav-arrow prev" href="lesson-09.html"><small>السابق</small><span>الجلسة 09 — مقدمة إلى JavaScript</span></a>
-        <a class="nav-arrow next is-disabled" href="#"><small>التالي</small><span>الجلسة 11 — قريباً 🔒</span></a>
+        <a class="nav-arrow next" href="lesson-11.html"><small>التالي</small><span>الجلسة 11 — المصفوفات والكائنات المتقدمة</span></a>
       </div>
     </div>
   </main>
+
+  <aside class="toc-sidebar" data-toc></aside>
 </div>
 
 <script src="script.js"></script>

@@ -109,6 +109,69 @@
     menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
   }
 
+  /* ---------- فهرس "في هذه الصفحة" (On This Page) ---------- */
+  function initPageToc() {
+    const tocContainer = document.querySelector('[data-toc]');
+    if (!tocContainer) return;
+    const sections = document.querySelectorAll('.lesson-main [id^="toc-"]');
+    if (!sections.length) return;
+
+    const items = Array.from(sections).map(sec => {
+      const h2 = sec.querySelector('h2');
+      if (!h2) return null;
+      const iconEl = sec.querySelector('.p-icon');
+      const icon = iconEl ? iconEl.textContent.trim() : '';
+      const h2Text = h2.textContent.trim();
+      const label = icon && !h2Text.includes(icon) ? `${icon} ${h2Text}` : h2Text;
+      return { id: sec.id, label };
+    }).filter(Boolean);
+    if (!items.length) return;
+
+    const TOC_COLLAPSE_KEY = 'femb_toc_collapsed';
+    const startCollapsed = localStorage.getItem(TOC_COLLAPSE_KEY) === '1';
+
+    tocContainer.innerHTML = `
+      <button class="toc-collapse-btn" data-toc-toggle aria-label="طي الفهرس">${startCollapsed ? '›' : '‹'}</button>
+      <div class="toc-inner">
+        <div class="toc-title">في هذه الصفحة</div>
+        <nav class="toc-list">
+          ${items.map(it => `<a href="#${it.id}" class="toc-link" data-toc-link="${it.id}">${it.label}</a>`).join('')}
+        </nav>
+      </div>`;
+
+    if (startCollapsed) tocContainer.classList.add('collapsed');
+
+    const toggleBtn = tocContainer.querySelector('[data-toc-toggle]');
+    toggleBtn.addEventListener('click', () => {
+      const collapsed = tocContainer.classList.toggle('collapsed');
+      toggleBtn.textContent = collapsed ? '›' : '‹';
+      toggleBtn.setAttribute('aria-label', collapsed ? 'فتح الفهرس' : 'طي الفهرس');
+      localStorage.setItem(TOC_COLLAPSE_KEY, collapsed ? '1' : '0');
+    });
+
+    const linkMap = {};
+    tocContainer.querySelectorAll('[data-toc-link]').forEach(a => {
+      linkMap[a.getAttribute('data-toc-link')] = a;
+    });
+
+    function setActive(id) {
+      tocContainer.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+      const link = linkMap[id];
+      if (link) link.classList.add('active');
+    }
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+      sections.forEach(sec => observer.observe(sec));
+    }
+
+    setActive(items[0].id);
+  }
+
   /* ---------- الشريط الجانبي (صفحات الدروس) ---------- */
   function initSidebar() {
     const toggleBtn = document.querySelector('.sidebar-toggle-btn');
@@ -560,6 +623,7 @@
     initTheme();
     initMobileMenu();
     initSidebar();
+    initPageToc();
     initCompleteButton();
     initCodeBlocks();
     initHeroTerminal();

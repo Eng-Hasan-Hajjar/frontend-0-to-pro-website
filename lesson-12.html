@@ -17,7 +17,7 @@
     <a href="index.html" class="brand">
       <span class="brand-mark">&lt;/&gt;</span>
       <span>Front-End Master
-        <small>مسار JavaScript · م. حسن حجار</small>
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
       </span>
     </a>
     <div class="nav-links">
@@ -65,11 +65,11 @@
   <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
 </div>
 
-<div class="goals-card">
+<div class="goals-card" id="toc-1">
   <h2>🎯 أهداف الجلسة الثانية عشرة</h2>
   <ul class="goal-list"><li>فهم مفهوم البرمجة غير المتزامنة (Asynchronous) وسبب الحاجة إليها</li><li>شرح كيف يعمل JavaScript Event Loop والـ Call Stack</li><li>استخدام setTimeout وsetInterval وclearTimeout وclearInterval</li><li>فهم مشكلة Callback Hell وكيفية تجنبها</li><li>إنشاء Promise وفهم حالاتها الثلاث: Pending وFulfilled وRejected</li><li>تسلسل الـ Promises باستخدام then وcatch وfinally</li><li>استخدام Promise.all وPromise.race وPromise.allSettled وPromise.any</li><li>كتابة كود غير متزامن بأسلوب متزامن نظيف باستخدام async/await</li><li>معالجة الأخطاء بـ try/catch مع async/await</li><li>جلب البيانات من API حقيقي باستخدام Fetch API وعرضها في DOM</li></ul>
 </div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة الحادية عشرة</span><p>✔ map(): تحويل كل عنصر — filter(): تصفية — reduce(): تجميع</p><p>✔ find/findIndex() — some/every() — flat/flatMap()</p><p>✔ sort() تُعدّل الأصل — استخدم [...arr].sort() للأمان</p><p>✔ Array/Object Destructuring — Spread — Rest</p><p>✔ Optional Chaining (?.) — Nullish Coalescing (??)</p></div>
-<div class="part"><div class="part-head"><span class="p-icon">⏳</span><h2>الجزء الأول: لماذا نحتاج البرمجة غير المتزامنة؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>JavaScript أحادي الخيط (Single-Threaded)</h3></div><p class="blk-para">JavaScript ينفّذ تعليمة واحدة في كل مرة — لا يستطيع تنفيذ كودَيْن في آنٍ واحد. هذا يعني أن أي عملية بطيئة (جلب بيانات، قراءة ملف) ستُجمّد الصفحة كلها إذا كانت متزامنة!</p><div class="callout info"><span class="callout-title">🔄 مشكلة الكود المتزامن (Synchronous)</span><pre class="ascii-diagram">  // تخيّل أن fetchData() تستغرق 3 ثوانٍ
+<div class="part" id="toc-2"><div class="part-head"><span class="p-icon">⏳</span><h2>الجزء الأول: لماذا نحتاج البرمجة غير المتزامنة؟</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>JavaScript أحادي الخيط (Single-Threaded)</h3></div><p class="blk-para">JavaScript ينفّذ تعليمة واحدة في كل مرة — لا يستطيع تنفيذ كودَيْن في آنٍ واحد. هذا يعني أن أي عملية بطيئة (جلب بيانات، قراءة ملف) ستُجمّد الصفحة كلها إذا كانت متزامنة!</p><div class="callout info"><span class="callout-title">🔄 مشكلة الكود المتزامن (Synchronous)</span><pre class="ascii-diagram">  // تخيّل أن fetchData() تستغرق 3 ثوانٍ
   const data = fetchData();   // ← الصفحة تتجمد 3 ثوانٍ!
   console.log(data);
   updateUI(data);
@@ -97,7 +97,7 @@
   1. الكود يُنفَّذ في Call Stack
   2. العمليات الطويلة تُحال للـ Web APIs
   3. عند الانتهاء تُضاف للـ Callback Queue
-  4. Event Loop ينقلها للـ Call Stack عندما يفرغ</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>المتزامن مقابل غير المتزامن</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المتزامن (Synchronous)</th><th>غير المتزامن (Asynchronous)</th></tr></thead><tbody><tr><td>يُنفَّذ سطراً بسطر بالترتيب</td><td>لا ينتظر — يُكمل بقية الكود</td></tr><tr><td>سهل القراءة والفهم</td><td>أصعب قليلاً لكن ضروري</td></tr><tr><td>يُجمّد الصفحة عند الانتظار</td><td>الصفحة تبقى تفاعلية</td></tr><tr><td>مناسب للعمليات السريعة</td><td>ضروري للشبكة وقواعد البيانات</td></tr><tr><td>console.log(), Math, Array</td><td>fetch(), setTimeout, addEventListener</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">⏱️</span><h2>الجزء الثاني: setTimeout وsetInterval</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>setTimeout</h3></div><div class="code-block" data-lang="javascript">
+  4. Event Loop ينقلها للـ Call Stack عندما يفرغ</pre></div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>المتزامن مقابل غير المتزامن</h3></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>المتزامن (Synchronous)</th><th>غير المتزامن (Asynchronous)</th></tr></thead><tbody><tr><td>يُنفَّذ سطراً بسطر بالترتيب</td><td>لا ينتظر — يُكمل بقية الكود</td></tr><tr><td>سهل القراءة والفهم</td><td>أصعب قليلاً لكن ضروري</td></tr><tr><td>يُجمّد الصفحة عند الانتظار</td><td>الصفحة تبقى تفاعلية</td></tr><tr><td>مناسب للعمليات السريعة</td><td>ضروري للشبكة وقواعد البيانات</td></tr><tr><td>console.log(), Math, Array</td><td>fetch(), setTimeout, addEventListener</td></tr></tbody></table></div></div></div><div class="part" id="toc-3"><div class="part-head"><span class="p-icon">⏱️</span><h2>الجزء الثاني: setTimeout وsetInterval</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>setTimeout</h3></div><div class="code-block" data-lang="javascript">
   <div class="code-head">
     <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
     <div class="code-actions">
@@ -202,7 +202,7 @@ countdown(
   () =&gt; console.log('انتهى الوقت! ⏰')
 );</code></pre>
   <div class="output-box" id="out-2"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">📞</span><h2>الجزء الثالث: Callbacks ومشكلة Callback Hell</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>ما هو Callback؟</h3></div><p class="blk-para">Callback هي دالة تُمرَّر كمعامل لدالة أخرى لتُنفَّذ لاحقاً (عند انتهاء عملية ما):</p><div class="code-block" data-lang="javascript">
+</div></div></div><div class="part" id="toc-4"><div class="part-head"><span class="p-icon">📞</span><h2>الجزء الثالث: Callbacks ومشكلة Callback Hell</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>ما هو Callback؟</h3></div><p class="blk-para">Callback هي دالة تُمرَّر كمعامل لدالة أخرى لتُنفَّذ لاحقاً (عند انتهاء عملية ما):</p><div class="code-block" data-lang="javascript">
   <div class="code-head">
     <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
     <div class="code-actions">
@@ -272,7 +272,7 @@ getUser(userId, (user) =&gt; {
 // 4. لا يمكن استخدام try/catch
 // الحل: Promises ثم async/await ✅</code></pre>
   <div class="output-box" id="out-4"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🤝</span><h2>الجزء الرابع: الوعود (Promises)</h2></div><p class="blk-para">Promise هو كائن يمثّل نتيجة عملية غير متزامنة ستكتمل في المستقبل. مثل: طلب طعام من المطعم — تستلم رقم الطلب (Promise) وتواصل حياتك حتى يُنادى عليك.</p><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>حالات Promise الثلاث</h3></div><div class="callout info"><span class="callout-title">🔄 حالات Promise</span><pre class="ascii-diagram">  ┌─────────────────────────────────────────────────┐
+</div></div></div><div class="part" id="toc-5"><div class="part-head"><span class="p-icon">🤝</span><h2>الجزء الرابع: الوعود (Promises)</h2></div><p class="blk-para">Promise هو كائن يمثّل نتيجة عملية غير متزامنة ستكتمل في المستقبل. مثل: طلب طعام من المطعم — تستلم رقم الطلب (Promise) وتواصل حياتك حتى يُنادى عليك.</p><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>حالات Promise الثلاث</h3></div><div class="callout info"><span class="callout-title">🔄 حالات Promise</span><pre class="ascii-diagram">  ┌─────────────────────────────────────────────────┐
   │                                                 │
   │   Pending (معلّقة)                              │
   │   الحالة الابتدائية — العملية قيد التنفيذ       │
@@ -447,11 +447,11 @@ Promise.any([
 ])
   .then(first =&gt; console.log('أول من نجح:', first.name));</code></pre>
   <div class="output-box" id="out-7"></div>
-</div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الطريقة</th><th>السلوك والاستخدام</th></tr></thead><tbody><tr><td>Promise.all([...])</td><td>ينتظر الجميع | يفشل إذا فشل أي — لطلبات متوازية مترابطة</td></tr><tr><td>Promise.race([...])</td><td>أول من ينتهي (نجاح أو فشل) — للـ timeout</td></tr><tr><td>Promise.allSettled([...])</td><td>ينتظر الجميع بغض النظر ✅ — للتقارير الشاملة</td></tr><tr><td>Promise.any([...])</td><td>أول من ينجح — للبحث في مصادر متعددة</td></tr></tbody></table></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✨</span><h2>الجزء الخامس: async / await</h2></div><p class="blk-para">async/await هي صياغة حديثة تجعل كتابة كود غير متزامن يبدو ويُقرأ كأنه كود متزامن عادي — أنيق، واضح، وسهل التصحيح.</p><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>الأساسيات</h3></div><div class="code-block" data-lang="javascript">
+</div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الطريقة</th><th>السلوك والاستخدام</th></tr></thead><tbody><tr><td>Promise.all([...])</td><td>ينتظر الجميع | يفشل إذا فشل أي — لطلبات متوازية مترابطة</td></tr><tr><td>Promise.race([...])</td><td>أول من ينتهي (نجاح أو فشل) — للـ timeout</td></tr><tr><td>Promise.allSettled([...])</td><td>ينتظر الجميع بغض النظر ✅ — للتقارير الشاملة</td></tr><tr><td>Promise.any([...])</td><td>أول من ينجح — للبحث في مصادر متعددة</td></tr></tbody></table></div></div></div><div class="part" id="toc-6"><div class="part-head"><span class="p-icon">✨</span><h2>الجزء الخامس: async / await</h2></div><p class="blk-para">async/await هي صياغة حديثة تجعل كتابة كود غير متزامن يبدو ويُقرأ كأنه كود متزامن عادي — أنيق، واضح، وسهل التصحيح.</p><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>الأساسيات</h3></div><div class="code-block" data-lang="react">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>React</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -497,11 +497,11 @@ const loadProfile = async (id) =&gt; {
   return user;
 };</code></pre>
   <div class="output-box" id="out-8"></div>
-</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>معالجة الأخطاء مع try/catch</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.2</span><h3>معالجة الأخطاء مع try/catch</h3></div><div class="code-block" data-lang="react">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>React</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -553,11 +553,11 @@ loadUserProfile(1)
   .then(profile =&gt; displayProfile(profile))
   .catch(err =&gt; showErrorMessage(err.message));</code></pre>
   <div class="output-box" id="out-9"></div>
-</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.3</span><h3>تنفيذ Promises بالتوازي مع async/await</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">5.3</span><h3>تنفيذ Promises بالتوازي مع async/await</h3></div><div class="code-block" data-lang="react">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>React</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -607,11 +607,11 @@ async function processSequentially(items) {
   return results;
 }</code></pre>
   <div class="output-box" id="out-10"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🌐</span><h2>الجزء السادس: Fetch API — جلب البيانات من الإنترنت</h2></div><p class="blk-para">Fetch API هي الطريقة الحديثة المُدمَجة في المتصفح لإرسال طلبات HTTP واستقبال البيانات من الخوادم والـ APIs.</p><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>الطلب الأساسي GET</h3></div><div class="code-block" data-lang="javascript">
+</div></div></div><div class="part" id="toc-7"><div class="part-head"><span class="p-icon">🌐</span><h2>الجزء السادس: Fetch API — جلب البيانات من الإنترنت</h2></div><p class="blk-para">Fetch API هي الطريقة الحديثة المُدمَجة في المتصفح لإرسال طلبات HTTP واستقبال البيانات من الخوادم والـ APIs.</p><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>الطلب الأساسي GET</h3></div><div class="code-block" data-lang="react">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>React</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -655,11 +655,11 @@ async function getUser(id) {
 
 getUser(1).then(user =&gt; console.log(user.name));</code></pre>
   <div class="output-box" id="out-11"></div>
-</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.2</span><h3>أنواع البيانات في Response</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.2</span><h3>أنواع البيانات في Response</h3></div><div class="code-block" data-lang="react">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>React</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -690,11 +690,11 @@ console.log(res.statusText);  // 'OK', 'Not Found'...
 console.log(res.headers.get('Content-Type')); // 'application/json'
 console.log(res.url);         // الرابط الفعلي (بعد redirect)</code></pre>
   <div class="output-box" id="out-12"></div>
-</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.3</span><h3>طلبات POST وPUT وDELETE</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.3</span><h3>طلبات POST وPUT وDELETE</h3></div><div class="code-block" data-lang="react">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>React</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -751,11 +751,11 @@ async function deletePost(id) {
   return res.ok; // true إذا نجح
 }</code></pre>
   <div class="output-box" id="out-13"></div>
-</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.4</span><h3>معالجة أخطاء Fetch بشكل شامل</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.4</span><h3>معالجة أخطاء Fetch بشكل شامل</h3></div><div class="code-block" data-lang="react">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>React</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -811,7 +811,7 @@ async function fetchWithTimeout(url, ms = 5000) {
   }
 }</code></pre>
   <div class="output-box" id="out-14"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السابع: المشروع التطبيقي — تطبيق جلب الأخبار</h2></div><div class="project-box"><p class="blk-para">سنبني تطبيقاً يجلب بيانات مستخدمين ومنشورات من API حقيقي (JSONPlaceholder) ويعرضها في DOM بشكل احترافي.</p><div class="subsection"><div class="sub-head"><h3>ملف index.html</h3></div><div class="code-block" data-lang="html">
+</div></div></div><div class="part" id="toc-8"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السابع: المشروع التطبيقي — تطبيق جلب الأخبار</h2></div><div class="project-box"><p class="blk-para">سنبني تطبيقاً يجلب بيانات مستخدمين ومنشورات من API حقيقي (JSONPlaceholder) ويعرضها في DOM بشكل احترافي.</p><div class="subsection"><div class="sub-head"><h3>ملف index.html</h3></div><div class="code-block" data-lang="html">
   <div class="code-head">
     <span class="code-lang"><span class="cdot html"></span>HTML</span>
     <div class="code-actions">
@@ -866,11 +866,11 @@ async function fetchWithTimeout(url, ms = 5000) {
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
   <div class="output-box" id="out-15"></div>
-</div></div><div class="subsection"><div class="sub-head"><h3>ملف app.js</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><h3>ملف app.js</h3></div><div class="code-block" data-lang="jsx">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -1043,11 +1043,11 @@ refreshBtn.addEventListener('click', loadUsers);
 // ══ 9. بدء التطبيق ══
 loadUsers();</code></pre>
   <div class="output-box" id="out-16"></div>
-</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔗</span><h2>الجزء الثامن: APIs حقيقية مجانية للتدريب</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>API المجاني</th><th>البيانات المتاحة والرابط</th></tr></thead><tbody><tr><td>JSONPlaceholder</td><td>مستخدمون، منشورات، تعليقات، صور — jsonplaceholder.typicode.com</td></tr><tr><td>OpenWeatherMap</td><td>بيانات الطقس لأي مدينة — openweathermap.org/api (مجاني)</td></tr><tr><td>RestCountries</td><td>بيانات دول العالم — restcountries.com</td></tr><tr><td>CoinGecko</td><td>أسعار العملات الرقمية — api.coingecko.com</td></tr><tr><td>Random User</td><td>بيانات مستخدمين عشوائية — randomuser.me/api</td></tr><tr><td>Dog CEO</td><td>صور كلاب عشوائية — dog.ceo/dog-api</td></tr><tr><td>OpenLibrary</td><td>بيانات الكتب — openlibrary.org/api</td></tr><tr><td>ExchangeRate</td><td>أسعار صرف العملات — exchangerate-api.com (مجاني)</td></tr><tr><td>Pokémon API</td><td>بيانات Pokémon — pokeapi.co</td></tr><tr><td>Jikan (Anime)</td><td>بيانات Anime — jikan.moe</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>مثال: جلب بيانات الطقس</h3></div><div class="code-block" data-lang="javascript">
+</div></div></div></div><div class="part" id="toc-9"><div class="part-head"><span class="p-icon">🔗</span><h2>الجزء الثامن: APIs حقيقية مجانية للتدريب</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>API المجاني</th><th>البيانات المتاحة والرابط</th></tr></thead><tbody><tr><td>JSONPlaceholder</td><td>مستخدمون، منشورات، تعليقات، صور — jsonplaceholder.typicode.com</td></tr><tr><td>OpenWeatherMap</td><td>بيانات الطقس لأي مدينة — openweathermap.org/api (مجاني)</td></tr><tr><td>RestCountries</td><td>بيانات دول العالم — restcountries.com</td></tr><tr><td>CoinGecko</td><td>أسعار العملات الرقمية — api.coingecko.com</td></tr><tr><td>Random User</td><td>بيانات مستخدمين عشوائية — randomuser.me/api</td></tr><tr><td>Dog CEO</td><td>صور كلاب عشوائية — dog.ceo/dog-api</td></tr><tr><td>OpenLibrary</td><td>بيانات الكتب — openlibrary.org/api</td></tr><tr><td>ExchangeRate</td><td>أسعار صرف العملات — exchangerate-api.com (مجاني)</td></tr><tr><td>Pokémon API</td><td>بيانات Pokémon — pokeapi.co</td></tr><tr><td>Jikan (Anime)</td><td>بيانات Anime — jikan.moe</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>مثال: جلب بيانات الطقس</h3></div><div class="code-block" data-lang="jsx">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -1109,8 +1109,8 @@ async function displayWeather(cityName) {
   }
 }</code></pre>
   <div class="output-box" id="out-17"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء التاسع: تمارين الجلسة الثانية عشرة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — Promises<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">اكتب ومحاكاة العمليات التالية:</p><ul class="mini-list"><li>أنشئ Promise تُحاكي اتصال قاعدة بيانات: ناجح بـ 80% وفاشل بـ 20%</li><li>اكتب تسلسل then لجلب مستخدم ثم منشوراته ثم تعليقات أول منشور</li><li>استخدم Promise.all لجلب 3 مستخدمين في آن واحد</li><li>نفّذ Promise.allSettled على مصفوفة تحتوي على Promise مرفوضة وأثبت أنه يستمر</li><li>أنشئ دالة delay(ms) تُعيد Promise تُحل بعد ms مللي ثانية (مفيد للاختبار)</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — async/await وFetch<span class="ex-time">20 دقيقة</span></h4><p class="blk-para">باستخدام API jsonplaceholder.typicode.com:</p><ul class="mini-list"><li>اكتب async function تجلب كل المنشورات وتصفّي تلك التي يزيد عنوانها على 40 حرفاً</li><li>اكتب async function تجلب مستخدماً + منشوراته + أول تعليق لكل منشور في آنٍ واحد بـ Promise.all</li><li>أضف معالجة شاملة للأخطاء (شبكة + HTTP)</li><li>أضف timeout بـ AbortController (5 ثوانٍ)</li><li>اعرض النتائج في DOM بشكل منظم</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — تطبيق Pokémon<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ تطبيقاً لعرض بيانات Pokémon:</p><ul class="mini-list"><li>اجلب قائمة أول 20 Pokémon: GET https://pokeapi.co/api/v2/pokemon?limit=20</li><li>اعرض كل Pokémon كبطاقة: صورة + اسم + رقم</li><li>عند النقر على بطاقة: اجلب تفاصيل (الطول، الوزن، الأنواع، القدرات)</li><li>أضف Loading Spinner أثناء الجلب وError Message عند الفشل</li><li>أضف زر 'تحميل المزيد' يجلب الـ 20 التاليين</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الثانية عشرة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>Single-Threaded</td><td>JS ينفّذ تعليمة واحدة — العمليات الطويلة تُجمّد بدون async</td></tr><tr><td>Event Loop</td><td>Call Stack → Web APIs → Callback Queue → Event Loop</td></tr><tr><td>setTimeout</td><td>ينفّذ دالة مرة واحدة بعد تأخير | clearTimeout للإلغاء</td></tr><tr><td>setInterval</td><td>ينفّذ دالة كل X مللي ثانية | clearInterval للإيقاف</td></tr><tr><td>Callback</td><td>دالة تُمرَّر لتُنفَّذ لاحقاً — أساس JS غير المتزامن</td></tr><tr><td>Callback Hell</td><td>تداخل عميق — صعب القراءة — الحل: Promises وasync/await</td></tr><tr><td>Promise</td><td>كائن لنتيجة مستقبلية: Pending → Fulfilled أو Rejected</td></tr><tr><td>then/catch/finally</td><td>تسلسل Promises — catch واحد للجميع — finally دائماً</td></tr><tr><td>Promise.all</td><td>ينتظر الجميع — يفشل لو فشل أي — للطلبات المترابطة</td></tr><tr><td>Promise.allSettled</td><td>ينتظر الجميع بغض النظر ✅ — للتقارير الشاملة</td></tr><tr><td>Promise.race</td><td>أول من ينتهي يفوز — للـ timeout</td></tr><tr><td>Promise.any</td><td>أول من ينجح يفوز — للبدائل</td></tr><tr><td>async/await</td><td>كود غير متزامن بأسلوب متزامن نظيف وسهل القراءة ✅</td></tr><tr><td>try/catch مع async</td><td>معالجة أخطاء مألوفة ومرنة</td></tr><tr><td>تنفيذ متوازٍ</td><td>Promise.all مع await لتسريع الطلبات المستقلة</td></tr><tr><td>Fetch API</td><td>fetch(url) → response → .json()  | POST/PUT/DELETE</td></tr><tr><td>HTTP Errors</td><td>response.ok للتحقق | fetch لا يُلقي خطأ لـ 404/500</td></tr><tr><td>AbortController</td><td>إلغاء طلب Fetch بعد timeout محدد</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الثالثة عشرة: Local Storage وSession Storage</span><p>✦ ما هو Web Storage وأنواعه</p><p>✦ localStorage: الحفظ الدائم بين الجلسات</p><p>✦ sessionStorage: الحفظ المؤقت للجلسة الحالية</p><p>✦ تخزين واسترجاع البيانات المعقدة (JSON)</p><p>✦ بناء نظام تفضيلات المستخدم (Theme, Language, Settings)</p><p>✦ Cookies: متى تستخدمها وكيف تتعامل معها</p><p>✦ مشروع: تطبيق مذكرات يحفظ البيانات محلياً</p></div></div></div>
-<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الثانية عشرة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الثالثة عشرة</span><p>يُرسَل مجلد المشروع (HTML + CSS + JS) مضغوطاً أو رابط GitHub Pages</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: تطبيق الطقس المتكامل 🌤️</h3></div><p class="blk-para">أنشئ تطبيق طقس احترافي يجلب بيانات حقيقية من OpenWeatherMap API (سجّل مجاناً للحصول على مفتاح):</p><h4 class="mini-head">◆ 📋 الوظائف المطلوبة:</h4><ul class="mini-list"><li>حقل بحث بمدينة + زر بحث — عند الضغط: جلب الطقس الحالي وعرضه</li><li>عرض: اسم المدينة والدولة، درجة الحرارة، الوصف، الرطوبة، الرياح، الأيقونة</li><li>جلب توقعات 5 أيام: GET /forecast — عرض كل يوم ببطاقة منفصلة</li><li>Loading Spinner أثناء الجلب — Error Message عند الفشل</li><li>زر 'موقعي الحالي' يستخدم Geolocation API لمعرفة الموقع تلقائياً</li><li>حفظ آخر 5 مدن بحث في localStorage وعرضها كاقتراحات</li></ul><h4 class="mini-head">◆ 🔗 روابط مفيدة:</h4><ul class="mini-list"><li>API الطقس الحالي: api.openweathermap.org/data/2.5/weather?q={city}&amp;appid={key}&amp;units=metric&amp;lang=ar</li><li>API التوقعات: api.openweathermap.org/data/2.5/forecast?q={city}&amp;appid={key}&amp;units=metric&amp;lang=ar</li><li>أيقونات الطقس: openweathermap.org/img/wn/{icon}@2x.png</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>جلب وعرض بيانات الطقس الحالي بشكل صحيح</td><td>25 نقطة</td></tr><tr><td>توقعات 5 أيام تعمل وتُعرَض جميلاً</td><td>20 نقطة</td></tr><tr><td>Loading وError handling كاملان</td><td>20 نقطة</td></tr><tr><td>Geolocation API يعمل</td><td>15 نقطة</td></tr><tr><td>localStorage للمدن الأخيرة</td><td>10 نقاط</td></tr><tr><td>تصميم احترافي ومتجاوب</td><td>10 نقاط</td></tr></tbody></table></div></div></div>
+</div></div></div><div class="part" id="toc-10"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء التاسع: تمارين الجلسة الثانية عشرة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — Promises<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">اكتب ومحاكاة العمليات التالية:</p><ul class="mini-list"><li>أنشئ Promise تُحاكي اتصال قاعدة بيانات: ناجح بـ 80% وفاشل بـ 20%</li><li>اكتب تسلسل then لجلب مستخدم ثم منشوراته ثم تعليقات أول منشور</li><li>استخدم Promise.all لجلب 3 مستخدمين في آن واحد</li><li>نفّذ Promise.allSettled على مصفوفة تحتوي على Promise مرفوضة وأثبت أنه يستمر</li><li>أنشئ دالة delay(ms) تُعيد Promise تُحل بعد ms مللي ثانية (مفيد للاختبار)</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — async/await وFetch<span class="ex-time">20 دقيقة</span></h4><p class="blk-para">باستخدام API jsonplaceholder.typicode.com:</p><ul class="mini-list"><li>اكتب async function تجلب كل المنشورات وتصفّي تلك التي يزيد عنوانها على 40 حرفاً</li><li>اكتب async function تجلب مستخدماً + منشوراته + أول تعليق لكل منشور في آنٍ واحد بـ Promise.all</li><li>أضف معالجة شاملة للأخطاء (شبكة + HTTP)</li><li>أضف timeout بـ AbortController (5 ثوانٍ)</li><li>اعرض النتائج في DOM بشكل منظم</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — تطبيق Pokémon<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ تطبيقاً لعرض بيانات Pokémon:</p><ul class="mini-list"><li>اجلب قائمة أول 20 Pokémon: GET https://pokeapi.co/api/v2/pokemon?limit=20</li><li>اعرض كل Pokémon كبطاقة: صورة + اسم + رقم</li><li>عند النقر على بطاقة: اجلب تفاصيل (الطول، الوزن، الأنواع، القدرات)</li><li>أضف Loading Spinner أثناء الجلب وError Message عند الفشل</li><li>أضف زر 'تحميل المزيد' يجلب الـ 20 التاليين</li></ul></div></div><div class="part" id="toc-11"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الثانية عشرة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>Single-Threaded</td><td>JS ينفّذ تعليمة واحدة — العمليات الطويلة تُجمّد بدون async</td></tr><tr><td>Event Loop</td><td>Call Stack → Web APIs → Callback Queue → Event Loop</td></tr><tr><td>setTimeout</td><td>ينفّذ دالة مرة واحدة بعد تأخير | clearTimeout للإلغاء</td></tr><tr><td>setInterval</td><td>ينفّذ دالة كل X مللي ثانية | clearInterval للإيقاف</td></tr><tr><td>Callback</td><td>دالة تُمرَّر لتُنفَّذ لاحقاً — أساس JS غير المتزامن</td></tr><tr><td>Callback Hell</td><td>تداخل عميق — صعب القراءة — الحل: Promises وasync/await</td></tr><tr><td>Promise</td><td>كائن لنتيجة مستقبلية: Pending → Fulfilled أو Rejected</td></tr><tr><td>then/catch/finally</td><td>تسلسل Promises — catch واحد للجميع — finally دائماً</td></tr><tr><td>Promise.all</td><td>ينتظر الجميع — يفشل لو فشل أي — للطلبات المترابطة</td></tr><tr><td>Promise.allSettled</td><td>ينتظر الجميع بغض النظر ✅ — للتقارير الشاملة</td></tr><tr><td>Promise.race</td><td>أول من ينتهي يفوز — للـ timeout</td></tr><tr><td>Promise.any</td><td>أول من ينجح يفوز — للبدائل</td></tr><tr><td>async/await</td><td>كود غير متزامن بأسلوب متزامن نظيف وسهل القراءة ✅</td></tr><tr><td>try/catch مع async</td><td>معالجة أخطاء مألوفة ومرنة</td></tr><tr><td>تنفيذ متوازٍ</td><td>Promise.all مع await لتسريع الطلبات المستقلة</td></tr><tr><td>Fetch API</td><td>fetch(url) → response → .json()  | POST/PUT/DELETE</td></tr><tr><td>HTTP Errors</td><td>response.ok للتحقق | fetch لا يُلقي خطأ لـ 404/500</td></tr><tr><td>AbortController</td><td>إلغاء طلب Fetch بعد timeout محدد</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة الثالثة عشرة: Local Storage وSession Storage</span><p>✦ ما هو Web Storage وأنواعه</p><p>✦ localStorage: الحفظ الدائم بين الجلسات</p><p>✦ sessionStorage: الحفظ المؤقت للجلسة الحالية</p><p>✦ تخزين واسترجاع البيانات المعقدة (JSON)</p><p>✦ بناء نظام تفضيلات المستخدم (Theme, Language, Settings)</p><p>✦ Cookies: متى تستخدمها وكيف تتعامل معها</p><p>✦ مشروع: تطبيق مذكرات يحفظ البيانات محلياً</p></div></div></div>
+<div class="part homework" id="toc-12"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الثانية عشرة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة الثالثة عشرة</span><p>يُرسَل مجلد المشروع (HTML + CSS + JS) مضغوطاً أو رابط GitHub Pages</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: تطبيق الطقس المتكامل 🌤️</h3></div><p class="blk-para">أنشئ تطبيق طقس احترافي يجلب بيانات حقيقية من OpenWeatherMap API (سجّل مجاناً للحصول على مفتاح):</p><h4 class="mini-head">◆ 📋 الوظائف المطلوبة:</h4><ul class="mini-list"><li>حقل بحث بمدينة + زر بحث — عند الضغط: جلب الطقس الحالي وعرضه</li><li>عرض: اسم المدينة والدولة، درجة الحرارة، الوصف، الرطوبة، الرياح، الأيقونة</li><li>جلب توقعات 5 أيام: GET /forecast — عرض كل يوم ببطاقة منفصلة</li><li>Loading Spinner أثناء الجلب — Error Message عند الفشل</li><li>زر 'موقعي الحالي' يستخدم Geolocation API لمعرفة الموقع تلقائياً</li><li>حفظ آخر 5 مدن بحث في localStorage وعرضها كاقتراحات</li></ul><h4 class="mini-head">◆ 🔗 روابط مفيدة:</h4><ul class="mini-list"><li>API الطقس الحالي: api.openweathermap.org/data/2.5/weather?q={city}&amp;appid={key}&amp;units=metric&amp;lang=ar</li><li>API التوقعات: api.openweathermap.org/data/2.5/forecast?q={city}&amp;appid={key}&amp;units=metric&amp;lang=ar</li><li>أيقونات الطقس: openweathermap.org/img/wn/{icon}@2x.png</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>جلب وعرض بيانات الطقس الحالي بشكل صحيح</td><td>25 نقطة</td></tr><tr><td>توقعات 5 أيام تعمل وتُعرَض جميلاً</td><td>20 نقطة</td></tr><tr><td>Loading وError handling كاملان</td><td>20 نقطة</td></tr><tr><td>Geolocation API يعمل</td><td>15 نقطة</td></tr><tr><td>localStorage للمدن الأخيرة</td><td>10 نقاط</td></tr><tr><td>تصميم احترافي ومتجاوب</td><td>10 نقاط</td></tr></tbody></table></div></div></div>
 <div class="closing-banner">
   <h3>⏳ أحسنت! تطبيقاتك الآن تتحدث مع العالم الخارجي ⏳</h3>
   <p>async/await + Fetch = مفتاح كل تطبيق ويب حديث</p>
@@ -1124,10 +1124,12 @@ async function displayWeather(cityName) {
 
       <div class="lesson-nav">
         <a class="nav-arrow prev" href="lesson-11.html"><small>السابق</small><span>الجلسة 11 — المصفوفات والكائنات المتقدمة</span></a>
-        <a class="nav-arrow next is-disabled" href="#"><small>التالي</small><span>الجلسة 13 — قريباً 🔒</span></a>
+        <a class="nav-arrow next" href="lesson-13.html"><small>التالي</small><span>الجلسة 13 — التخزين المحلي في المتصفح</span></a>
       </div>
     </div>
   </main>
+
+  <aside class="toc-sidebar" data-toc></aside>
 </div>
 
 <script src="script.js"></script>

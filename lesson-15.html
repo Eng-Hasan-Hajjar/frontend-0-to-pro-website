@@ -17,7 +17,7 @@
     <a href="index.html" class="brand">
       <span class="brand-mark">&lt;/&gt;</span>
       <span>Front-End Master
-        <small>مسار JavaScript · م. حسن حجار</small>
+        <small>من HTML إلى JavaScript · م. حسن حجار</small>
       </span>
     </a>
     <div class="nav-links">
@@ -65,15 +65,15 @@
   <div class="author-line">👤 المؤلف: <b>Eng. Hasan Hajjar</b> &nbsp;·&nbsp; Software Engineer &amp; AI Engineer</div>
 </div>
 
-<div class="goals-card">
+<div class="goals-card" id="toc-1">
   <h2>🎯 أهداف الجلسة الخامسة عشرة</h2>
   <ul class="goal-list"><li>تنظيم الكود في ملفات مستقلة باستخدام ES Modules (import/export)</li><li>التمييز بين Named Exports وDefault Export واستخدام كل منهما</li><li>استخدام Dynamic Import وفهم Code Splitting</li><li>استخدام Map وSet وWeakMap وWeakSet وفهم الفروق بينهم</li><li>فهم Symbol وWell-known Symbols واستخدامهم العملي</li><li>بناء Iterators المخصصة باستخدام Iterator Protocol</li><li>كتابة Generator Functions بـ function* ويield</li><li>تطبيق Generators في الحالات العملية: تسلسلات لانهائية، تحكم في التدفق</li><li>فهم العلاقة بين Iterators وGenerators والـ for...of</li><li>بناء مكتبة JavaScript قابلة لإعادة الاستخدام بـ ES Modules</li></ul>
 </div><div class="callout info"><span class="callout-title">🔁 مراجعة سريعة من الجلسة الرابعة عشرة (OOP)</span><p>✔ class، constructor، this — Instance Methods</p><p>✔ static methods وstatic properties</p><p>✔ Getters/Setters + #private fields</p><p>✔ extends وsuper() — الوراثة</p><p>✔ Method Overriding — Polymorphism</p><p>✔ Prototype Chain — كيف تعمل الوراثة داخلياً</p></div>
-<div class="part"><div class="part-head"><span class="p-icon">📦</span><h2>الجزء الأول: ES Modules — تنظيم الكود في ملفات</h2></div><p class="blk-para">ES Modules هي النظام الرسمي لتقسيم كود JavaScript إلى ملفات مستقلة قابلة لإعادة الاستخدام. كل ملف .js يُعدّ Module منفصلاً بنطاقه الخاص.</p><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>Named Exports</h3></div><div class="code-block" data-lang="javascript">
+<div class="part" id="toc-2"><div class="part-head"><span class="p-icon">📦</span><h2>الجزء الأول: ES Modules — تنظيم الكود في ملفات</h2></div><p class="blk-para">ES Modules هي النظام الرسمي لتقسيم كود JavaScript إلى ملفات مستقلة قابلة لإعادة الاستخدام. كل ملف .js يُعدّ Module منفصلاً بنطاقه الخاص.</p><div class="subsection"><div class="sub-head"><span class="sub-num">1.1</span><h3>Named Exports</h3></div><div class="code-block" data-lang="react">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>React</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -131,11 +131,11 @@ console.log(Math.clamp(150, 0, 100)); // 100
 const v = new Math.Vector2D(3, 4);
 console.log(v.magnitude());  // 5</code></pre>
   <div class="output-box" id="out-2"></div>
-</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>Default Export</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.2</span><h3>Default Export</h3></div><div class="code-block" data-lang="react">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>React</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -189,11 +189,11 @@ import ApiClient, { BASE_URL } from './utils/api.js'; // Default + Named
 const api = new ApiClient('https://jsonplaceholder.typicode.com');
 const users = await api.get('/users');</code></pre>
   <div class="output-box" id="out-3"></div>
-</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>Re-exports وهيكل المشروع الاحترافي</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.3</span><h3>Re-exports وهيكل المشروع الاحترافي</h3></div><div class="code-block" data-lang="react">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>React</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -227,11 +227,11 @@ import { add, capitalize, formatDate } from './utils/index.js';
 // أو:
 import { add, capitalize, formatDate } from './utils'; // Node.js</code></pre>
   <div class="output-box" id="out-4"></div>
-</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.4</span><h3>Dynamic Import والـ Code Splitting</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><span class="sub-num">1.4</span><h3>Dynamic Import والـ Code Splitting</h3></div><div class="code-block" data-lang="jsx">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -270,7 +270,7 @@ async function navigate(path) {
 // 3. this في Modules = undefined (ليس window)
 // 4. Modules لها نطاقها الخاص — لا تُلوّث النطاق العام</code></pre>
   <div class="output-box" id="out-5"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🗺️</span><h2>الجزء الثاني: Map وSet — هياكل البيانات المتقدمة</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>Map — قاموس بمفاتيح من أي نوع</h3></div><p class="blk-para">Map هو هيكل بيانات key-value مثل Object، لكن المفاتيح يمكن أن تكون من أي نوع (وليس نصاً فقط):</p><div class="code-block" data-lang="javascript">
+</div></div></div><div class="part" id="toc-3"><div class="part-head"><span class="p-icon">🗺️</span><h2>الجزء الثاني: Map وSet — هياكل البيانات المتقدمة</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">2.1</span><h3>Map — قاموس بمفاتيح من أي نوع</h3></div><p class="blk-para">Map هو هيكل بيانات key-value مثل Object، لكن المفاتيح يمكن أن تكون من أي نوع (وليس نصاً فقط):</p><div class="code-block" data-lang="javascript">
   <div class="code-head">
     <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
     <div class="code-actions">
@@ -449,7 +449,7 @@ function processItem(item) {
 // size، forEach، keys، values، entries، clear
 // لأنها تعتمد على Garbage Collector</code></pre>
   <div class="output-box" id="out-8"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔮</span><h2>الجزء الثالث: Symbol — المعرّف الفريد</h2></div><p class="blk-para">Symbol هو نوع بيانات بدائي يُنشئ قيمة فريدة لا تتكرر أبداً — مفيد للمفاتيح الخاصة والـ Well-known Symbols.</p><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>الأساسيات</h3></div><div class="code-block" data-lang="javascript">
+</div></div></div><div class="part" id="toc-4"><div class="part-head"><span class="p-icon">🔮</span><h2>الجزء الثالث: Symbol — المعرّف الفريد</h2></div><p class="blk-para">Symbol هو نوع بيانات بدائي يُنشئ قيمة فريدة لا تتكرر أبداً — مفيد للمفاتيح الخاصة والـ Well-known Symbols.</p><div class="subsection"><div class="sub-head"><span class="sub-num">3.1</span><h3>الأساسيات</h3></div><div class="code-block" data-lang="javascript">
   <div class="code-head">
     <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
     <div class="code-actions">
@@ -569,7 +569,7 @@ class EvenNumber {
 console.log(4 instanceof EvenNumber);  // true
 console.log(7 instanceof EvenNumber);  // false</code></pre>
   <div class="output-box" id="out-10"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🔄</span><h2>الجزء الرابع: Iterators والـ Iterable Protocol</h2></div><p class="blk-para">Iterator Protocol يُتيح تعريف كيفية التكرار على أي كائن بـ for...of أو spread أو destructuring.</p><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>Iterator Protocol</h3></div><div class="callout info"><span class="callout-title">🔄 كيف يعمل for...of</span><p>  for (const x of iterable) { ... }</p><p>  1. يستدعي iterable[Symbol.iterator]() → يُعيد iterator</p><p>  2. في كل دورة: يستدعي iterator.next()</p><p>  3. next() يُعيد: { value: X, done: false }</p><p>  4. عند الانتهاء: { value: undefined, done: true }</p><p>  Iterables المُدمَجة:</p><p>  String, Array, Map, Set, NodeList, arguments</p><p>  TypedArray, Generator, URL.searchParams</p></div><div class="code-block" data-lang="javascript">
+</div></div></div><div class="part" id="toc-5"><div class="part-head"><span class="p-icon">🔄</span><h2>الجزء الرابع: Iterators والـ Iterable Protocol</h2></div><p class="blk-para">Iterator Protocol يُتيح تعريف كيفية التكرار على أي كائن بـ for...of أو spread أو destructuring.</p><div class="subsection"><div class="sub-head"><span class="sub-num">4.1</span><h3>Iterator Protocol</h3></div><div class="callout info"><span class="callout-title">🔄 كيف يعمل for...of</span><p>  for (const x of iterable) { ... }</p><p>  1. يستدعي iterable[Symbol.iterator]() → يُعيد iterator</p><p>  2. في كل دورة: يستدعي iterator.next()</p><p>  3. next() يُعيد: { value: X, done: false }</p><p>  4. عند الانتهاء: { value: undefined, done: true }</p><p>  Iterables المُدمَجة:</p><p>  String, Array, Map, Set, NodeList, arguments</p><p>  TypedArray, Generator, URL.searchParams</p></div><div class="code-block" data-lang="javascript">
   <div class="code-head">
     <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
     <div class="code-actions">
@@ -637,7 +637,7 @@ for (const val of list) console.log(val); // 1,2,3,4,5
 console.log([...list]); // [1,2,3,4,5]
 const [first, second] = list; // Destructuring ✅</code></pre>
   <div class="output-box" id="out-11"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">⚡</span><h2>الجزء الخامس: Generator Functions</h2></div><p class="blk-para">Generators هي دوال خاصة يمكن إيقافها واستئنافها — تُنشئ Iterators بشكل تلقائي وأنيق.</p><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>الأساسيات: function* ويield</h3></div><div class="code-block" data-lang="javascript">
+</div></div></div><div class="part" id="toc-6"><div class="part-head"><span class="p-icon">⚡</span><h2>الجزء الخامس: Generator Functions</h2></div><p class="blk-para">Generators هي دوال خاصة يمكن إيقافها واستئنافها — تُنشئ Iterators بشكل تلقائي وأنيق.</p><div class="subsection"><div class="sub-head"><span class="sub-num">5.1</span><h3>الأساسيات: function* ويield</h3></div><div class="code-block" data-lang="javascript">
   <div class="code-head">
     <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
     <div class="code-actions">
@@ -794,11 +794,11 @@ console.log(task.next().value);              // 'الخطوة 1'
 console.log(task.throw(new Error('انقطع!'))).value); // 'خطأ: انقطع!'
 console.log(task.next().value);              // 'تنظيف الموارد'</code></pre>
   <div class="output-box" id="out-14"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">🎯</span><h2>الجزء السادس: أنماط عملية مع Generators</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>Async Generator للصفحات (Pagination)</h3></div><div class="code-block" data-lang="javascript">
+</div></div></div><div class="part" id="toc-7"><div class="part-head"><span class="p-icon">🎯</span><h2>الجزء السادس: أنماط عملية مع Generators</h2></div><div class="subsection"><div class="sub-head"><span class="sub-num">6.1</span><h3>Async Generator للصفحات (Pagination)</h3></div><div class="code-block" data-lang="react">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>React</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -864,7 +864,7 @@ const pipeline = take(
 );
 console.log([...pipeline]); // [4, 16, 36, 64, 100]</code></pre>
   <div class="output-box" id="out-15"></div>
-</div></div></div><div class="part"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السابع: المشروع — مكتبة JavaScript قابلة لإعادة الاستخدام</h2></div><div class="project-box"><p class="blk-para">سنبني مكتبة utility بـ ES Modules تستخدم Map وSet وGenerators وIterators.</p><div class="subsection"><div class="sub-head"><h3>هيكل المشروع</h3></div><div class="code-block" data-lang="shell">
+</div></div></div><div class="part" id="toc-8"><div class="part-head"><span class="p-icon">💻</span><h2>الجزء السابع: المشروع — مكتبة JavaScript قابلة لإعادة الاستخدام</h2></div><div class="project-box"><p class="blk-para">سنبني مكتبة utility بـ ES Modules تستخدم Map وSet وGenerators وIterators.</p><div class="subsection"><div class="sub-head"><h3>هيكل المشروع</h3></div><div class="code-block" data-lang="shell">
   <div class="code-head">
     <span class="code-lang"><span class="cdot other"></span>Shell</span>
     <div class="code-actions">
@@ -888,11 +888,11 @@ console.log([...pipeline]); // [4, 16, 36, 64, 100]</code></pre>
 └── demo/
     └── index.html</code></pre>
   <div class="output-box" id="out-16"></div>
-</div></div><div class="subsection"><div class="sub-head"><h3>src/collections/LRUCache.js</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><h3>src/collections/LRUCache.js</h3></div><div class="code-block" data-lang="react">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>React</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -969,11 +969,11 @@ console.log(cache.has('b')); // false
 console.log([...cache]);     // [['c',3],['a',1],['d',4]]
 console.log(cache.getStats()); // {hits:1,misses:0,...}</code></pre>
   <div class="output-box" id="out-17"></div>
-</div></div><div class="subsection"><div class="sub-head"><h3>src/collections/EventEmitter.js</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><h3>src/collections/EventEmitter.js</h3></div><div class="code-block" data-lang="jsx">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>JSX</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -1051,11 +1051,11 @@ app.emit('app:ready');
 app.emit('user:login', { name:'أحمد', id:1 });
 app.emit('app:ready'); // لا يُستدعى once مرة ثانية</code></pre>
   <div class="output-box" id="out-18"></div>
-</div></div><div class="subsection"><div class="sub-head"><h3>src/generators/sequences.js</h3></div><div class="code-block" data-lang="javascript">
+</div></div><div class="subsection"><div class="sub-head"><h3>src/generators/sequences.js</h3></div><div class="code-block" data-lang="react">
   <div class="code-head">
-    <span class="code-lang"><span class="cdot js"></span>JavaScript</span>
+    <span class="code-lang"><span class="cdot js"></span>React</span>
     <div class="code-actions">
-      <button class="code-btn run-btn">▶ جرّب الكود</button>
+      
       <button class="code-btn copy-btn">📋 نسخ</button>
     </div>
   </div>
@@ -1113,8 +1113,8 @@ const nums  = [1, 2, 3];
 const chars = ['a', 'b', 'c'];
 console.log([...zip(nums, chars)]);           // [[1,'a'],[2,'b'],[3,'c']]</code></pre>
   <div class="output-box" id="out-19"></div>
-</div></div></div></div><div class="part"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثامن: تمارين الجلسة الخامسة عشرة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — Map وSet<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">على مصفوفة من كائنات الطلاب:</p><ul class="mini-list"><li>حوّل المصفوفة لـ Map بالـ id كمفتاح واستعدّ للبحث O(1)</li><li>أنشئ Set من أسماء المواد الدراسية لإزالة التكرار</li><li>أنشئ Map لتجميع الطلاب حسب التقدير (A/B/C/D/F)</li><li>استخدم Set لإيجاد الطلاب الذين اجتازوا جميع المواد</li><li>اكتب دالة findDuplicateEmails(students) باستخدام Set وMap</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — Symbol وIterator<span class="ex-time">20 دقيقة</span></h4><p class="blk-para">أنشئ هياكل بيانات مخصصة:</p><ul class="mini-list"><li>class Stack: push, pop, peek — أضف [Symbol.iterator] يُكرّر من القمة للقاع</li><li>class Queue: enqueue, dequeue — أضف [Symbol.iterator] يُكرّر بالترتيب</li><li>class Matrix: مصفوفة ثنائية الأبعاد — أضف [Symbol.iterator] يُكرّر خلية خلية</li><li>أضف [Symbol.toPrimitive] لـ Stack لتُعيد عدد العناصر عند التحويل الرقمي</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — Generators<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ Generators متقدمة:</p><ul class="mini-list"><li>function* permutations(arr): يُولّد جميع تبديلات مصفوفة</li><li>function* combinations(arr, r): جميع التوليفات بطول r</li><li>function* runLengthEncode(arr): ترميز run-length للمصفوفة</li><li>function* flatten(arr): يُسوّي أي عمق من التداخل</li><li>pipeline كامل: numbers → filter(isPrime) → map(n=&gt;n*2) → take(5)</li></ul></div></div><div class="part"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الخامسة عشرة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>ES Modules</td><td>export/import | Named وDefault | Re-exports | Barrel files</td></tr><tr><td>Dynamic Import</td><td>import() يُعيد Promise — Code Splitting وLazy Loading</td></tr><tr><td>Module Rules</td><td>strict mode تلقائي | نطاق خاص | type='module' في HTML</td></tr><tr><td>Map</td><td>key-value بأي نوع مفتاح | ترتيب محفوظ | size | Iterable ✅</td></tr><tr><td>Map vs Object</td><td>Map: مفاتيح ديناميكية وأداء أفضل | Object: بيانات ثابتة</td></tr><tr><td>Set</td><td>قيم فريدة | O(1) للبحث | [...new Set(arr)] لإزالة التكرار</td></tr><tr><td>Set Operations</td><td>union (spread) | intersection (filter+has) | difference</td></tr><tr><td>WeakMap</td><td>مفاتيح كائنات فقط | Garbage Collected | للبيانات الخاصة</td></tr><tr><td>WeakSet</td><td>عناصر كائنات فقط | لتتبع الكائنات المُعالَجة</td></tr><tr><td>Symbol</td><td>قيمة فريدة دائماً | كمفاتيح خاصة | Symbol.for() للمشترك</td></tr><tr><td>Well-known Symbols</td><td>Symbol.iterator | Symbol.toPrimitive | Symbol.hasInstance</td></tr><tr><td>Iterator Protocol</td><td>next() يُعيد {value, done} | [Symbol.iterator]() يُعيد iterator</td></tr><tr><td>Iterable Protocol</td><td>الكائن لديه [Symbol.iterator] → يعمل مع for...of وspread</td></tr><tr><td>function*</td><td>Generator Function — يُنتج Iterator تلقائياً</td></tr><tr><td>yield</td><td>يُوقِف الـ Generator ويُعيد قيمة | yield* للتفويض</td></tr><tr><td>next(value)</td><td>يرسل قيمة للـ Generator ليستأنف</td></tr><tr><td>Infinite Sequences</td><td>Generator آمن للتسلسلات اللانهائية — يُنتج عند الطلب فقط</td></tr><tr><td>Async Generator</td><td>async function* + for await...of — لجلب البيانات المُصفَّحة</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة السادسة عشرة: JavaScript الشامل — مراجعة وأحدث ميزات ES2023/2024</span><p>✦ مراجعة شاملة لكل JavaScript (جلسات 9-15)</p><p>✦ أحدث ميزات ES2023: Array.findLast, toSorted, toSpliced, with</p><p>✦ ES2024: Object.groupBy, Map.groupBy, Promise.withResolvers</p><p>✦ Error Cause وAbortSignal.timeout()</p><p>✦ Pattern Matching مع switch expressions</p><p>✦ Regular Expressions المتقدمة</p><p>✦ مشروع نهائي لمرحلة JavaScript: تطبيق متكامل يجمع كل ما تعلمناه</p></div></div></div>
-<div class="part homework"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الخامسة عشرة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة السادسة عشرة</span><p>يُرسَل مجلد المشروع (ملفات .js) أو رابط GitHub عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: بناء مكتبة Data Structures بـ ES Modules</h3></div><p class="blk-para">أنشئ مكتبة JavaScript كاملة تحتوي على هياكل بيانات متقدمة:</p><h4 class="mini-head">◆ 📦 الملفات المطلوبة:</h4><ul class="mini-list"><li>src/Stack.js — LIFO: push, pop, peek, isEmpty, [Symbol.iterator]</li><li>src/Queue.js — FIFO: enqueue, dequeue, front, isEmpty, [Symbol.iterator]</li><li>src/PriorityQueue.js — قائمة انتظار بأولوية: add(item, priority), poll()</li><li>src/Graph.js — رسم بياني: addNode, addEdge, بـ Map&lt;string, Set&lt;string&gt;&gt;</li><li>src/BiMap.js — خريطة ثنائية الاتجاه: set(k,v), getByKey, getByValue</li><li>src/index.js — Barrel يُصدّر الكل</li><li>demo/index.js — تجريب جميع الهياكل</li></ul><h4 class="mini-head">◆ 🔧 متطلبات تقنية:</h4><ul class="mini-list"><li>جميع الخصائص الداخلية private (#)</li><li>جميع الهياكل Iterable (Symbol.iterator)</li><li>Symbol.toPrimitive على Stack وQueue</li><li>معالجة أخطاء شاملة مع رسائل واضحة</li><li>Graph.js يحتوي BFS وDFS باستخدام Generators</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>5 هياكل بيانات تعمل بشكل صحيح</td><td>40 نقطة</td></tr><tr><td>ES Modules صحيحة (import/export/barrel)</td><td>15 نقطة</td></tr><tr><td>Symbol.iterator على جميع الهياكل</td><td>15 نقطة</td></tr><tr><td>Generator BFS وDFS في Graph</td><td>15 نقطة</td></tr><tr><td>معالجة الأخطاء وجودة الكود</td><td>15 نقطة</td></tr></tbody></table></div></div></div>
+</div></div></div></div><div class="part" id="toc-9"><div class="part-head"><span class="p-icon">✏️</span><h2>الجزء الثامن: تمارين الجلسة الخامسة عشرة</h2></div><div class="exercise-card"><h4>✏️ تمرين 1 — Map وSet<span class="ex-time">15 دقيقة</span></h4><p class="blk-para">على مصفوفة من كائنات الطلاب:</p><ul class="mini-list"><li>حوّل المصفوفة لـ Map بالـ id كمفتاح واستعدّ للبحث O(1)</li><li>أنشئ Set من أسماء المواد الدراسية لإزالة التكرار</li><li>أنشئ Map لتجميع الطلاب حسب التقدير (A/B/C/D/F)</li><li>استخدم Set لإيجاد الطلاب الذين اجتازوا جميع المواد</li><li>اكتب دالة findDuplicateEmails(students) باستخدام Set وMap</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 2 — Symbol وIterator<span class="ex-time">20 دقيقة</span></h4><p class="blk-para">أنشئ هياكل بيانات مخصصة:</p><ul class="mini-list"><li>class Stack: push, pop, peek — أضف [Symbol.iterator] يُكرّر من القمة للقاع</li><li>class Queue: enqueue, dequeue — أضف [Symbol.iterator] يُكرّر بالترتيب</li><li>class Matrix: مصفوفة ثنائية الأبعاد — أضف [Symbol.iterator] يُكرّر خلية خلية</li><li>أضف [Symbol.toPrimitive] لـ Stack لتُعيد عدد العناصر عند التحويل الرقمي</li></ul></div><div class="exercise-card"><h4>✏️ تمرين 3 — Generators<span class="ex-time">25 دقيقة</span></h4><p class="blk-para">أنشئ Generators متقدمة:</p><ul class="mini-list"><li>function* permutations(arr): يُولّد جميع تبديلات مصفوفة</li><li>function* combinations(arr, r): جميع التوليفات بطول r</li><li>function* runLengthEncode(arr): ترميز run-length للمصفوفة</li><li>function* flatten(arr): يُسوّي أي عمق من التداخل</li><li>pipeline كامل: numbers → filter(isPrime) → map(n=&gt;n*2) → take(5)</li></ul></div></div><div class="part" id="toc-10"><div class="part-head"><span class="p-icon">📚</span><h2>ملخص الجلسة الخامسة عشرة</h2></div><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>الموضوع</th><th>أبرز ما تعلمناه</th></tr></thead><tbody><tr><td>ES Modules</td><td>export/import | Named وDefault | Re-exports | Barrel files</td></tr><tr><td>Dynamic Import</td><td>import() يُعيد Promise — Code Splitting وLazy Loading</td></tr><tr><td>Module Rules</td><td>strict mode تلقائي | نطاق خاص | type='module' في HTML</td></tr><tr><td>Map</td><td>key-value بأي نوع مفتاح | ترتيب محفوظ | size | Iterable ✅</td></tr><tr><td>Map vs Object</td><td>Map: مفاتيح ديناميكية وأداء أفضل | Object: بيانات ثابتة</td></tr><tr><td>Set</td><td>قيم فريدة | O(1) للبحث | [...new Set(arr)] لإزالة التكرار</td></tr><tr><td>Set Operations</td><td>union (spread) | intersection (filter+has) | difference</td></tr><tr><td>WeakMap</td><td>مفاتيح كائنات فقط | Garbage Collected | للبيانات الخاصة</td></tr><tr><td>WeakSet</td><td>عناصر كائنات فقط | لتتبع الكائنات المُعالَجة</td></tr><tr><td>Symbol</td><td>قيمة فريدة دائماً | كمفاتيح خاصة | Symbol.for() للمشترك</td></tr><tr><td>Well-known Symbols</td><td>Symbol.iterator | Symbol.toPrimitive | Symbol.hasInstance</td></tr><tr><td>Iterator Protocol</td><td>next() يُعيد {value, done} | [Symbol.iterator]() يُعيد iterator</td></tr><tr><td>Iterable Protocol</td><td>الكائن لديه [Symbol.iterator] → يعمل مع for...of وspread</td></tr><tr><td>function*</td><td>Generator Function — يُنتج Iterator تلقائياً</td></tr><tr><td>yield</td><td>يُوقِف الـ Generator ويُعيد قيمة | yield* للتفويض</td></tr><tr><td>next(value)</td><td>يرسل قيمة للـ Generator ليستأنف</td></tr><tr><td>Infinite Sequences</td><td>Generator آمن للتسلسلات اللانهائية — يُنتج عند الطلب فقط</td></tr><tr><td>Async Generator</td><td>async function* + for await...of — لجلب البيانات المُصفَّحة</td></tr></tbody></table></div><div class="subsection"><div class="sub-head"><h3>في الجلسة القادمة...</h3></div><div class="callout preview"><span class="callout-title">🔮 الجلسة السادسة عشرة: JavaScript الشامل — مراجعة وأحدث ميزات ES2023/2024</span><p>✦ مراجعة شاملة لكل JavaScript (جلسات 9-15)</p><p>✦ أحدث ميزات ES2023: Array.findLast, toSorted, toSpliced, with</p><p>✦ ES2024: Object.groupBy, Map.groupBy, Promise.withResolvers</p><p>✦ Error Cause وAbortSignal.timeout()</p><p>✦ Pattern Matching مع switch expressions</p><p>✦ Regular Expressions المتقدمة</p><p>✦ مشروع نهائي لمرحلة JavaScript: تطبيق متكامل يجمع كل ما تعلمناه</p></div></div></div>
+<div class="part homework" id="toc-11"><div class="part-head"><span class="p-icon">🏠</span><h2>الواجب المنزلي — الجلسة الخامسة عشرة</h2></div><div class="callout info"><span class="callout-title">📅 موعد التسليم: قبل بداية الجلسة السادسة عشرة</span><p>يُرسَل مجلد المشروع (ملفات .js) أو رابط GitHub عبر القناة أو البريد الإلكتروني للمدرب</p></div><div class="subsection"><div class="sub-head"><h3>الواجب: بناء مكتبة Data Structures بـ ES Modules</h3></div><p class="blk-para">أنشئ مكتبة JavaScript كاملة تحتوي على هياكل بيانات متقدمة:</p><h4 class="mini-head">◆ 📦 الملفات المطلوبة:</h4><ul class="mini-list"><li>src/Stack.js — LIFO: push, pop, peek, isEmpty, [Symbol.iterator]</li><li>src/Queue.js — FIFO: enqueue, dequeue, front, isEmpty, [Symbol.iterator]</li><li>src/PriorityQueue.js — قائمة انتظار بأولوية: add(item, priority), poll()</li><li>src/Graph.js — رسم بياني: addNode, addEdge, بـ Map&lt;string, Set&lt;string&gt;&gt;</li><li>src/BiMap.js — خريطة ثنائية الاتجاه: set(k,v), getByKey, getByValue</li><li>src/index.js — Barrel يُصدّر الكل</li><li>demo/index.js — تجريب جميع الهياكل</li></ul><h4 class="mini-head">◆ 🔧 متطلبات تقنية:</h4><ul class="mini-list"><li>جميع الخصائص الداخلية private (#)</li><li>جميع الهياكل Iterable (Symbol.iterator)</li><li>Symbol.toPrimitive على Stack وQueue</li><li>معالجة أخطاء شاملة مع رسائل واضحة</li><li>Graph.js يحتوي BFS وDFS باستخدام Generators</li></ul><div class="tbl-wrap"><table class="data-tbl"><thead><tr><th>معيار التقييم</th><th>الدرجة</th></tr></thead><tbody><tr><td>5 هياكل بيانات تعمل بشكل صحيح</td><td>40 نقطة</td></tr><tr><td>ES Modules صحيحة (import/export/barrel)</td><td>15 نقطة</td></tr><tr><td>Symbol.iterator على جميع الهياكل</td><td>15 نقطة</td></tr><tr><td>Generator BFS وDFS في Graph</td><td>15 نقطة</td></tr><tr><td>معالجة الأخطاء وجودة الكود</td><td>15 نقطة</td></tr></tbody></table></div></div></div>
 <div class="closing-banner">
   <h3>🔧 أحسنت! كودك الآن منظّم ومعياري ومتقدم 🔧</h3>
   <p>Modules + Generators + Map/Set = JavaScript الاحترافي الحقيقي</p>
@@ -1132,6 +1132,8 @@ console.log([...zip(nums, chars)]);           // [[1,'a'],[2,'b'],[3,'c']]</code
       </div>
     </div>
   </main>
+
+  <aside class="toc-sidebar" data-toc></aside>
 </div>
 
 <script src="script.js"></script>

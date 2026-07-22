@@ -555,10 +555,41 @@ table.data-tbl tr:hover td{ background: color-mix(in srgb, var(--primary) 4%, tr
   .roadmap-line{ display:none; }
   .phase-header{ flex-direction:column; gap:12px; }
 }
+/* ============================================================
+   14. فهرس "في هذه الصفحة" (On This Page TOC)
+   ============================================================ */
+.toc-sidebar{
+  display:none; width: 320px; flex-shrink:0; position: sticky; top: var(--nav-h);
+  align-self:flex-start; height: calc(100vh - var(--nav-h)); overflow-y:auto; overflow-x:hidden;
+  padding: 26px 20px; border-inline-start: 1px solid var(--border);
+  transition: width .22s ease, padding .22s ease;
+}
+.toc-sidebar.collapsed{ width: 46px; padding: 26px 8px; overflow:visible; }
+.toc-sidebar.collapsed .toc-inner{ opacity:0; pointer-events:none; }
+.toc-collapse-btn{
+  position: sticky; top:0; width:30px; height:30px; border-radius:50%; border:1px solid var(--border);
+  background: var(--surface); color: var(--ink-soft); display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:.95rem; margin-bottom: 16px; flex-shrink:0; transition: background .15s ease;
+}
+.toc-collapse-btn:hover{ background: var(--surface-2); color: var(--ink); }
+.toc-inner{ transition: opacity .15s ease; }
+.toc-title{ font-size:.74rem; font-weight:800; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.06em; padding: 0 8px 14px; }
+.toc-list{ display:flex; flex-direction:column; gap:2px; }
+.toc-link{
+  display:block; padding: 9px 12px; border-radius: var(--radius-s); font-size:.85rem;
+  color: var(--ink-soft); line-height:1.5; border-inline-start: 2px solid transparent;
+  transition: all .15s ease; white-space:normal; word-break:break-word;
+}
+.toc-link:hover{ background: var(--surface-2); color: var(--ink); }
+.toc-link.active{ background: var(--primary-100); color: var(--primary-ink); font-weight:700; border-inline-start-color: var(--primary); }
+
+@media (min-width: 1300px){
+  .toc-sidebar{ display:flex; flex-direction:column; }
+}
 /* ---------- 11. للشاشات الصغيرة ---------- */
 @media (max-width: 980px){
   .hero .container{ grid-template-columns: 1fr; }
-  .terminal{ order:-1; }
+  .browser-mock{ order:-1; }
   .lessons-grid{ grid-template-columns: repeat(2, 1fr); }
   .about-grid{ grid-template-columns: 1fr; }
   .about-avatar{ max-width: 260px; margin: 0 auto; }
